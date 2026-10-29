@@ -6,6 +6,10 @@ export interface SeedProduct {
   slug: string;
   description: string;
   basePrice: string;
+  compareAtPrice?: string;
+  imageUrl: string;
+  rating: number;
+  reviewsCount: number;
   isPublished: boolean;
 }
 
@@ -36,6 +40,10 @@ export function generateStoreSeedData(storeId: string, category: string): SeedDa
       slug: sample.slug,
       description: sample.description,
       basePrice: sample.basePrice,
+      compareAtPrice: sample.compareAtPrice,
+      imageUrl: sample.imageUrl,
+      rating: sample.rating,
+      reviewsCount: sample.reviewsCount,
       isPublished: true
     });
 
@@ -69,4 +77,3 @@ export function generateStoreSeedData(storeId: string, category: string): SeedDa
 
   return { products, variants };
 }
-

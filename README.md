@@ -121,3 +121,4 @@ npm run build
 
 ## 📄 License
 MIT License. Built for startups and independent brands.
+
