@@ -7,27 +7,38 @@ import {
   Package,
   Layers,
   ShoppingBag,
-  Settings,
+  Palette,
+  CreditCard,
   Plus,
   AlertTriangle,
   TrendingUp,
   DollarSign,
   Truck,
-  CheckCircle,
-  Clock,
   Printer,
   ExternalLink,
   Store,
-  Trash2
+  Trash2,
+  CheckCircle2,
+  Smartphone,
+  Monitor
 } from "lucide-react";
 import { generateVariantMatrix, GeneratedVariant } from "@/lib/matrix";
 import { generateStoreSeedData } from "@/lib/seed-store";
 
 export default function MerchantAdminPage() {
-  const [activeTab, setActiveTab] = useState<"overview" | "products" | "inventory" | "orders">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "products" | "inventory" | "orders" | "customizer" | "billing">("overview");
   const [storeSlug, setStoreSlug] = useState("apex-fashion");
   const [storeName, setStoreName] = useState("Apex Fashion Hub");
   const [currency, setCurrency] = useState("$");
+  const [subscriptionPlan, setSubscriptionPlan] = useState("Starter ($9/mo)");
+
+  // Theme customizer state
+  const [announcementText, setAnnouncementText] = useState("⚡ Free shipping on orders over $50! Fast delivery.");
+  const [primaryBrandColor, setPrimaryBrandColor] = useState("#2563eb"); // Tailwind blue-600
+  const [heroHeadline, setHeroHeadline] = useState("Discover Quality Essentials");
+  const [heroTagline, setHeroTagline] = useState("Trending styles, modern fits, and premium fabrics.");
+  const [previewDevice, setPreviewDevice] = useState<"desktop" | "mobile">("desktop");
+  const [savedSuccess, setSavedSuccess] = useState(false);
 
   // Load store config from URL or localStorage
   useEffect(() => {
@@ -134,7 +145,6 @@ export default function MerchantAdminPage() {
       Color: colors
     });
 
-    // Default stock to 15 per variant
     const withStock = matrix.map(v => ({ ...v, inventoryQuantity: 15 }));
     setGeneratedVariants(withStock);
   };
@@ -160,7 +170,6 @@ export default function MerchantAdminPage() {
     setGeneratedVariants([]);
   };
 
-  // Stock quick adjustment
   const handleAdjustStock = (prodId: string, delta: number) => {
     setProductsList(prev =>
       prev.map(p => {
@@ -173,18 +182,21 @@ export default function MerchantAdminPage() {
     );
   };
 
-  // Order status update
   const handleUpdateOrderStatus = (orderId: string, status: string) => {
     setOrdersList(prev =>
       prev.map(o => (o.id === orderId ? { ...o, fulfillmentStatus: status } : o))
     );
   };
 
-  // Invoice view state
+  const handleSaveCustomizer = () => {
+    setSavedSuccess(true);
+    setTimeout(() => setSavedSuccess(false), 2500);
+  };
+
   const [selectedInvoice, setSelectedInvoice] = useState<typeof ordersList[0] | null>(null);
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col">
+    <div className="min-h-screen bg-slate-100 flex flex-col font-sans">
       {/* Top Navbar */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-40">
         <div className="px-4 sm:px-8 h-16 flex items-center justify-between">
@@ -196,7 +208,7 @@ export default function MerchantAdminPage() {
               <div className="flex items-center space-x-2">
                 <span className="font-extrabold text-slate-900">{storeName}</span>
                 <span className="text-[11px] bg-blue-50 text-blue-700 font-semibold px-2 py-0.5 rounded border border-blue-200">
-                  Starter Plan
+                  {subscriptionPlan}
                 </span>
               </div>
               <div className="text-xs text-slate-500 font-mono">
@@ -218,10 +230,10 @@ export default function MerchantAdminPage() {
         </div>
 
         {/* Dashboard Navigation Tabs */}
-        <div className="px-4 sm:px-8 flex space-x-8 border-t border-slate-100 text-sm font-semibold">
+        <div className="px-4 sm:px-8 flex space-x-6 sm:space-x-8 border-t border-slate-100 text-sm font-semibold overflow-x-auto">
           <button
             onClick={() => setActiveTab("overview")}
-            className={`py-3 border-b-2 flex items-center space-x-2 transition ${
+            className={`py-3 border-b-2 flex items-center space-x-2 whitespace-nowrap transition ${
               activeTab === "overview"
                 ? "border-blue-600 text-blue-600"
                 : "border-transparent text-slate-500 hover:text-slate-800"
@@ -232,18 +244,18 @@ export default function MerchantAdminPage() {
           </button>
           <button
             onClick={() => setActiveTab("products")}
-            className={`py-3 border-b-2 flex items-center space-x-2 transition ${
+            className={`py-3 border-b-2 flex items-center space-x-2 whitespace-nowrap transition ${
               activeTab === "products"
                 ? "border-blue-600 text-blue-600"
                 : "border-transparent text-slate-500 hover:text-slate-800"
             }`}
           >
             <Package className="w-4 h-4" />
-            <span>Products & Catalog</span>
+            <span>Products</span>
           </button>
           <button
             onClick={() => setActiveTab("inventory")}
-            className={`py-3 border-b-2 flex items-center space-x-2 transition ${
+            className={`py-3 border-b-2 flex items-center space-x-2 whitespace-nowrap transition ${
               activeTab === "inventory"
                 ? "border-blue-600 text-blue-600"
                 : "border-transparent text-slate-500 hover:text-slate-800"
@@ -254,7 +266,7 @@ export default function MerchantAdminPage() {
           </button>
           <button
             onClick={() => setActiveTab("orders")}
-            className={`py-3 border-b-2 flex items-center space-x-2 transition ${
+            className={`py-3 border-b-2 flex items-center space-x-2 whitespace-nowrap transition ${
               activeTab === "orders"
                 ? "border-blue-600 text-blue-600"
                 : "border-transparent text-slate-500 hover:text-slate-800"
@@ -262,6 +274,28 @@ export default function MerchantAdminPage() {
           >
             <ShoppingBag className="w-4 h-4" />
             <span>Orders ({ordersList.length})</span>
+          </button>
+          <button
+            onClick={() => setActiveTab("customizer")}
+            className={`py-3 border-b-2 flex items-center space-x-2 whitespace-nowrap transition ${
+              activeTab === "customizer"
+                ? "border-blue-600 text-blue-600"
+                : "border-transparent text-slate-500 hover:text-slate-800"
+            }`}
+          >
+            <Palette className="w-4 h-4" />
+            <span>Store Theme</span>
+          </button>
+          <button
+            onClick={() => setActiveTab("billing")}
+            className={`py-3 border-b-2 flex items-center space-x-2 whitespace-nowrap transition ${
+              activeTab === "billing"
+                ? "border-blue-600 text-blue-600"
+                : "border-transparent text-slate-500 hover:text-slate-800"
+            }`}
+          >
+            <CreditCard className="w-4 h-4" />
+            <span>SaaS Plan</span>
           </button>
         </div>
       </header>
@@ -271,7 +305,6 @@ export default function MerchantAdminPage() {
         {/* TAB 1: OVERVIEW */}
         {activeTab === "overview" && (
           <div className="space-y-8">
-            {/* Top Metric Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
               <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
                 <div className="flex items-center justify-between text-slate-500 text-xs font-bold uppercase tracking-wider">
@@ -378,7 +411,7 @@ export default function MerchantAdminPage() {
           </div>
         )}
 
-        {/* TAB 2: PRODUCTS & VARIANT MATRIX */}
+        {/* TAB 2: PRODUCTS */}
         {activeTab === "products" && (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -521,7 +554,7 @@ export default function MerchantAdminPage() {
           </div>
         )}
 
-        {/* TAB 4: ORDERS PIPELINE */}
+        {/* TAB 4: ORDERS */}
         {activeTab === "orders" && (
           <div className="space-y-6">
             <div>
@@ -583,6 +616,230 @@ export default function MerchantAdminPage() {
                   ))}
                 </tbody>
               </table>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 5: THEME & SECTION CUSTOMIZER */}
+        {activeTab === "customizer" && (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            {/* Left Column: Form Controls */}
+            <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+              <div>
+                <h2 className="text-xl font-black text-slate-900 tracking-tight">Storefront Customizer</h2>
+                <p className="text-xs text-slate-500">Edit branding, colors, and layout sections without code.</p>
+              </div>
+
+              {savedSuccess && (
+                <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800 font-bold flex items-center space-x-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <span>Store styling updated successfully!</span>
+                </div>
+              )}
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+                    Announcement Bar Message
+                  </label>
+                  <input
+                    type="text"
+                    value={announcementText}
+                    onChange={(e) => setAnnouncementText(e.target.value)}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+                    Hero Main Headline
+                  </label>
+                  <input
+                    type="text"
+                    value={heroHeadline}
+                    onChange={(e) => setHeroHeadline(e.target.value)}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+                    Hero Tagline
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={heroTagline}
+                    onChange={(e) => setHeroTagline(e.target.value)}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase mb-2">
+                    Primary Brand Color
+                  </label>
+                  <div className="flex items-center space-x-3">
+                    {["#2563eb", "#059669", "#7c3aed", "#d97706", "#e11d48", "#0f172a"].map((color) => (
+                      <button
+                        key={color}
+                        type="button"
+                        onClick={() => setPrimaryBrandColor(color)}
+                        className={`w-8 h-8 rounded-full border-2 transition ${
+                          primaryBrandColor === color ? "border-slate-900 scale-110 shadow-md" : "border-transparent"
+                        }`}
+                        style={{ backgroundColor: color }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={handleSaveCustomizer}
+                className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow-md shadow-blue-600/20 transition"
+              >
+                Save Theme Changes
+              </button>
+            </div>
+
+            {/* Right Column: Live Storefront Preview */}
+            <div className="lg:col-span-7 space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-500 uppercase">Live Preview</span>
+                <div className="flex items-center space-x-2 bg-white border border-slate-200 rounded-xl p-1 shadow-sm">
+                  <button
+                    onClick={() => setPreviewDevice("desktop")}
+                    className={`p-1.5 rounded-lg text-xs font-bold flex items-center space-x-1 ${
+                      previewDevice === "desktop" ? "bg-slate-100 text-slate-900" : "text-slate-400"
+                    }`}
+                  >
+                    <Monitor className="w-3.5 h-3.5" />
+                    <span>Desktop</span>
+                  </button>
+                  <button
+                    onClick={() => setPreviewDevice("mobile")}
+                    className={`p-1.5 rounded-lg text-xs font-bold flex items-center space-x-1 ${
+                      previewDevice === "mobile" ? "bg-slate-100 text-slate-900" : "text-slate-400"
+                    }`}
+                  >
+                    <Smartphone className="w-3.5 h-3.5" />
+                    <span>Mobile</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Preview Container */}
+              <div className="flex justify-center">
+                <div
+                  className={`bg-white rounded-2xl border border-slate-300 shadow-xl overflow-hidden transition-all duration-300 ${
+                    previewDevice === "mobile" ? "w-[360px]" : "w-full"
+                  }`}
+                >
+                  {/* Top Bar Preview */}
+                  <div className="text-white text-[11px] py-1.5 px-3 text-center truncate font-medium bg-slate-900">
+                    {announcementText}
+                  </div>
+
+                  {/* Header Preview */}
+                  <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+                    <span className="font-extrabold text-sm text-slate-900">{storeName}</span>
+                    <ShoppingBag className="w-4 h-4 text-slate-500" />
+                  </div>
+
+                  {/* Hero Preview */}
+                  <div
+                    className="p-8 text-white text-center transition-colors"
+                    style={{ backgroundColor: primaryBrandColor }}
+                  >
+                    <h3 className="font-black text-xl tracking-tight leading-tight">{heroHeadline}</h3>
+                    <p className="text-xs text-white/80 mt-1 max-w-sm mx-auto">{heroTagline}</p>
+                    <button className="mt-4 px-4 py-1.5 bg-white text-slate-900 font-bold text-xs rounded-lg shadow">
+                      Shop Now
+                    </button>
+                  </div>
+
+                  {/* Products Grid Preview */}
+                  <div className="p-4 bg-slate-50">
+                    <div className="text-xs font-bold text-slate-700 mb-3">Featured Products</div>
+                    <div className={`grid gap-3 ${previewDevice === "mobile" ? "grid-cols-2" : "grid-cols-3"}`}>
+                      {productsList.slice(0, 3).map((p) => (
+                        <div key={p.id} className="bg-white p-3 rounded-xl border border-slate-200">
+                          <div className="w-full h-16 bg-slate-100 rounded-lg flex items-center justify-center text-slate-300 mb-2">
+                            <Package className="w-6 h-6" />
+                          </div>
+                          <div className="font-bold text-[11px] text-slate-900 truncate">{p.title}</div>
+                          <div className="text-[11px] font-bold text-blue-600 mt-1">{currency}{p.basePrice}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 6: SAAS BILLING & TIERS */}
+        {activeTab === "billing" && (
+          <div className="space-y-6 max-w-4xl mx-auto">
+            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <span className="text-xs font-bold uppercase text-slate-400">Current Subscription</span>
+                  <h2 className="text-2xl font-black text-slate-900">{subscriptionPlan}</h2>
+                  <p className="text-xs text-slate-500 mt-1">14-Day Free Trial active (Renews on Nov 13, 2026)</p>
+                </div>
+                <span className="text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full">
+                  Active
+                </span>
+              </div>
+
+              <div className="border-t border-slate-200 pt-6">
+                <h3 className="font-bold text-slate-900 text-sm mb-4">Switch Subscription Tier:</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="p-4 border border-slate-200 rounded-xl bg-slate-50 flex flex-col justify-between">
+                    <div>
+                      <div className="font-bold text-slate-900 text-sm">Starter</div>
+                      <div className="text-2xl font-black text-slate-900 mt-1">$9<span className="text-xs font-normal text-slate-500">/mo</span></div>
+                      <div className="text-xs text-slate-500 mt-2">Up to 50 products, standard subdomain.</div>
+                    </div>
+                    <button
+                      onClick={() => setSubscriptionPlan("Starter ($9/mo)")}
+                      className="mt-4 py-2 bg-white border border-slate-300 font-bold text-xs text-slate-700 rounded-lg hover:bg-slate-100 transition"
+                    >
+                      Select Starter
+                    </button>
+                  </div>
+
+                  <div className="p-4 border-2 border-blue-600 rounded-xl bg-blue-50/30 flex flex-col justify-between">
+                    <div>
+                      <div className="font-bold text-blue-900 text-sm">Growth</div>
+                      <div className="text-2xl font-black text-blue-900 mt-1">$29<span className="text-xs font-normal text-slate-500">/mo</span></div>
+                      <div className="text-xs text-slate-600 mt-2">Up to 500 products, custom domain.</div>
+                    </div>
+                    <button
+                      onClick={() => setSubscriptionPlan("Growth ($29/mo)")}
+                      className="mt-4 py-2 bg-blue-600 font-bold text-xs text-white rounded-lg hover:bg-blue-700 shadow-md shadow-blue-600/20 transition"
+                    >
+                      Upgrade to Growth
+                    </button>
+                  </div>
+
+                  <div className="p-4 border border-slate-200 rounded-xl bg-slate-50 flex flex-col justify-between">
+                    <div>
+                      <div className="font-bold text-slate-900 text-sm">Pro</div>
+                      <div className="text-2xl font-black text-slate-900 mt-1">$79<span className="text-xs font-normal text-slate-500">/mo</span></div>
+                      <div className="text-xs text-slate-500 mt-2">Unlimited products, multi-staff access.</div>
+                    </div>
+                    <button
+                      onClick={() => setSubscriptionPlan("Pro ($79/mo)")}
+                      className="mt-4 py-2 bg-white border border-slate-300 font-bold text-xs text-slate-700 rounded-lg hover:bg-slate-100 transition"
+                    >
+                      Select Pro
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -761,4 +1018,3 @@ export default function MerchantAdminPage() {
     </div>
   );
 }
-
