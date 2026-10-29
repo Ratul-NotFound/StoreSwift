@@ -20,3 +20,4 @@ describe("Atomic Stock Deduction Logic", () => {
     expect(result.newStock).toBe(0);
   });
 });
+

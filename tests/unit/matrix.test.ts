@@ -37,3 +37,4 @@ describe("Variant Matrix Generator", () => {
     expect(variants[0].sku).toBe("MUG-DEFAULT");
   });
 });
+

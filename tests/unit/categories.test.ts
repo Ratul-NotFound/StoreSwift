@@ -23,3 +23,4 @@ describe("Category Presets and Store Seed Engine", () => {
     expect(seed.variants[0].inventoryQuantity).toBeGreaterThan(0);
   });
 });
+

@@ -25,3 +25,4 @@ export function resolveTenantFromHost(host: string, rootDomain = "platform.com")
   // Any non-matching host is treated as a custom domain
   return { type: "store", tenantSlug: cleanHost };
 }
+

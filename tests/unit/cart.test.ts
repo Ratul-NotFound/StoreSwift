@@ -26,3 +26,4 @@ describe("Cart Engine & Totals Calculator", () => {
     expect(summary.amountRemainingForFreeShipping).toBe(0);
   });
 });
+

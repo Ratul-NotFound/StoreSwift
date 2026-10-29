@@ -136,3 +136,4 @@ export const ALL_CATEGORIES = Object.keys(CATEGORIES_MAP);
 export function getCategoryConfig(categoryKey: string): CategoryConfig {
   return CATEGORIES_MAP[categoryKey] || CATEGORIES_MAP.fashion;
 }
+

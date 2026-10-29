@@ -20,3 +20,4 @@ export function isReservedSlug(slug: string): boolean {
   const clean = slug.trim().toLowerCase();
   return RESERVED_SUBDOMAINS.has(clean);
 }
+

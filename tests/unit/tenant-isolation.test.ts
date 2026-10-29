@@ -12,3 +12,4 @@ describe("Tenant Isolation Filter Builder", () => {
     expect(filter).toEqual({ storeId: "store-uuid-1234" });
   });
 });
+

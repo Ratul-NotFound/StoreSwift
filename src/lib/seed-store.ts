@@ -69,3 +69,4 @@ export function generateStoreSeedData(storeId: string, category: string): SeedDa
 
   return { products, variants };
 }
+

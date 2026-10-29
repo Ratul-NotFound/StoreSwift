@@ -64,3 +64,4 @@ export const orders = pgTable("orders", {
   fulfillmentStatus: varchar("fulfillment_status", { length: 20 }).default("unfulfilled").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull()
 });
+

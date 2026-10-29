@@ -44,3 +44,4 @@ describe("Complete End-to-End eCommerce Platform Flow", () => {
     expect(checkoutDeduction.newStock).toBe(9);
   });
 });
+
