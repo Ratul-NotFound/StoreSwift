@@ -1142,3 +1142,4 @@ git commit -m "test: add comprehensive end-to-end integration test for merchant 
 - [x] **Placeholder scan**: Zero TODOs, TBDs, or vague instructions; all code snippets and types are fully defined.
 - [x] **Type consistency**: Exact types (`CategoryConfig`, `SeedData`, `CartItem`, `GeneratedVariant`, `StockDeductionResult`) match across files.
 - [x] **Review Focus**: Reserved slugs, Cartesian matrix generation, atomic checkout stock locks, and subdomain resolution are all explicitly tested.
+

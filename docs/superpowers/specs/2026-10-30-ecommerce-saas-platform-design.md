@@ -299,3 +299,4 @@ CREATE TABLE order_items (
 4. **Milestone 4**: 1-Page Hybrid Checkout Engine (COD, Stripe, manual mobile transfers, atomic stock deduction).
 5. **Milestone 5**: Store Customizer & Order Processing (Section toggles, order status pipeline, invoice printing).
 6. **Milestone 6**: SaaS Billing & Platform Super-Admin (Stripe billing for subscription tiers, super-admin monitoring).
+
