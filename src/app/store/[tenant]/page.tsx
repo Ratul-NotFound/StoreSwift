@@ -567,7 +567,7 @@ export default function TenantStorefrontPage({
 
       {/* Footer */}
       <footer className="bg-white border-t border-slate-200 py-8 text-center text-xs text-slate-400">
-        Powered by LaunchCommerce SaaS • Store: {tenantSlug}.platform.com
+        Powered by StoreSwift • Store: {tenantSlug}.platform.com
       </footer>
     </div>
   );

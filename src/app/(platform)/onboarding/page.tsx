@@ -91,7 +91,7 @@ export default function OnboardingWizardPage() {
             <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold">
               <Store className="w-5 h-5" />
             </div>
-            <span className="font-extrabold text-slate-900 tracking-tight">LaunchCommerce</span>
+            <span className="font-extrabold text-slate-900 tracking-tight">StoreSwift</span>
           </Link>
           <div className="text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full">
             {isCompleted ? "Store Active" : `Step ${step} of 3`}
@@ -385,7 +385,7 @@ export default function OnboardingWizardPage() {
       </main>
 
       <footer className="py-4 text-center text-xs text-slate-400">
-        LaunchCommerce SaaS Platform • 14-Day Free Trial
+        StoreSwift SaaS Platform • 14-Day Free Trial
       </footer>
     </div>
   );

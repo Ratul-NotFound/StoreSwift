@@ -41,7 +41,7 @@ export default function MerchantLoginPage() {
             <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold">
               <Store className="w-5 h-5" />
             </div>
-            <span className="font-extrabold text-slate-900 tracking-tight">LaunchCommerce</span>
+            <span className="font-extrabold text-slate-900 tracking-tight">StoreSwift</span>
           </Link>
           <Link
             href="/onboarding"
@@ -135,7 +135,7 @@ export default function MerchantLoginPage() {
       </main>
 
       <footer className="py-4 text-center text-xs text-slate-400">
-        LaunchCommerce SaaS Platform
+        StoreSwift SaaS Platform
       </footer>
     </div>
   );

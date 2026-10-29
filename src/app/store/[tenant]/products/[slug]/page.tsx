@@ -203,7 +203,7 @@ export default function ProductDetailPage({
 
       {/* Footer */}
       <footer className="mt-auto bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400">
-        {tenantSlug}.platform.com • Powered by LaunchCommerce SaaS
+        {tenantSlug}.platform.com • Powered by StoreSwift
       </footer>
     </div>
   );

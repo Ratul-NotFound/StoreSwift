@@ -13,7 +13,7 @@ export default function PlatformLandingPage() {
               <Store className="w-6 h-6" />
             </div>
             <span className="text-xl font-extrabold tracking-tight text-slate-900">
-              Launch<span className="text-blue-600">Commerce</span>
+              Store<span className="text-blue-600">Swift</span>
             </span>
           </div>
 
@@ -54,7 +54,7 @@ export default function PlatformLandingPage() {
           </h1>
 
           <p className="mt-6 text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Can’t afford thousands for agency developers? LaunchCommerce provides an instant category-ready online shop, variant inventory matrix, and high-conversion checkout for an affordable monthly fee.
+            Can’t afford thousands for agency developers? StoreSwift provides an instant category-ready online shop, variant inventory matrix, and high-conversion checkout for an affordable monthly fee.
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -324,10 +324,10 @@ export default function PlatformLandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center space-x-2 text-white font-bold">
             <Store className="w-5 h-5 text-blue-500" />
-            <span>LaunchCommerce SaaS</span>
+            <span>StoreSwift</span>
           </div>
           <p className="text-sm text-slate-500">
-            © 2026 LaunchCommerce Platform. Designed for startups and independent brands.
+            © 2026 StoreSwift Platform. Designed for startups and independent brands.
           </p>
         </div>
       </footer>

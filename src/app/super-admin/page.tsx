@@ -117,7 +117,7 @@ export default function PlatformSuperAdminPage() {
                 Root Access
               </span>
             </div>
-            <div className="text-xs text-slate-400">LaunchCommerce Network Monitoring</div>
+            <div className="text-xs text-slate-400">StoreSwift Network Monitoring</div>
           </div>
         </div>
 
@@ -294,7 +294,7 @@ export default function PlatformSuperAdminPage() {
       </main>
 
       <footer className="py-6 border-t border-slate-800 text-center text-xs text-slate-500">
-        LaunchCommerce SaaS Platform Network Core • Super-Admin Portal
+        StoreSwift SaaS Platform Network Core • Super-Admin Portal
       </footer>
     </div>
   );

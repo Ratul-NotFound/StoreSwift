@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "LaunchCommerce | Instant eCommerce SaaS for Startups",
-  description: "Turnkey eCommerce platform for startups: Instant category-ready storefront, inventory manager, and order dashboard."
+  title: "StoreSwift | Instant eCommerce SaaS for Startups",
+  description: "Turnkey eCommerce platform for startups: Instant category-ready storefront, inventory manager, and order dashboard in 3 minutes."
 };
 
 export default function RootLayout({
@@ -19,4 +19,3 @@ export default function RootLayout({
     </html>
   );
 }
-
