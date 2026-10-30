@@ -299,15 +299,18 @@ export default function TenantStorefrontPage({
   return (
     <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${template.classes.pageBg}`}>
       {/* Top Notification / Ticker Bar */}
-      <div className={`py-2 px-4 text-xs font-semibold text-center tracking-wide transition-colors ${template.classes.announcementBar}`}>
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <span className="hidden sm:inline-block">📦 Guaranteed 48-Hour Dispatch</span>
-          <span className="mx-auto sm:mx-0">
-            🚚 FREE Express Shipping on orders over $50 • Cash on Delivery Available Nationwide
-          </span>
-          <span className="hidden md:inline-block">🛡️ 100% Authentic Quality</span>
-        </div>
-      </div>
+      {(() => {
+        const highlights = template.getAnnouncementHighlights();
+        return (
+          <div className={`py-2 px-4 text-xs font-semibold text-center tracking-wide transition-colors ${template.classes.announcementBar}`}>
+            <div className="max-w-6xl mx-auto flex items-center justify-between">
+              <span className="hidden sm:inline-block">{highlights.leading}</span>
+              <span className="mx-auto sm:mx-0">{highlights.center}</span>
+              <span className="hidden md:inline-block">{highlights.trailing}</span>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Main Sticky Brand Header */}
       <header className={`sticky top-0 z-30 shadow-subtle transition-colors duration-300 ${template.classes.headerBg}`}>
@@ -560,7 +563,7 @@ export default function TenantStorefrontPage({
           <section className={`py-12 px-4 sm:px-6 transition-colors ${template.classes.lookbookBg}`}>
             <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
               <div className="max-w-xl space-y-3">
-                <span className={template.classes.editorialTag}>THE CURATED LOOKBOOK EDIT // 2026</span>
+                <span className={template.classes.editorialTag}>{template.getCuratedCollectionTitle()}</span>
                 <h3 className="text-2xl sm:text-3xl font-black tracking-tight leading-tight">
                   {philosophy.curationQuote}
                 </h3>

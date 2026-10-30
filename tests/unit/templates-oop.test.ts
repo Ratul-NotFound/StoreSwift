@@ -5,19 +5,23 @@ import {
   LuxeGlowTemplate,
   TechCyberTemplate,
   WarmHeritageTemplate,
+  OpulentMaisonTemplate,
+  ArtisanPantryTemplate,
   AbstractStoreTemplate
 } from "../../src/templates";
 
 describe("OOP Storefront Templates & Factory System", () => {
-  it("registers and instantiates all 4 polymorphic template classes", () => {
+  it("registers and instantiates all 6 polymorphic template classes", () => {
     const templates = TemplateFactory.getAllTemplates();
-    expect(templates.length).toBe(4);
+    expect(templates.length).toBe(6);
 
     const ids = TemplateFactory.getTemplateIds();
     expect(ids).toContain("minimal");
     expect(ids).toContain("glow");
     expect(ids).toContain("bold");
     expect(ids).toContain("artisan");
+    expect(ids).toContain("maison");
+    expect(ids).toContain("pantry");
   });
 
   it("retrieves the correct polymorphic instance with TemplateFactory.getTemplate()", () => {
@@ -40,6 +44,38 @@ describe("OOP Storefront Templates & Factory System", () => {
     expect(artisan).toBeInstanceOf(WarmHeritageTemplate);
     expect(artisan.id).toBe("artisan");
     expect(artisan.getHeroLayoutType()).toBe("heritage");
+
+    const maison = TemplateFactory.getTemplate("maison");
+    expect(maison).toBeInstanceOf(OpulentMaisonTemplate);
+    expect(maison.id).toBe("maison");
+    expect(maison.getHeroLayoutType()).toBe("opulent");
+
+    const pantry = TemplateFactory.getTemplate("pantry");
+    expect(pantry).toBeInstanceOf(ArtisanPantryTemplate);
+    expect(pantry.id).toBe("pantry");
+    expect(pantry.getHeroLayoutType()).toBe("organic");
+  });
+
+  it("resolves business category and descriptive aliases intelligently", () => {
+    expect(TemplateFactory.getTemplate("jewelry")).toBeInstanceOf(OpulentMaisonTemplate);
+    expect(TemplateFactory.getTemplate("watches")).toBeInstanceOf(OpulentMaisonTemplate);
+    expect(TemplateFactory.getTemplate("opulent")).toBeInstanceOf(OpulentMaisonTemplate);
+
+    expect(TemplateFactory.getTemplate("grocery_food")).toBeInstanceOf(ArtisanPantryTemplate);
+    expect(TemplateFactory.getTemplate("food")).toBeInstanceOf(ArtisanPantryTemplate);
+    expect(TemplateFactory.getTemplate("organic")).toBeInstanceOf(ArtisanPantryTemplate);
+
+    expect(TemplateFactory.getTemplate("fashion")).toBeInstanceOf(MinimalAtelierTemplate);
+    expect(TemplateFactory.getTemplate("streetwear")).toBeInstanceOf(MinimalAtelierTemplate);
+
+    expect(TemplateFactory.getTemplate("beauty_cosmetics")).toBeInstanceOf(LuxeGlowTemplate);
+    expect(TemplateFactory.getTemplate("skincare")).toBeInstanceOf(LuxeGlowTemplate);
+
+    expect(TemplateFactory.getTemplate("electronics")).toBeInstanceOf(TechCyberTemplate);
+    expect(TemplateFactory.getTemplate("hardware")).toBeInstanceOf(TechCyberTemplate);
+
+    expect(TemplateFactory.getTemplate("shoes")).toBeInstanceOf(WarmHeritageTemplate);
+    expect(TemplateFactory.getTemplate("leather")).toBeInstanceOf(WarmHeritageTemplate);
   });
 
   it("falls back gracefully to default MinimalAtelierTemplate when unknown or empty ID is provided", () => {
@@ -55,48 +91,68 @@ describe("OOP Storefront Templates & Factory System", () => {
 
   it("polymorphically formats hero badges and product badges according to template personality", () => {
     const minimal = TemplateFactory.getTemplate("minimal");
-    expect(minimal.formatHeroBadge("Fashion")).toContain("FASHION // ARCHIVE 2026");
+    expect(minimal.formatHeroBadge("Fashion")).toBe("FASHION // ARCHIVE 2026");
     expect(minimal.formatProductBadge("Essential")).toBe("[ ESSENTIAL ]");
 
     const glow = TemplateFactory.getTemplate("glow");
-    expect(glow.formatHeroBadge("Skincare")).toContain("CLEAN BEAUTY PROTOCOL");
-    expect(glow.formatProductBadge("Hydrating")).toContain("✨ Hydrating");
+    expect(glow.formatHeroBadge("Skincare")).toBe("DERMATOLOGIST CLINICALLY FORMULATED // SKINCARE");
+    expect(glow.formatProductBadge("Hydrating")).toBe("✨ HYDRATING");
 
     const cyber = TemplateFactory.getTemplate("bold");
-    expect(cyber.formatHeroBadge("Audio")).toContain("HARDWARE LAB // AUDIO // LATENCY: 0.8MS");
-    expect(cyber.formatProductBadge("Titanium")).toBe("✦ TITANIUM");
+    expect(cyber.formatHeroBadge("Audio")).toBe("MIL-SPEC HARDWARE // AUDIO TELEMETRY");
+    expect(cyber.formatProductBadge("Titanium")).toBe("// TITANIUM //");
 
     const artisan = TemplateFactory.getTemplate("artisan");
-    expect(artisan.formatHeroBadge("Leather")).toContain("HAND-CRAFTED // LEATHER // BATCH #26");
-    expect(artisan.formatProductBadge("Goodyear Welt")).toContain("🏷️ Goodyear Welt");
+    expect(artisan.formatHeroBadge("Leather")).toBe("MASTER BENCH CRAFT • LEATHER EDITIONS");
+    expect(artisan.formatProductBadge("Goodyear Welt")).toBe("★ GOODYEAR WELT ★");
+
+    const maison = TemplateFactory.getTemplate("maison");
+    expect(maison.formatHeroBadge("Jewelry")).toBe("MAISON HAUTE JOAILLERIE // JEWELRY ARCHIVE");
+    expect(maison.formatProductBadge("18k Gold")).toBe("◆ 18K GOLD ◆");
+
+    const pantry = TemplateFactory.getTemplate("pantry");
+    expect(pantry.formatHeroBadge("Coffee")).toBe("DIRECT FARMSTEAD PROVISIONS • COFFEE");
+    expect(pantry.formatProductBadge("Single Origin")).toBe("🌿 SINGLE ORIGIN");
   });
 
-  it("generates distinct, industry-tailored manifesto pillars for each template", () => {
+  it("generates distinct, industry-tailored manifesto pillars for all templates", () => {
     const minimalPillars = TemplateFactory.getTemplate("minimal").getManifestoPillars();
     expect(minimalPillars.length).toBe(4);
     expect(minimalPillars[0].title).toBe("Atelier Verified");
 
     const glowPillars = TemplateFactory.getTemplate("glow").getManifestoPillars();
-    expect(glowPillars[0].title).toContain("Cruelty-Free & Vegan");
+    expect(glowPillars[0].title).toBe("Clinical & Non-Toxic");
 
     const cyberPillars = TemplateFactory.getTemplate("bold").getManifestoPillars();
-    expect(cyberPillars[0].title).toContain("Aerospace CNC Tolerances");
+    expect(cyberPillars[0].title).toBe("100% Genuine Calibrated");
 
     const artisanPillars = TemplateFactory.getTemplate("artisan").getManifestoPillars();
-    expect(artisanPillars[0].title).toContain("Master Bench Craftsmanship");
+    expect(artisanPillars[0].title).toBe("Master Bench Lasted");
+
+    const maisonPillars = TemplateFactory.getTemplate("maison").getManifestoPillars();
+    expect(maisonPillars[0].title).toBe("GIA & Hallmark Certified");
+
+    const pantryPillars = TemplateFactory.getTemplate("pantry").getManifestoPillars();
+    expect(pantryPillars[0].title).toBe("100% Certified Organic");
   });
 
-  it("executes OOP pricing, discount calculation, and scarcity notices correctly", () => {
+  it("executes OOP pricing, discount calculation, and shipping guarantees correctly", () => {
     const tmpl = TemplateFactory.getTemplate("minimal");
 
     expect(tmpl.formatPrice(34.5)).toBe("$34.50");
     expect(tmpl.formatPrice(100)).toBe("$100.00");
+    expect(tmpl.formatPrice(100, "EUR")).toBe("€100.00");
+    expect(tmpl.formatPrice(100, "GBP")).toBe("£100.00");
 
     expect(tmpl.calculateDiscount(80, 100)).toBe(20);
     expect(tmpl.calculateDiscount(50, 50)).toBe(0);
     expect(tmpl.calculateDiscount(60, 40)).toBe(0);
 
     expect(tmpl.getScarcityUrgency(3)).toContain("Only 3 units remaining");
+
+    const shipping = tmpl.getShippingPolicy();
+    expect(shipping.dispatchHours).toBe(48);
+    expect(shipping.codAllowed).toBe(true);
   });
 
   it("serializes to plain JSON object cleanly via toJSON()", () => {
@@ -104,10 +160,11 @@ describe("OOP Storefront Templates & Factory System", () => {
     const json = tmpl.toJSON();
 
     expect(json.id).toBe("glow");
-    expect(json.name).toBe("Luxe Glow & Editorial");
-    expect(json.primaryColor).toBe("#be123c");
+    expect(json.name).toBe("Luxe Glow Lab");
+    expect(json.primaryColor).toBe("#be185d");
     expect(json.vibe.heroStyle).toBe("luminous");
     expect(json.classes.pageBg).toBeDefined();
+    expect(json.curatedTitle).toBe("CLINICAL BOTANICAL PROTOCOLS // 2026");
+    expect(json.brandSignature).toContain("Clean Formulations");
   });
 });
-

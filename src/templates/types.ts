@@ -1,9 +1,15 @@
-export type StoreTemplateId = "minimal" | "glow" | "bold" | "artisan";
+export type StoreTemplateId =
+  | "minimal"
+  | "glow"
+  | "bold"
+  | "artisan"
+  | "maison"
+  | "pantry";
 
 export interface StoreTemplateVibe {
   fontDisplay: string;
   borderRadius: string;
-  heroStyle: "split" | "luminous" | "cyber" | "heritage";
+  heroStyle: "split" | "luminous" | "cyber" | "heritage" | "opulent" | "organic";
   cardElevation: string;
   badgeStyle: string;
 }
@@ -46,6 +52,26 @@ export interface DesignPhilosophy {
   curationQuote: string;
 }
 
+export interface TrustGuarantee {
+  iconName: "Truck" | "ShieldCheck" | "RotateCcw" | "Sparkles" | "Lock" | "CheckCircle2";
+  title: string;
+  subtitle: string;
+}
+
+export interface ShippingPolicy {
+  dispatchHours: number;
+  codAllowed: boolean;
+  returnDays: number;
+  inspectionPolicy: string;
+  thresholdForFree: number;
+}
+
+export interface AnnouncementHighlights {
+  leading: string;
+  center: string;
+  trailing: string;
+}
+
 export interface IStoreTemplate {
   readonly id: StoreTemplateId;
   readonly name: string;
@@ -59,14 +85,21 @@ export interface IStoreTemplate {
   readonly vibe: StoreTemplateVibe;
   readonly classes: StoreTemplateClasses;
 
+  // Polymorphic core methods
   getManifestoPillars(): TrustManifestoItem[];
   getDesignPhilosophy(): DesignPhilosophy;
   formatHeroBadge(categoryName: string): string;
   formatProductBadge(rawBadge?: string): string;
-  formatPrice(price: number): string;
+  formatPrice(price: number, currency?: string): string;
   calculateDiscount(price: number, comparePrice: number): number;
   getScarcityUrgency(remainingUnits?: number): string;
   getProductCardAspect(): string;
-  getHeroLayoutType(): "architectural" | "ethereal" | "cyber" | "heritage";
-}
+  getHeroLayoutType(): "architectural" | "ethereal" | "cyber" | "heritage" | "opulent" | "organic";
 
+  // E-commerce customer experience extensions
+  getTrustGuarantees(): TrustGuarantee[];
+  getShippingPolicy(): ShippingPolicy;
+  getAnnouncementHighlights(): AnnouncementHighlights;
+  getCuratedCollectionTitle(): string;
+  getBrandSignature(): string;
+}

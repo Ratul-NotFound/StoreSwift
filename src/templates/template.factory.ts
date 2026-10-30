@@ -3,10 +3,13 @@ import { MinimalAtelierTemplate } from "./minimal-atelier.template";
 import { LuxeGlowTemplate } from "./luxe-glow.template";
 import { TechCyberTemplate } from "./tech-cyber.template";
 import { WarmHeritageTemplate } from "./warm-heritage.template";
+import { OpulentMaisonTemplate } from "./opulent-maison.template";
+import { ArtisanPantryTemplate } from "./artisan-pantry.template";
 import { StoreTemplateId } from "./types";
 
 export class TemplateFactory {
   private static registry: Map<string, AbstractStoreTemplate> = new Map();
+  private static aliasMap: Map<string, string> = new Map();
   private static defaultTemplate: AbstractStoreTemplate = new MinimalAtelierTemplate();
 
   static {
@@ -15,6 +18,39 @@ export class TemplateFactory {
     this.registerTemplate(new LuxeGlowTemplate());
     this.registerTemplate(new TechCyberTemplate());
     this.registerTemplate(new WarmHeritageTemplate());
+    this.registerTemplate(new OpulentMaisonTemplate());
+    this.registerTemplate(new ArtisanPantryTemplate());
+
+    // Register ergonomic category/theme aliases
+    this.registerAlias("fashion", "minimal");
+    this.registerAlias("streetwear", "minimal");
+    this.registerAlias("apparel", "minimal");
+
+    this.registerAlias("beauty", "glow");
+    this.registerAlias("cosmetics", "glow");
+    this.registerAlias("beauty_cosmetics", "glow");
+    this.registerAlias("skincare", "glow");
+
+    this.registerAlias("cyber", "bold");
+    this.registerAlias("tech", "bold");
+    this.registerAlias("electronics", "bold");
+    this.registerAlias("hardware", "bold");
+
+    this.registerAlias("shoes", "artisan");
+    this.registerAlias("footwear", "artisan");
+    this.registerAlias("leather", "artisan");
+    this.registerAlias("heritage", "artisan");
+
+    this.registerAlias("jewelry", "maison");
+    this.registerAlias("watches", "maison");
+    this.registerAlias("luxury", "maison");
+    this.registerAlias("opulent", "maison");
+
+    this.registerAlias("grocery_food", "pantry");
+    this.registerAlias("food", "pantry");
+    this.registerAlias("grocery", "pantry");
+    this.registerAlias("coffee", "pantry");
+    this.registerAlias("organic", "pantry");
   }
 
   /**
@@ -25,12 +61,31 @@ export class TemplateFactory {
   }
 
   /**
-   * Retrieves a template instance by its unique ID with fallback to default
+   * Maps an alias keyword to a registered template ID
+   */
+  public static registerAlias(alias: string, templateId: string): void {
+    this.aliasMap.set(alias.toLowerCase().trim(), templateId.toLowerCase().trim());
+  }
+
+  /**
+   * Retrieves a template instance by its ID or alias with defensive fallback
    */
   public static getTemplate(templateId?: string | null): AbstractStoreTemplate {
     if (!templateId) return this.defaultTemplate;
-    const match = this.registry.get(templateId.toLowerCase().trim());
-    return match || this.defaultTemplate;
+    const cleanKey = templateId.toLowerCase().trim();
+
+    // Check direct registration first
+    const directMatch = this.registry.get(cleanKey);
+    if (directMatch) return directMatch;
+
+    // Check alias resolution
+    const aliasedId = this.aliasMap.get(cleanKey);
+    if (aliasedId) {
+      const aliasMatch = this.registry.get(aliasedId);
+      if (aliasMatch) return aliasMatch;
+    }
+
+    return this.defaultTemplate;
   }
 
   /**
@@ -41,7 +96,7 @@ export class TemplateFactory {
   }
 
   /**
-   * Returns all registered template IDs
+   * Returns all canonical registered template IDs
    */
   public static getTemplateIds(): StoreTemplateId[] {
     return Array.from(this.registry.keys()) as StoreTemplateId[];
@@ -58,4 +113,3 @@ export class TemplateFactory {
     return record;
   }
 }
-

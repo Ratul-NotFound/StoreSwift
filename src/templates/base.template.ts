@@ -4,7 +4,10 @@ import {
   StoreTemplateVibe,
   StoreTemplateClasses,
   TrustManifestoItem,
-  DesignPhilosophy
+  DesignPhilosophy,
+  TrustGuarantee,
+  ShippingPolicy,
+  AnnouncementHighlights
 } from "./types";
 
 export abstract class AbstractStoreTemplate implements IStoreTemplate {
@@ -20,14 +23,28 @@ export abstract class AbstractStoreTemplate implements IStoreTemplate {
   abstract readonly vibe: StoreTemplateVibe;
   abstract readonly classes: StoreTemplateClasses;
 
+  // Polymorphic abstract methods that every concrete template subclass MUST define
   abstract getManifestoPillars(): TrustManifestoItem[];
   abstract getDesignPhilosophy(): DesignPhilosophy;
   abstract formatHeroBadge(categoryName: string): string;
   abstract formatProductBadge(rawBadge?: string): string;
-  abstract getHeroLayoutType(): "architectural" | "ethereal" | "cyber" | "heritage";
+  abstract getHeroLayoutType(): "architectural" | "ethereal" | "cyber" | "heritage" | "opulent" | "organic";
+  abstract getCuratedCollectionTitle(): string;
+  abstract getBrandSignature(): string;
 
-  public formatPrice(price: number): string {
-    return `$${price.toFixed(2)}`;
+  // Base methods with robust default implementations (can be overridden polymorphically)
+  public formatPrice(price: number, currency: string = "USD"): string {
+    const symbolMap: Record<string, string> = {
+      USD: "$",
+      EUR: "€",
+      GBP: "£",
+      BDT: "৳",
+      INR: "₹",
+      CAD: "CA$",
+      AUD: "AU$"
+    };
+    const symbol = symbolMap[currency.toUpperCase()] || "$";
+    return `${symbol}${price.toFixed(2)}`;
   }
 
   public calculateDiscount(price: number, comparePrice: number): number {
@@ -41,6 +58,44 @@ export abstract class AbstractStoreTemplate implements IStoreTemplate {
 
   public getProductCardAspect(): string {
     return "aspect-[3/4]";
+  }
+
+  public getShippingPolicy(): ShippingPolicy {
+    return {
+      dispatchHours: 48,
+      codAllowed: true,
+      returnDays: 7,
+      inspectionPolicy: "Inspect and verify item condition at your doorstep prior to cash handover.",
+      thresholdForFree: 50.0
+    };
+  }
+
+  public getTrustGuarantees(): TrustGuarantee[] {
+    return [
+      {
+        iconName: "Truck",
+        title: "48h Dispatch & Tracking",
+        subtitle: "Automated SMS & courier tracking from local fulfillment center"
+      },
+      {
+        iconName: "ShieldCheck",
+        title: "Doorstep Cash on Delivery",
+        subtitle: "Zero online payment friction — verify parcel before tender"
+      },
+      {
+        iconName: "RotateCcw",
+        title: "7-Day Exchange Window",
+        subtitle: "Hassle-free doorstep courier swap for alternative sizing"
+      }
+    ];
+  }
+
+  public getAnnouncementHighlights(): AnnouncementHighlights {
+    return {
+      leading: "📦 Guaranteed 48-Hour Dispatch",
+      center: "🚚 FREE Express Shipping over $50 • Cash on Delivery Available Nationwide",
+      trailing: "🛡️ 100% Authentic Quality Guaranteed"
+    };
   }
 
   /**
@@ -58,8 +113,10 @@ export abstract class AbstractStoreTemplate implements IStoreTemplate {
       primaryColor: this.primaryColor,
       accentColor: this.accentColor,
       vibe: this.vibe,
-      classes: this.classes
+      classes: this.classes,
+      curatedTitle: this.getCuratedCollectionTitle(),
+      brandSignature: this.getBrandSignature(),
+      shippingPolicy: this.getShippingPolicy()
     };
   }
 }
-

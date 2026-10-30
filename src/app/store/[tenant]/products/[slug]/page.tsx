@@ -408,17 +408,17 @@ export default function ProductDetailPage({
               <div className="space-y-2">
                 <p>{matchingProduct.description}</p>
                 <p>
-                  Every piece is verified for material density, tactile hand-feel, and longevity under rigorous daily wear.
+                  <strong>Craft Signature:</strong> {template.getBrandSignature()}
                 </p>
               </div>
             )}
             {activeTab === "shipping" && (
               <div className="space-y-2">
                 <p>
-                  <strong>48-Hour Dispatch:</strong> Orders are processed and dispatched within 48 hours with automated courier tracking.
+                  <strong>{template.getShippingPolicy().dispatchHours}-Hour Express Dispatch:</strong> Priority order handling with automated courier SMS tracking.
                 </p>
                 <p>
-                  <strong>Cash on Delivery (COD):</strong> Open your parcel and inspect your order at your doorstep before handing cash to the courier.
+                  <strong>Cash on Delivery (COD):</strong> {template.getShippingPolicy().inspectionPolicy}
                 </p>
               </div>
             )}

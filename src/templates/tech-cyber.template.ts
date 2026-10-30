@@ -4,49 +4,50 @@ import {
   StoreTemplateVibe,
   StoreTemplateClasses,
   TrustManifestoItem,
-  DesignPhilosophy
+  DesignPhilosophy,
+  AnnouncementHighlights
 } from "./types";
 
 export class TechCyberTemplate extends AbstractStoreTemplate {
   readonly id: StoreTemplateId = "bold";
-  readonly name = "Tech Cyber & Precision";
-  readonly tagline = "High-contrast dark accents, electric cyan highlights, and dense specs.";
-  readonly categoryFit = "Electronics, Hardware, Audio & Gadgets";
-  readonly description = "Inspired by Apple & Keychron: Monospaced spec chips, dark cyber accents, neon status indicators, and engineering precision.";
-  readonly badge = "Hardware & Tech";
-  readonly previewBg = "from-slate-950 via-sky-950 to-slate-900";
-  readonly primaryColor = "#0284c7";
-  readonly accentColor = "#38bdf8";
+  readonly name = "Precision Cybernetics";
+  readonly tagline = "Aviation aluminum, mechanical tactile switches, and high-spec compute.";
+  readonly categoryFit = "Consumer Electronics, Audio & Hardware Peripherals";
+  readonly description = "Inspired by Apple Pro & Teenage Engineering: Matte obsidian canvas, electric cyan telemetry, and CAD spec typography.";
+  readonly badge = "Pro Telemetry";
+  readonly previewBg = "from-cyan-950 via-slate-900 to-black";
+  readonly primaryColor = "#06b6d4";
+  readonly accentColor = "#3b82f6";
 
   readonly vibe: StoreTemplateVibe = {
-    fontDisplay: "font-sans tracking-tight",
-    borderRadius: "rounded-xl",
+    fontDisplay: "font-mono tracking-tight",
+    borderRadius: "rounded-lg",
     heroStyle: "cyber",
-    cardElevation: "shadow-subtle hover:shadow-card hover:shadow-sky-900/10",
-    badgeStyle: "bg-sky-950 text-sky-400 font-mono text-[10px] border border-sky-800 font-bold"
+    cardElevation: "shadow-2xl border border-cyan-500/20",
+    badgeStyle: "bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-[10px] font-mono"
   };
 
   readonly classes: StoreTemplateClasses = {
-    pageBg: "bg-[#090d18] text-white selection:bg-sky-500 selection:text-white",
-    headerBg: "bg-[#0c1222]/90 backdrop-blur-md border-b border-slate-800 text-white",
-    navPillBg: "bg-[#0a0f1d]/95 border-b border-slate-800/80",
-    toolbarBg: "bg-[#0f172a] border-slate-800",
-    lookbookBg: "bg-[#060912] border-y border-slate-800/80 text-white",
-    heroSection: "bg-[#090d18] border-b border-slate-800 text-white",
-    heroBadge: "bg-sky-950 text-sky-300 border-sky-800 font-mono shadow-sm",
+    pageBg: "bg-[#090a0f] text-zinc-100 selection:bg-cyan-500 selection:text-black",
+    headerBg: "bg-[#090a0f]/90 backdrop-blur-md border-b border-zinc-800/90 text-zinc-100",
+    navPillBg: "bg-[#090a0f]/95 border-b border-zinc-800/80",
+    toolbarBg: "bg-zinc-900/90 border-zinc-800 shadow-xl",
+    lookbookBg: "bg-zinc-950/80 border-y border-zinc-800 text-zinc-100",
+    heroSection: "bg-[#090a0f] border-b border-zinc-800 text-zinc-100",
+    heroBadge: "bg-cyan-950/80 text-cyan-400 border-cyan-700/60 shadow-cyan-500/10",
     heroTitle: "text-white font-black tracking-tight",
-    heroSubtitle: "text-slate-400",
-    editorialTag: "font-mono text-[10px] tracking-[0.2em] uppercase text-sky-400",
-    productCard: "bg-[#0f172a] border-slate-800 hover:border-sky-500/80 transition-all duration-300 shadow-md text-white",
-    productCardImg: "rounded-lg",
-    primaryButton: "bg-sky-600 hover:bg-sky-500 text-white shadow-sm font-bold font-mono tracking-wide",
-    secondaryButton: "bg-slate-800/80 border-slate-700 hover:bg-slate-700 text-white font-semibold",
-    pillActive: "bg-sky-500 text-slate-950 font-bold shadow-sm ring-1 ring-sky-400",
-    pillInactive: "bg-slate-800/60 hover:bg-slate-800 text-slate-300 border border-slate-700/60",
-    accentText: "text-sky-400",
-    announcementBar: "bg-[#050810] text-sky-300 border-b border-slate-800 font-mono",
-    featureCard: "bg-slate-900/60 border-slate-800 text-slate-300",
-    spotlightBanner: "bg-[#050810] text-white border-slate-800"
+    heroSubtitle: "text-zinc-400",
+    editorialTag: "font-mono text-[10px] tracking-[0.25em] uppercase text-cyan-400",
+    productCard: "bg-zinc-900/80 border-zinc-800 hover:border-cyan-500/50 transition-all duration-300",
+    productCardImg: "rounded-md",
+    primaryButton: "bg-cyan-500 hover:bg-cyan-400 text-black font-bold shadow-cyan-500/25",
+    secondaryButton: "bg-zinc-900 border-zinc-700 hover:bg-zinc-800 text-zinc-100 font-medium",
+    pillActive: "bg-cyan-500 text-black font-bold shadow-sm ring-1 ring-cyan-400",
+    pillInactive: "bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800",
+    accentText: "text-cyan-400",
+    announcementBar: "bg-black text-cyan-400 border-b border-cyan-950",
+    featureCard: "bg-zinc-900/60 border-zinc-800",
+    spotlightBanner: "bg-gradient-to-r from-zinc-950 via-cyan-950/40 to-black text-white border-zinc-800"
   };
 
   public getHeroLayoutType(): "cyber" {
@@ -54,54 +55,70 @@ export class TechCyberTemplate extends AbstractStoreTemplate {
   }
 
   public getProductCardAspect(): string {
-    return "aspect-[4/3]";
+    return "aspect-[16/10]";
+  }
+
+  public getCuratedCollectionTitle(): string {
+    return "TACTICAL HARDWARE TELEMETRY // 2026";
+  }
+
+  public getBrandSignature(): string {
+    return "Aviation CNC Aluminum • Custom Open-Source Firmware & Mil-Spec QC";
+  }
+
+  public override getAnnouncementHighlights(): AnnouncementHighlights {
+    return {
+      leading: "⚡ Next-Day Hardware Dispatch",
+      center: "🚀 MIL-SPEC CERTIFIED • COMPREHENSIVE 2-YEAR ACCIDENTAL WARRANTY",
+      trailing: "🔒 Tested & Serial Calibrated"
+    };
   }
 
   public formatHeroBadge(categoryName: string): string {
-    return `HARDWARE LAB // ${categoryName.toUpperCase()} // LATENCY: 0.8MS`;
+    return `MIL-SPEC HARDWARE // ${categoryName.toUpperCase()} TELEMETRY`;
   }
 
   public formatProductBadge(rawBadge?: string): string {
-    if (!rawBadge) return "✦ CNC SPEC";
-    return `✦ ${rawBadge.toUpperCase()}`;
+    if (!rawBadge) return "QC CALIBRATED";
+    return `// ${rawBadge.toUpperCase()} //`;
   }
 
   public getManifestoPillars(): TrustManifestoItem[] {
     return [
       {
         index: "01",
-        category: "HARDWARE SPEC",
-        title: "Aerospace CNC Tolerances",
-        description: "Billet 6061-T6 aluminum shells, gold-plated contacts, and factory zero-defect QA testing."
+        category: "HARDWARE",
+        title: "100% Genuine Calibrated",
+        description: "Zero gray-market or refurbished components. Sealed manufacturer serial with digital certificate."
       },
       {
         index: "02",
-        category: "DELIVERY SECURE",
-        title: "Cash on Delivery Available",
-        description: "Test serial numbers and driver integrity with courier present before paying."
+        category: "SETTLEMENT",
+        title: "Cash on Handover",
+        description: "Unbox and check the security seal and serial match before cash handover to logistics driver.",
+        highlight: true
       },
       {
         index: "03",
-        category: "SPEED",
-        title: "24h Anti-Static Dispatch",
-        description: "Dispatched in ESD-shielded packaging with shock detection indicator tape."
+        category: "DISPATCH",
+        title: "Priority Air Courier",
+        description: "Static-shielded, shock-damped packaging dispatched within 24 hours of confirmation."
       },
       {
         index: "04",
         category: "WARRANTY",
-        title: "2-Year Hardware Coverage",
-        description: "Zero deductible express warranty replacement on all acoustic and silicon components."
+        title: "2-Year Direct Guarantee",
+        description: "Includes rapid advance swap unit if internal diagnostic flag detects hardware defect."
       }
     ];
   }
 
   public getDesignPhilosophy(): DesignPhilosophy {
     return {
-      ethos: "Obsessive acoustic and mechanical precision engineered for makers, audiophiles, and creators.",
-      typography: "Monospaced telemetry typography inspired by avionics, CNC control interfaces, and terminal screens.",
-      materialsFocus: "Anodized space-grey aluminum, beryllium dynamic drivers, and braided Kevlar cabling.",
-      curationQuote: "Designed to operate at absolute fidelity, eliminating acoustic distortion down to 0.002% THD."
+      ethos: "Extreme functionalism inspired by laboratory bench instruments, aerospace CNC, and zero latency.",
+      typography: "Fixed-width monospaced metrics, high-contrast readout tables, and precision grid borders.",
+      materialsFocus: "Anodized 6063 aluminum, FR4 PCB substrates, gold-plated contacts, and double-shot PBT.",
+      curationQuote: "Calibrated for operators who demand uncompromising mechanical precision and verifiable telemetry."
     };
   }
 }
-

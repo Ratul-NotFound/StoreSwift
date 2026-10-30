@@ -4,49 +4,50 @@ import {
   StoreTemplateVibe,
   StoreTemplateClasses,
   TrustManifestoItem,
-  DesignPhilosophy
+  DesignPhilosophy,
+  AnnouncementHighlights
 } from "./types";
 
 export class WarmHeritageTemplate extends AbstractStoreTemplate {
   readonly id: StoreTemplateId = "artisan";
-  readonly name = "Warm Heritage & Craft";
-  readonly tagline = "Earthy terracotta tones, warm cream cards, and handcrafted charm.";
-  readonly categoryFit = "Footwear, Leather Goods, Gourmet Food & Jewelry";
-  readonly description = "Inspired by Red Wing & Aesop: Warm linen surfaces, artisan leather stamp badges, rich amber accents, and organic heritage.";
-  readonly badge = "Master Crafted";
-  readonly previewBg = "from-amber-950 via-stone-900 to-amber-950";
-  readonly primaryColor = "#78350f";
+  readonly name = "Heritage Leathercraft";
+  readonly tagline = "Hand-lasted boots, Goodyear welts, and full-grain Horween pull-up leather.";
+  readonly categoryFit = "Footwear, Boots & Handcrafted Goods";
+  readonly description = "Inspired by Red Wing & Filson: Warm oat linen canvas, rich saddle tan leathers, brass hardware, and workshop wax seals.";
+  readonly badge = "Master Benchcraft";
+  readonly previewBg = "from-amber-900 via-stone-900 to-amber-950";
+  readonly primaryColor = "#b45309";
   readonly accentColor = "#d97706";
 
   readonly vibe: StoreTemplateVibe = {
-    fontDisplay: "font-serif tracking-tight",
-    borderRadius: "rounded-2xl",
+    fontDisplay: "font-serif tracking-normal",
+    borderRadius: "rounded-xl",
     heroStyle: "heritage",
-    cardElevation: "shadow-subtle hover:shadow-card hover:shadow-amber-100/60",
-    badgeStyle: "bg-amber-100 text-amber-900 border border-amber-300 text-[10px] font-bold"
+    cardElevation: "shadow-subtle hover:shadow-card",
+    badgeStyle: "bg-amber-900/10 text-amber-900 dark:text-amber-300 border border-amber-800/20 text-[10px] uppercase font-bold"
   };
 
   readonly classes: StoreTemplateClasses = {
-    pageBg: "bg-[#f8f5ee] text-[#2c221e] selection:bg-amber-900 selection:text-white",
-    headerBg: "bg-[#fdfbf7]/90 backdrop-blur-md border-b border-amber-200/80 text-[#2c221e]",
-    navPillBg: "bg-[#fcf9f2]/95 border-b border-amber-200/60",
-    toolbarBg: "bg-[#fffdf9] border-amber-200/80",
-    lookbookBg: "bg-[#f1ebe0] border-y border-amber-200 text-[#2c221e]",
-    heroSection: "bg-[#fbf9f5] border-b border-amber-200/70 text-zinc-900",
-    heroBadge: "bg-amber-100 text-amber-900 border-amber-300 shadow-sm",
-    heroTitle: "text-amber-950 font-serif font-black tracking-tight",
+    pageBg: "bg-[#fcfaf7] text-stone-900 selection:bg-amber-800 selection:text-white",
+    headerBg: "bg-[#fcfaf7]/90 backdrop-blur-md border-b border-stone-200/80 text-stone-900",
+    navPillBg: "bg-[#fcfaf7]/95 border-b border-stone-200/70",
+    toolbarBg: "bg-white border-stone-200 shadow-subtle",
+    lookbookBg: "bg-[#f4efe9] border-y border-stone-200 text-stone-900",
+    heroSection: "bg-[#fcfaf7] border-b border-stone-200/80 text-stone-900",
+    heroBadge: "bg-amber-900 text-amber-100 border-amber-800 shadow-sm",
+    heroTitle: "text-stone-900 font-bold tracking-tight font-serif",
     heroSubtitle: "text-stone-600",
-    editorialTag: "font-serif italic text-xs tracking-wider text-amber-800",
-    productCard: "bg-[#fffdf9] border-amber-200/80 hover:border-amber-600 transition-all duration-300 shadow-sm",
-    productCardImg: "rounded-xl",
-    primaryButton: "bg-amber-900 hover:bg-amber-950 text-white shadow-sm font-bold font-serif",
-    secondaryButton: "bg-amber-50 border-amber-200 hover:bg-amber-100 text-amber-900 font-semibold",
-    pillActive: "bg-amber-900 text-white shadow-sm ring-1 ring-amber-900",
-    pillInactive: "bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/60",
-    accentText: "text-amber-800",
-    announcementBar: "bg-amber-950 text-amber-200 border-b border-amber-900",
-    featureCard: "bg-[#f6f2ea] border-amber-200/60",
-    spotlightBanner: "bg-amber-950 text-amber-100 border-amber-900"
+    editorialTag: "font-mono text-[10px] tracking-[0.2em] uppercase text-amber-800 font-bold",
+    productCard: "bg-white border-stone-200 hover:border-amber-800/50 transition-all duration-300 hover:shadow-card",
+    productCardImg: "rounded-lg",
+    primaryButton: "bg-amber-900 hover:bg-amber-800 text-amber-50 shadow-sm font-semibold",
+    secondaryButton: "bg-white border-stone-300 hover:bg-stone-50 text-stone-800 font-medium",
+    pillActive: "bg-amber-900 text-amber-50 shadow-sm ring-1 ring-amber-900",
+    pillInactive: "bg-stone-100 hover:bg-stone-200 text-stone-700",
+    accentText: "text-amber-900",
+    announcementBar: "bg-stone-900 text-amber-200 border-b border-stone-800",
+    featureCard: "bg-[#f7f2eb] border-stone-200",
+    spotlightBanner: "bg-stone-900 text-amber-100 border-stone-800"
   };
 
   public getHeroLayoutType(): "heritage" {
@@ -54,55 +55,70 @@ export class WarmHeritageTemplate extends AbstractStoreTemplate {
   }
 
   public getProductCardAspect(): string {
-    return "aspect-[4/5]";
+    return "aspect-[4/3]";
+  }
+
+  public getCuratedCollectionTitle(): string {
+    return "BENCH-CRAFTED LEATHERWORKS // 2026";
+  }
+
+  public getBrandSignature(): string {
+    return "Goodyear Storm Welt • Horween Chromexcel Leather & Vibram Lug Soles";
+  }
+
+  public override getAnnouncementHighlights(): AnnouncementHighlights {
+    return {
+      leading: "🔨 Master Hand-Lasted Benchcraft",
+      center: "📦 COMPLIMENTARY SHIPPING ON BENCH-BUILDS • TRY BEFORE YOU PAY COD",
+      trailing: "🛡️ Lifetime Resoling & Craft Service"
+    };
   }
 
   public formatHeroBadge(categoryName: string): string {
-    return `HAND-CRAFTED // ${categoryName.toUpperCase()} // BATCH #26`;
+    return `MASTER BENCH CRAFT • ${categoryName.toUpperCase()} EDITIONS`;
   }
 
   public formatProductBadge(rawBadge?: string): string {
-    if (!rawBadge) return "🏷️ Bench Crafted";
-    return `🏷️ ${rawBadge}`;
+    if (!rawBadge) return "BENCH CRAFT";
+    return `★ ${rawBadge.toUpperCase()} ★`;
   }
 
   public getManifestoPillars(): TrustManifestoItem[] {
     return [
       {
         index: "01",
-        category: "HERITAGE BENCH",
-        title: "Master Bench Craftsmanship",
-        description: "Goodyear welted soles, full-grain vegetable-tanned leathers, and generational repairability."
+        category: "CONSTRUCTION",
+        title: "Master Bench Lasted",
+        description: "360-degree storm welted with resoleable Vibram outsoles and thick vegetable-tanned leather insoles."
       },
       {
         index: "02",
-        category: "HAND-TO-HAND",
-        title: "Cash on Delivery",
-        description: "Feel the leather grain, tactile weight, and aroma in your hands before parting with cash.",
+        category: "DELIVERY",
+        title: "Try Before You Pay",
+        description: "Lace up and step on carpet to test width, heel-lock, and arch support before completing courier cash payment.",
         highlight: true
       },
       {
         index: "03",
-        category: "CARE PACKAGING",
-        title: "Linen Dust Bag Included",
-        description: "Hand-wrapped in unbleached organic cotton with botanical beeswax conditioning balm."
+        category: "LOGISTICS",
+        title: "Conditioned & Insured",
+        description: "Treated with natural pine-pitch beeswax conditioner prior to moisture-sealed wooden packaging."
       },
       {
         index: "04",
-        category: "LIFETIME REPAIR",
-        title: "Recraftable Guarantee",
-        description: "Constructed to be resoled and restored repeatedly across decades of character-rich wear."
+        category: "LONGEVITY",
+        title: "Lifetime Resoling Service",
+        description: "Built for decades of hard wear. Send back to the atelier anytime for factory recrafting and new lugs."
       }
     ];
   }
 
   public getDesignPhilosophy(): DesignPhilosophy {
     return {
-      ethos: "Honoring slow artisan methods, natural patina, and objects created to outlast seasonal trends.",
-      typography: "Classic literary serif display paired with subtle warm monospaced hallmarks.",
-      materialsFocus: "Vegetable-tanned harness leather, raw brass hardware, and organic raw clover honey.",
-      curationQuote: "Each piece is formed by patient hands, destined to grow richer with age and honest daily wear."
+      ethos: "Honoring traditional guild shoe-making, vegetable-tanned grain pull-up, and repairable longevity over disposable cycles.",
+      typography: "Subtle humanist book serif balanced with clear geometric pricing numerals.",
+      materialsFocus: "Horween Chromexcel full-grain, British Goodyear welting thread, and solid antique brass eyelets.",
+      curationQuote: "Each pair molds to the wearer's anatomy, deepening in character and patina with every mile traveled."
     };
   }
 }
-

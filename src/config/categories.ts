@@ -209,7 +209,7 @@ export const CATEGORIES_MAP: Record<string, CategoryConfig> = {
     tagline: "Swiss automatic horology, solid recycled gold, and optical grade titanium.",
     editorialSubtitle: "HEIRLOOM QUALITY PIECES • INDIVIDUALLY NUMBERED ATELIER EDITIONS",
     iconName: "Watch",
-    recommendedTemplate: "minimal",
+    recommendedTemplate: "maison",
     heroImage: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1600&auto=format&fit=crop&q=85",
     defaultOptions: ["Material", "Size"],
     sampleProducts: [
@@ -254,7 +254,7 @@ export const CATEGORIES_MAP: Record<string, CategoryConfig> = {
     tagline: "Single-origin micro-lots, alpine raw honey, and cold-pressed estate olive oil.",
     editorialSubtitle: "ARTISANAL ESTATE BOTTLING • REGENERATIVE FARMSTEAD SOURCING",
     iconName: "Coffee",
-    recommendedTemplate: "artisan",
+    recommendedTemplate: "pantry",
     heroImage: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1600&auto=format&fit=crop&q=85",
     defaultOptions: ["Pack Size"],
     sampleProducts: [

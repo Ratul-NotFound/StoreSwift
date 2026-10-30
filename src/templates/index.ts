@@ -4,5 +4,6 @@ export * from "./minimal-atelier.template";
 export * from "./luxe-glow.template";
 export * from "./tech-cyber.template";
 export * from "./warm-heritage.template";
+export * from "./opulent-maison.template";
+export * from "./artisan-pantry.template";
 export * from "./template.factory";
-

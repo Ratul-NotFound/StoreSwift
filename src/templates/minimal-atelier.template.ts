@@ -4,7 +4,8 @@ import {
   StoreTemplateVibe,
   StoreTemplateClasses,
   TrustManifestoItem,
-  DesignPhilosophy
+  DesignPhilosophy,
+  AnnouncementHighlights
 } from "./types";
 
 export class MinimalAtelierTemplate extends AbstractStoreTemplate {
@@ -57,6 +58,22 @@ export class MinimalAtelierTemplate extends AbstractStoreTemplate {
     return "aspect-[3/4]";
   }
 
+  public getCuratedCollectionTitle(): string {
+    return "THE CURATED LOOKBOOK EDIT // 2026";
+  }
+
+  public getBrandSignature(): string {
+    return "Atelier Verified • 280 GSM Organic Cotton & Kurabo Raw Selvedge";
+  }
+
+  public override getAnnouncementHighlights(): AnnouncementHighlights {
+    return {
+      leading: "📦 48-Hour Dispatch From Atelier",
+      center: "🚚 COMPLIMENTARY EXPRESS DELIVERY OVER $50 • CASH ON DELIVERY WELCOME",
+      trailing: "🛡️ 100% Certified Organic Yarns"
+    };
+  }
+
   public formatHeroBadge(categoryName: string): string {
     return `${categoryName.toUpperCase()} // ARCHIVE 2026`;
   }
@@ -105,4 +122,3 @@ export class MinimalAtelierTemplate extends AbstractStoreTemplate {
     };
   }
 }
-
