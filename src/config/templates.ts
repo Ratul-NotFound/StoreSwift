@@ -1,5 +1,5 @@
 export interface StoreTemplate {
-  id: string;
+  id: "minimal" | "glow" | "bold" | "artisan";
   name: string;
   tagline: string;
   categoryFit: string;
@@ -8,14 +8,28 @@ export interface StoreTemplate {
   previewBg: string;
   primaryColor: string;
   accentColor: string;
+  vibe: {
+    fontDisplay: string;
+    borderRadius: string;
+    heroStyle: "split" | "luminous" | "cyber" | "heritage";
+    cardElevation: string;
+    badgeStyle: string;
+  };
   classes: {
+    heroSection: string;
     heroBadge: string;
+    heroTitle: string;
+    heroSubtitle: string;
     productCard: string;
+    productCardImg: string;
     primaryButton: string;
     secondaryButton: string;
     pillActive: string;
+    pillInactive: string;
     accentText: string;
     announcementBar: string;
+    featureCard: string;
+    spotlightBanner: string;
   };
 }
 
@@ -24,80 +38,136 @@ export const STORE_TEMPLATES: Record<string, StoreTemplate> = {
     id: "minimal",
     name: "Minimalist Atelier",
     tagline: "High fashion, clean architectural lines, and timeless monochrome.",
-    categoryFit: "Fashion, Apparel & Footwear",
-    description: "Designed for premium modern brands with bold typography, crisp borders, and zero clutter.",
-    badge: "Most Popular",
-    previewBg: "from-zinc-900 via-zinc-800 to-zinc-900",
+    categoryFit: "Fashion, Streetwear & Modern Apparel",
+    description: "Inspired by Acne Studios & SSENSE: Ultra-clean typography, bold black/white contrast, and hairline borders.",
+    badge: "High Fashion",
+    previewBg: "from-zinc-950 via-zinc-900 to-zinc-950",
     primaryColor: "#18181b",
     accentColor: "#2563eb",
+    vibe: {
+      fontDisplay: "font-sans tracking-tight",
+      borderRadius: "rounded-xl",
+      heroStyle: "split",
+      cardElevation: "shadow-subtle hover:shadow-card",
+      badgeStyle: "bg-zinc-900 text-white uppercase text-[10px] tracking-wider"
+    },
     classes: {
+      heroSection: "bg-white border-b border-zinc-200/80 text-zinc-900",
       heroBadge: "bg-zinc-900 text-white border-zinc-800",
-      productCard: "bg-white border-zinc-200 hover:border-zinc-900 transition-colors",
-      primaryButton: "bg-zinc-900 hover:bg-zinc-800 text-white shadow-sm",
-      secondaryButton: "bg-white border-zinc-200 hover:bg-zinc-50 text-zinc-900",
-      pillActive: "bg-zinc-900 text-white shadow-sm",
+      heroTitle: "text-zinc-950 font-black tracking-tight",
+      heroSubtitle: "text-zinc-500",
+      productCard: "bg-white border-zinc-200 hover:border-zinc-900 transition-all duration-300",
+      productCardImg: "rounded-lg",
+      primaryButton: "bg-zinc-900 hover:bg-zinc-800 text-white shadow-sm font-bold",
+      secondaryButton: "bg-white border-zinc-200 hover:bg-zinc-50 text-zinc-900 font-semibold",
+      pillActive: "bg-zinc-900 text-white shadow-sm ring-1 ring-zinc-900",
+      pillInactive: "bg-zinc-100 hover:bg-zinc-200 text-zinc-700",
       accentText: "text-zinc-900",
-      announcementBar: "bg-zinc-950 text-zinc-300 border-b border-zinc-800"
+      announcementBar: "bg-zinc-950 text-zinc-300 border-b border-zinc-800",
+      featureCard: "bg-zinc-50 border-zinc-200/70",
+      spotlightBanner: "bg-zinc-900 text-white border-zinc-800"
     }
   },
   glow: {
     id: "glow",
     name: "Luxe Glow & Editorial",
     tagline: "Soft pastel gradients, blurred surfaces, and delicate curves.",
-    categoryFit: "Cosmetics, Skincare & Wellness",
-    description: "Tailored for beauty and wellness brands with gentle rose/blush highlights and glowing card aesthetics.",
-    badge: "Trending",
+    categoryFit: "Cosmetics, Skincare, Beauty & Wellness",
+    description: "Inspired by Glossier & Sephora: Ethereal blush tones, soft glass cards, rounded pills, and clean beauty badges.",
+    badge: "Beauty & Wellness",
     previewBg: "from-rose-500 via-pink-600 to-rose-700",
-    primaryColor: "#9f1239",
+    primaryColor: "#be123c",
     accentColor: "#f43f5e",
+    vibe: {
+      fontDisplay: "font-sans tracking-tight",
+      borderRadius: "rounded-3xl",
+      heroStyle: "luminous",
+      cardElevation: "shadow-subtle hover:shadow-card hover:shadow-rose-100/50",
+      badgeStyle: "bg-rose-100 text-rose-800 text-[10px] font-bold border border-rose-200"
+    },
     classes: {
-      heroBadge: "bg-rose-100 text-rose-800 border-rose-200",
-      productCard: "bg-white border-rose-100 hover:border-rose-300 hover:shadow-card transition-all",
-      primaryButton: "bg-rose-600 hover:bg-rose-700 text-white shadow-sm shadow-rose-200",
-      secondaryButton: "bg-rose-50 border-rose-200 hover:bg-rose-100 text-rose-900",
-      pillActive: "bg-rose-600 text-white shadow-sm",
+      heroSection: "bg-gradient-to-b from-rose-50/80 via-white to-pink-50/30 border-b border-rose-100 text-zinc-900",
+      heroBadge: "bg-rose-100 text-rose-800 border-rose-200/80 shadow-sm",
+      heroTitle: "text-zinc-900 font-extrabold tracking-tight",
+      heroSubtitle: "text-zinc-600",
+      productCard: "bg-white/90 backdrop-blur-sm border-rose-100 hover:border-rose-300 transition-all duration-300",
+      productCardImg: "rounded-2xl",
+      primaryButton: "bg-rose-600 hover:bg-rose-700 text-white shadow-sm shadow-rose-200 font-bold",
+      secondaryButton: "bg-rose-50 border-rose-200 hover:bg-rose-100 text-rose-900 font-semibold",
+      pillActive: "bg-rose-600 text-white shadow-sm ring-1 ring-rose-600",
+      pillInactive: "bg-rose-50/80 hover:bg-rose-100 text-rose-900 border border-rose-100",
       accentText: "text-rose-600",
-      announcementBar: "bg-rose-900 text-rose-100 border-b border-rose-800"
+      announcementBar: "bg-rose-950 text-rose-200 border-b border-rose-900",
+      featureCard: "bg-rose-50/50 border-rose-100",
+      spotlightBanner: "bg-gradient-to-r from-rose-900 via-pink-900 to-rose-950 text-white border-rose-800"
     }
   },
   bold: {
     id: "bold",
     name: "Tech Cyber & Precision",
-    tagline: "High-contrast slate accents, electric cyan highlights, and dense specs.",
-    categoryFit: "Electronics, Gadgets & Hardware",
-    description: "Engineered for technical products with high-spec badges, sharp corners, and futuristic aesthetics.",
-    badge: "High Conversion",
-    previewBg: "from-slate-900 via-sky-950 to-slate-900",
-    primaryColor: "#0f172a",
-    accentColor: "#0284c7",
+    tagline: "High-contrast dark accents, electric cyan highlights, and dense specs.",
+    categoryFit: "Electronics, Hardware, Audio & Gadgets",
+    description: "Inspired by Apple & Keychron: Monospaced spec chips, dark cyber accents, neon status indicators, and engineering precision.",
+    badge: "Hardware & Tech",
+    previewBg: "from-slate-950 via-sky-950 to-slate-900",
+    primaryColor: "#0284c7",
+    accentColor: "#38bdf8",
+    vibe: {
+      fontDisplay: "font-sans tracking-tight",
+      borderRadius: "rounded-xl",
+      heroStyle: "cyber",
+      cardElevation: "shadow-subtle hover:shadow-card hover:shadow-sky-900/10",
+      badgeStyle: "bg-sky-950 text-sky-400 font-mono text-[10px] border border-sky-800 font-bold"
+    },
     classes: {
-      heroBadge: "bg-sky-950 text-sky-300 border-sky-800",
-      productCard: "bg-white border-slate-200 hover:border-sky-500 hover:shadow-subtle transition-all",
-      primaryButton: "bg-slate-900 hover:bg-sky-900 text-white shadow-sm",
-      secondaryButton: "bg-slate-50 border-slate-200 hover:bg-slate-100 text-slate-800",
-      pillActive: "bg-slate-900 text-sky-400 shadow-sm",
+      heroSection: "bg-slate-950 border-b border-slate-800 text-white",
+      heroBadge: "bg-sky-950 text-sky-300 border-sky-800 font-mono shadow-sm",
+      heroTitle: "text-white font-black tracking-tight",
+      heroSubtitle: "text-slate-400",
+      productCard: "bg-white border-slate-200 hover:border-sky-500 transition-all duration-300",
+      productCardImg: "rounded-lg",
+      primaryButton: "bg-sky-600 hover:bg-sky-500 text-white shadow-sm font-bold",
+      secondaryButton: "bg-slate-100 border-slate-300 hover:bg-slate-200 text-slate-900 font-semibold",
+      pillActive: "bg-slate-900 text-sky-400 border border-sky-600 shadow-sm",
+      pillInactive: "bg-slate-100 hover:bg-slate-200 text-slate-700",
       accentText: "text-sky-600",
-      announcementBar: "bg-slate-950 text-sky-300 border-b border-slate-800"
+      announcementBar: "bg-slate-900 text-sky-300 border-b border-slate-800 font-mono",
+      featureCard: "bg-slate-900/60 border-slate-800 text-slate-300",
+      spotlightBanner: "bg-slate-950 text-white border-slate-800"
     }
   },
   artisan: {
     id: "artisan",
     name: "Warm Heritage & Craft",
     tagline: "Earthy terracotta tones, warm cream cards, and handcrafted charm.",
-    categoryFit: "Footwear, Leather Goods & Artisan Food",
-    description: "Ideal for shoes, boots, leather goods, and organic delicacies that emphasize craftsmanship and heritage.",
-    badge: "Heritage",
-    previewBg: "from-amber-900 via-amber-950 to-stone-900",
+    categoryFit: "Footwear, Leather Goods, Gourmet Food & Jewelry",
+    description: "Inspired by Red Wing & Aesop: Warm linen surfaces, artisan leather stamp badges, rich amber accents, and organic heritage.",
+    badge: "Master Crafted",
+    previewBg: "from-amber-950 via-stone-900 to-amber-950",
     primaryColor: "#78350f",
     accentColor: "#d97706",
+    vibe: {
+      fontDisplay: "font-serif tracking-tight",
+      borderRadius: "rounded-2xl",
+      heroStyle: "heritage",
+      cardElevation: "shadow-subtle hover:shadow-card hover:shadow-amber-100/60",
+      badgeStyle: "bg-amber-100 text-amber-900 border border-amber-300 text-[10px] font-bold"
+    },
     classes: {
-      heroBadge: "bg-amber-100 text-amber-900 border-amber-200",
-      productCard: "bg-white border-amber-100 hover:border-amber-400 hover:shadow-card transition-all",
-      primaryButton: "bg-amber-800 hover:bg-amber-900 text-white shadow-sm",
-      secondaryButton: "bg-amber-50 border-amber-200 hover:bg-amber-100 text-amber-900",
-      pillActive: "bg-amber-800 text-white shadow-sm",
+      heroSection: "bg-[#fbf9f5] border-b border-amber-200/70 text-zinc-900",
+      heroBadge: "bg-amber-100 text-amber-900 border-amber-300 shadow-sm",
+      heroTitle: "text-amber-950 font-serif font-black tracking-tight",
+      heroSubtitle: "text-stone-600",
+      productCard: "bg-[#fffdf9] border-amber-200/80 hover:border-amber-500 transition-all duration-300",
+      productCardImg: "rounded-xl",
+      primaryButton: "bg-amber-800 hover:bg-amber-900 text-white shadow-sm font-bold",
+      secondaryButton: "bg-amber-50 border-amber-200 hover:bg-amber-100 text-amber-900 font-semibold",
+      pillActive: "bg-amber-800 text-white shadow-sm ring-1 ring-amber-800",
+      pillInactive: "bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/60",
       accentText: "text-amber-800",
-      announcementBar: "bg-amber-950 text-amber-200 border-b border-amber-900"
+      announcementBar: "bg-amber-950 text-amber-200 border-b border-amber-900",
+      featureCard: "bg-[#f6f2ea] border-amber-200/60",
+      spotlightBanner: "bg-amber-950 text-amber-100 border-amber-900"
     }
   }
 };
@@ -106,5 +176,5 @@ export const ALL_TEMPLATES = Object.keys(STORE_TEMPLATES);
 
 export function getTemplateConfig(templateId?: string): StoreTemplate {
   if (!templateId) return STORE_TEMPLATES.minimal;
-  return STORE_TEMPLATES[templateId] || STORE_TEMPLATES.minimal;
+  return STORE_TEMPLATES[templateId as keyof typeof STORE_TEMPLATES] || STORE_TEMPLATES.minimal;
 }

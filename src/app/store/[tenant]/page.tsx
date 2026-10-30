@@ -26,7 +26,8 @@ import {
   RotateCcw,
   SlidersHorizontal,
   Flame,
-  Tag
+  Tag,
+  Plus
 } from "lucide-react";
 import { getCategoryConfig, CATEGORIES_MAP, ALL_CATEGORIES } from "@/config/categories";
 import { getTemplateConfig, STORE_TEMPLATES, ALL_TEMPLATES } from "@/config/templates";
@@ -34,6 +35,9 @@ import { generateStoreSeedData } from "@/lib/seed-store";
 import { calculateCartTotals, CartItem } from "@/lib/cart";
 import { useToast } from "@/components/ui/toast";
 import { StoreFooter } from "@/components/footer";
+import { SearchModal } from "@/components/store/search-modal";
+import { SpotlightDrop } from "@/components/store/spotlight-drop";
+import { TestimonialsSection } from "@/components/store/testimonials";
 import { trackEvent } from "@/lib/analytics";
 
 export default function TenantStorefrontPage({
@@ -72,7 +76,7 @@ export default function TenantStorefrontPage({
   // Product catalog state
   const [products, setProducts] = useState(
     seed.products.map((p, idx) => ({
-      id: `prod-${idx + 1}`,
+      id: `prod-${activeCategoryKey}-${idx + 1}`,
       title: p.title,
       slug: p.slug,
       description: p.description,
@@ -106,7 +110,10 @@ export default function TenantStorefrontPage({
 
   // Filter & Search states
   const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [sortBy, setSortBy] = useState<"featured" | "price-asc" | "price-desc" | "rating">("featured");
+  const [priceFilter, setPriceFilter] = useState<"all" | "under-35" | "35-80" | "over-80">("all");
+  const [inStockOnly, setInStockOnly] = useState(false);
   const [wishlist, setWishlist] = useState<string[]>([]);
 
   // Cart state
@@ -121,22 +128,28 @@ export default function TenantStorefrontPage({
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [shippingAddress, setShippingAddress] = useState("");
+  const [deliveryNotes, setDeliveryNotes] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<"cod" | "stripe" | "manual">("cod");
-  const [manualTrxId, setManualTrxId] = useState("");
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState<any>(null);
 
   const cartSummary = calculateCartTotals(cartItems, 50);
-  const shippingFee = cartSummary.isFreeShippingEligible || cartItems.length === 0 ? 0 : 5.00;
+  const shippingFee = cartSummary.isFreeShippingEligible || cartItems.length === 0 ? 0 : 5.0;
   const finalTotal = cartSummary.subtotal + shippingFee;
 
   // Filtering & Sorting
   const filteredProducts = useMemo(() => {
     return products
       .filter((p) => {
-        if (!searchQuery) return true;
-        const q = searchQuery.toLowerCase();
-        return p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q);
+        if (searchQuery) {
+          const q = searchQuery.toLowerCase();
+          if (!p.title.toLowerCase().includes(q) && !p.description.toLowerCase().includes(q)) return false;
+        }
+        if (priceFilter === "under-35" && p.price >= 35) return false;
+        if (priceFilter === "35-80" && (p.price < 35 || p.price > 80)) return false;
+        if (priceFilter === "over-80" && p.price <= 80) return false;
+        if (inStockOnly && p.variants.every((v) => v.inventoryQuantity <= 0)) return false;
+        return true;
       })
       .sort((a, b) => {
         if (sortBy === "price-asc") return a.price - b.price;
@@ -144,7 +157,7 @@ export default function TenantStorefrontPage({
         if (sortBy === "rating") return b.rating - a.rating;
         return 0; // featured
       });
-  }, [products, searchQuery, sortBy]);
+  }, [products, searchQuery, sortBy, priceFilter, inStockOnly]);
 
   const toggleWishlist = (productId: string) => {
     setWishlist((prev) => {
@@ -162,7 +175,7 @@ export default function TenantStorefrontPage({
     setSelectedVariant(prod.variants[0] || null);
   };
 
-  const handleAddToCart = (prod: typeof products[0], variant: any) => {
+  const handleAddToCart = (prod: any, variant: any) => {
     const itemKey = variant ? `${prod.id}-${variant.title}` : prod.id;
     const existing = cartItems.find((c) => c.id === itemKey);
 
@@ -197,6 +210,12 @@ export default function TenantStorefrontPage({
     );
   };
 
+  const handleAddUpsell = (title: string, price: number) => {
+    const id = `upsell-${title.toLowerCase().replace(/\s+/g, "-")}`;
+    setCartItems((prev) => [...prev, { id, title, price, quantity: 1 }]);
+    success("Added Add-on", `${title} added to your bag.`);
+  };
+
   const handleQuantityChange = (id: string, delta: number) => {
     setCartItems(
       cartItems
@@ -229,7 +248,7 @@ export default function TenantStorefrontPage({
           customerName,
           customerPhone,
           customerEmail,
-          shippingAddress: { address: shippingAddress },
+          shippingAddress: { address: shippingAddress, notes: deliveryNotes },
           items: cartItems.map((it) => ({
             variantId: it.variantId || "mock-var-1",
             title: it.title,
@@ -280,7 +299,7 @@ export default function TenantStorefrontPage({
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <span className="hidden sm:inline-block">📦 Guaranteed 48-Hour Dispatch</span>
           <span className="mx-auto sm:mx-0">
-            🚚 FREE Express Shipping on orders over $50 • Cash on Delivery Available
+            🚚 FREE Express Shipping on orders over $50 • Cash on Delivery Available Nationwide
           </span>
           <span className="hidden md:inline-block">🛡️ 100% Authentic Quality</span>
         </div>
@@ -299,25 +318,32 @@ export default function TenantStorefrontPage({
                 {storeDisplayName}
               </span>
               <span className="text-[10px] text-zinc-400 font-medium block -mt-0.5">
-                {categoryConfig.name}
+                {categoryConfig.name} • {template.name}
               </span>
             </div>
           </Link>
 
-          {/* Search Bar */}
-          <div className="flex-1 max-w-md hidden sm:block relative">
-            <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-3 top-3" />
-            <input
-              type="text"
-              placeholder={`Search ${categoryConfig.name.toLowerCase()}...`}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 bg-zinc-50 border border-zinc-200/90 rounded-xl text-xs outline-none focus:border-zinc-900 focus:bg-white transition placeholder:text-zinc-400"
-            />
+          {/* Search Trigger Input */}
+          <div
+            onClick={() => setIsSearchOpen(true)}
+            className="flex-1 max-w-md hidden sm:flex items-center space-x-2 px-3.5 py-2 bg-zinc-50 border border-zinc-200/90 rounded-xl text-xs text-zinc-400 cursor-pointer hover:border-zinc-400 transition"
+          >
+            <Search className="w-3.5 h-3.5" />
+            <span>Search {categoryConfig.name.toLowerCase()}...</span>
+            <kbd className="ml-auto text-[10px] bg-zinc-200/70 text-zinc-600 px-1.5 py-0.5 rounded font-mono">⌘K</kbd>
           </div>
 
           {/* Header Action Controls */}
           <div className="flex items-center space-x-2">
+            {/* Mobile Search Button */}
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="sm:hidden p-2 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-xl transition"
+              title="Search"
+            >
+              <Search className="w-4 h-4" />
+            </button>
+
             {/* Wishlist Icon */}
             <button
               onClick={() => success("Wishlist", `${wishlist.length} saved item(s).`)}
@@ -350,7 +376,7 @@ export default function TenantStorefrontPage({
       </header>
 
       {/* Category & Template Switcher Bar */}
-      <div className="bg-white border-b border-zinc-200/60 py-2.5 px-4 overflow-x-auto scrollbar-none">
+      <div className="bg-white border-b border-zinc-200/60 py-2.5 px-4 overflow-x-auto scrollbar-none sticky top-16 z-20">
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
           {/* Shop Category Tabs */}
           <div className="flex items-center space-x-1.5 flex-nowrap">
@@ -379,7 +405,7 @@ export default function TenantStorefrontPage({
           {/* Theme Template Selector */}
           <div className="hidden lg:flex items-center space-x-1.5 flex-shrink-0">
             <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 mr-1">
-              Template:
+              Store Style:
             </span>
             {ALL_TEMPLATES.map((tKey) => {
               const tmpl = STORE_TEMPLATES[tKey];
@@ -403,20 +429,20 @@ export default function TenantStorefrontPage({
       </div>
 
       {/* Dynamic Hero Section */}
-      <section className="relative overflow-hidden bg-white border-b border-zinc-200/80 py-12 sm:py-16">
+      <section className={`relative overflow-hidden py-12 sm:py-16 ${template.classes.heroSection}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div className="space-y-4">
             <div className={`inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-bold border ${template.classes.heroBadge}`}>
               <Sparkles className="w-3.5 h-3.5" />
-              <span>{categoryConfig.name} • 2026 Collection</span>
+              <span>{categoryConfig.name} • {template.name}</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-zinc-900 tracking-tight leading-tight">
+            <h1 className={`text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight ${template.classes.heroTitle}`}>
               {categoryConfig.tagline}
             </h1>
 
-            <p className="text-xs sm:text-sm text-zinc-500 leading-relaxed max-w-lg">
-              Welcome to the official {storeDisplayName} storefront. Explore our certified catalog featuring nationwide cash on delivery, instant dispatch, and 7-day hassle-free returns.
+            <p className={`text-xs sm:text-sm leading-relaxed max-w-lg ${template.classes.heroSubtitle}`}>
+              Welcome to the official {storeDisplayName} storefront. Browse authenticated items with nationwide cash on delivery, 48-hour dispatch, and 7-day hassle-free returns.
             </p>
 
             <div className="pt-2 flex flex-wrap gap-3">
@@ -429,7 +455,7 @@ export default function TenantStorefrontPage({
               </a>
               <button
                 onClick={() => success("Free Shipping", "Add $50+ of items to your cart to unlock free express delivery.")}
-                className="py-3 px-5 rounded-xl font-semibold text-xs border border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-700 transition"
+                className={`py-3 px-5 rounded-xl font-semibold text-xs border transition ${template.classes.secondaryButton}`}
               >
                 View Shipping Perks
               </button>
@@ -494,34 +520,97 @@ export default function TenantStorefrontPage({
         </div>
       </section>
 
+      {/* Weekly Spotlight Limited Drop */}
+      {products[0] && (
+        <SpotlightDrop
+          product={products[0]}
+          template={template}
+          onAddToCart={handleAddToCart}
+        />
+      )}
+
       {/* Main Catalog View */}
-      <main id="catalog" className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-10">
-        {/* Catalog Control Toolbar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-          <div>
-            <h2 className="text-xl font-bold text-zinc-900 tracking-tight">
-              Featured {categoryConfig.name}
-            </h2>
-            <p className="text-xs text-zinc-500 mt-0.5">
-              Showing {filteredProducts.length} items • In stock with instant delivery
-            </p>
+      <main id="catalog" className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8">
+        {/* Catalog Control Toolbar: Search indicator, filters & sort */}
+        <div className="bg-white rounded-2xl p-4 border border-zinc-200/80 shadow-subtle mb-8 space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-lg font-bold text-zinc-900 tracking-tight">
+                Featured {categoryConfig.name}
+              </h2>
+              <p className="text-xs text-zinc-500 mt-0.5">
+                Showing {filteredProducts.length} items • In stock with instant delivery
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2.5">
+              {/* Sort Selector */}
+              <div className="flex items-center space-x-1.5 text-xs text-zinc-500 bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-1.5">
+                <SlidersHorizontal className="w-3.5 h-3.5 text-zinc-400" />
+                <span>Sort:</span>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as any)}
+                  className="bg-transparent font-semibold text-zinc-800 outline-none cursor-pointer text-xs"
+                >
+                  <option value="featured">Featured First</option>
+                  <option value="price-asc">Price: Low to High</option>
+                  <option value="price-desc">Price: High to Low</option>
+                  <option value="rating">Highest Rated</option>
+                </select>
+              </div>
+
+              {/* In-Stock Toggle */}
+              <button
+                onClick={() => setInStockOnly(!inStockOnly)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition border ${
+                  inStockOnly
+                    ? "bg-emerald-50 text-emerald-800 border-emerald-300"
+                    : "bg-zinc-50 text-zinc-600 border-zinc-200 hover:bg-zinc-100"
+                }`}
+              >
+                {inStockOnly ? "✓ In Stock Only" : "All Availability"}
+              </button>
+            </div>
           </div>
 
-          <div className="flex items-center space-x-3">
-            <div className="flex items-center space-x-1.5 text-xs text-zinc-500 bg-white border border-zinc-200 rounded-xl px-3 py-1.5 shadow-subtle">
-              <SlidersHorizontal className="w-3.5 h-3.5 text-zinc-400" />
-              <span>Sort:</span>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
-                className="bg-transparent font-semibold text-zinc-800 outline-none cursor-pointer text-xs"
-              >
-                <option value="featured">Featured First</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
-                <option value="rating">Highest Rated</option>
-              </select>
-            </div>
+          {/* Price Range Filter Pills */}
+          <div className="flex items-center space-x-2 pt-2 border-t border-zinc-100 overflow-x-auto">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 mr-1 flex-shrink-0">
+              Price:
+            </span>
+            <button
+              onClick={() => setPriceFilter("all")}
+              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition ${
+                priceFilter === "all" ? "bg-zinc-900 text-white" : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+              }`}
+            >
+              All Prices
+            </button>
+            <button
+              onClick={() => setPriceFilter("under-35")}
+              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition ${
+                priceFilter === "under-35" ? "bg-zinc-900 text-white" : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+              }`}
+            >
+              Under $35
+            </button>
+            <button
+              onClick={() => setPriceFilter("35-80")}
+              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition ${
+                priceFilter === "35-80" ? "bg-zinc-900 text-white" : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+              }`}
+            >
+              $35 to $80
+            </button>
+            <button
+              onClick={() => setPriceFilter("over-80")}
+              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition ${
+                priceFilter === "over-80" ? "bg-zinc-900 text-white" : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+              }`}
+            >
+              Over $80
+            </button>
           </div>
         </div>
 
@@ -538,7 +627,10 @@ export default function TenantStorefrontPage({
               >
                 <div>
                   {/* Photo Frame with Overlays */}
-                  <div className="relative aspect-square rounded-xl bg-zinc-100 overflow-hidden border border-zinc-200/60 mb-4 cursor-pointer" onClick={() => handleOpenProduct(p)}>
+                  <div
+                    className="relative aspect-square rounded-xl bg-zinc-100 overflow-hidden border border-zinc-200/60 mb-4 cursor-pointer"
+                    onClick={() => handleOpenProduct(p)}
+                  >
                     <img
                       src={p.imageUrl}
                       alt={p.title}
@@ -626,6 +718,35 @@ export default function TenantStorefrontPage({
         </div>
       </main>
 
+      {/* Verified Customer Reviews & Testimonials Section */}
+      <TestimonialsSection storeName={storeDisplayName} />
+
+      {/* Live Search Modal */}
+      <SearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        products={products.map((p) => ({
+          id: p.id,
+          title: p.title,
+          slug: p.slug,
+          price: p.price,
+          comparePrice: p.comparePrice,
+          imageUrl: p.imageUrl,
+          badge: p.badge,
+          category: categoryConfig.name
+        }))}
+        onSelectProduct={(p) => {
+          const match = products.find((pr) => pr.id === p.id);
+          if (match) handleOpenProduct(match);
+        }}
+        onAddToCart={(p) => {
+          const match = products.find((pr) => pr.id === p.id);
+          if (match) handleAddToCart(match, match.variants[0]);
+        }}
+      />
+
       {/* Cart Drawer */}
       {isCartOpen && (
         <div className="fixed inset-0 z-50 overflow-hidden">
@@ -649,7 +770,7 @@ export default function TenantStorefrontPage({
                 {cartSummary.isFreeShippingEligible ? (
                   <div className="flex items-center space-x-2 text-emerald-700 font-semibold">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                    <span>Unlocked! Free Express Shipping applied.</span>
+                    <span>Unlocked! Free Express Delivery applied.</span>
                   </div>
                 ) : (
                   <div>
@@ -680,40 +801,78 @@ export default function TenantStorefrontPage({
                     </p>
                   </div>
                 ) : (
-                  cartItems.map((item) => (
-                    <div key={item.id} className="flex items-center justify-between p-3 bg-zinc-50 rounded-xl border border-zinc-200/70">
-                      <div className="flex-1 pr-3">
-                        <p className="text-xs font-bold text-zinc-900 leading-tight">{item.title}</p>
-                        <p className="text-[11px] text-zinc-500 font-mono mt-0.5">${item.price.toFixed(2)} each</p>
-                      </div>
+                  <div className="space-y-3">
+                    {cartItems.map((item) => (
+                      <div key={item.id} className="flex items-center justify-between p-3 bg-zinc-50 rounded-xl border border-zinc-200/70">
+                        <div className="flex-1 pr-3">
+                          <p className="text-xs font-bold text-zinc-900 leading-tight">{item.title}</p>
+                          <p className="text-[11px] text-zinc-500 font-mono mt-0.5">${item.price.toFixed(2)} each</p>
+                        </div>
 
-                      <div className="flex items-center space-x-2">
-                        <div className="flex items-center bg-white border border-zinc-200 rounded-lg p-0.5">
+                        <div className="flex items-center space-x-2">
+                          <div className="flex items-center bg-white border border-zinc-200 rounded-lg p-0.5">
+                            <button
+                              onClick={() => handleQuantityChange(item.id, -1)}
+                              className="w-6 h-6 flex items-center justify-center text-xs font-bold hover:bg-zinc-100 rounded text-zinc-600"
+                            >
+                              -
+                            </button>
+                            <span className="w-6 text-center text-xs font-bold text-zinc-900">{item.quantity}</span>
+                            <button
+                              onClick={() => handleQuantityChange(item.id, 1)}
+                              className="w-6 h-6 flex items-center justify-center text-xs font-bold hover:bg-zinc-100 rounded text-zinc-600"
+                            >
+                              +
+                            </button>
+                          </div>
+
                           <button
-                            onClick={() => handleQuantityChange(item.id, -1)}
-                            className="w-6 h-6 flex items-center justify-center text-xs font-bold hover:bg-zinc-100 rounded text-zinc-600"
+                            onClick={() => handleQuantityChange(item.id, -item.quantity)}
+                            className="text-zinc-400 hover:text-rose-600 p-1 transition"
+                            title="Remove item"
                           >
-                            -
+                            <X className="w-3.5 h-3.5" />
                           </button>
-                          <span className="w-6 text-center text-xs font-bold text-zinc-900">{item.quantity}</span>
+                        </div>
+                      </div>
+                    ))}
+
+                    {/* Frequently Bought Together Upsell Section */}
+                    <div className="pt-3 border-t border-zinc-100">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block mb-2">
+                        Frequently Added Add-ons:
+                      </span>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-zinc-200 text-xs">
+                          <div>
+                            <span className="font-bold text-zinc-900 block">Eco Protective Cotton Pouch</span>
+                            <span className="text-[10px] text-zinc-400">+$6.00 • Zero plastic dust bag</span>
+                          </div>
                           <button
-                            onClick={() => handleQuantityChange(item.id, 1)}
-                            className="w-6 h-6 flex items-center justify-center text-xs font-bold hover:bg-zinc-100 rounded text-zinc-600"
+                            onClick={() => handleAddUpsell("Eco Cotton Pouch", 6.0)}
+                            className="p-1.5 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg transition"
+                            title="Add to bag"
                           >
-                            +
+                            <Plus className="w-3.5 h-3.5" />
                           </button>
                         </div>
 
-                        <button
-                          onClick={() => handleQuantityChange(item.id, -item.quantity)}
-                          className="text-zinc-400 hover:text-rose-600 p-1 transition"
-                          title="Remove item"
-                        >
-                          <X className="w-3.5 h-3.5" />
-                        </button>
+                        <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-zinc-200 text-xs">
+                          <div>
+                            <span className="font-bold text-zinc-900 block">Express Priority Packing</span>
+                            <span className="text-[10px] text-zinc-400">+$3.50 • Front-of-line dispatch</span>
+                          </div>
+                          <button
+                            onClick={() => handleAddUpsell("Priority Dispatch", 3.5)}
+                            className="p-1.5 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg transition"
+                            title="Add to bag"
+                          >
+                            <Plus className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  ))
+                  </div>
                 )}
               </div>
 
@@ -846,10 +1005,11 @@ export default function TenantStorefrontPage({
                   Thank you for shopping with <span className="font-semibold text-zinc-800">{storeDisplayName}</span>. Your order has been placed.
                 </p>
 
-                <div className="p-3 bg-zinc-50 border border-zinc-200 rounded-xl text-xs space-y-1 font-mono">
+                <div className="p-3.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs space-y-1 font-mono">
                   <div className="text-zinc-500">Order ID: <span className="text-zinc-900 font-bold">{orderSuccess.orderNumber}</span></div>
                   <div className="text-zinc-500">Total: <span className="text-zinc-900 font-bold">${orderSuccess.total}</span></div>
-                  <div className="text-zinc-500">Method: <span className="text-zinc-900 font-bold uppercase">{orderSuccess.paymentMethod}</span></div>
+                  <div className="text-zinc-500">Payment: <span className="text-zinc-900 font-bold uppercase">{orderSuccess.paymentMethod}</span></div>
+                  <div className="text-emerald-600 text-[11px] pt-1">🚚 Estimated Delivery: 2-3 Business Days</div>
                 </div>
 
                 <button
@@ -928,6 +1088,18 @@ export default function TenantStorefrontPage({
                         </div>
                         <Banknote className="w-4 h-4 text-emerald-600" />
                       </label>
+                    </div>
+                  </div>
+
+                  {/* Delivery Timeline info */}
+                  <div className="p-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-[11px] text-zinc-500 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span>Dispatch:</span>
+                      <span className="font-semibold text-zinc-800">Within 24-48 Hours</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span>Inspection:</span>
+                      <span className="font-semibold text-emerald-700">Open parcel before paying</span>
                     </div>
                   </div>
 
