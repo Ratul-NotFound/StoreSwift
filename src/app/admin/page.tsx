@@ -27,7 +27,10 @@ import {
   ShieldCheck,
   Check,
   ChevronRight,
-  RefreshCw
+  RefreshCw,
+  Eye,
+  SlidersHorizontal,
+  Clock
 } from "lucide-react";
 import { generateVariantMatrix, GeneratedVariant } from "@/lib/matrix";
 import { generateStoreSeedData } from "@/lib/seed-store";
@@ -64,7 +67,7 @@ export default function MerchantAdminPage() {
     }
   }, []);
 
-  // Products state initialized with seed data
+  // Products state initialized with seed data including real images
   const [productsList, setProductsList] = useState<Array<{
     id: string;
     title: string;
@@ -72,6 +75,7 @@ export default function MerchantAdminPage() {
     basePrice: string;
     stock: number;
     category: string;
+    imageUrl?: string;
     variants: GeneratedVariant[];
   }>>(() => {
     const seed = generateStoreSeedData("store-1", "fashion");
@@ -82,6 +86,7 @@ export default function MerchantAdminPage() {
       basePrice: p.basePrice,
       stock: 25,
       category: "Fashion",
+      imageUrl: p.imageUrl,
       variants: seed.variants
         .filter(v => v.productSlug === p.slug)
         .map(v => ({
@@ -100,6 +105,7 @@ export default function MerchantAdminPage() {
       id: "ord-1042",
       orderNumber: "#1042",
       customerName: "Alex Mercer",
+      customerInitials: "AM",
       customerPhone: "+1 (555) 234-5678",
       items: "Classic Cotton T-Shirt (M / Black) x 2",
       totalAmount: 49.98,
@@ -112,6 +118,7 @@ export default function MerchantAdminPage() {
       id: "ord-1041",
       orderNumber: "#1041",
       customerName: "Sarah Jenkins",
+      customerInitials: "SJ",
       customerPhone: "+1 (555) 890-1234",
       items: "Everyday Canvas Sneaker (Size: 9) x 1",
       totalAmount: 45.00,
@@ -124,6 +131,7 @@ export default function MerchantAdminPage() {
       id: "ord-1040",
       orderNumber: "#1040",
       customerName: "David Miller",
+      customerInitials: "DM",
       customerPhone: "+1 (555) 456-7890",
       items: "Slim-Fit Denim Jeans (32) x 1",
       totalAmount: 59.99,
@@ -168,6 +176,7 @@ export default function MerchantAdminPage() {
       basePrice: newProdPrice,
       stock: totalStock || 15,
       category: "Custom",
+      imageUrl: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=800&auto=format&fit=crop&q=80",
       variants: generatedVariants
     };
 
@@ -233,7 +242,7 @@ export default function MerchantAdminPage() {
             <Link
               href={`/store/${storeSlug}`}
               target="_blank"
-              className="inline-flex items-center space-x-1.5 text-xs font-semibold bg-white hover:bg-zinc-50 border border-zinc-200 text-zinc-700 px-3 py-1.5 rounded-xl transition shadow-subtle btn-press"
+              className="inline-flex items-center space-x-1.5 text-xs font-semibold bg-white hover:bg-zinc-50 border border-zinc-200 text-zinc-700 px-3.5 py-1.5 rounded-xl transition shadow-subtle btn-press"
             >
               <span>View Storefront</span>
               <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400" />
@@ -245,7 +254,7 @@ export default function MerchantAdminPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-8 flex space-x-1 sm:space-x-2 overflow-x-auto border-t border-zinc-100 py-1.5 text-xs font-medium text-zinc-500">
           {[
             { id: "overview", label: "Overview", icon: LayoutDashboard },
-            { id: "products", label: `Products (${productsList.length})`, icon: Package },
+            { id: "products", label: `Catalog (${productsList.length})`, icon: Package },
             { id: "inventory", label: "Batch Inventory", icon: Layers },
             { id: "orders", label: `Orders (${ordersList.length})`, icon: ShoppingBag },
             { id: "customizer", label: "Store Theme", icon: Palette },
@@ -320,7 +329,7 @@ export default function MerchantAdminPage() {
 
               <div className="bg-white p-5 rounded-2xl border border-zinc-200/80 shadow-subtle">
                 <div className="flex items-center justify-between text-zinc-500 text-xs font-semibold uppercase tracking-wider">
-                  <span>Inventory Health</span>
+                  <span>Inventory Alerts</span>
                   <AlertTriangle className="w-4 h-4 text-amber-500" />
                 </div>
                 <div className="text-2xl font-bold tracking-tight text-zinc-900 mt-2">
@@ -372,7 +381,7 @@ export default function MerchantAdminPage() {
                   onClick={() => setActiveTab("orders")}
                   className="text-xs font-semibold text-zinc-700 hover:text-zinc-900 flex items-center space-x-1"
                 >
-                  <span>View All</span>
+                  <span>View All Orders</span>
                   <ChevronRight className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -380,17 +389,24 @@ export default function MerchantAdminPage() {
               <div className="divide-y divide-zinc-100">
                 {ordersList.slice(0, 3).map((ord) => (
                   <div key={ord.id} className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div>
-                      <div className="flex items-center space-x-2">
-                        <span className="font-bold text-zinc-900 text-xs font-mono">{ord.orderNumber}</span>
-                        <span className="text-zinc-300">•</span>
-                        <span className="text-xs font-semibold text-zinc-800">{ord.customerName}</span>
-                        <span className="text-[11px] text-zinc-400">({ord.date})</span>
+                    <div className="flex items-center space-x-3">
+                      {/* Avatar */}
+                      <div className="w-9 h-9 rounded-full bg-zinc-100 text-zinc-700 font-bold text-xs flex items-center justify-center flex-shrink-0 border border-zinc-200">
+                        {ord.customerInitials}
                       </div>
-                      <div className="text-xs text-zinc-500 mt-1">{ord.items}</div>
+
+                      <div>
+                        <div className="flex items-center space-x-2">
+                          <span className="font-bold text-zinc-900 text-xs font-mono">{ord.orderNumber}</span>
+                          <span className="text-zinc-300">•</span>
+                          <span className="text-xs font-semibold text-zinc-800">{ord.customerName}</span>
+                          <span className="text-[11px] text-zinc-400">({ord.date})</span>
+                        </div>
+                        <div className="text-xs text-zinc-500 mt-0.5">{ord.items}</div>
+                      </div>
                     </div>
 
-                    <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-4 pl-12 sm:pl-0">
                       <span className="font-bold text-zinc-900 text-sm">
                         {currency}{ord.totalAmount.toFixed(2)}
                       </span>
@@ -419,7 +435,7 @@ export default function MerchantAdminPage() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <h2 className="text-xl font-bold tracking-tight text-zinc-900">Product Catalog</h2>
-                <p className="text-xs text-zinc-500">Manage products and multi-option variant matrices</p>
+                <p className="text-xs text-zinc-500">Manage products, photography, and variant combinations</p>
               </div>
               <button
                 onClick={() => {
@@ -437,7 +453,7 @@ export default function MerchantAdminPage() {
               <table className="w-full text-left text-xs">
                 <thead className="bg-zinc-50 border-b border-zinc-100 text-[11px] font-semibold uppercase text-zinc-500">
                   <tr>
-                    <th className="px-6 py-3.5">Product Title</th>
+                    <th className="px-6 py-3.5">Product</th>
                     <th className="px-6 py-3.5">SKU</th>
                     <th className="px-6 py-3.5">Price</th>
                     <th className="px-6 py-3.5">Stock</th>
@@ -448,7 +464,31 @@ export default function MerchantAdminPage() {
                 <tbody className="divide-y divide-zinc-100">
                   {productsList.map((prod) => (
                     <tr key={prod.id} className="hover:bg-zinc-50/70 transition-colors">
-                      <td className="px-6 py-4 font-semibold text-zinc-900">{prod.title}</td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center space-x-3">
+                          {/* Product Image Thumbnail */}
+                          <div className="w-10 h-10 rounded-lg bg-zinc-100 overflow-hidden flex-shrink-0 border border-zinc-200/80">
+                            {prod.imageUrl ? (
+                              <img
+                                src={prod.imageUrl}
+                                alt={prod.title}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=200&auto=format&fit=crop&q=80";
+                                }}
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-zinc-300">
+                                <Package className="w-5 h-5" />
+                              </div>
+                            )}
+                          </div>
+                          <div>
+                            <div className="font-semibold text-zinc-900">{prod.title}</div>
+                            <div className="text-[11px] text-zinc-400">{prod.category}</div>
+                          </div>
+                        </div>
+                      </td>
                       <td className="px-6 py-4 font-mono text-zinc-500">{prod.sku}</td>
                       <td className="px-6 py-4 font-semibold text-zinc-800">{currency}{prod.basePrice}</td>
                       <td className="px-6 py-4">
@@ -492,9 +532,9 @@ export default function MerchantAdminPage() {
               <table className="w-full text-left text-xs">
                 <thead className="bg-zinc-50 border-b border-zinc-100 text-[11px] font-semibold uppercase text-zinc-500">
                   <tr>
-                    <th className="px-6 py-3.5">Product Title</th>
+                    <th className="px-6 py-3.5">Product</th>
                     <th className="px-6 py-3.5">SKU</th>
-                    <th className="px-6 py-3.5">Current Stock</th>
+                    <th className="px-6 py-3.5">Stock</th>
                     <th className="px-6 py-3.5">Status</th>
                     <th className="px-6 py-3.5 text-right">Quick Stock Stepper</th>
                   </tr>
@@ -502,7 +542,27 @@ export default function MerchantAdminPage() {
                 <tbody className="divide-y divide-zinc-100">
                   {productsList.map((prod) => (
                     <tr key={prod.id} className="hover:bg-zinc-50/70 transition-colors">
-                      <td className="px-6 py-4 font-semibold text-zinc-900">{prod.title}</td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-9 h-9 rounded-lg bg-zinc-100 overflow-hidden flex-shrink-0 border border-zinc-200/80">
+                            {prod.imageUrl ? (
+                              <img
+                                src={prod.imageUrl}
+                                alt={prod.title}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=200&auto=format&fit=crop&q=80";
+                                }}
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-zinc-300">
+                                <Package className="w-4 h-4" />
+                              </div>
+                            )}
+                          </div>
+                          <span className="font-semibold text-zinc-900">{prod.title}</span>
+                        </div>
+                      </td>
                       <td className="px-6 py-4 font-mono text-zinc-500">{prod.sku}</td>
                       <td className="px-6 py-4 font-bold text-sm text-zinc-900">{prod.stock}</td>
                       <td className="px-6 py-4">
@@ -561,7 +621,7 @@ export default function MerchantAdminPage() {
           <div className="space-y-6">
             <div>
               <h2 className="text-xl font-bold tracking-tight text-zinc-900">Order Fulfillment Pipeline</h2>
-              <p className="text-xs text-zinc-500">Track orders, update delivery status, and print customer packing slips.</p>
+              <p className="text-xs text-zinc-500">Track incoming orders, process shipments, and print packing slips.</p>
             </div>
 
             <div className="bg-white rounded-2xl border border-zinc-200/80 shadow-subtle overflow-hidden">
@@ -759,9 +819,15 @@ export default function MerchantAdminPage() {
                     <div className="text-[11px] font-semibold text-zinc-700 mb-2.5">Featured Items</div>
                     <div className={`grid gap-2.5 ${previewDevice === "mobile" ? "grid-cols-2" : "grid-cols-3"}`}>
                       {productsList.slice(0, 3).map((p) => (
-                        <div key={p.id} className="bg-white p-2.5 rounded-xl border border-zinc-200">
-                          <div className="w-full h-14 bg-zinc-100 rounded-lg flex items-center justify-center text-zinc-300 mb-2">
-                            <Package className="w-5 h-5" />
+                        <div key={p.id} className="bg-white p-2 rounded-xl border border-zinc-200">
+                          <div className="w-full h-16 bg-zinc-100 rounded-lg overflow-hidden mb-1.5 border border-zinc-100">
+                            {p.imageUrl ? (
+                              <img src={p.imageUrl} alt={p.title} className="w-full h-full object-cover" />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-zinc-300">
+                                <Package className="w-4 h-4" />
+                              </div>
+                            )}
                           </div>
                           <div className="font-semibold text-[10px] text-zinc-900 truncate">{p.title}</div>
                           <div className="text-[10px] font-bold text-zinc-800 mt-0.5">{currency}{p.basePrice}</div>

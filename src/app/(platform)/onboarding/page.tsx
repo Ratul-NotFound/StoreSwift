@@ -18,7 +18,8 @@ import {
   Smartphone,
   Globe,
   Tag,
-  ShieldCheck
+  ShieldCheck,
+  CheckSquare
 } from "lucide-react";
 import { ALL_CATEGORIES, getCategoryConfig } from "@/config/categories";
 import { isReservedSlug } from "@/config/reserved-slugs";
@@ -105,8 +106,16 @@ export default function OnboardingWizardPage() {
 
   const activeCategoryConfig = getCategoryConfig(selectedCategory);
 
+  // Curated category cover photos for visual preview
+  const categoryCovers: Record<string, string> = {
+    fashion: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&auto=format&fit=crop&q=80",
+    electronics: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&auto=format&fit=crop&q=80",
+    grocery_food: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&auto=format&fit=crop&q=80",
+    beauty_cosmetics: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&auto=format&fit=crop&q=80"
+  };
+
   return (
-    <div className="min-h-screen bg-[#fafafa] flex flex-col justify-between selection:bg-zinc-900 selection:text-white">
+    <div className="min-h-screen bg-[#fafafa] flex flex-col justify-between selection:bg-zinc-900 selection:text-white font-sans">
       {/* Top Minimalist Header */}
       <header className="bg-white/80 backdrop-blur-md border-b border-zinc-200/80 sticky top-0 z-40">
         <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -121,28 +130,28 @@ export default function OnboardingWizardPage() {
 
           <div className="flex items-center space-x-3">
             {!isCompleted && (
-              <div className="flex items-center space-x-1.5 text-xs font-medium text-zinc-500 bg-zinc-100 px-3 py-1 rounded-full border border-zinc-200/60">
+              <div className="flex items-center space-x-1.5 text-xs font-semibold text-zinc-600 bg-zinc-100 px-3 py-1 rounded-full border border-zinc-200">
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-600" />
                 <span>Step {step} of 3</span>
               </div>
             )}
             <Link
               href="/"
-              className="text-xs font-medium text-zinc-500 hover:text-zinc-900 transition"
+              className="text-xs font-semibold text-zinc-500 hover:text-zinc-900 transition"
             >
-              Exit
+              Exit to Home
             </Link>
           </div>
         </div>
       </header>
 
       {/* Main Form Flow */}
-      <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-12 flex flex-col justify-center">
+      <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-10 flex flex-col justify-center">
         {!isCompleted ? (
           <div className="bg-white border border-zinc-200/80 rounded-2xl shadow-card p-6 sm:p-10">
             {/* Step Indicators */}
             <div className="flex items-center justify-between mb-8 pb-6 border-b border-zinc-100">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-2 sm:space-x-3">
                 <div
                   className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
                     step >= 1 ? "bg-zinc-900 text-white" : "bg-zinc-100 text-zinc-400"
@@ -155,9 +164,9 @@ export default function OnboardingWizardPage() {
                 </span>
               </div>
 
-              <div className="w-8 sm:w-16 h-px bg-zinc-200" />
+              <div className="w-6 sm:w-16 h-px bg-zinc-200" />
 
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-2 sm:space-x-3">
                 <div
                   className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
                     step >= 2 ? "bg-zinc-900 text-white" : "bg-zinc-100 text-zinc-400"
@@ -170,9 +179,9 @@ export default function OnboardingWizardPage() {
                 </span>
               </div>
 
-              <div className="w-8 sm:w-16 h-px bg-zinc-200" />
+              <div className="w-6 sm:w-16 h-px bg-zinc-200" />
 
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-2 sm:space-x-3">
                 <div
                   className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
                     step >= 3 ? "bg-zinc-900 text-white" : "bg-zinc-100 text-zinc-400"
@@ -198,10 +207,10 @@ export default function OnboardingWizardPage() {
               <div className="space-y-6">
                 <div>
                   <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
-                    What is the name of your store?
+                    What is your store's name?
                   </h1>
                   <p className="text-xs text-zinc-500 mt-1">
-                    Enter your brand name. We’ll assign an instant live web address you can start selling with today.
+                    Enter your brand name. We'll instantly assign a free web address you can start selling with today.
                   </p>
                 </div>
 
@@ -222,7 +231,7 @@ export default function OnboardingWizardPage() {
 
                   <div>
                     <label className="block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-1.5">
-                      Free Live Subdomain
+                      Free Live Web Subdomain
                     </label>
                     <div className="flex items-center">
                       <div className="relative flex-1">
@@ -234,18 +243,26 @@ export default function OnboardingWizardPage() {
                           className="w-full pl-4 pr-3 py-3 rounded-l-xl border border-r-0 border-zinc-200 focus:border-zinc-900 focus:ring-4 focus:ring-zinc-950/5 outline-none text-sm text-zinc-900 transition font-medium"
                         />
                       </div>
-                      <span className="bg-zinc-100 border border-zinc-200 px-4 py-3 rounded-r-xl text-zinc-500 text-xs font-mono font-medium">
+                      <span className="bg-zinc-100 border border-zinc-200 px-4 py-3 rounded-r-xl text-zinc-600 text-xs font-mono font-medium">
                         .storeswift.com
                       </span>
                     </div>
 
-                    {/* Live URL Pill */}
-                    <div className="mt-2.5 flex items-center space-x-2 text-xs text-zinc-500">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                      <span>Live URL:</span>
-                      <span className="font-mono font-semibold text-zinc-800">
-                        https://{subdomain || "yourstore"}.storeswift.com
-                      </span>
+                    {/* Live URL Pill with Availability Status */}
+                    <div className="mt-2.5 flex items-center justify-between text-xs">
+                      <div className="flex items-center space-x-2 text-zinc-500">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                        <span>Live Address:</span>
+                        <span className="font-mono font-semibold text-zinc-800">
+                          https://{subdomain || "yourstore"}.storeswift.com
+                        </span>
+                      </div>
+                      {subdomain && !isReservedSlug(subdomain) && (
+                        <span className="text-[11px] font-semibold text-emerald-600 flex items-center space-x-1">
+                          <Check className="w-3 h-3" />
+                          <span>Available</span>
+                        </span>
+                      )}
                     </div>
                   </div>
 
@@ -266,12 +283,15 @@ export default function OnboardingWizardPage() {
                       <option value="CAD">CAD ($) - Canadian Dollar</option>
                       <option value="AUD">AUD ($) - Australian Dollar</option>
                     </select>
+                    <p className="text-[11px] text-zinc-400 mt-1">
+                      You can change this anytime and connect your custom domain (mystore.com) later in Store Settings.
+                    </p>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* STEP 2: CATEGORY PRESETS */}
+            {/* STEP 2: CATEGORY PRESETS WITH RICH PREVIEWS */}
             {step === 2 && (
               <div className="space-y-6">
                 <div>
@@ -279,55 +299,69 @@ export default function OnboardingWizardPage() {
                     Select your business category
                   </h1>
                   <p className="text-xs text-zinc-500 mt-1">
-                    StoreSwift automatically seeds your store with 3 sample products and category-specific variant matrices.
+                    StoreSwift automatically seeds your store with 3 starter products and custom variant options tailored to your niche.
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                   {ALL_CATEGORIES.map((catKey) => {
                     const cat = getCategoryConfig(catKey);
                     const isSelected = selectedCategory === cat.id;
+                    const cover = categoryCovers[cat.id] || cat.heroImage;
                     return (
                       <div
                         key={cat.id}
                         onClick={() => setSelectedCategory(cat.id)}
-                        className={`cursor-pointer p-4 rounded-xl border transition-all btn-press ${
+                        className={`cursor-pointer rounded-2xl border transition-all overflow-hidden btn-press ${
                           isSelected
-                            ? "border-zinc-900 bg-zinc-900 text-white shadow-sm ring-1 ring-zinc-900"
-                            : "border-zinc-200 hover:border-zinc-300 bg-white text-zinc-800"
+                            ? "border-zinc-900 ring-2 ring-zinc-900 shadow-md bg-white"
+                            : "border-zinc-200 hover:border-zinc-300 bg-white"
                         }`}
                       >
-                        <div className="flex items-center justify-between mb-1.5">
-                          <h3 className="font-bold text-sm tracking-tight">{cat.name}</h3>
-                          {isSelected && <CheckCircle2 className="w-4 h-4 text-emerald-400" />}
+                        {/* Mini cover image */}
+                        <div className="relative h-24 bg-zinc-100 overflow-hidden">
+                          <img
+                            src={cover}
+                            alt={cat.name}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                          <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between text-white">
+                            <span className="font-bold text-xs">{cat.name}</span>
+                            {isSelected && (
+                              <div className="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow">
+                                <Check className="w-3 h-3" />
+                              </div>
+                            )}
+                          </div>
                         </div>
-                        <p className={`text-xs mb-3 line-clamp-2 ${isSelected ? "text-zinc-300" : "text-zinc-500"}`}>
-                          {cat.tagline}
-                        </p>
-                        <div className="flex flex-wrap gap-1">
-                          {cat.defaultOptions.map((opt) => (
-                            <span
-                              key={opt}
-                              className={`text-[10px] font-semibold px-2 py-0.5 rounded ${
-                                isSelected
-                                  ? "bg-zinc-800 text-zinc-200 border border-zinc-700"
-                                  : "bg-zinc-100 text-zinc-600 border border-zinc-200"
-                              }`}
-                            >
-                              {opt}
-                            </span>
-                          ))}
+
+                        <div className="p-3.5">
+                          <p className="text-xs text-zinc-500 line-clamp-2">
+                            {cat.tagline}
+                          </p>
+
+                          <div className="mt-3 flex flex-wrap gap-1">
+                            {cat.defaultOptions.map((opt) => (
+                              <span
+                                key={opt}
+                                className="text-[10px] font-semibold px-2 py-0.5 rounded bg-zinc-100 text-zinc-600 border border-zinc-200"
+                              >
+                                {opt}
+                              </span>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     );
                   })}
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-blue-50/70 border border-blue-200/60 flex items-start space-x-2.5 text-xs text-blue-900">
+                <div className="p-4 rounded-xl bg-blue-50/70 border border-blue-200/60 flex items-start space-x-3 text-xs text-blue-900">
                   <Sparkles className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
                   <div>
                     <span className="font-semibold">Starter Kit Included: </span>
-                    Your store starts with 3 pre-seeded {activeCategoryConfig.name} items with multi-variant stock so you can immediately preview and accept orders.
+                    Your store starts with 3 sample {activeCategoryConfig.name} items, multi-variant matrices, and pricing so you can immediately preview and accept live orders.
                   </div>
                 </div>
               </div>
@@ -364,12 +398,12 @@ export default function OnboardingWizardPage() {
                       <div>
                         <div className="font-bold text-zinc-900 text-xs flex items-center space-x-2">
                           <span>Cash on Delivery (COD)</span>
-                          <span className="text-[10px] bg-emerald-100 text-emerald-800 font-semibold px-1.5 py-0.2 rounded">
+                          <span className="text-[10px] bg-emerald-100 text-emerald-800 font-semibold px-2 py-0.5 rounded-full">
                             Recommended
                           </span>
                         </div>
                         <div className="text-xs text-zinc-500 mt-0.5">
-                          Customers pay in cash upon receiving their delivery. High conversion rate for startups.
+                          Customers pay in cash upon receiving their delivery. Essential for high conversion on social commerce.
                         </div>
                       </div>
                     </div>
@@ -396,7 +430,7 @@ export default function OnboardingWizardPage() {
                           Credit & Debit Cards (Stripe)
                         </div>
                         <div className="text-xs text-zinc-500 mt-0.5">
-                          Accept Visa, Mastercard, Apple Pay, and Google Pay with instant online confirmation.
+                          Accept Visa, Mastercard, Apple Pay, and Google Pay with instant online payment confirmation.
                         </div>
                       </div>
                     </div>
@@ -412,11 +446,11 @@ export default function OnboardingWizardPage() {
                       <Smartphone className="w-4 h-4 text-purple-600" />
                     </div>
                     <p className="text-xs text-zinc-500 mb-2.5">
-                      Optional: Paste payment instructions and phone numbers for customers to send payment before dispatch.
+                      Optional: Paste payment instructions and mobile numbers for customers to send funds before dispatch.
                     </p>
                     <textarea
                       rows={2}
-                      placeholder="e.g. bKash Merchant: 01700-000000 (Enter Order ID as reference)"
+                      placeholder="e.g. bKash Merchant: 01700-000000 (Enter Order ID as reference number)"
                       value={manualPaymentNotes}
                       onChange={(e) => setManualPaymentNotes(e.target.value)}
                       className="w-full px-3 py-2 text-xs border border-zinc-200 rounded-lg outline-none focus:border-zinc-900 font-medium placeholder:text-zinc-400"
@@ -426,7 +460,7 @@ export default function OnboardingWizardPage() {
               </div>
             )}
 
-            {/* Stepper Buttons */}
+            {/* Stepper Navigation Buttons */}
             <div className="mt-8 pt-6 border-t border-zinc-100 flex items-center justify-between">
               {step > 1 ? (
                 <button
@@ -470,7 +504,7 @@ export default function OnboardingWizardPage() {
             </div>
 
             <h2 className="text-2xl font-bold tracking-tight text-zinc-900">
-              Your store is live on StoreSwift!
+              Your store is officially live!
             </h2>
 
             <p className="text-xs text-zinc-500 mt-2 max-w-sm mx-auto leading-relaxed">
