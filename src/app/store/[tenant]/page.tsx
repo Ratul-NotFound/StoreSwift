@@ -53,6 +53,7 @@ import { BeautyStorefront } from "@/components/store/templates/beauty-storefront
 import { FootwearStorefront } from "@/components/store/templates/footwear-storefront";
 import { TechStorefront } from "@/components/store/templates/tech-storefront";
 import { JewelryStorefront } from "@/components/store/templates/jewelry-storefront";
+import { PantryStorefront } from "@/components/store/templates/pantry-storefront";
 import { trackEvent } from "@/lib/analytics";
 
 // Visual Category Collections per Department
@@ -320,6 +321,7 @@ export default function TenantStorefrontPage({
   const isFootwearVertical = activeCategoryKey === "shoes" || templateKey === "artisan";
   const isTechVertical = activeCategoryKey === "electronics" || templateKey === "bold";
   const isJewelryVertical = activeCategoryKey === "jewelry" || templateKey === "maison";
+  const isPantryVertical = activeCategoryKey === "grocery_food" || templateKey === "pantry";
 
   return (
     <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${template.classes.pageBg}`}>
@@ -433,6 +435,33 @@ export default function TenantStorefrontPage({
         />
       ) : isJewelryVertical ? (
         <JewelryStorefront
+          storeDisplayName={storeDisplayName}
+          tenantSlug={tenantSlug}
+          products={products}
+          cartItems={cartItems}
+          wishlist={wishlist}
+          finalTotal={finalTotal}
+          template={template}
+          onAddToCart={handleAddToCart}
+          onToggleWishlist={toggleWishlist}
+          onOpenProduct={handleOpenProduct}
+          onOpenCart={() => setIsCartOpen(true)}
+          onOpenSearch={() => setIsSearchOpen(true)}
+          allCategories={ALL_CATEGORIES}
+          activeCategoryKey={activeCategoryKey}
+          onSelectCategory={(cat) => {
+            setActiveCategoryKey(cat);
+            const rec = getCategoryConfig(cat).recommendedTemplate;
+            if (rec) setTemplateKey(rec);
+          }}
+          allTemplates={ALL_TEMPLATES}
+          templateKey={templateKey}
+          onSelectTemplate={setTemplateKey}
+          categoriesMap={CATEGORIES_MAP}
+          storeTemplatesMap={STORE_TEMPLATES}
+        />
+      ) : isPantryVertical ? (
+        <PantryStorefront
           storeDisplayName={storeDisplayName}
           tenantSlug={tenantSlug}
           products={products}
@@ -1421,7 +1450,7 @@ export default function TenantStorefrontPage({
       )}
 
       {/* ─── 13. Rich Multi-Column Store Footer ────────────────────────────── */}
-      {!isFashionVertical && !isBeautyVertical && !isFootwearVertical && !isTechVertical && !isJewelryVertical && (
+      {!isFashionVertical && !isBeautyVertical && !isFootwearVertical && !isTechVertical && !isJewelryVertical && !isPantryVertical && (
         <StoreFooter storeName={storeDisplayName} storeSlug={tenantSlug} categoryName={categoryConfig.name} />
       )}
     </div>
