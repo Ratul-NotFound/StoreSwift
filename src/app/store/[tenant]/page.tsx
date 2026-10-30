@@ -501,8 +501,8 @@ export default function TenantStorefrontPage({
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
               
               {/* Floating Top Pill */}
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white text-[10px] font-mono uppercase px-3 py-1 rounded-full border border-white/20">
-                LOOKBOOK // VOL. 26
+              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white text-[10px] font-mono px-3 py-1 rounded-full border border-white/20">
+                Curated Lookbook • 2026
               </div>
 
               {/* Bottom Glass Bar */}
@@ -762,7 +762,7 @@ export default function TenantStorefrontPage({
                     <div className="space-y-3.5">
                       <div className="flex items-center space-x-2">
                         <span className={template.classes.editorialTag}>
-                          SIGNATURE ARCHIVE // 01
+                          Signature Edition • 01
                         </span>
                         <div className="flex items-center space-x-1 text-amber-500 text-xs">
                           <Star className="w-3.5 h-3.5 fill-current" />

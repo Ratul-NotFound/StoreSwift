@@ -23,29 +23,29 @@ export class OpulentMaisonTemplate extends AbstractStoreTemplate {
     fontDisplay: "font-serif tracking-normal",
     borderRadius: "rounded-xl",
     heroStyle: "opulent",
-    cardElevation: "shadow-2xl border border-amber-500/20",
-    badgeStyle: "bg-amber-950/80 text-amber-200 border border-amber-800/80 text-[10px] tracking-widest font-mono uppercase"
+    cardElevation: "shadow-none hover:shadow-subtle",
+    badgeStyle: "bg-amber-950/50 text-amber-300 text-[10px] font-mono tracking-wider uppercase border border-amber-800/40"
   };
 
   readonly classes: StoreTemplateClasses = {
-    pageBg: "bg-[#0c0d10] text-zinc-100 selection:bg-amber-500 selection:text-black",
-    headerBg: "bg-[#0c0d10]/90 backdrop-blur-md border-b border-amber-900/30 text-zinc-100",
-    navPillBg: "bg-[#0c0d10]/95 border-b border-amber-900/20",
-    toolbarBg: "bg-zinc-900/80 border-amber-900/30 shadow-2xl",
-    lookbookBg: "bg-[#101217] border-y border-amber-900/30 text-zinc-100",
-    heroSection: "bg-[#0c0d10] border-b border-amber-900/30 text-zinc-100",
-    heroBadge: "bg-amber-950/90 text-amber-300 border-amber-700/60 shadow-amber-500/10",
-    heroTitle: "text-amber-100 font-serif font-bold tracking-tight",
-    heroSubtitle: "text-zinc-400",
-    editorialTag: "font-mono text-[10px] tracking-[0.3em] uppercase text-amber-400 font-medium",
-    productCard: "bg-zinc-900/70 border-amber-900/30 hover:border-amber-500/50 transition-all duration-300 hover:shadow-2xl",
+    pageBg: "bg-[#0b0c0e] text-zinc-100 selection:bg-amber-500 selection:text-black",
+    headerBg: "bg-[#0b0c0e]/85 backdrop-blur-md border-b border-neutral-800/80 text-zinc-100",
+    navPillBg: "bg-[#0b0c0e]/90 backdrop-blur-md border-b border-neutral-800/60",
+    toolbarBg: "bg-[#121317]/80 backdrop-blur-sm border border-neutral-800/70",
+    lookbookBg: "bg-[#101115] border-y border-neutral-800/70 text-zinc-100",
+    heroSection: "bg-[#0b0c0e] border-b border-neutral-800/70 text-zinc-100",
+    heroBadge: "bg-amber-950/50 text-amber-300 border-amber-800/40",
+    heroTitle: "text-neutral-100 font-serif font-bold tracking-tight",
+    heroSubtitle: "text-zinc-400 font-normal",
+    editorialTag: "font-mono text-[10px] tracking-[0.2em] uppercase text-amber-400/90 font-medium",
+    productCard: "bg-[#121317] border-neutral-800/70 hover:border-amber-500/30 transition-all duration-300",
     productCardImg: "rounded-lg",
-    primaryButton: "bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-bold shadow-amber-500/20",
-    secondaryButton: "bg-zinc-900/90 border border-amber-700/50 hover:bg-zinc-800 text-amber-200 font-medium",
-    pillActive: "bg-gradient-to-r from-amber-500 to-amber-600 text-black font-bold shadow-sm ring-1 ring-amber-400",
-    pillInactive: "bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800",
+    primaryButton: "bg-amber-500 hover:bg-amber-400 text-black font-semibold shadow-none",
+    secondaryButton: "bg-[#17181f] border border-neutral-700/70 hover:bg-[#1e2029] text-amber-200/90 font-medium",
+    pillActive: "bg-amber-500 text-black font-semibold",
+    pillInactive: "bg-neutral-900 hover:bg-neutral-800 text-zinc-400 border border-neutral-800/60 font-medium",
     accentText: "text-amber-400",
-    announcementBar: "bg-black text-amber-300 border-b border-amber-950",
+    announcementBar: "bg-black text-amber-300/90 border-b border-neutral-900",
     featureCard: "bg-zinc-900/50 border-amber-900/20",
     spotlightBanner: "bg-gradient-to-r from-neutral-950 via-amber-950/40 to-black text-white border-amber-900/40"
   };
@@ -59,7 +59,7 @@ export class OpulentMaisonTemplate extends AbstractStoreTemplate {
   }
 
   public getCuratedCollectionTitle(): string {
-    return "HAUTE JOAILLERIE & HEIRLOOM TIMEPIECES // 2026";
+    return "Haute Horology & Heirloom Jewels • 2026 Archive";
   }
 
   public getBrandSignature(): string {
@@ -68,19 +68,18 @@ export class OpulentMaisonTemplate extends AbstractStoreTemplate {
 
   public override getAnnouncementHighlights(): AnnouncementHighlights {
     return {
-      leading: "💎 Armored Discreet Courier Dispatch",
-      center: "✨ SOLID 18K GOLD & CERTIFIED STONES • VERIFY HALLMARK PRIOR TO PAYMENT",
-      trailing: "📜 Lifetime Precision Calibration & Service"
+      leading: "Armored Courier Handover",
+      center: "Solid 18k gold & certified stones • Inspect hallmarks prior to payment",
+      trailing: "Lifetime Care & Service"
     };
   }
 
   public formatHeroBadge(categoryName: string): string {
-    return `MAISON HAUTE JOAILLERIE // ${categoryName.toUpperCase()} ARCHIVE`;
+    return `Fine Horology & High Jewelry • ${categoryName}`;
   }
 
   public formatProductBadge(rawBadge?: string): string {
-    if (!rawBadge) return "18K CERTIFIED";
-    return `◆ ${rawBadge.toUpperCase()} ◆`;
+    return rawBadge || "Solid 18K Gold";
   }
 
   public getManifestoPillars(): TrustManifestoItem[] {
@@ -122,4 +121,3 @@ export class OpulentMaisonTemplate extends AbstractStoreTemplate {
     };
   }
 }
-

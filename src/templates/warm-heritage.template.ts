@@ -23,29 +23,29 @@ export class WarmHeritageTemplate extends AbstractStoreTemplate {
     fontDisplay: "font-serif tracking-normal",
     borderRadius: "rounded-xl",
     heroStyle: "heritage",
-    cardElevation: "shadow-subtle hover:shadow-card",
-    badgeStyle: "bg-amber-900/10 text-amber-900 dark:text-amber-300 border border-amber-800/20 text-[10px] uppercase font-bold"
+    cardElevation: "shadow-none hover:shadow-subtle",
+    badgeStyle: "bg-amber-100 text-amber-900 text-[10px] font-medium tracking-wider uppercase border border-amber-300/60"
   };
 
   readonly classes: StoreTemplateClasses = {
-    pageBg: "bg-[#fcfaf7] text-stone-900 selection:bg-amber-800 selection:text-white",
-    headerBg: "bg-[#fcfaf7]/90 backdrop-blur-md border-b border-stone-200/80 text-stone-900",
-    navPillBg: "bg-[#fcfaf7]/95 border-b border-stone-200/70",
-    toolbarBg: "bg-white border-stone-200 shadow-subtle",
-    lookbookBg: "bg-[#f4efe9] border-y border-stone-200 text-stone-900",
-    heroSection: "bg-[#fcfaf7] border-b border-stone-200/80 text-stone-900",
-    heroBadge: "bg-amber-900 text-amber-100 border-amber-800 shadow-sm",
-    heroTitle: "text-stone-900 font-bold tracking-tight font-serif",
-    heroSubtitle: "text-stone-600",
-    editorialTag: "font-mono text-[10px] tracking-[0.2em] uppercase text-amber-800 font-bold",
-    productCard: "bg-white border-stone-200 hover:border-amber-800/50 transition-all duration-300 hover:shadow-card",
+    pageBg: "bg-[#faf7f2] text-stone-900 selection:bg-amber-900 selection:text-white",
+    headerBg: "bg-[#faf7f2]/85 backdrop-blur-md border-b border-stone-200/80 text-stone-900",
+    navPillBg: "bg-[#faf7f2]/90 backdrop-blur-md border-b border-stone-200/60",
+    toolbarBg: "bg-white/80 backdrop-blur-sm border border-stone-200/70",
+    lookbookBg: "bg-[#f3ede3] border-y border-stone-200/70 text-stone-900",
+    heroSection: "bg-[#faf7f2] border-b border-stone-200/70 text-stone-900",
+    heroBadge: "bg-amber-100 text-amber-900 border-amber-300/60",
+    heroTitle: "text-stone-900 font-serif font-bold tracking-tight",
+    heroSubtitle: "text-stone-600 font-normal",
+    editorialTag: "font-mono text-[10px] tracking-[0.2em] uppercase text-amber-900 font-medium",
+    productCard: "bg-white border-stone-200/80 hover:border-amber-800/40 transition-all duration-300",
     productCardImg: "rounded-lg",
-    primaryButton: "bg-amber-900 hover:bg-amber-800 text-amber-50 shadow-sm font-semibold",
-    secondaryButton: "bg-white border-stone-300 hover:bg-stone-50 text-stone-800 font-medium",
-    pillActive: "bg-amber-900 text-amber-50 shadow-sm ring-1 ring-amber-900",
-    pillInactive: "bg-stone-100 hover:bg-stone-200 text-stone-700",
+    primaryButton: "bg-stone-900 hover:bg-stone-800 text-stone-50 font-medium shadow-none",
+    secondaryButton: "bg-white border border-stone-300/80 hover:bg-stone-50 text-stone-800 font-medium",
+    pillActive: "bg-stone-900 text-stone-50 font-medium",
+    pillInactive: "bg-stone-100 hover:bg-stone-200/70 text-stone-700 font-medium",
     accentText: "text-amber-900",
-    announcementBar: "bg-stone-900 text-amber-200 border-b border-stone-800",
+    announcementBar: "bg-[#1c1917] text-stone-300 border-b border-stone-800",
     featureCard: "bg-[#f7f2eb] border-stone-200",
     spotlightBanner: "bg-stone-900 text-amber-100 border-stone-800"
   };
@@ -59,7 +59,7 @@ export class WarmHeritageTemplate extends AbstractStoreTemplate {
   }
 
   public getCuratedCollectionTitle(): string {
-    return "BENCH-CRAFTED LEATHERWORKS // 2026";
+    return "Bench-Crafted Leatherworks • 2026 Archive";
   }
 
   public getBrandSignature(): string {
@@ -68,19 +68,18 @@ export class WarmHeritageTemplate extends AbstractStoreTemplate {
 
   public override getAnnouncementHighlights(): AnnouncementHighlights {
     return {
-      leading: "🔨 Master Hand-Lasted Benchcraft",
-      center: "📦 COMPLIMENTARY SHIPPING ON BENCH-BUILDS • TRY BEFORE YOU PAY COD",
-      trailing: "🛡️ Lifetime Resoling & Craft Service"
+      leading: "Master Hand-Lasted Benchcraft",
+      center: "Complimentary shipping on handcrafted builds • Try before you pay COD",
+      trailing: "Lifetime Resoling Guarantee"
     };
   }
 
   public formatHeroBadge(categoryName: string): string {
-    return `MASTER BENCH CRAFT • ${categoryName.toUpperCase()} EDITIONS`;
+    return `Bench-Crafted Heritage • ${categoryName}`;
   }
 
   public formatProductBadge(rawBadge?: string): string {
-    if (!rawBadge) return "BENCH CRAFT";
-    return `★ ${rawBadge.toUpperCase()} ★`;
+    return rawBadge || "Bench Crafted";
   }
 
   public getManifestoPillars(): TrustManifestoItem[] {

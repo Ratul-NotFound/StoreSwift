@@ -16,38 +16,38 @@ export class TechCyberTemplate extends AbstractStoreTemplate {
   readonly description = "Inspired by Apple Pro & Teenage Engineering: Matte obsidian canvas, electric cyan telemetry, and CAD spec typography.";
   readonly badge = "Pro Telemetry";
   readonly previewBg = "from-cyan-950 via-slate-900 to-black";
-  readonly primaryColor = "#06b6d4";
-  readonly accentColor = "#3b82f6";
+  readonly primaryColor = "#0284c7";
+  readonly accentColor = "#38bdf8";
 
   readonly vibe: StoreTemplateVibe = {
     fontDisplay: "font-mono tracking-tight",
-    borderRadius: "rounded-lg",
+    borderRadius: "rounded-xl",
     heroStyle: "cyber",
-    cardElevation: "shadow-2xl border border-cyan-500/20",
-    badgeStyle: "bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-[10px] font-mono"
+    cardElevation: "shadow-none hover:shadow-subtle",
+    badgeStyle: "bg-sky-950/60 text-sky-400 text-[10px] font-mono tracking-wider uppercase border border-sky-800/50"
   };
 
   readonly classes: StoreTemplateClasses = {
-    pageBg: "bg-[#090a0f] text-zinc-100 selection:bg-cyan-500 selection:text-black",
-    headerBg: "bg-[#090a0f]/90 backdrop-blur-md border-b border-zinc-800/90 text-zinc-100",
-    navPillBg: "bg-[#090a0f]/95 border-b border-zinc-800/80",
-    toolbarBg: "bg-zinc-900/90 border-zinc-800 shadow-xl",
-    lookbookBg: "bg-zinc-950/80 border-y border-zinc-800 text-zinc-100",
-    heroSection: "bg-[#090a0f] border-b border-zinc-800 text-zinc-100",
-    heroBadge: "bg-cyan-950/80 text-cyan-400 border-cyan-700/60 shadow-cyan-500/10",
-    heroTitle: "text-white font-black tracking-tight",
-    heroSubtitle: "text-zinc-400",
-    editorialTag: "font-mono text-[10px] tracking-[0.25em] uppercase text-cyan-400",
-    productCard: "bg-zinc-900/80 border-zinc-800 hover:border-cyan-500/50 transition-all duration-300",
-    productCardImg: "rounded-md",
-    primaryButton: "bg-cyan-500 hover:bg-cyan-400 text-black font-bold shadow-cyan-500/25",
-    secondaryButton: "bg-zinc-900 border-zinc-700 hover:bg-zinc-800 text-zinc-100 font-medium",
-    pillActive: "bg-cyan-500 text-black font-bold shadow-sm ring-1 ring-cyan-400",
-    pillInactive: "bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800",
-    accentText: "text-cyan-400",
-    announcementBar: "bg-black text-cyan-400 border-b border-cyan-950",
+    pageBg: "bg-[#0c0d12] text-zinc-100 selection:bg-sky-500 selection:text-black",
+    headerBg: "bg-[#0c0d12]/85 backdrop-blur-md border-b border-zinc-800/80 text-zinc-100",
+    navPillBg: "bg-[#0c0d12]/90 backdrop-blur-md border-b border-zinc-800/60",
+    toolbarBg: "bg-[#13151f]/80 backdrop-blur-sm border border-zinc-800/70",
+    lookbookBg: "bg-[#10121a] border-y border-zinc-800/70 text-zinc-100",
+    heroSection: "bg-[#0c0d12] border-b border-zinc-800/70 text-zinc-100",
+    heroBadge: "bg-sky-950/60 text-sky-400 border-sky-800/50",
+    heroTitle: "text-white font-bold tracking-tight",
+    heroSubtitle: "text-zinc-400 font-normal",
+    editorialTag: "font-mono text-[10px] tracking-[0.2em] uppercase text-sky-400 font-medium",
+    productCard: "bg-[#13151f] border-zinc-800/70 hover:border-sky-500/40 transition-all duration-300",
+    productCardImg: "rounded-lg",
+    primaryButton: "bg-sky-500 hover:bg-sky-400 text-black font-medium shadow-none",
+    secondaryButton: "bg-[#171926] border border-zinc-700/80 hover:bg-[#1e2030] text-zinc-200 font-medium",
+    pillActive: "bg-sky-500 text-black font-medium",
+    pillInactive: "bg-zinc-900/90 hover:bg-zinc-800 text-zinc-400 border border-zinc-800/60 font-medium",
+    accentText: "text-sky-400",
+    announcementBar: "bg-black text-sky-300 border-b border-zinc-900",
     featureCard: "bg-zinc-900/60 border-zinc-800",
-    spotlightBanner: "bg-gradient-to-r from-zinc-950 via-cyan-950/40 to-black text-white border-zinc-800"
+    spotlightBanner: "bg-gradient-to-r from-zinc-950 via-sky-950/40 to-black text-white border-zinc-800"
   };
 
   public getHeroLayoutType(): "cyber" {
@@ -59,7 +59,7 @@ export class TechCyberTemplate extends AbstractStoreTemplate {
   }
 
   public getCuratedCollectionTitle(): string {
-    return "TACTICAL HARDWARE TELEMETRY // 2026";
+    return "Precision Hardware Telemetry • 2026";
   }
 
   public getBrandSignature(): string {
@@ -68,19 +68,18 @@ export class TechCyberTemplate extends AbstractStoreTemplate {
 
   public override getAnnouncementHighlights(): AnnouncementHighlights {
     return {
-      leading: "⚡ Next-Day Hardware Dispatch",
-      center: "🚀 MIL-SPEC CERTIFIED • COMPREHENSIVE 2-YEAR ACCIDENTAL WARRANTY",
-      trailing: "🔒 Tested & Serial Calibrated"
+      leading: "Next-Day Hardware Dispatch",
+      center: "Mil-spec certified • Comprehensive 2-year accidental warranty",
+      trailing: "Serial Calibrated"
     };
   }
 
   public formatHeroBadge(categoryName: string): string {
-    return `MIL-SPEC HARDWARE // ${categoryName.toUpperCase()} TELEMETRY`;
+    return `Precision Hardware • ${categoryName}`;
   }
 
   public formatProductBadge(rawBadge?: string): string {
-    if (!rawBadge) return "QC CALIBRATED";
-    return `// ${rawBadge.toUpperCase()} //`;
+    return rawBadge || "QC Calibrated";
   }
 
   public getManifestoPillars(): TrustManifestoItem[] {

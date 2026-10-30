@@ -21,31 +21,31 @@ export class LuxeGlowTemplate extends AbstractStoreTemplate {
 
   readonly vibe: StoreTemplateVibe = {
     fontDisplay: "font-sans tracking-tight",
-    borderRadius: "rounded-2xl",
+    borderRadius: "rounded-xl",
     heroStyle: "luminous",
-    cardElevation: "shadow-card hover:shadow-xl",
-    badgeStyle: "bg-rose-500/10 text-rose-700 dark:text-rose-300 border border-rose-500/20 text-[10px] font-semibold"
+    cardElevation: "shadow-none hover:shadow-subtle",
+    badgeStyle: "bg-rose-50 text-rose-800 text-[10px] font-medium tracking-wider uppercase border border-rose-200/80"
   };
 
   readonly classes: StoreTemplateClasses = {
-    pageBg: "bg-[#faf7f5] text-zinc-900 selection:bg-rose-500 selection:text-white",
-    headerBg: "bg-[#faf7f5]/85 backdrop-blur-md border-b border-rose-100/80 text-zinc-900",
-    navPillBg: "bg-[#faf7f5]/90 border-b border-rose-100/60",
-    toolbarBg: "bg-white/80 backdrop-blur-sm border-rose-100/80 shadow-subtle",
-    lookbookBg: "bg-rose-50/50 border-y border-rose-100 text-zinc-900",
-    heroSection: "bg-gradient-to-b from-rose-50/60 via-[#faf7f5] to-[#faf7f5] border-b border-rose-100/60 text-zinc-900",
-    heroBadge: "bg-rose-500 text-white border-rose-400 shadow-rose-500/20",
-    heroTitle: "text-zinc-900 font-extrabold tracking-tight",
-    heroSubtitle: "text-zinc-600",
-    editorialTag: "font-mono text-[10px] tracking-[0.2em] uppercase text-rose-500 font-bold",
-    productCard: "bg-white border-rose-100/80 hover:border-rose-300 transition-all duration-300 hover:shadow-card",
-    productCardImg: "rounded-xl",
-    primaryButton: "bg-rose-600 hover:bg-rose-700 text-white shadow-sm font-semibold hover:shadow-rose-600/20",
-    secondaryButton: "bg-white border-rose-200 hover:bg-rose-50/80 text-zinc-800 font-medium",
-    pillActive: "bg-rose-600 text-white shadow-sm ring-1 ring-rose-600",
-    pillInactive: "bg-rose-50 hover:bg-rose-100/80 text-rose-900",
+    pageBg: "bg-[#faf8f6] text-zinc-900 selection:bg-rose-500 selection:text-white",
+    headerBg: "bg-[#faf8f6]/80 backdrop-blur-md border-b border-rose-100/70 text-zinc-900",
+    navPillBg: "bg-[#faf8f6]/90 backdrop-blur-md border-b border-rose-100/50",
+    toolbarBg: "bg-white/70 backdrop-blur-sm border border-rose-100/60",
+    lookbookBg: "bg-[#f5ede7] border-y border-rose-100/60 text-zinc-900",
+    heroSection: "bg-[#faf8f6] border-b border-rose-100/60 text-zinc-900",
+    heroBadge: "bg-rose-50 text-rose-700 border-rose-200/80",
+    heroTitle: "text-zinc-900 font-bold tracking-tight",
+    heroSubtitle: "text-zinc-600 font-normal",
+    editorialTag: "font-mono text-[10px] tracking-[0.2em] uppercase text-rose-600 font-medium",
+    productCard: "bg-white border-rose-100/70 hover:border-rose-300/80 transition-all duration-300",
+    productCardImg: "rounded-lg",
+    primaryButton: "bg-rose-600 hover:bg-rose-700 text-white font-medium shadow-none",
+    secondaryButton: "bg-white border border-rose-200/80 hover:bg-rose-50/60 text-zinc-800 font-medium",
+    pillActive: "bg-rose-600 text-white font-medium",
+    pillInactive: "bg-rose-50/80 hover:bg-rose-100/70 text-rose-800 font-medium",
     accentText: "text-rose-600",
-    announcementBar: "bg-rose-950 text-rose-200 border-b border-rose-900",
+    announcementBar: "bg-[#1c0f13] text-rose-200 border-b border-rose-950",
     featureCard: "bg-white/70 border-rose-100",
     spotlightBanner: "bg-gradient-to-r from-rose-900 to-pink-900 text-white border-rose-800"
   };
@@ -59,7 +59,7 @@ export class LuxeGlowTemplate extends AbstractStoreTemplate {
   }
 
   public getCuratedCollectionTitle(): string {
-    return "CLINICAL BOTANICAL PROTOCOLS // 2026";
+    return "Clinical Botanical Protocols • 2026 Collection";
   }
 
   public getBrandSignature(): string {
@@ -68,19 +68,18 @@ export class LuxeGlowTemplate extends AbstractStoreTemplate {
 
   public override getAnnouncementHighlights(): AnnouncementHighlights {
     return {
-      leading: "🌸 Free Botanical Deluxe Mini On $45+ Orders",
-      center: "✨ DERMATOLOGIST FORMULATED • DOORSTEP INSPECTION BEFORE PAYMENT",
-      trailing: "🧪 100% Non-Toxic Clean Ingredients"
+      leading: "Botanical Deluxe Mini with $45+ Orders",
+      center: "Dermatologist formulated • Doorstep parcel inspection prior to payment",
+      trailing: "Clean Ingredients"
     };
   }
 
   public formatHeroBadge(categoryName: string): string {
-    return `DERMATOLOGIST CLINICALLY FORMULATED // ${categoryName.toUpperCase()}`;
+    return `Clinical Botanical Formula • ${categoryName}`;
   }
 
   public formatProductBadge(rawBadge?: string): string {
-    if (!rawBadge) return "CLEAN FORMULA";
-    return `✨ ${rawBadge.toUpperCase()}`;
+    return rawBadge || "Clean Protocol";
   }
 
   public getManifestoPillars(): TrustManifestoItem[] {

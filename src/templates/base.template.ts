@@ -53,7 +53,7 @@ export abstract class AbstractStoreTemplate implements IStoreTemplate {
   }
 
   public getScarcityUrgency(remainingUnits: number = 5): string {
-    return `Limited Allocation: Only ${remainingUnits} units remaining in current batch`;
+    return `Low Stock: Only ${remainingUnits} units left in stock`;
   }
 
   public getProductCardAspect(): string {
@@ -65,7 +65,7 @@ export abstract class AbstractStoreTemplate implements IStoreTemplate {
       dispatchHours: 48,
       codAllowed: true,
       returnDays: 7,
-      inspectionPolicy: "Inspect and verify item condition at your doorstep prior to cash handover.",
+      inspectionPolicy: "Doorstep inspection enabled. Review your parcel prior to cash payment.",
       thresholdForFree: 50.0
     };
   }
@@ -74,17 +74,17 @@ export abstract class AbstractStoreTemplate implements IStoreTemplate {
     return [
       {
         iconName: "Truck",
-        title: "48h Dispatch & Tracking",
-        subtitle: "Automated SMS & courier tracking from local fulfillment center"
+        title: "Express 48h Dispatch",
+        subtitle: "Real-time SMS & courier tracking from fulfillment center"
       },
       {
         iconName: "ShieldCheck",
         title: "Doorstep Cash on Delivery",
-        subtitle: "Zero online payment friction — verify parcel before tender"
+        subtitle: "Inspect items in person before completing tender"
       },
       {
         iconName: "RotateCcw",
-        title: "7-Day Exchange Window",
+        title: "7-Day Complimentary Exchange",
         subtitle: "Hassle-free doorstep courier swap for alternative sizing"
       }
     ];
@@ -92,9 +92,9 @@ export abstract class AbstractStoreTemplate implements IStoreTemplate {
 
   public getAnnouncementHighlights(): AnnouncementHighlights {
     return {
-      leading: "📦 Guaranteed 48-Hour Dispatch",
-      center: "🚚 FREE Express Shipping over $50 • Cash on Delivery Available Nationwide",
-      trailing: "🛡️ 100% Authentic Quality Guaranteed"
+      leading: "Complimentary 48-Hour Dispatch",
+      center: "Free nationwide delivery on orders over $50 • Cash on delivery available",
+      trailing: "Authenticity Guaranteed"
     };
   }
 

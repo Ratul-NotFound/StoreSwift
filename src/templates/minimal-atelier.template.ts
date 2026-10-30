@@ -23,29 +23,29 @@ export class MinimalAtelierTemplate extends AbstractStoreTemplate {
     fontDisplay: "font-sans tracking-tight",
     borderRadius: "rounded-xl",
     heroStyle: "split",
-    cardElevation: "shadow-subtle hover:shadow-card",
-    badgeStyle: "bg-zinc-900 text-white uppercase text-[10px] tracking-wider"
+    cardElevation: "shadow-none hover:shadow-subtle",
+    badgeStyle: "bg-zinc-100 text-zinc-900 text-[10px] font-medium tracking-wider uppercase border border-zinc-200"
   };
 
   readonly classes: StoreTemplateClasses = {
-    pageBg: "bg-white text-zinc-900 selection:bg-zinc-950 selection:text-white",
-    headerBg: "bg-white/90 backdrop-blur-md border-b border-zinc-200/90 text-zinc-900",
-    navPillBg: "bg-white/95 border-b border-zinc-200/70",
-    toolbarBg: "bg-white border-zinc-200/90",
-    lookbookBg: "bg-zinc-50 border-y border-zinc-200 text-zinc-900",
+    pageBg: "bg-white text-zinc-900 selection:bg-zinc-900 selection:text-white",
+    headerBg: "bg-white/80 backdrop-blur-md border-b border-zinc-200/80 text-zinc-900",
+    navPillBg: "bg-white/90 backdrop-blur-md border-b border-zinc-200/60",
+    toolbarBg: "bg-zinc-50/80 backdrop-blur-sm border border-zinc-200/80",
+    lookbookBg: "bg-zinc-50 border-y border-zinc-200/80 text-zinc-900",
     heroSection: "bg-white border-b border-zinc-200/80 text-zinc-900",
-    heroBadge: "bg-zinc-900 text-white border-zinc-800",
-    heroTitle: "text-zinc-950 font-black tracking-tight",
-    heroSubtitle: "text-zinc-500",
-    editorialTag: "font-mono text-[10px] tracking-[0.25em] uppercase text-zinc-400",
-    productCard: "bg-white border-zinc-200 hover:border-zinc-900 transition-all duration-300",
+    heroBadge: "bg-zinc-100 text-zinc-800 border-zinc-200/90",
+    heroTitle: "text-zinc-950 font-bold tracking-tight",
+    heroSubtitle: "text-zinc-500 font-normal",
+    editorialTag: "font-mono text-[10px] tracking-[0.2em] uppercase text-zinc-400 font-medium",
+    productCard: "bg-white border-zinc-200/80 hover:border-zinc-900/40 transition-all duration-300",
     productCardImg: "rounded-lg",
-    primaryButton: "bg-zinc-900 hover:bg-zinc-800 text-white shadow-sm font-bold",
-    secondaryButton: "bg-white border-zinc-200 hover:bg-zinc-50 text-zinc-900 font-semibold",
-    pillActive: "bg-zinc-900 text-white shadow-sm ring-1 ring-zinc-900",
-    pillInactive: "bg-zinc-100 hover:bg-zinc-200 text-zinc-700",
+    primaryButton: "bg-zinc-900 hover:bg-zinc-800 text-white font-medium shadow-none",
+    secondaryButton: "bg-transparent border border-zinc-200 hover:bg-zinc-50 text-zinc-900 font-medium",
+    pillActive: "bg-zinc-900 text-white font-medium shadow-none",
+    pillInactive: "bg-zinc-100 hover:bg-zinc-200/70 text-zinc-600 font-medium",
     accentText: "text-zinc-900",
-    announcementBar: "bg-zinc-950 text-zinc-300 border-b border-zinc-800",
+    announcementBar: "bg-zinc-950 text-zinc-300 border-b border-zinc-900",
     featureCard: "bg-zinc-50 border-zinc-200/70",
     spotlightBanner: "bg-zinc-900 text-white border-zinc-800"
   };
@@ -59,28 +59,27 @@ export class MinimalAtelierTemplate extends AbstractStoreTemplate {
   }
 
   public getCuratedCollectionTitle(): string {
-    return "THE CURATED LOOKBOOK EDIT // 2026";
+    return "Curated Atelier Edit • 2026 Archive";
   }
 
   public getBrandSignature(): string {
-    return "Atelier Verified • 280 GSM Organic Cotton & Kurabo Raw Selvedge";
+    return "Atelier Verified • 280 GSM Combed Cotton & Kurabo Raw Selvedge";
   }
 
   public override getAnnouncementHighlights(): AnnouncementHighlights {
     return {
-      leading: "📦 48-Hour Dispatch From Atelier",
-      center: "🚚 COMPLIMENTARY EXPRESS DELIVERY OVER $50 • CASH ON DELIVERY WELCOME",
-      trailing: "🛡️ 100% Certified Organic Yarns"
+      leading: "48h Dispatch From Atelier",
+      center: "Complimentary express delivery over $50 • Cash on delivery welcome",
+      trailing: "Certified Organic Yarns"
     };
   }
 
   public formatHeroBadge(categoryName: string): string {
-    return `${categoryName.toUpperCase()} // ARCHIVE 2026`;
+    return `Archive 2026 • ${categoryName}`;
   }
 
   public formatProductBadge(rawBadge?: string): string {
-    if (!rawBadge) return "ARCHIVE";
-    return `[ ${rawBadge.toUpperCase()} ]`;
+    return rawBadge || "Atelier Edition";
   }
 
   public getManifestoPillars(): TrustManifestoItem[] {

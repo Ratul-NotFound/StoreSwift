@@ -89,30 +89,30 @@ describe("OOP Storefront Templates & Factory System", () => {
     expect(fallbackUnknown).toBeInstanceOf(MinimalAtelierTemplate);
   });
 
-  it("polymorphically formats hero badges and product badges according to template personality", () => {
+  it("polymorphically formats hero badges and product badges according to clean minimalist personality", () => {
     const minimal = TemplateFactory.getTemplate("minimal");
-    expect(minimal.formatHeroBadge("Fashion")).toBe("FASHION // ARCHIVE 2026");
-    expect(minimal.formatProductBadge("Essential")).toBe("[ ESSENTIAL ]");
+    expect(minimal.formatHeroBadge("Fashion")).toBe("Archive 2026 • Fashion");
+    expect(minimal.formatProductBadge("Essential")).toBe("Essential");
 
     const glow = TemplateFactory.getTemplate("glow");
-    expect(glow.formatHeroBadge("Skincare")).toBe("DERMATOLOGIST CLINICALLY FORMULATED // SKINCARE");
-    expect(glow.formatProductBadge("Hydrating")).toBe("✨ HYDRATING");
+    expect(glow.formatHeroBadge("Skincare")).toBe("Clinical Botanical Formula • Skincare");
+    expect(glow.formatProductBadge("Hydrating")).toBe("Hydrating");
 
     const cyber = TemplateFactory.getTemplate("bold");
-    expect(cyber.formatHeroBadge("Audio")).toBe("MIL-SPEC HARDWARE // AUDIO TELEMETRY");
-    expect(cyber.formatProductBadge("Titanium")).toBe("// TITANIUM //");
+    expect(cyber.formatHeroBadge("Audio")).toBe("Precision Hardware • Audio");
+    expect(cyber.formatProductBadge("Titanium")).toBe("Titanium");
 
     const artisan = TemplateFactory.getTemplate("artisan");
-    expect(artisan.formatHeroBadge("Leather")).toBe("MASTER BENCH CRAFT • LEATHER EDITIONS");
-    expect(artisan.formatProductBadge("Goodyear Welt")).toBe("★ GOODYEAR WELT ★");
+    expect(artisan.formatHeroBadge("Leather")).toBe("Bench-Crafted Heritage • Leather");
+    expect(artisan.formatProductBadge("Goodyear Welt")).toBe("Goodyear Welt");
 
     const maison = TemplateFactory.getTemplate("maison");
-    expect(maison.formatHeroBadge("Jewelry")).toBe("MAISON HAUTE JOAILLERIE // JEWELRY ARCHIVE");
-    expect(maison.formatProductBadge("18k Gold")).toBe("◆ 18K GOLD ◆");
+    expect(maison.formatHeroBadge("Jewelry")).toBe("Fine Horology & High Jewelry • Jewelry");
+    expect(maison.formatProductBadge("18k Gold")).toBe("18k Gold");
 
     const pantry = TemplateFactory.getTemplate("pantry");
-    expect(pantry.formatHeroBadge("Coffee")).toBe("DIRECT FARMSTEAD PROVISIONS • COFFEE");
-    expect(pantry.formatProductBadge("Single Origin")).toBe("🌿 SINGLE ORIGIN");
+    expect(pantry.formatHeroBadge("Coffee")).toBe("Regenerative Organic Farmstead • Coffee");
+    expect(pantry.formatProductBadge("Single Origin")).toBe("Single Origin");
   });
 
   it("generates distinct, industry-tailored manifesto pillars for all templates", () => {
@@ -148,7 +148,7 @@ describe("OOP Storefront Templates & Factory System", () => {
     expect(tmpl.calculateDiscount(50, 50)).toBe(0);
     expect(tmpl.calculateDiscount(60, 40)).toBe(0);
 
-    expect(tmpl.getScarcityUrgency(3)).toContain("Only 3 units remaining");
+    expect(tmpl.getScarcityUrgency(3)).toContain("Only 3 units left in stock");
 
     const shipping = tmpl.getShippingPolicy();
     expect(shipping.dispatchHours).toBe(48);
@@ -164,7 +164,7 @@ describe("OOP Storefront Templates & Factory System", () => {
     expect(json.primaryColor).toBe("#be185d");
     expect(json.vibe.heroStyle).toBe("luminous");
     expect(json.classes.pageBg).toBeDefined();
-    expect(json.curatedTitle).toBe("CLINICAL BOTANICAL PROTOCOLS // 2026");
+    expect(json.curatedTitle).toBe("Clinical Botanical Protocols • 2026 Collection");
     expect(json.brandSignature).toContain("Clean Formulations");
   });
 });
