@@ -166,5 +166,33 @@ describe("OOP Storefront Templates & Factory System", () => {
     expect(json.classes.pageBg).toBeDefined();
     expect(json.curatedTitle).toBe("Clinical Botanical Protocols • 2026 Collection");
     expect(json.brandSignature).toContain("Clean Formulations");
+    expect(json.psychology).toBeDefined();
+    expect(json.psychology.doorstepChecklist.length).toBe(3);
+  });
+
+  it("provides tailored category context psychology and doorstep inspection checklists for each template", () => {
+    const minimalPsych = TemplateFactory.getTemplate("minimal").getCategoryPsychology();
+    expect(minimalPsych.keySpecHighlight).toContain("280 GSM");
+    expect(minimalPsych.doorstepChecklist.length).toBe(3);
+
+    const glowPsych = TemplateFactory.getTemplate("glow").getCategoryPsychology();
+    expect(glowPsych.keySpecHighlight).toContain("Clinical Bio-Actives");
+    expect(glowPsych.primaryBuyerFear).toContain("allergic skin reactions");
+
+    const cyberPsych = TemplateFactory.getTemplate("bold").getCategoryPsychology();
+    expect(cyberPsych.keySpecHighlight).toContain("CNC Billet");
+    expect(cyberPsych.reassurancePledge).toContain("2-year advance hardware swap");
+
+    const artisanPsych = TemplateFactory.getTemplate("artisan").getCategoryPsychology();
+    expect(artisanPsych.keySpecHighlight).toContain("Goodyear Welt");
+    expect(artisanPsych.primaryBuyerFear).toContain("blistering");
+
+    const maisonPsych = TemplateFactory.getTemplate("maison").getCategoryPsychology();
+    expect(maisonPsych.keySpecHighlight).toContain("18K Gold");
+    expect(maisonPsych.doorstepChecklist[0]).toContain("Assay Office");
+
+    const pantryPsych = TemplateFactory.getTemplate("pantry").getCategoryPsychology();
+    expect(pantryPsych.keySpecHighlight).toContain("Organic");
+    expect(pantryPsych.doorstepChecklist[0]).toContain("roast or estate harvest timestamp");
   });
 });

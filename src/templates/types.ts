@@ -72,6 +72,13 @@ export interface AnnouncementHighlights {
   trailing: string;
 }
 
+export interface CategoryPsychology {
+  primaryBuyerFear: string;
+  reassurancePledge: string;
+  doorstepChecklist: string[];
+  keySpecHighlight: string;
+}
+
 export interface IStoreTemplate {
   readonly id: StoreTemplateId;
   readonly name: string;
@@ -96,10 +103,11 @@ export interface IStoreTemplate {
   getProductCardAspect(): string;
   getHeroLayoutType(): "architectural" | "ethereal" | "cyber" | "heritage" | "opulent" | "organic";
 
-  // E-commerce customer experience extensions
+  // E-commerce customer experience & psychological context
   getTrustGuarantees(): TrustGuarantee[];
   getShippingPolicy(): ShippingPolicy;
   getAnnouncementHighlights(): AnnouncementHighlights;
   getCuratedCollectionTitle(): string;
   getBrandSignature(): string;
+  getCategoryPsychology(): CategoryPsychology;
 }

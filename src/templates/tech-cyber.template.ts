@@ -5,7 +5,8 @@ import {
   StoreTemplateClasses,
   TrustManifestoItem,
   DesignPhilosophy,
-  AnnouncementHighlights
+  AnnouncementHighlights,
+  CategoryPsychology
 } from "./types";
 
 export class TechCyberTemplate extends AbstractStoreTemplate {
@@ -64,6 +65,19 @@ export class TechCyberTemplate extends AbstractStoreTemplate {
 
   public getBrandSignature(): string {
     return "Aviation CNC Aluminum • Custom Open-Source Firmware & Mil-Spec QC";
+  }
+
+  public getCategoryPsychology(): CategoryPsychology {
+    return {
+      primaryBuyerFear: "Counterfeit silicon, gray-market units, and post-purchase component failure.",
+      reassurancePledge: "Factory-sealed units with serial-tracked certificates and 2-year advance hardware swap warranty.",
+      doorstepChecklist: [
+        "Verify untampered manufacturer security seal on outer anti-static carton",
+        "Cross-reference printed chassis serial against official delivery manifest",
+        "Inspect anodized aluminum bevels and port connectors for zero machining defects"
+      ],
+      keySpecHighlight: "6063 CNC Billet Aluminum • Gold Contacts • 2-Year Warranty"
+    };
   }
 
   public override getAnnouncementHighlights(): AnnouncementHighlights {

@@ -5,7 +5,8 @@ import {
   StoreTemplateClasses,
   TrustManifestoItem,
   DesignPhilosophy,
-  AnnouncementHighlights
+  AnnouncementHighlights,
+  CategoryPsychology
 } from "./types";
 
 export class ArtisanPantryTemplate extends AbstractStoreTemplate {
@@ -64,6 +65,19 @@ export class ArtisanPantryTemplate extends AbstractStoreTemplate {
 
   public getBrandSignature(): string {
     return "100% Certified Organic • Single-Origin Micro-Lots & Home Compostable Bags";
+  }
+
+  public getCategoryPsychology(): CategoryPsychology {
+    return {
+      primaryBuyerFear: "Stale oxidation, unverified pesticide claims, and artificial bulk adulteration.",
+      reassurancePledge: "Micro-lot drum roasted within 48h of dispatch with single-origin farmgate traceability and aroma doorstep check.",
+      doorstepChecklist: [
+        "Verify the stamped micro-lot drum roast or estate harvest timestamp",
+        "Inspect the vacuum one-way degassing valve and hermetic pouch seal",
+        "Confirm direct-trade cooperative origin certificate printed on reverse"
+      ],
+      keySpecHighlight: "100% Certified Organic • Single-Origin • Freshly Roasted Within 48h"
+    };
   }
 
   public override getAnnouncementHighlights(): AnnouncementHighlights {

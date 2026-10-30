@@ -5,7 +5,8 @@ import {
   StoreTemplateClasses,
   TrustManifestoItem,
   DesignPhilosophy,
-  AnnouncementHighlights
+  AnnouncementHighlights,
+  CategoryPsychology
 } from "./types";
 
 export class WarmHeritageTemplate extends AbstractStoreTemplate {
@@ -64,6 +65,19 @@ export class WarmHeritageTemplate extends AbstractStoreTemplate {
 
   public getBrandSignature(): string {
     return "Goodyear Storm Welt • Horween Chromexcel Leather & Vibram Lug Soles";
+  }
+
+  public getCategoryPsychology(): CategoryPsychology {
+    return {
+      primaryBuyerFear: "Instep blistering, rigid unyielding sizing, and cheap unresolable cemented soles.",
+      reassurancePledge: "Hand-lasted 360° Goodyear welts that mold to your footprint with try-before-you-pay doorstep fit trial.",
+      doorstepChecklist: [
+        "Step onto indoor carpet to confirm heel-cup lock and instep comfort",
+        "Inspect the thick Horween Chromexcel pull-up leather grain and pull-tab welt",
+        "Verify genuine Goodyear storm welting along the sole perimeter for recrafting"
+      ],
+      keySpecHighlight: "Horween Pull-Up Leather • 360° Goodyear Welt • Vibram Outsole"
+    };
   }
 
   public override getAnnouncementHighlights(): AnnouncementHighlights {

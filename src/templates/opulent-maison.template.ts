@@ -5,7 +5,8 @@ import {
   StoreTemplateClasses,
   TrustManifestoItem,
   DesignPhilosophy,
-  AnnouncementHighlights
+  AnnouncementHighlights,
+  CategoryPsychology
 } from "./types";
 
 export class OpulentMaisonTemplate extends AbstractStoreTemplate {
@@ -64,6 +65,19 @@ export class OpulentMaisonTemplate extends AbstractStoreTemplate {
 
   public getBrandSignature(): string {
     return "Solid 18K Heavy Vermeil • GIA Certified Conflict-Free Stones & Swiss Calibers";
+  }
+
+  public getCategoryPsychology(): CategoryPsychology {
+    return {
+      primaryBuyerFear: "Base metals posing as precious gold, simulated stones, and transit interception.",
+      reassurancePledge: "Official Assay Office hallmarks, individual GIA diamond dossiers, and discreet sealed armored courier handover.",
+      doorstepChecklist: [
+        "Examine the laser-inscribed Assay Office metal purity stamp (18k / 750)",
+        "Review the included tamper-evident GIA / Horological grading dossier",
+        "Inspect the stone bezel setting and sapphire crystal clarity under natural light"
+      ],
+      keySpecHighlight: "Solid 18K Gold Vermeil • GIA Laser-Inscribed • Domed Sapphire Crystal"
+    };
   }
 
   public override getAnnouncementHighlights(): AnnouncementHighlights {

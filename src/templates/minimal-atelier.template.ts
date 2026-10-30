@@ -5,7 +5,8 @@ import {
   StoreTemplateClasses,
   TrustManifestoItem,
   DesignPhilosophy,
-  AnnouncementHighlights
+  AnnouncementHighlights,
+  CategoryPsychology
 } from "./types";
 
 export class MinimalAtelierTemplate extends AbstractStoreTemplate {
@@ -64,6 +65,19 @@ export class MinimalAtelierTemplate extends AbstractStoreTemplate {
 
   public getBrandSignature(): string {
     return "Atelier Verified • 280 GSM Combed Cotton & Kurabo Raw Selvedge";
+  }
+
+  public getCategoryPsychology(): CategoryPsychology {
+    return {
+      primaryBuyerFear: "Sizing uncertainty, stiff or sheer fabric, and difficult exchange hassles.",
+      reassurancePledge: "Pre-shrunk certified organic yarns with door-to-door complimentary size exchange.",
+      doorstepChecklist: [
+        "Feel the heavy 280 GSM cotton hand-weight and tight knit structure",
+        "Inspect the drop-shoulder silhouette and collar drape in person",
+        "Verify internal wash-care label and authentic atelier stitch count"
+      ],
+      keySpecHighlight: "280 GSM Long-Staple Combed Cotton • Kurabo Mill Selvedge"
+    };
   }
 
   public override getAnnouncementHighlights(): AnnouncementHighlights {

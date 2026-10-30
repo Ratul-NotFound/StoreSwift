@@ -5,7 +5,8 @@ import {
   StoreTemplateClasses,
   TrustManifestoItem,
   DesignPhilosophy,
-  AnnouncementHighlights
+  AnnouncementHighlights,
+  CategoryPsychology
 } from "./types";
 
 export class LuxeGlowTemplate extends AbstractStoreTemplate {
@@ -64,6 +65,19 @@ export class LuxeGlowTemplate extends AbstractStoreTemplate {
 
   public getBrandSignature(): string {
     return "Clean Formulations • Hypoallergenic, Vegan & Cruelty-Free Verified";
+  }
+
+  public getCategoryPsychology(): CategoryPsychology {
+    return {
+      primaryBuyerFear: "Pore clogging, allergic skin reactions, and unverified expired formulas.",
+      reassurancePledge: "Dermatologist patch-tested, 100% non-comedogenic formulas with cold-chain freshness protection.",
+      doorstepChecklist: [
+        "Check the tamper-evident security foil seal on the applicator",
+        "Inspect the embossed lot code and production freshness timestamp",
+        "Verify pharmaceutical-grade amber glass packaging with zero leakage"
+      ],
+      keySpecHighlight: "Clinical Bio-Actives • 0% Parabens, Phthalates & Silicones"
+    };
   }
 
   public override getAnnouncementHighlights(): AnnouncementHighlights {

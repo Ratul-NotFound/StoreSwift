@@ -544,6 +544,30 @@ export default function TenantStorefrontPage({
         </div>
       </section>
 
+      {/* Category Buyer Psychology & Doorstep Inspection Reassurance Bar */}
+      {(() => {
+        const psych = template.getCategoryPsychology();
+        return (
+          <div className="border-b border-current/10 py-3.5 px-4 sm:px-6 bg-black/[0.015] dark:bg-white/[0.015]">
+            <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 text-xs">
+              <div className="flex items-center space-x-2">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                <span className="font-semibold text-zinc-900 dark:text-zinc-100">{psych.reassurancePledge}</span>
+              </div>
+              <div className="flex flex-wrap items-center gap-x-3.5 gap-y-1 text-[11px] opacity-75 font-mono">
+                <span className="opacity-50 font-bold">INSPECTION CHECKLIST:</span>
+                {psych.doorstepChecklist.map((item, i) => (
+                  <span key={i} className="flex items-center space-x-1">
+                    <span className="text-emerald-600 font-bold">0{i + 1}.</span>
+                    <span>{item}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
       {/* Weekly Spotlight Limited Drop */}
       {products[0] && (
         <SpotlightDrop

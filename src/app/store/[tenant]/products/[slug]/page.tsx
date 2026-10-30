@@ -269,6 +269,10 @@ export default function ProductDetailPage({
               <p className="mt-4 text-xs opacity-75 leading-relaxed">
                 {matchingProduct.description}
               </p>
+              <div className="mt-3.5 p-2.5 rounded-xl bg-black/[0.02] dark:bg-white/[0.02] border border-current/10 flex items-center space-x-2 text-[11px] opacity-90 font-medium">
+                <Sparkles className="w-3.5 h-3.5 text-blue-500 flex-shrink-0" />
+                <span>{template.getCategoryPsychology().keySpecHighlight}</span>
+              </div>
 
               {/* Variant Matrix Selector */}
               {matchingVariants.length > 0 && (
@@ -412,16 +416,42 @@ export default function ProductDetailPage({
                 </p>
               </div>
             )}
-            {activeTab === "shipping" && (
-              <div className="space-y-2">
-                <p>
-                  <strong>{template.getShippingPolicy().dispatchHours}-Hour Express Dispatch:</strong> Priority order handling with automated courier SMS tracking.
-                </p>
-                <p>
-                  <strong>Cash on Delivery (COD):</strong> {template.getShippingPolicy().inspectionPolicy}
-                </p>
-              </div>
-            )}
+            {activeTab === "shipping" && (() => {
+              const policy = template.getShippingPolicy();
+              const psych = template.getCategoryPsychology();
+              return (
+                <div className="space-y-3.5">
+                  <div className="space-y-1.5">
+                    <p>
+                      <strong>{policy.dispatchHours}-Hour Express Dispatch:</strong> Priority order handling with automated courier SMS tracking.
+                    </p>
+                    <p>
+                      <strong>Cash on Delivery (COD):</strong> {policy.inspectionPolicy}
+                    </p>
+                    <p>
+                      <strong>Reassurance Guarantee:</strong> {psych.reassurancePledge}
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl border border-current/10 bg-black/[0.02] dark:bg-white/[0.02] space-y-2">
+                    <div className="flex items-center space-x-1.5 text-xs font-bold">
+                      <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                      <span>Doorstep Quality Inspection Checklist (Before Tender)</span>
+                    </div>
+                    <ul className="space-y-1.5 text-[11px] opacity-80">
+                      {psych.doorstepChecklist.map((step, idx) => (
+                        <li key={idx} className="flex items-start space-x-2">
+                          <span className="font-mono text-[9px] bg-emerald-500/10 text-emerald-600 font-bold rounded px-1.5 py-0.5 mt-0.5">
+                            0{idx + 1}
+                          </span>
+                          <span>{step}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              );
+            })()}
             {activeTab === "reviews" && (
               <div className="space-y-3">
                 <div className="p-3 rounded-xl border border-current/10 bg-black/5 dark:bg-white/5 space-y-1">

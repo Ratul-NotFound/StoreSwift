@@ -7,7 +7,8 @@ import {
   DesignPhilosophy,
   TrustGuarantee,
   ShippingPolicy,
-  AnnouncementHighlights
+  AnnouncementHighlights,
+  CategoryPsychology
 } from "./types";
 
 export abstract class AbstractStoreTemplate implements IStoreTemplate {
@@ -31,6 +32,7 @@ export abstract class AbstractStoreTemplate implements IStoreTemplate {
   abstract getHeroLayoutType(): "architectural" | "ethereal" | "cyber" | "heritage" | "opulent" | "organic";
   abstract getCuratedCollectionTitle(): string;
   abstract getBrandSignature(): string;
+  abstract getCategoryPsychology(): CategoryPsychology;
 
   // Base methods with robust default implementations (can be overridden polymorphically)
   public formatPrice(price: number, currency: string = "USD"): string {
@@ -116,7 +118,8 @@ export abstract class AbstractStoreTemplate implements IStoreTemplate {
       classes: this.classes,
       curatedTitle: this.getCuratedCollectionTitle(),
       brandSignature: this.getBrandSignature(),
-      shippingPolicy: this.getShippingPolicy()
+      shippingPolicy: this.getShippingPolicy(),
+      psychology: this.getCategoryPsychology()
     };
   }
 }
