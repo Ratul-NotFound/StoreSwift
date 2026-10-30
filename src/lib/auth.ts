@@ -8,10 +8,16 @@ export interface SessionPayload {
   role: string;
 }
 
-const DEFAULT_SECRET = process.env.AUTH_SECRET || "default-launchcommerce-secret-key-32chars";
+function getSecret(customSecret?: string): string {
+  const secret = customSecret || process.env.AUTH_SECRET;
+  if (!secret) {
+    throw new Error("AUTH_SECRET environment variable must be set");
+  }
+  return secret;
+}
 
 export async function hashPassword(password: string): Promise<string> {
-  const salt = await bcrypt.genSalt(10);
+  const salt = await bcrypt.genSalt(12);
   return bcrypt.hash(password, salt);
 }
 
@@ -19,13 +25,15 @@ export async function comparePassword(password: string, hash: string): Promise<b
   return bcrypt.compare(password, hash);
 }
 
-export function signSessionToken(payload: SessionPayload, secret = DEFAULT_SECRET): string {
-  return jwt.sign(payload, secret, { expiresIn: "7d" });
+export function signSessionToken(payload: SessionPayload, secret?: string): string {
+  return jwt.sign(payload, getSecret(secret), { expiresIn: "7d" });
 }
 
-export function verifySessionToken(token: string, secret = DEFAULT_SECRET): SessionPayload | null {
+export function verifySessionToken(token: string, secret?: string): SessionPayload | null {
   try {
-    const decoded = jwt.verify(token, secret) as SessionPayload;
+    const key = secret || process.env.AUTH_SECRET;
+    if (!key) return null;
+    const decoded = jwt.verify(token, key) as SessionPayload;
     if (decoded && decoded.userId && decoded.storeId) {
       return {
         userId: decoded.userId,
@@ -39,4 +47,3 @@ export function verifySessionToken(token: string, secret = DEFAULT_SECRET): Sess
     return null;
   }
 }
-

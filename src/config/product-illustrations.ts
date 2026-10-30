@@ -156,3 +156,4 @@ function getCentralGraphic(type: string): string {
       `;
   }
 }
+

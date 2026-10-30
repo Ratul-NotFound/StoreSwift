@@ -12,12 +12,59 @@ export const RESERVED_SUBDOMAINS = new Set([
   "sys",
   "system",
   "test",
-  "www"
+  "www",
+  // Core infrastructure & eCommerce reserved slugs
+  "store",
+  "checkout",
+  "cart",
+  "pay",
+  "payment",
+  "payments",
+  "webhook",
+  "webhooks",
+  "login",
+  "register",
+  "signup",
+  "signin",
+  "logout",
+  "settings",
+  "help",
+  "about",
+  "legal",
+  "privacy",
+  "terms",
+  "blog",
+  "cdn",
+  "static",
+  "assets",
+  "media",
+  "images",
+  "files",
+  "null",
+  "undefined",
+  "localhost",
+  "admin-api",
+  "status",
+  "health",
+  "ping",
+  "robots",
+  "sitemap",
+  "security",
+  "abuse",
+  "superadmin",
+  "super-admin",
+  "staff",
+  "internal",
+  "ops",
+  "dev",
+  "staging",
+  "beta"
 ]);
 
 export function isReservedSlug(slug: string): boolean {
   if (!slug) return true;
   const clean = slug.trim().toLowerCase();
+  if (clean.length < 3 || clean.length > 63) return true;
+  if (clean.startsWith("-") || clean.endsWith("-")) return true;
   return RESERVED_SUBDOMAINS.has(clean);
 }
-

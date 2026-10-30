@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { verifySessionTokenEdge } from "./lib/auth-edge";
 
 export type RouteTarget = "platform" | "admin" | "store";
 
@@ -28,10 +29,31 @@ export function resolveTenantFromHost(host: string, rootDomain = "platform.com")
   return { type: "store", tenantSlug: cleanHost };
 }
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const host = request.headers.get("host") || "platform.com";
   const url = request.nextUrl.clone();
   const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "platform.com";
+
+  // ─── JWT Auth Guard for protected admin routes ─────────────────────
+  const protectedPaths = ["/admin", "/super-admin"];
+  const isProtected = protectedPaths.some((p) => url.pathname.startsWith(p));
+
+  if (isProtected) {
+    const token = request.cookies.get("ss_session")?.value;
+    const session = token ? await verifySessionTokenEdge(token) : null;
+
+    if (!session) {
+      const loginUrl = new URL("/login", request.url);
+      loginUrl.searchParams.set("redirect", url.pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+
+    if (url.pathname.startsWith("/super-admin") && session.role !== "super_admin") {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+  }
+
+  // ─── Tenant Host Routing ──────────────────────────────────────────
   const resolved = resolveTenantFromHost(host, rootDomain);
 
   // Rewriting internal routes for admin subdomain
