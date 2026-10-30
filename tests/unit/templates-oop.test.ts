@@ -168,6 +168,57 @@ describe("OOP Storefront Templates & Factory System", () => {
     expect(json.brandSignature).toContain("Clean Formulations");
     expect(json.psychology).toBeDefined();
     expect(json.psychology.doorstepChecklist.length).toBe(3);
+    expect(json.tabLabels).toBeDefined();
+    expect(json.tabLabels.desc).toBe("Formula & Active Potency");
+    expect(json.trustGuarantees.length).toBe(3);
+  });
+
+  it("provides vertical-specific product detail page tab labels across all 6 templates", () => {
+    const minimalTabs = TemplateFactory.getTemplate("minimal").getProductTabLabels();
+    expect(minimalTabs.desc).toBe("Drape & Tailoring Craft");
+    expect(minimalTabs.shipping).toBe("Atelier Dispatch & Sizing Guarantee");
+
+    const glowTabs = TemplateFactory.getTemplate("glow").getProductTabLabels();
+    expect(glowTabs.desc).toBe("Formula & Active Potency");
+    expect(glowTabs.shipping).toBe("Cold-Chain & Freshness Seal");
+
+    const cyberTabs = TemplateFactory.getTemplate("bold").getProductTabLabels();
+    expect(cyberTabs.desc).toBe("Hardware & Telemetry Specs");
+    expect(cyberTabs.shipping).toBe("Air Logistics & Serial Match");
+
+    const artisanTabs = TemplateFactory.getTemplate("artisan").getProductTabLabels();
+    expect(artisanTabs.desc).toBe("Leather Tannery & Lasting");
+    expect(artisanTabs.shipping).toBe("Conditioned Pack & Carpet Fit Trial");
+
+    const maisonTabs = TemplateFactory.getTemplate("maison").getProductTabLabels();
+    expect(maisonTabs.desc).toBe("Gemology & Hallmark Assay");
+    expect(maisonTabs.shipping).toBe("Armored Transit & Loupe Inspection");
+
+    const pantryTabs = TemplateFactory.getTemplate("pantry").getProductTabLabels();
+    expect(pantryTabs.desc).toBe("Single-Origin & Harvest Terroir");
+    expect(pantryTabs.shipping).toBe("Roast Batch Dispatch & Aroma Check");
+  });
+
+  it("provides polymorphic vertical trust guarantees with authentic buyer reassurance for all templates", () => {
+    const minimalGuarantees = TemplateFactory.getTemplate("minimal").getTrustGuarantees();
+    expect(minimalGuarantees.length).toBe(3);
+    expect(minimalGuarantees[0].title).toBe("48h Atelier Dispatch");
+    expect(minimalGuarantees[1].title).toBe("Doorstep Fit Inspection");
+
+    const glowGuarantees = TemplateFactory.getTemplate("glow").getTrustGuarantees();
+    expect(glowGuarantees[0].title).toBe("Cold-Chain Freshness");
+
+    const cyberGuarantees = TemplateFactory.getTemplate("bold").getTrustGuarantees();
+    expect(cyberGuarantees[0].title).toBe("100% Genuine Calibrated");
+
+    const artisanGuarantees = TemplateFactory.getTemplate("artisan").getTrustGuarantees();
+    expect(artisanGuarantees[0].title).toBe("Master Bench Lasted");
+
+    const maisonGuarantees = TemplateFactory.getTemplate("maison").getTrustGuarantees();
+    expect(maisonGuarantees[0].title).toBe("Assay Hallmark Certified");
+
+    const pantryGuarantees = TemplateFactory.getTemplate("pantry").getTrustGuarantees();
+    expect(pantryGuarantees[0].title).toBe("Single-Origin Drum Roasted");
   });
 
   it("provides tailored category context psychology and doorstep inspection checklists for each template", () => {

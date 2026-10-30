@@ -79,6 +79,12 @@ export interface CategoryPsychology {
   keySpecHighlight: string;
 }
 
+export interface ProductTabLabels {
+  desc: string;
+  shipping: string;
+  reviews: string;
+}
+
 export interface IStoreTemplate {
   readonly id: StoreTemplateId;
   readonly name: string;
@@ -110,4 +116,5 @@ export interface IStoreTemplate {
   getCuratedCollectionTitle(): string;
   getBrandSignature(): string;
   getCategoryPsychology(): CategoryPsychology;
+  getProductTabLabels(): ProductTabLabels;
 }

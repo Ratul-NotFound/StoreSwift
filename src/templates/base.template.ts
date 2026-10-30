@@ -8,7 +8,8 @@ import {
   TrustGuarantee,
   ShippingPolicy,
   AnnouncementHighlights,
-  CategoryPsychology
+  CategoryPsychology,
+  ProductTabLabels
 } from "./types";
 
 export abstract class AbstractStoreTemplate implements IStoreTemplate {
@@ -33,6 +34,7 @@ export abstract class AbstractStoreTemplate implements IStoreTemplate {
   abstract getCuratedCollectionTitle(): string;
   abstract getBrandSignature(): string;
   abstract getCategoryPsychology(): CategoryPsychology;
+  abstract getProductTabLabels(): ProductTabLabels;
 
   // Base methods with robust default implementations (can be overridden polymorphically)
   public formatPrice(price: number, currency: string = "USD"): string {
@@ -119,7 +121,9 @@ export abstract class AbstractStoreTemplate implements IStoreTemplate {
       curatedTitle: this.getCuratedCollectionTitle(),
       brandSignature: this.getBrandSignature(),
       shippingPolicy: this.getShippingPolicy(),
-      psychology: this.getCategoryPsychology()
+      psychology: this.getCategoryPsychology(),
+      tabLabels: this.getProductTabLabels(),
+      trustGuarantees: this.getTrustGuarantees()
     };
   }
 }

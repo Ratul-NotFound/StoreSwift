@@ -1,4 +1,5 @@
 import { Star, ShieldCheck, Heart } from "lucide-react";
+import { IStoreTemplate } from "@/templates/types";
 
 export interface ReviewItem {
   id: string;
@@ -48,22 +49,32 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
   }
 ];
 
-export function TestimonialsSection({ storeName }: { storeName: string }) {
+export function TestimonialsSection({
+  storeName,
+  template
+}: {
+  storeName: string;
+  template?: IStoreTemplate;
+}) {
+  const sectionBg = template ? template.classes.lookbookBg : "bg-zinc-50 border-t border-zinc-200/70";
+  const cardBg = template ? template.classes.productCard : "bg-white border-zinc-200/80";
+  const badgeClass = template ? template.classes.heroBadge : "bg-white border border-zinc-200 text-zinc-700 shadow-subtle";
+
   return (
-    <section className="py-14 bg-zinc-50 border-t border-zinc-200/70">
+    <section className={`py-14 transition-colors ${sectionBg}`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="text-center max-w-xl mx-auto mb-10 space-y-2">
-          <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white border border-zinc-200 text-zinc-700 shadow-subtle">
+          <div className={`inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-bold border ${badgeClass}`}>
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
             <span>Verified Customer Feedback</span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl font-black text-zinc-900 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-black tracking-tight">
             Loved by 10,000+ Happy Shoppers
           </h2>
 
-          <p className="text-xs sm:text-sm text-zinc-500 leading-relaxed">
+          <p className="text-xs sm:text-sm opacity-60 leading-relaxed">
             Real reviews from customers who purchased certified items from {storeName}.
           </p>
         </div>
@@ -73,7 +84,7 @@ export function TestimonialsSection({ storeName }: { storeName: string }) {
           {DEFAULT_REVIEWS.map((r) => (
             <div
               key={r.id}
-              className="bg-white rounded-2xl p-6 border border-zinc-200/80 shadow-subtle hover:shadow-card transition-all flex flex-col justify-between"
+              className={`rounded-2xl p-6 border shadow-subtle hover:shadow-card transition-all flex flex-col justify-between ${cardBg}`}
             >
               <div className="space-y-3">
                 {/* Rating stars & verified tag */}
@@ -84,29 +95,29 @@ export function TestimonialsSection({ storeName }: { storeName: string }) {
                     ))}
                   </div>
 
-                  <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full flex items-center space-x-1">
-                    <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                  <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/60 dark:border-emerald-800/60 px-2 py-0.5 rounded-full flex items-center space-x-1">
+                    <ShieldCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                     <span>Verified Buyer</span>
                   </span>
                 </div>
 
-                <h4 className="font-bold text-xs text-zinc-900 leading-snug">
+                <h4 className="font-bold text-xs leading-snug">
                   "{r.title}"
                 </h4>
 
-                <p className="text-xs text-zinc-600 leading-relaxed">
+                <p className="text-xs opacity-70 leading-relaxed">
                   {r.comment}
                 </p>
               </div>
 
               {/* Author footer */}
-              <div className="mt-6 pt-4 border-t border-zinc-100 flex items-center space-x-3">
+              <div className="mt-6 pt-4 border-t border-current/10 flex items-center space-x-3">
                 <div className={`w-8 h-8 rounded-full ${r.avatarBg} text-white font-bold text-xs flex items-center justify-center shadow-sm`}>
                   {r.author[0]}
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-zinc-900">{r.author}</p>
-                  <p className="text-[10px] text-zinc-400">{r.location} • {r.date}</p>
+                  <p className="text-xs font-bold">{r.author}</p>
+                  <p className="text-[10px] opacity-50">{r.location} • {r.date}</p>
                 </div>
               </div>
             </div>
@@ -116,4 +127,3 @@ export function TestimonialsSection({ storeName }: { storeName: string }) {
     </section>
   );
 }
-

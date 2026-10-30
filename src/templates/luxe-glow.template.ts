@@ -6,7 +6,9 @@ import {
   TrustManifestoItem,
   DesignPhilosophy,
   AnnouncementHighlights,
-  CategoryPsychology
+  CategoryPsychology,
+  ProductTabLabels,
+  TrustGuarantee
 } from "./types";
 
 export class LuxeGlowTemplate extends AbstractStoreTemplate {
@@ -78,6 +80,34 @@ export class LuxeGlowTemplate extends AbstractStoreTemplate {
       ],
       keySpecHighlight: "Clinical Bio-Actives • 0% Parabens, Phthalates & Silicones"
     };
+  }
+
+  public getProductTabLabels(): ProductTabLabels {
+    return {
+      desc: "Formula & Active Potency",
+      shipping: "Cold-Chain & Freshness Seal",
+      reviews: "Clinical & Patron Reviews (48)"
+    };
+  }
+
+  public override getTrustGuarantees(): TrustGuarantee[] {
+    return [
+      {
+        iconName: "Truck",
+        title: "Cold-Chain Freshness",
+        subtitle: "Temperature-stabilized handling preserving active bio-potency"
+      },
+      {
+        iconName: "ShieldCheck",
+        title: "Doorstep Foil Seal Check",
+        subtitle: "Inspect tamper-evident foil seal & lot code before payment"
+      },
+      {
+        iconName: "Sparkles",
+        title: "14-Day Glow Guarantee",
+        subtitle: "Visible epidermal hydration or unconditional exchange credit"
+      }
+    ];
   }
 
   public override getAnnouncementHighlights(): AnnouncementHighlights {

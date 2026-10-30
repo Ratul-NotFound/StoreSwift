@@ -198,16 +198,17 @@ export default function ProductDetailPage({
               </div>
             )}
 
-            {/* Quality & Trust Badges */}
-            <div className="grid grid-cols-2 gap-2 pt-2 text-[11px] opacity-75">
-              <div className="flex items-center space-x-2 p-2.5 rounded-xl border border-current/15 bg-black/5 dark:bg-white/5">
-                <ShieldCheck className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                <span className="font-medium">100% Genuine Origin</span>
-              </div>
-              <div className="flex items-center space-x-2 p-2.5 rounded-xl border border-current/15 bg-black/5 dark:bg-white/5">
-                <RotateCcw className="w-4 h-4 text-blue-500 flex-shrink-0" />
-                <span className="font-medium">7-Day Free Returns</span>
-              </div>
+            {/* Quality & Trust Badges (Polymorphic Template Guarantees) */}
+            <div className="grid grid-cols-2 gap-2 pt-2 text-[11px]">
+              {template.getTrustGuarantees().slice(0, 2).map((g, gi) => (
+                <div key={gi} className="flex items-center space-x-2 p-2.5 rounded-xl border border-current/15 bg-black/5 dark:bg-white/5">
+                  <ShieldCheck className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                  <div className="leading-tight">
+                    <span className="font-bold block text-[11px]">{g.title}</span>
+                    <span className="text-[10px] opacity-60 line-clamp-1">{g.subtitle}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -383,7 +384,7 @@ export default function ProductDetailPage({
                   : "opacity-50 hover:opacity-80"
               }`}
             >
-              Description & Craft
+              {template.getProductTabLabels().desc}
             </button>
             <button
               onClick={() => setActiveTab("shipping")}
@@ -393,7 +394,7 @@ export default function ProductDetailPage({
                   : "opacity-50 hover:opacity-80"
               }`}
             >
-              Shipping & COD Inspection
+              {template.getProductTabLabels().shipping}
             </button>
             <button
               onClick={() => setActiveTab("reviews")}
@@ -403,19 +404,33 @@ export default function ProductDetailPage({
                   : "opacity-50 hover:opacity-80"
               }`}
             >
-              Customer Reviews (48)
+              {template.getProductTabLabels().reviews}
             </button>
           </div>
 
           <div className="pt-4 text-xs opacity-75 leading-relaxed">
-            {activeTab === "desc" && (
-              <div className="space-y-2">
-                <p>{matchingProduct.description}</p>
-                <p>
-                  <strong>Craft Signature:</strong> {template.getBrandSignature()}
-                </p>
-              </div>
-            )}
+            {activeTab === "desc" && (() => {
+              const psych = template.getCategoryPsychology();
+              return (
+                <div className="space-y-3.5">
+                  <p className="leading-relaxed">{matchingProduct.description}</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                    <div className="p-3 rounded-xl border border-current/10 bg-black/[0.02] dark:bg-white/[0.02] space-y-1">
+                      <span className="text-[10px] font-mono uppercase tracking-wider opacity-60 block">Craft Signature</span>
+                      <p className="font-semibold text-xs">{template.getBrandSignature()}</p>
+                    </div>
+                    <div className="p-3 rounded-xl border border-current/10 bg-black/[0.02] dark:bg-white/[0.02] space-y-1">
+                      <span className="text-[10px] font-mono uppercase tracking-wider opacity-60 block">Key Verified Spec</span>
+                      <p className="font-semibold text-xs">{psych.keySpecHighlight}</p>
+                    </div>
+                  </div>
+                  <div className="p-3 rounded-xl border border-emerald-500/20 bg-emerald-500/5 text-xs space-y-1">
+                    <span className="font-bold text-emerald-700 dark:text-emerald-400 block">Reassurance Guarantee</span>
+                    <p className="text-[11px] opacity-80">{psych.reassurancePledge}</p>
+                  </div>
+                </div>
+              );
+            })()}
             {activeTab === "shipping" && (() => {
               const policy = template.getShippingPolicy();
               const psych = template.getCategoryPsychology();

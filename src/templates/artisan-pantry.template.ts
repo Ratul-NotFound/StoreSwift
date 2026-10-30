@@ -6,7 +6,9 @@ import {
   TrustManifestoItem,
   DesignPhilosophy,
   AnnouncementHighlights,
-  CategoryPsychology
+  CategoryPsychology,
+  ProductTabLabels,
+  TrustGuarantee
 } from "./types";
 
 export class ArtisanPantryTemplate extends AbstractStoreTemplate {
@@ -78,6 +80,34 @@ export class ArtisanPantryTemplate extends AbstractStoreTemplate {
       ],
       keySpecHighlight: "100% Certified Organic • Single-Origin • Freshly Roasted Within 48h"
     };
+  }
+
+  public getProductTabLabels(): ProductTabLabels {
+    return {
+      desc: "Single-Origin & Harvest Terroir",
+      shipping: "Roast Batch Dispatch & Aroma Check",
+      reviews: "Cupping Notes & Kitchen Reviews (48)"
+    };
+  }
+
+  public override getTrustGuarantees(): TrustGuarantee[] {
+    return [
+      {
+        iconName: "CheckCircle2",
+        title: "Single-Origin Drum Roasted",
+        subtitle: "Small batches roasted within 48h of order dispatch"
+      },
+      {
+        iconName: "ShieldCheck",
+        title: "Aroma Valve Doorstep Check",
+        subtitle: "Verify vacuum one-way valve & roast timestamp before tender"
+      },
+      {
+        iconName: "RotateCcw",
+        title: "Zero Landfill Packaging",
+        subtitle: "100% plant-fiber compostable pouches & recyclable amber UV glass"
+      }
+    ];
   }
 
   public override getAnnouncementHighlights(): AnnouncementHighlights {

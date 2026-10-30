@@ -6,7 +6,9 @@ import {
   TrustManifestoItem,
   DesignPhilosophy,
   AnnouncementHighlights,
-  CategoryPsychology
+  CategoryPsychology,
+  ProductTabLabels,
+  TrustGuarantee
 } from "./types";
 
 export class OpulentMaisonTemplate extends AbstractStoreTemplate {
@@ -78,6 +80,34 @@ export class OpulentMaisonTemplate extends AbstractStoreTemplate {
       ],
       keySpecHighlight: "Solid 18K Gold Vermeil • GIA Laser-Inscribed • Domed Sapphire Crystal"
     };
+  }
+
+  public getProductTabLabels(): ProductTabLabels {
+    return {
+      desc: "Gemology & Hallmark Assay",
+      shipping: "Armored Transit & Loupe Inspection",
+      reviews: "Collector Appraisals & Reviews (48)"
+    };
+  }
+
+  public override getTrustGuarantees(): TrustGuarantee[] {
+    return [
+      {
+        iconName: "ShieldCheck",
+        title: "Assay Hallmark Certified",
+        subtitle: "Laser-inscribed gemstone serials & official Assay metal stamps"
+      },
+      {
+        iconName: "Lock",
+        title: "Loupe Appraisal on Handover",
+        subtitle: "Inspect stones, settings & hallmarks prior to courier cash payment"
+      },
+      {
+        iconName: "Sparkles",
+        title: "Lifetime Fine Care",
+        subtitle: "Annual ultrasonic bath, prong tightening & timing regulation"
+      }
+    ];
   }
 
   public override getAnnouncementHighlights(): AnnouncementHighlights {

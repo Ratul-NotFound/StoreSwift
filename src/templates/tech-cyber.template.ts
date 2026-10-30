@@ -6,7 +6,9 @@ import {
   TrustManifestoItem,
   DesignPhilosophy,
   AnnouncementHighlights,
-  CategoryPsychology
+  CategoryPsychology,
+  ProductTabLabels,
+  TrustGuarantee
 } from "./types";
 
 export class TechCyberTemplate extends AbstractStoreTemplate {
@@ -78,6 +80,34 @@ export class TechCyberTemplate extends AbstractStoreTemplate {
       ],
       keySpecHighlight: "6063 CNC Billet Aluminum • Gold Contacts • 2-Year Warranty"
     };
+  }
+
+  public getProductTabLabels(): ProductTabLabels {
+    return {
+      desc: "Hardware & Telemetry Specs",
+      shipping: "Air Logistics & Serial Match",
+      reviews: "Operator Benchmarks & Reviews (48)"
+    };
+  }
+
+  public override getTrustGuarantees(): TrustGuarantee[] {
+    return [
+      {
+        iconName: "CheckCircle2",
+        title: "100% Genuine Calibrated",
+        subtitle: "Direct sealed manufacturer serial with verified certificate"
+      },
+      {
+        iconName: "ShieldCheck",
+        title: "Doorstep Security Tape",
+        subtitle: "Verify tamper-proof carton seals before cash handover"
+      },
+      {
+        iconName: "RotateCcw",
+        title: "2-Year Advance Swap",
+        subtitle: "Rapid advance replacement for any hardware defect"
+      }
+    ];
   }
 
   public override getAnnouncementHighlights(): AnnouncementHighlights {

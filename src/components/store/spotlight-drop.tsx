@@ -82,6 +82,10 @@ export function SpotlightDrop({
                 <Flame className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
                 <span>Weekly Spotlight Drop</span>
               </span>
+              <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-white/10 border border-white/20">
+                <Sparkles className="w-3.5 h-3.5 text-sky-400" />
+                <span>{template.getCategoryPsychology().keySpecHighlight.split("•")[0].trim()}</span>
+              </span>
 
               {/* Countdown Pills */}
               <div className="inline-flex items-center space-x-1.5 text-xs font-mono font-bold bg-black/40 px-3 py-1 rounded-full border border-white/10">
@@ -104,11 +108,11 @@ export function SpotlightDrop({
 
             {/* Price & Scarcity */}
             <div className="pt-2 flex items-baseline space-x-3">
-              <span className="text-3xl font-black text-white">${product.price.toFixed(2)}</span>
-              <span className="text-sm text-zinc-400 line-through">${product.comparePrice.toFixed(2)}</span>
-              <span className="text-xs font-semibold text-emerald-400 flex items-center space-x-1">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                <span>Limited Drop: Only 7 units allocated</span>
+              <span className="text-3xl font-black text-white">{template.formatPrice(product.price)}</span>
+              <span className="text-sm text-zinc-400 line-through">{template.formatPrice(product.comparePrice)}</span>
+              <span className="text-xs font-semibold text-emerald-400 flex items-center space-x-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span>{template.getScarcityUrgency(7)}</span>
               </span>
             </div>
 
@@ -148,7 +152,7 @@ export function SpotlightDrop({
                 className="py-3 px-6 bg-white hover:bg-zinc-100 text-zinc-950 font-extrabold text-xs rounded-xl shadow-lg transition flex items-center justify-center space-x-2 btn-press"
               >
                 <ShoppingBag className="w-4 h-4 text-zinc-950" />
-                <span>Claim Spotlight Drop • ${product.price.toFixed(2)}</span>
+                <span>Claim Spotlight Drop • {template.formatPrice(product.price)}</span>
               </button>
 
               <div className="flex items-center space-x-2 text-xs text-zinc-400 px-3 py-2">

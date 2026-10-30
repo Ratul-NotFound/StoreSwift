@@ -941,7 +941,7 @@ export default function TenantStorefrontPage({
       </main>
 
       {/* ─── Testimonials ────────────────────────────────────────────────── */}
-      <TestimonialsSection storeName={storeDisplayName} />
+      <TestimonialsSection storeName={storeDisplayName} template={template} />
 
       {/* ─── Search Modal ────────────────────────────────────────────────── */}
       <SearchModal

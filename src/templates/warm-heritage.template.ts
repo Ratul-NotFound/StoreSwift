@@ -6,7 +6,9 @@ import {
   TrustManifestoItem,
   DesignPhilosophy,
   AnnouncementHighlights,
-  CategoryPsychology
+  CategoryPsychology,
+  ProductTabLabels,
+  TrustGuarantee
 } from "./types";
 
 export class WarmHeritageTemplate extends AbstractStoreTemplate {
@@ -78,6 +80,34 @@ export class WarmHeritageTemplate extends AbstractStoreTemplate {
       ],
       keySpecHighlight: "Horween Pull-Up Leather • 360° Goodyear Welt • Vibram Outsole"
     };
+  }
+
+  public getProductTabLabels(): ProductTabLabels {
+    return {
+      desc: "Leather Tannery & Lasting",
+      shipping: "Conditioned Pack & Carpet Fit Trial",
+      reviews: "Guild Wearer Reviews (48)"
+    };
+  }
+
+  public override getTrustGuarantees(): TrustGuarantee[] {
+    return [
+      {
+        iconName: "CheckCircle2",
+        title: "Master Bench Lasted",
+        subtitle: "360° Goodyear storm welt with resoleable Vibram outsoles"
+      },
+      {
+        iconName: "ShieldCheck",
+        title: "Carpet Try-Before-Pay",
+        subtitle: "Test instep, heel lock & width on carpet before paying"
+      },
+      {
+        iconName: "RotateCcw",
+        title: "Lifetime Recrafting",
+        subtitle: "Return to atelier anytime for factory resoling & new lugs"
+      }
+    ];
   }
 
   public override getAnnouncementHighlights(): AnnouncementHighlights {

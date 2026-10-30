@@ -6,7 +6,9 @@ import {
   TrustManifestoItem,
   DesignPhilosophy,
   AnnouncementHighlights,
-  CategoryPsychology
+  CategoryPsychology,
+  ProductTabLabels,
+  TrustGuarantee
 } from "./types";
 
 export class MinimalAtelierTemplate extends AbstractStoreTemplate {
@@ -78,6 +80,34 @@ export class MinimalAtelierTemplate extends AbstractStoreTemplate {
       ],
       keySpecHighlight: "280 GSM Long-Staple Combed Cotton • Kurabo Mill Selvedge"
     };
+  }
+
+  public getProductTabLabels(): ProductTabLabels {
+    return {
+      desc: "Drape & Tailoring Craft",
+      shipping: "Atelier Dispatch & Sizing Guarantee",
+      reviews: "Patron Appraisals (48)"
+    };
+  }
+
+  public override getTrustGuarantees(): TrustGuarantee[] {
+    return [
+      {
+        iconName: "Truck",
+        title: "48h Atelier Dispatch",
+        subtitle: "Priority garment handling with automated courier SMS tracking"
+      },
+      {
+        iconName: "ShieldCheck",
+        title: "Doorstep Fit Inspection",
+        subtitle: "Inspect drape, hand-feel & stitch count before cash tender"
+      },
+      {
+        iconName: "RotateCcw",
+        title: "Door-to-Door Size Swap",
+        subtitle: "Complimentary courier swap for alternative sizing"
+      }
+    ];
   }
 
   public override getAnnouncementHighlights(): AnnouncementHighlights {
