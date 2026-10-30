@@ -88,3 +88,4 @@ describe("StoreSwift Core API Endpoints", () => {
     expect(data.totalAmount).toBe("90.00");
   });
 });
+

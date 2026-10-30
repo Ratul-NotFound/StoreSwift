@@ -15,9 +15,13 @@ import {
   RotateCcw,
   Sparkles,
   Lock,
-  ArrowRight
+  ArrowRight,
+  Flame
 } from "lucide-react";
 import { generateStoreSeedData } from "@/lib/seed-store";
+import { ProductJsonLd } from "@/components/seo/product-jsonld";
+import { useToast } from "@/components/ui/toast";
+import { trackEvent } from "@/lib/analytics";
 
 export default function ProductDetailPage({
   params
@@ -28,6 +32,8 @@ export default function ProductDetailPage({
   const tenantSlug = resolvedParams.tenant || "apex-fashion";
   const productSlug = resolvedParams.slug || "classic-cotton-tshirt";
 
+  const { success } = useToast();
+
   const seed = generateStoreSeedData(tenantSlug, "fashion");
   const matchingProduct =
     seed.products.find((p) => p.slug === productSlug) || seed.products[0];
@@ -37,26 +43,54 @@ export default function ProductDetailPage({
 
   const [selectedVariant, setSelectedVariant] = useState(matchingVariants[0] || null);
   const [quantity, setQuantity] = useState(1);
-  const [addedNotice, setAddedNotice] = useState(false);
   const [activeTab, setActiveTab] = useState<"desc" | "shipping" | "reviews">("desc");
-
-  const handleAddToCart = () => {
-    setAddedNotice(true);
-    setTimeout(() => setAddedNotice(false), 3000);
-  };
+  const [copiedLink, setCopiedLink] = useState(false);
 
   const currentPrice = selectedVariant
     ? parseFloat(selectedVariant.price)
     : parseFloat(matchingProduct.basePrice);
-
   const comparePrice = currentPrice * 1.35;
+  const isLowStock = selectedVariant && selectedVariant.inventoryQuantity <= 5;
+
+  const handleShare = () => {
+    if (typeof window !== "undefined") {
+      navigator.clipboard.writeText(window.location.href);
+      setCopiedLink(true);
+      success("Link Copied", "Product link copied to clipboard.");
+      setTimeout(() => setCopiedLink(false), 2000);
+    }
+  };
+
+  const handleAddToCart = () => {
+    trackEvent("add_to_cart", {
+      productSlug: matchingProduct.slug,
+      variantSku: selectedVariant?.sku,
+      quantity,
+      price: currentPrice
+    });
+
+    success(
+      "Added to Bag",
+      `${quantity}x ${matchingProduct.title} (${selectedVariant?.title || "Standard"}) added.`
+    );
+  };
 
   return (
     <div className="min-h-screen bg-[#fafafa] flex flex-col font-sans selection:bg-zinc-900 selection:text-white">
-      {/* Top Banner */}
-      <div className="bg-zinc-900 text-white text-[11px] py-2 px-4 text-center font-medium">
-        ⚡ Free Express Delivery on orders over $50 • Cash on Delivery accepted nationwide
-      </div>
+      {/* Schema.org Structured Data for SEO Rich Snippets */}
+      <ProductJsonLd
+        product={{
+          title: matchingProduct.title,
+          description: matchingProduct.description,
+          slug: matchingProduct.slug,
+          basePrice: currentPrice,
+          currency: "USD",
+          imageUrl: matchingProduct.imageUrl,
+          rating: matchingProduct.rating || 4.9,
+          inStock: (selectedVariant?.inventoryQuantity ?? 10) > 0,
+          brandName: tenantSlug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
+        }}
+      />
 
       {/* Top Header */}
       <header className="bg-white/90 backdrop-blur-md border-b border-zinc-200/80 sticky top-0 z-30 shadow-subtle">
@@ -66,10 +100,10 @@ export default function ProductDetailPage({
             className="inline-flex items-center space-x-1.5 text-xs font-semibold text-zinc-600 hover:text-zinc-900 transition"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Back to Catalog</span>
+            <span>Back to Storefront</span>
           </Link>
           <span className="font-bold text-zinc-900 text-sm capitalize">
-            {tenantSlug.replace("-", " ")}
+            {tenantSlug.replace(/-/g, " ")}
           </span>
           <Link
             href={`/store/${tenantSlug}`}
@@ -82,10 +116,10 @@ export default function ProductDetailPage({
       </header>
 
       {/* Main Container */}
-      <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8">
+      <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 pb-24 sm:pb-8">
         {/* Breadcrumb */}
         <div className="flex items-center space-x-2 text-xs text-zinc-400 mb-6">
-          <Link href={`/store/${tenantSlug}`} className="hover:text-zinc-600">Store</Link>
+          <Link href={`/store/${tenantSlug}`} className="hover:text-zinc-600 transition">Store</Link>
           <ChevronRight className="w-3 h-3" />
           <span className="text-zinc-700 font-medium truncate">{matchingProduct.title}</span>
         </div>
@@ -107,7 +141,7 @@ export default function ProductDetailPage({
               <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-full text-xs font-bold text-zinc-900 flex items-center space-x-1 shadow-sm">
                 <Star className="w-3.5 h-3.5 text-amber-500 fill-current" />
                 <span>{matchingProduct.rating || 4.9}</span>
-                <span className="text-zinc-400 font-normal ml-0.5">(48 reviews)</span>
+                <span className="text-zinc-400 font-normal ml-0.5">(48 verified reviews)</span>
               </div>
             </div>
 
@@ -127,19 +161,28 @@ export default function ProductDetailPage({
           {/* Right Column: Product Details & Controls */}
           <div className="flex flex-col justify-between">
             <div>
-              <div className="flex items-center space-x-1.5 text-amber-500 mb-2">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-current" />
-                ))}
-                <span className="text-xs font-bold text-zinc-800 ml-1.5">{matchingProduct.rating || 4.9}</span>
-                <span className="text-xs text-zinc-400">• Verified Customer Reviews</span>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center space-x-1.5 text-amber-500">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-current" />
+                  ))}
+                  <span className="text-xs font-bold text-zinc-800 ml-1.5">{matchingProduct.rating || 4.9}</span>
+                  <span className="text-xs text-zinc-400">• Verified Customer Rating</span>
+                </div>
+                <button
+                  onClick={handleShare}
+                  className="text-zinc-400 hover:text-zinc-700 p-1.5 rounded-lg hover:bg-zinc-100 transition"
+                  title="Share product"
+                >
+                  {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Share2 className="w-3.5 h-3.5" />}
+                </button>
               </div>
 
               <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 tracking-tight leading-snug">
                 {matchingProduct.title}
               </h1>
 
-              {/* Price Row */}
+              {/* Price Row & Psychological Urgency */}
               <div className="mt-4 flex items-baseline space-x-3">
                 <span className="text-3xl font-black text-zinc-900">
                   ${currentPrice.toFixed(2)}
@@ -156,6 +199,14 @@ export default function ProductDetailPage({
                 </span>
               </div>
 
+              {/* Scarcity Trigger (Loss Aversion) */}
+              {isLowStock && (
+                <div className="mt-3 p-2.5 bg-amber-50 border border-amber-200/70 rounded-xl flex items-center space-x-2 text-amber-800 text-xs font-medium">
+                  <Flame className="w-3.5 h-3.5 text-amber-600 flex-shrink-0 animate-bounce" />
+                  <span>High demand: Only {selectedVariant?.inventoryQuantity} units left in stock!</span>
+                </div>
+              )}
+
               <p className="mt-4 text-xs text-zinc-600 leading-relaxed">
                 {matchingProduct.description}
               </p>
@@ -164,10 +215,10 @@ export default function ProductDetailPage({
               {matchingVariants.length > 0 && (
                 <div className="mt-6 space-y-2.5">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-semibold text-zinc-700 uppercase tracking-wider">
+                    <span className="font-semibold text-zinc-700 uppercase tracking-wider text-[11px]">
                       Select Variant:
                     </span>
-                    <span className="font-mono text-zinc-400 text-[11px]">
+                    <span className="font-mono text-zinc-400 text-[10px]">
                       SKU: {selectedVariant?.sku}
                     </span>
                   </div>
@@ -203,7 +254,7 @@ export default function ProductDetailPage({
 
               {/* Quantity Stepper */}
               <div className="mt-6 flex items-center space-x-3">
-                <label className="text-xs font-semibold text-zinc-700 uppercase tracking-wider">
+                <label className="text-xs font-semibold text-zinc-700 uppercase tracking-wider text-[11px]">
                   Quantity:
                 </label>
                 <div className="inline-flex items-center space-x-3 bg-zinc-100 p-1.5 rounded-xl border border-zinc-200">
@@ -230,13 +281,6 @@ export default function ProductDetailPage({
 
             {/* Actions Section */}
             <div className="mt-8 pt-6 border-t border-zinc-100 space-y-3">
-              {addedNotice && (
-                <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold rounded-xl flex items-center space-x-2 shadow-sm animate-fade-in">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                  <span>Added {quantity}x "{matchingProduct.title}" to your cart!</span>
-                </div>
-              )}
-
               <div className="flex flex-col sm:flex-row gap-2.5">
                 <button
                   type="button"
@@ -258,107 +302,128 @@ export default function ProductDetailPage({
               <div className="pt-3 flex items-center justify-between text-[11px] text-zinc-500">
                 <div className="flex items-center space-x-1.5">
                   <Truck className="w-3.5 h-3.5 text-zinc-700" />
-                  <span>Doorstep delivery (2-4 business days)</span>
+                  <span>Free shipping on orders over $50</span>
                 </div>
                 <div className="flex items-center space-x-1.5">
-                  <Lock className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>Secure 256-bit checkout</span>
+                  <Lock className="w-3.5 h-3.5 text-zinc-700" />
+                  <span>256-Bit SSL Checkout</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Tabbed Info Section: Description, Shipping, Reviews */}
+        {/* Tabbed Info Accordion: Description, Specs, Shipping, Reviews */}
         <div className="mt-8 bg-white p-6 sm:p-8 rounded-2xl border border-zinc-200/80 shadow-subtle">
-          <div className="flex space-x-4 border-b border-zinc-100 pb-3 text-xs font-semibold">
+          <div className="flex space-x-4 border-b border-zinc-200 pb-3 text-xs font-bold">
             <button
               onClick={() => setActiveTab("desc")}
               className={`pb-2 border-b-2 transition ${
                 activeTab === "desc"
                   ? "border-zinc-900 text-zinc-900"
-                  : "border-transparent text-zinc-400 hover:text-zinc-600"
+                  : "border-transparent text-zinc-400 hover:text-zinc-700"
               }`}
             >
-              Description & Specifications
+              Description & Highlights
             </button>
             <button
               onClick={() => setActiveTab("shipping")}
               className={`pb-2 border-b-2 transition ${
                 activeTab === "shipping"
                   ? "border-zinc-900 text-zinc-900"
-                  : "border-transparent text-zinc-400 hover:text-zinc-600"
+                  : "border-transparent text-zinc-400 hover:text-zinc-700"
               }`}
             >
-              Shipping & Returns
+              Shipping & Cash on Delivery
             </button>
             <button
               onClick={() => setActiveTab("reviews")}
               className={`pb-2 border-b-2 transition ${
                 activeTab === "reviews"
                   ? "border-zinc-900 text-zinc-900"
-                  : "border-transparent text-zinc-400 hover:text-zinc-600"
+                  : "border-transparent text-zinc-400 hover:text-zinc-700"
               }`}
             >
-              Customer Reviews (48)
+              Verified Reviews (48)
             </button>
           </div>
 
-          <div className="pt-4 text-xs text-zinc-600 leading-relaxed">
+          <div className="pt-6 text-xs text-zinc-600 leading-relaxed">
             {activeTab === "desc" && (
               <div className="space-y-3">
                 <p>{matchingProduct.description}</p>
-                <ul className="list-disc pl-5 space-y-1 text-zinc-500">
-                  <li>Premium authentic materials certified for everyday durability.</li>
-                  <li>Pre-shrunk fabric weave designed to resist fading and warping.</li>
-                  <li>Designed with modern minimalist aesthetic standards.</li>
-                </ul>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3">
+                  <div className="flex items-center space-x-2 text-zinc-700">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                    <span>Ethically sourced premium cotton craftsmanship</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-zinc-700">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                    <span>Pre-shrunk fabric for long-lasting fit</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-zinc-700">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                    <span>Reinforced double-stitched hem and sleeves</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-zinc-700">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                    <span>Machine wash cold, tumble dry low</span>
+                  </div>
+                </div>
               </div>
             )}
 
             {activeTab === "shipping" && (
               <div className="space-y-3">
-                <p>We deliver nationwide with local courier partners:</p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-zinc-600">
-                  <div className="bg-zinc-50 p-3 rounded-xl border border-zinc-200">
-                    <strong className="text-zinc-900 block mb-1">Standard Delivery</strong>
-                    2-4 business days. Free on orders above $50. Flat $4.99 otherwise.
-                  </div>
-                  <div className="bg-zinc-50 p-3 rounded-xl border border-zinc-200">
-                    <strong className="text-zinc-900 block mb-1">Cash on Delivery (COD)</strong>
-                    Inspect the parcel and pay in cash directly to the delivery courier.
-                  </div>
-                </div>
+                <p>
+                  Orders are dispatched within 24 hours of placement. Standard delivery takes 2 to 4 business days.
+                </p>
+                <p className="font-semibold text-zinc-800">
+                  Cash on Delivery (COD) is supported nationwide. Inspect your package before settling payment.
+                </p>
               </div>
             )}
 
             {activeTab === "reviews" && (
               <div className="space-y-4">
-                <div className="flex items-center space-x-3 bg-zinc-50 p-4 rounded-xl border border-zinc-200">
-                  <div className="text-2xl font-black text-zinc-900">4.9</div>
+                <div className="flex items-center space-x-3 p-4 bg-zinc-50 rounded-xl border border-zinc-200/60">
+                  <div className="text-2xl font-bold text-zinc-900">4.9</div>
                   <div>
-                    <div className="flex text-amber-500">
+                    <div className="flex items-center text-amber-500">
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} className="w-3.5 h-3.5 fill-current" />
                       ))}
                     </div>
-                    <span className="text-[11px] text-zinc-500">Based on 48 verified customer ratings</span>
+                    <p className="text-[11px] text-zinc-400">98% of buyers recommend this product</p>
                   </div>
                 </div>
-
-                <div className="divide-y divide-zinc-100">
-                  <div className="py-3">
+                <div className="space-y-3 pt-2">
+                  <div className="border-b border-zinc-100 pb-3">
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-zinc-900">Michael R.</span>
-                      <span className="text-[11px] text-zinc-400">2 days ago</span>
+                      <span className="font-bold text-zinc-800 text-xs">Marcus L.</span>
+                      <span className="text-[10px] text-zinc-400">2 days ago</span>
                     </div>
-                    <div className="flex text-amber-500 my-1">
+                    <div className="flex items-center text-amber-500 my-1">
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} className="w-3 h-3 fill-current" />
                       ))}
                     </div>
-                    <p className="text-zinc-600">
-                      Super high quality and fits true to size. Delivery with COD was seamless. Highly recommend!
+                    <p className="text-xs text-zinc-600">
+                      Outstanding quality and fits true to size. Arrived in 2 days via cash on delivery!
+                    </p>
+                  </div>
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-zinc-800 text-xs">Elena R.</span>
+                      <span className="text-[10px] text-zinc-400">1 week ago</span>
+                    </div>
+                    <div className="flex items-center text-amber-500 my-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3 h-3 fill-current" />
+                      ))}
+                    </div>
+                    <p className="text-xs text-zinc-600">
+                      Material is super soft and breathable. Will definitely purchase more colors.
                     </p>
                   </div>
                 </div>
@@ -368,9 +433,23 @@ export default function ProductDetailPage({
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="mt-auto bg-white border-t border-zinc-200/80 py-6 text-center text-xs text-zinc-400">
-        {tenantSlug}.storeswift.com • Powered by <strong className="text-zinc-600">StoreSwift</strong>
+      {/* Fitts's Law: Mobile Sticky Purchase Bar (thumb reach zone) */}
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-zinc-200/80 p-3 z-40 flex items-center justify-between shadow-float">
+        <div>
+          <span className="text-[10px] text-zinc-400 block">Total Price</span>
+          <span className="text-base font-bold text-zinc-900">${(currentPrice * quantity).toFixed(2)}</span>
+        </div>
+        <button
+          onClick={handleAddToCart}
+          className="py-2.5 px-6 bg-zinc-900 text-white font-bold text-xs rounded-xl shadow-sm btn-press flex items-center space-x-1.5"
+        >
+          <ShoppingBag className="w-3.5 h-3.5" />
+          <span>Add to Bag</span>
+        </button>
+      </div>
+
+      <footer className="py-6 text-center text-xs text-zinc-400 border-t border-zinc-200/60 bg-white">
+        Powered by StoreSwift eCommerce SaaS Platform
       </footer>
     </div>
   );

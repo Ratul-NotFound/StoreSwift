@@ -6,3 +6,4 @@ export function getSessionFromRequest(request: Request): SessionPayload | null {
   if (!match) return null;
   return verifySessionToken(match[1]);
 }
+
