@@ -44,3 +44,4 @@ export function ProductJsonLd({ product }: ProductJsonLdProps) {
     />
   );
 }
+

@@ -35,3 +35,4 @@ export function trackEvent(
     // Graceful no-op on telemetry failure
   }
 }
+

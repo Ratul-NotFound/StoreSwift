@@ -28,6 +28,7 @@ import {
   DollarSign
 } from "lucide-react";
 import { ALL_CATEGORIES, getCategoryConfig } from "@/config/categories";
+import { StoreFooter } from "@/components/footer";
 
 export default function PlatformLandingPage() {
   const [selectedDemoCategory, setSelectedDemoCategory] = useState("fashion");
@@ -636,18 +637,8 @@ export default function PlatformLandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="mt-auto bg-white border-t border-zinc-200 py-10 text-zinc-500">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center space-x-2 text-zinc-900 font-bold text-xs">
-            <Store className="w-4 h-4 text-zinc-900" />
-            <span>StoreSwift Platform</span>
-          </div>
-          <p className="text-xs text-zinc-400">
-            © 2026 StoreSwift Inc. All rights reserved. Designed for startup eCommerce excellence.
-          </p>
-        </div>
-      </footer>
+      {/* Rich Multi-Column Modern Footer */}
+      <StoreFooter isPlatform storeName="StoreSwift" />
     </div>
   );
 }

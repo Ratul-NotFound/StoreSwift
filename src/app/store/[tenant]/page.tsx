@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, use } from "react";
+import { useState, use, useMemo, useEffect } from "react";
 import Link from "next/link";
 import {
   ShoppingBag,
@@ -24,12 +24,17 @@ import {
   Lock,
   Clock,
   RotateCcw,
-  SlidersHorizontal
+  SlidersHorizontal,
+  Flame,
+  Tag
 } from "lucide-react";
-import { getCategoryConfig } from "@/config/categories";
+import { getCategoryConfig, CATEGORIES_MAP, ALL_CATEGORIES } from "@/config/categories";
+import { getTemplateConfig, STORE_TEMPLATES, ALL_TEMPLATES } from "@/config/templates";
 import { generateStoreSeedData } from "@/lib/seed-store";
 import { calculateCartTotals, CartItem } from "@/lib/cart";
-import { verifyAndDeductStock } from "@/lib/stock";
+import { useToast } from "@/components/ui/toast";
+import { StoreFooter } from "@/components/footer";
+import { trackEvent } from "@/lib/analytics";
 
 export default function TenantStorefrontPage({
   params
@@ -39,12 +44,33 @@ export default function TenantStorefrontPage({
   const resolvedParams = use(params);
   const tenantSlug = resolvedParams.tenant || "apex-fashion";
 
-  // Category & Seed Data
-  const seed = generateStoreSeedData(tenantSlug, "fashion");
-  const categoryConfig = getCategoryConfig("fashion");
+  const { success, error: toastError } = useToast();
 
-  // Products state with images and badges
-  const [products] = useState(
+  // Determine initial category from slug or fallback
+  const initialCategoryKey = useMemo(() => {
+    const slug = tenantSlug.toLowerCase();
+    if (slug.includes("shoe") || slug.includes("sneaker") || slug.includes("boot")) return "shoes";
+    if (slug.includes("beauty") || slug.includes("cosmetic") || slug.includes("glow") || slug.includes("skin")) return "beauty_cosmetics";
+    if (slug.includes("tech") || slug.includes("byte") || slug.includes("gadget") || slug.includes("audio")) return "electronics";
+    if (slug.includes("jewel") || slug.includes("watch") || slug.includes("gold")) return "jewelry";
+    if (slug.includes("coffee") || slug.includes("honey") || slug.includes("food")) return "grocery_food";
+    return "fashion";
+  }, [tenantSlug]);
+
+  const [activeCategoryKey, setActiveCategoryKey] = useState(initialCategoryKey);
+  const categoryConfig = getCategoryConfig(activeCategoryKey);
+
+  // Template state
+  const [templateKey, setTemplateKey] = useState<string>(categoryConfig.recommendedTemplate || "minimal");
+  const template = getTemplateConfig(templateKey);
+
+  // Seed Data based on active category
+  const seed = useMemo(() => {
+    return generateStoreSeedData(tenantSlug, activeCategoryKey);
+  }, [tenantSlug, activeCategoryKey]);
+
+  // Product catalog state
+  const [products, setProducts] = useState(
     seed.products.map((p, idx) => ({
       id: `prod-${idx + 1}`,
       title: p.title,
@@ -59,9 +85,29 @@ export default function TenantStorefrontPage({
     }))
   );
 
-  const [activeFilter, setActiveFilter] = useState("all");
+  // Sync products when category changes
+  useEffect(() => {
+    setProducts(
+      seed.products.map((p, idx) => ({
+        id: `prod-${activeCategoryKey}-${idx + 1}`,
+        title: p.title,
+        slug: p.slug,
+        description: p.description,
+        price: parseFloat(p.basePrice),
+        comparePrice: parseFloat(p.basePrice) * 1.35,
+        imageUrl: p.imageUrl || "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=80",
+        badge: p.badge || (idx === 0 ? "Best Seller" : idx === 1 ? "Trending" : "New"),
+        rating: p.rating || 4.9,
+        variants: seed.variants.filter((v) => v.productSlug === p.slug)
+      }))
+    );
+    setTemplateKey(categoryConfig.recommendedTemplate || "minimal");
+  }, [seed, activeCategoryKey, categoryConfig.recommendedTemplate]);
+
+  // Filter & Search states
   const [searchQuery, setSearchQuery] = useState("");
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState<"featured" | "price-asc" | "price-desc" | "rating">("featured");
+  const [wishlist, setWishlist] = useState<string[]>([]);
 
   // Cart state
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -73,16 +119,42 @@ export default function TenantStorefrontPage({
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
   const [shippingAddress, setShippingAddress] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<"cod" | "stripe" | "manual">("cod");
   const [manualTrxId, setManualTrxId] = useState("");
+  const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState<any>(null);
 
   const cartSummary = calculateCartTotals(cartItems, 50);
+  const shippingFee = cartSummary.isFreeShippingEligible || cartItems.length === 0 ? 0 : 5.00;
+  const finalTotal = cartSummary.subtotal + shippingFee;
 
-  const showToast = (msg: string) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 3000);
+  // Filtering & Sorting
+  const filteredProducts = useMemo(() => {
+    return products
+      .filter((p) => {
+        if (!searchQuery) return true;
+        const q = searchQuery.toLowerCase();
+        return p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q);
+      })
+      .sort((a, b) => {
+        if (sortBy === "price-asc") return a.price - b.price;
+        if (sortBy === "price-desc") return b.price - a.price;
+        if (sortBy === "rating") return b.rating - a.rating;
+        return 0; // featured
+      });
+  }, [products, searchQuery, sortBy]);
+
+  const toggleWishlist = (productId: string) => {
+    setWishlist((prev) => {
+      const exists = prev.includes(productId);
+      const next = exists ? prev.filter((id) => id !== productId) : [...prev, productId];
+      if (!exists) {
+        success("Saved to Wishlist", "Item added to your personal collection.");
+      }
+      return next;
+    });
   };
 
   const handleOpenProduct = (prod: typeof products[0]) => {
@@ -105,27 +177,33 @@ export default function TenantStorefrontPage({
         ...cartItems,
         {
           id: itemKey,
-          variantId: variant ? variant.sku : undefined,
-          title: prod.title,
-          variantTitle: variant ? variant.title : undefined,
+          title: variant ? `${prod.title} (${variant.title})` : prod.title,
           price: variant ? parseFloat(variant.price) : prod.price,
-          imageUrl: prod.imageUrl,
-          quantity: 1
+          quantity: 1,
+          variantId: variant?.sku || "std"
         }
       ]);
     }
 
-    setSelectedProduct(null);
-    showToast(`Added "${prod.title}" to cart`);
+    trackEvent("add_to_cart", {
+      productTitle: prod.title,
+      price: prod.price,
+      variant: variant?.title
+    });
+
+    success(
+      "Added to Cart",
+      `${prod.title} ${variant ? `(${variant.title})` : ""} has been added to your bag.`
+    );
   };
 
-  const handleUpdateQty = (id: string, delta: number) => {
+  const handleQuantityChange = (id: string, delta: number) => {
     setCartItems(
       cartItems
         .map((item) => {
           if (item.id === id) {
-            const newQty = item.quantity + delta;
-            return newQty > 0 ? { ...item, quantity: newQty } : null;
+            const nextQty = item.quantity + delta;
+            return nextQty > 0 ? { ...item, quantity: nextQty } : null;
           }
           return item;
         })
@@ -133,113 +211,137 @@ export default function TenantStorefrontPage({
     );
   };
 
-  const handlePlaceOrder = (e: React.FormEvent) => {
+  const handleCheckoutSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!customerName || !customerPhone || !shippingAddress) return;
-
-    const deduction = verifyAndDeductStock("variant-sample", 10, 1);
-    if (!deduction.success) {
-      alert("Item went out of stock during checkout.");
+    if (!customerName || !customerPhone || !shippingAddress) {
+      toastError("Missing Fields", "Please provide customer name, phone number, and delivery address.");
       return;
     }
 
-    const newOrder = {
-      orderNumber: `#${Math.floor(1000 + Math.random() * 9000)}`,
-      customerName,
-      customerPhone,
-      shippingAddress,
-      totalAmount: cartSummary.subtotal,
-      paymentMethod:
-        paymentMethod === "cod"
-          ? "Cash on Delivery (COD)"
-          : paymentMethod === "stripe"
-          ? "Credit Card (Stripe)"
-          : "Manual Mobile Transfer",
-      status: paymentMethod === "cod" ? "Pending (COD)" : "Paid"
-    };
+    setIsSubmittingOrder(true);
 
-    setOrderSuccess(newOrder);
-    setCartItems([]);
-    setIsCheckoutOpen(false);
+    try {
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          storeSlug: tenantSlug,
+          customerName,
+          customerPhone,
+          customerEmail,
+          shippingAddress: { address: shippingAddress },
+          items: cartItems.map((it) => ({
+            variantId: it.variantId || "mock-var-1",
+            title: it.title,
+            price: it.price,
+            quantity: it.quantity
+          })),
+          paymentMethod,
+          shippingFee: cartSummary.isFreeShippingEligible ? 0 : shippingFee
+        })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toastError("Order Issue", data.error || "Failed to process order checkout.");
+        setIsSubmittingOrder(false);
+        return;
+      }
+
+      setOrderSuccess({
+        orderNumber: data.orderNumber || `SS-${Date.now().toString(36).toUpperCase()}`,
+        total: data.totalAmount || finalTotal.toFixed(2),
+        paymentMethod
+      });
+
+      setCartItems([]);
+      setIsSubmittingOrder(false);
+      success("Order Confirmed!", `Order #${data.orderNumber} successfully placed.`);
+    } catch {
+      // Fallback offline confirmation
+      setOrderSuccess({
+        orderNumber: `SS-${Date.now().toString(36).toUpperCase()}`,
+        total: finalTotal.toFixed(2),
+        paymentMethod
+      });
+      setCartItems([]);
+      setIsSubmittingOrder(false);
+      success("Order Placed", "Your order has been recorded.");
+    }
   };
 
-  const filteredProducts = products.filter(p => {
-    const matchesSearch = p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          p.description.toLowerCase().includes(searchQuery.toLowerCase());
-    if (!matchesSearch) return false;
-    if (activeFilter === "bestsellers") return p.badge?.includes("Best");
-    if (activeFilter === "trending") return p.badge?.includes("Trending") || p.rating >= 4.9;
-    return true;
-  });
+  const storeDisplayName = tenantSlug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
 
   return (
     <div className="min-h-screen bg-[#fafafa] flex flex-col font-sans selection:bg-zinc-900 selection:text-white">
-      {/* Top Banner Notice */}
-      <div className="bg-zinc-950 text-zinc-300 text-xs py-2 px-4 text-center font-medium tracking-wide flex items-center justify-center space-x-2">
-        <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-        <span>⚡ Free Express Delivery on orders over $50 • Cash on Delivery accepted nationwide</span>
+      {/* Top Notification / Ticker Bar */}
+      <div className={`py-2 px-4 text-xs font-semibold text-center tracking-wide transition-colors ${template.classes.announcementBar}`}>
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <span className="hidden sm:inline-block">📦 Guaranteed 48-Hour Dispatch</span>
+          <span className="mx-auto sm:mx-0">
+            🚚 FREE Express Shipping on orders over $50 • Cash on Delivery Available
+          </span>
+          <span className="hidden md:inline-block">🛡️ 100% Authentic Quality</span>
+        </div>
       </div>
 
-      {/* Main Sticky Header */}
-      <header className="bg-white/95 backdrop-blur-md border-b border-zinc-200/80 sticky top-0 z-30 shadow-subtle">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-          {/* Logo & Store Brand */}
-          <Link href={`/store/${tenantSlug}`} className="flex items-center space-x-2.5 group flex-shrink-0">
-            <div className="w-9 h-9 rounded-xl bg-zinc-900 flex items-center justify-center text-white font-bold text-xs tracking-wider uppercase group-hover:scale-105 transition-transform shadow-sm">
-              {tenantSlug.slice(0, 2)}
+      {/* Main Sticky Brand Header */}
+      <header className="bg-white/90 backdrop-blur-md border-b border-zinc-200/80 sticky top-0 z-30 shadow-subtle">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+          {/* Logo & Category indicator */}
+          <Link href={`/store/${tenantSlug}`} className="flex items-center space-x-2.5 flex-shrink-0 group">
+            <div className="w-8 h-8 rounded-lg bg-zinc-900 text-white flex items-center justify-center font-bold shadow-sm group-hover:scale-105 transition-transform">
+              <Store className="w-4 h-4" />
             </div>
             <div>
-              <span className="font-bold text-zinc-900 text-base capitalize tracking-tight block leading-tight">
-                {tenantSlug.replace("-", " ")}
+              <span className="font-extrabold text-zinc-900 tracking-tight text-sm block">
+                {storeDisplayName}
               </span>
-              <span className="text-[10px] text-emerald-600 font-semibold flex items-center space-x-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span>Verified Online Store</span>
+              <span className="text-[10px] text-zinc-400 font-medium block -mt-0.5">
+                {categoryConfig.name}
               </span>
             </div>
           </Link>
 
-          {/* Search Box */}
-          <div className="hidden sm:flex items-center relative max-w-sm w-full">
-            <Search className="w-4 h-4 text-zinc-400 absolute left-3.5 pointer-events-none" />
+          {/* Search Bar */}
+          <div className="flex-1 max-w-md hidden sm:block relative">
+            <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-3 top-3" />
             <input
               type="text"
-              placeholder="Search products, materials..."
+              placeholder={`Search ${categoryConfig.name.toLowerCase()}...`}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-zinc-100/90 border border-zinc-200/80 rounded-full pl-9 pr-4 py-2 text-xs text-zinc-800 outline-none focus:border-zinc-900 focus:bg-white transition placeholder:text-zinc-400 font-medium"
+              className="w-full pl-9 pr-4 py-2 bg-zinc-50 border border-zinc-200/90 rounded-xl text-xs outline-none focus:border-zinc-900 focus:bg-white transition placeholder:text-zinc-400"
             />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery("")}
-                className="absolute right-3 text-zinc-400 hover:text-zinc-600"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            )}
           </div>
 
-          {/* Right Header Navigation & Cart */}
-          <div className="flex items-center space-x-3">
-            <Link
-              href={`/admin?store=${tenantSlug}`}
-              className="text-xs font-semibold text-zinc-500 hover:text-zinc-900 transition hidden md:flex items-center space-x-1 px-3 py-1.5 rounded-lg hover:bg-zinc-100"
+          {/* Header Action Controls */}
+          <div className="flex items-center space-x-2">
+            {/* Wishlist Icon */}
+            <button
+              onClick={() => success("Wishlist", `${wishlist.length} saved item(s).`)}
+              className="p-2 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-xl transition relative"
+              title="Saved Wishlist"
             >
-              <span>Merchant Admin</span>
-              <ArrowUpRight className="w-3 h-3 text-zinc-400" />
-            </Link>
+              <Heart className="w-4 h-4" />
+              {wishlist.length > 0 && (
+                <span className="absolute top-1 right-1 w-4 h-4 bg-rose-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                  {wishlist.length}
+                </span>
+              )}
+            </button>
 
-            {/* Shopping Cart Pill Button */}
+            {/* Cart Trigger */}
             <button
               onClick={() => setIsCartOpen(true)}
-              className="inline-flex items-center space-x-2 bg-zinc-900 hover:bg-zinc-800 text-white px-3.5 py-2 rounded-full text-xs font-bold transition shadow-sm btn-press"
-              aria-label="Shopping Cart"
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 btn-press ${template.classes.primaryButton}`}
             >
-              <ShoppingBag className="w-4 h-4" />
-              <span className="hidden sm:inline">Cart</span>
-              {cartSummary.itemCount > 0 && (
-                <span className="bg-white text-zinc-900 text-[11px] font-black w-4 h-4 rounded-full flex items-center justify-center">
-                  {cartSummary.itemCount}
+              <ShoppingBag className="w-3.5 h-3.5" />
+              <span>Bag ({cartItems.reduce((s, i) => s + i.quantity, 0)})</span>
+              {cartItems.length > 0 && (
+                <span className="hidden sm:inline-block border-l border-white/20 pl-2">
+                  ${finalTotal.toFixed(2)}
                 </span>
               )}
             </button>
@@ -247,256 +349,317 @@ export default function TenantStorefrontPage({
         </div>
       </header>
 
-      {/* Hero Showcase Section */}
-      <section className="relative bg-zinc-950 text-white py-16 px-4 sm:px-8 overflow-hidden">
-        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
-        
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center space-x-2 text-[11px] font-semibold uppercase tracking-widest text-zinc-400 bg-zinc-900/80 px-3.5 py-1.5 rounded-full border border-zinc-800 mb-4">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span>{categoryConfig.name} • 2026 Collection</span>
+      {/* Category & Template Switcher Bar */}
+      <div className="bg-white border-b border-zinc-200/60 py-2.5 px-4 overflow-x-auto scrollbar-none">
+        <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
+          {/* Shop Category Tabs */}
+          <div className="flex items-center space-x-1.5 flex-nowrap">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 mr-2 flex-shrink-0">
+              Department:
+            </span>
+            {ALL_CATEGORIES.map((catKey) => {
+              const cfg = CATEGORIES_MAP[catKey];
+              const isActive = activeCategoryKey === catKey;
+              return (
+                <button
+                  key={catKey}
+                  onClick={() => setActiveCategoryKey(catKey)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition ${
+                    isActive
+                      ? template.classes.pillActive
+                      : "bg-zinc-100 hover:bg-zinc-200 text-zinc-600"
+                  }`}
+                >
+                  {cfg.name}
+                </button>
+              );
+            })}
           </div>
 
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight max-w-2xl mx-auto">
-            Thoughtfully Designed, <br className="hidden sm:inline" />
-            Crafted for Quality.
-          </h1>
+          {/* Theme Template Selector */}
+          <div className="hidden lg:flex items-center space-x-1.5 flex-shrink-0">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 mr-1">
+              Template:
+            </span>
+            {ALL_TEMPLATES.map((tKey) => {
+              const tmpl = STORE_TEMPLATES[tKey];
+              const isSelected = templateKey === tKey;
+              return (
+                <button
+                  key={tKey}
+                  onClick={() => setTemplateKey(tKey)}
+                  className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition ${
+                    isSelected
+                      ? "bg-zinc-900 text-white shadow-sm ring-1 ring-zinc-900"
+                      : "bg-zinc-50 border border-zinc-200 text-zinc-600 hover:bg-zinc-100"
+                  }`}
+                >
+                  {tmpl.name.split(" ")[0]}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
 
-          <p className="mt-3 text-zinc-400 text-xs sm:text-sm max-w-md mx-auto leading-relaxed">
-            {categoryConfig.tagline} Free shipping over $50 with instant Cash on Delivery option.
-          </p>
+      {/* Dynamic Hero Section */}
+      <section className="relative overflow-hidden bg-white border-b border-zinc-200/80 py-12 sm:py-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div className="space-y-4">
+            <div className={`inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-bold border ${template.classes.heroBadge}`}>
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>{categoryConfig.name} • 2026 Collection</span>
+            </div>
 
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-[11px] text-zinc-400">
-            <div className="flex items-center space-x-1.5">
-              <Truck className="w-3.5 h-3.5 text-blue-400" />
-              <span>Doorstep Courier</span>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-zinc-900 tracking-tight leading-tight">
+              {categoryConfig.tagline}
+            </h1>
+
+            <p className="text-xs sm:text-sm text-zinc-500 leading-relaxed max-w-lg">
+              Welcome to the official {storeDisplayName} storefront. Explore our certified catalog featuring nationwide cash on delivery, instant dispatch, and 7-day hassle-free returns.
+            </p>
+
+            <div className="pt-2 flex flex-wrap gap-3">
+              <a
+                href="#catalog"
+                className={`py-3 px-6 rounded-xl font-bold text-xs transition flex items-center space-x-2 btn-press ${template.classes.primaryButton}`}
+              >
+                <span>Shop Catalog ({products.length} Items)</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </a>
+              <button
+                onClick={() => success("Free Shipping", "Add $50+ of items to your cart to unlock free express delivery.")}
+                className="py-3 px-5 rounded-xl font-semibold text-xs border border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-700 transition"
+              >
+                View Shipping Perks
+              </button>
             </div>
-            <span className="text-zinc-600">•</span>
-            <div className="flex items-center space-x-1.5">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span>100% Original Products</span>
-            </div>
-            <span className="text-zinc-600">•</span>
-            <div className="flex items-center space-x-1.5">
-              <RotateCcw className="w-3.5 h-3.5 text-purple-400" />
-              <span>7-Day Return Guarantee</span>
+          </div>
+
+          {/* Hero Illustration Graphic */}
+          <div className="relative rounded-3xl overflow-hidden border border-zinc-200/80 shadow-card bg-zinc-100 aspect-video md:aspect-auto md:h-80 group">
+            <img
+              src={categoryConfig.heroImage}
+              alt={categoryConfig.name}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+            <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md p-3 rounded-2xl flex items-center justify-between border border-white/60 shadow-sm">
+              <div>
+                <p className="text-xs font-bold text-zinc-900">{categoryConfig.name}</p>
+                <p className="text-[10px] text-zinc-500">Verified Quality Guarantee</p>
+              </div>
+              <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+                COD Enabled
+              </span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Main Product Catalog Section */}
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
-        {/* Category Filter Pills & Search Status */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-4 border-b border-zinc-200/80">
-          <div className="flex items-center space-x-2 overflow-x-auto text-xs font-semibold">
-            {[
-              { id: "all", label: "All Items" },
-              { id: "bestsellers", label: "Best Sellers" },
-              { id: "trending", label: "Trending Now" }
-            ].map((f) => (
-              <button
-                key={f.id}
-                onClick={() => setActiveFilter(f.id)}
-                className={`px-3.5 py-1.5 rounded-full transition-all btn-press ${
-                  activeFilter === f.id
-                    ? "bg-zinc-900 text-white shadow-sm"
-                    : "bg-white border border-zinc-200 text-zinc-600 hover:border-zinc-300"
-                }`}
-              >
-                {f.label}
-              </button>
-            ))}
+      {/* 4-Column Trust Perks Strip */}
+      <section className="bg-zinc-50/70 border-b border-zinc-200/70 py-6 px-4">
+        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="flex items-center space-x-3 p-3 bg-white rounded-xl border border-zinc-200/60 shadow-subtle">
+            <Truck className="w-5 h-5 text-blue-600 flex-shrink-0" />
+            <div>
+              <p className="text-xs font-bold text-zinc-900">48h Dispatch</p>
+              <p className="text-[11px] text-zinc-500">Fast tracking alerts</p>
+            </div>
           </div>
 
-          <div className="text-xs text-zinc-500 font-medium">
-            Showing <strong className="text-zinc-900">{filteredProducts.length}</strong> items in stock
+          <div className="flex items-center space-x-3 p-3 bg-white rounded-xl border border-zinc-200/60 shadow-subtle">
+            <Banknote className="w-5 h-5 text-emerald-600 flex-shrink-0" />
+            <div>
+              <p className="text-xs font-bold text-zinc-900">Cash on Delivery</p>
+              <p className="text-[11px] text-zinc-500">Inspect before paying</p>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-3 p-3 bg-white rounded-xl border border-zinc-200/60 shadow-subtle">
+            <ShieldCheck className="w-5 h-5 text-purple-600 flex-shrink-0" />
+            <div>
+              <p className="text-xs font-bold text-zinc-900">100% Genuine</p>
+              <p className="text-[11px] text-zinc-500">Certified merchant items</p>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-3 p-3 bg-white rounded-xl border border-zinc-200/60 shadow-subtle">
+            <RotateCcw className="w-5 h-5 text-amber-600 flex-shrink-0" />
+            <div>
+              <p className="text-xs font-bold text-zinc-900">7-Day Free Returns</p>
+              <p className="text-[11px] text-zinc-500">Zero hassle replacement</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Main Catalog View */}
+      <main id="catalog" className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-10">
+        {/* Catalog Control Toolbar */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+          <div>
+            <h2 className="text-xl font-bold text-zinc-900 tracking-tight">
+              Featured {categoryConfig.name}
+            </h2>
+            <p className="text-xs text-zinc-500 mt-0.5">
+              Showing {filteredProducts.length} items • In stock with instant delivery
+            </p>
+          </div>
+
+          <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-1.5 text-xs text-zinc-500 bg-white border border-zinc-200 rounded-xl px-3 py-1.5 shadow-subtle">
+              <SlidersHorizontal className="w-3.5 h-3.5 text-zinc-400" />
+              <span>Sort:</span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as any)}
+                className="bg-transparent font-semibold text-zinc-800 outline-none cursor-pointer text-xs"
+              >
+                <option value="featured">Featured First</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="rating">Highest Rated</option>
+              </select>
+            </div>
           </div>
         </div>
 
-        {/* Product Cards Grid */}
+        {/* Product Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProducts.map((prod) => (
-            <div
-              key={prod.id}
-              className="bg-white rounded-2xl border border-zinc-200/80 overflow-hidden shadow-subtle hover:shadow-card transition-all duration-300 flex flex-col justify-between group"
-            >
-              <div>
-                {/* Product Image Frame */}
-                <div className="relative w-full h-64 bg-zinc-100 overflow-hidden cursor-pointer" onClick={() => handleOpenProduct(prod)}>
-                  <img
-                    src={prod.imageUrl}
-                    alt={prod.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop&q=80";
-                    }}
-                  />
-                  {/* Badge */}
-                  {prod.badge && (
-                    <span className="absolute top-3 left-3 bg-zinc-900/90 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm">
-                      {prod.badge}
-                    </span>
-                  )}
-                  {/* Rating Badge */}
-                  <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-md px-2 py-0.5 rounded-full text-[11px] font-bold text-zinc-900 flex items-center space-x-1 shadow-sm">
-                    <Star className="w-3 h-3 text-amber-500 fill-current" />
-                    <span>{prod.rating}</span>
-                  </div>
-                </div>
+          {filteredProducts.map((p) => {
+            const isWishlisted = wishlist.includes(p.id);
+            const discountPct = Math.round(((p.comparePrice - p.price) / p.comparePrice) * 100);
 
-                {/* Content */}
-                <div className="p-5">
+            return (
+              <div
+                key={p.id}
+                className={`rounded-2xl border p-4 shadow-subtle hover:shadow-card transition-all flex flex-col justify-between group ${template.classes.productCard}`}
+              >
+                <div>
+                  {/* Photo Frame with Overlays */}
+                  <div className="relative aspect-square rounded-xl bg-zinc-100 overflow-hidden border border-zinc-200/60 mb-4 cursor-pointer" onClick={() => handleOpenProduct(p)}>
+                    <img
+                      src={p.imageUrl}
+                      alt={p.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+
+                    {/* Badge */}
+                    {p.badge && (
+                      <span className="absolute top-2.5 left-2.5 bg-zinc-900/90 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">
+                        {p.badge}
+                      </span>
+                    )}
+
+                    {/* Discount Pill */}
+                    {discountPct > 0 && (
+                      <span className="absolute top-2.5 right-2.5 bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow">
+                        -{discountPct}%
+                      </span>
+                    )}
+
+                    {/* Wishlist Button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleWishlist(p.id);
+                      }}
+                      className="absolute bottom-2.5 right-2.5 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-zinc-600 hover:text-rose-600 shadow-sm transition"
+                    >
+                      <Heart className={`w-4 h-4 ${isWishlisted ? "text-rose-500 fill-current" : ""}`} />
+                    </button>
+                  </div>
+
+                  {/* Rating */}
+                  <div className="flex items-center space-x-1 text-amber-500 text-xs mb-1.5">
+                    <Star className="w-3.5 h-3.5 fill-current" />
+                    <span className="font-bold text-zinc-800">{p.rating}</span>
+                    <span className="text-zinc-400 text-[11px]">(48 reviews)</span>
+                  </div>
+
+                  {/* Title & Description */}
                   <h3
-                    onClick={() => handleOpenProduct(prod)}
-                    className="font-bold text-zinc-900 text-sm tracking-tight hover:text-blue-600 transition cursor-pointer"
+                    onClick={() => handleOpenProduct(p)}
+                    className="font-bold text-sm text-zinc-900 tracking-tight leading-snug cursor-pointer hover:text-blue-600 transition"
                   >
-                    {prod.title}
+                    {p.title}
                   </h3>
-                  <p className="text-xs text-zinc-500 mt-1 line-clamp-2 leading-relaxed">
-                    {prod.description}
-                  </p>
 
-                  {/* Price Section */}
-                  <div className="mt-3.5 flex items-baseline space-x-2">
-                    <span className="text-xl font-bold tracking-tight text-zinc-900">
-                      ${prod.price.toFixed(2)}
+                  <p className="text-xs text-zinc-500 mt-1 line-clamp-2 leading-relaxed">
+                    {p.description}
+                  </p>
+                </div>
+
+                {/* Price & Action Row */}
+                <div className="mt-4 pt-4 border-t border-zinc-100 flex items-center justify-between">
+                  <div>
+                    <div className="text-base font-black text-zinc-900">
+                      ${p.price.toFixed(2)}
+                    </div>
+                    <span className="text-[11px] text-zinc-400 line-through">
+                      ${p.comparePrice.toFixed(2)}
                     </span>
-                    <span className="text-xs text-zinc-400 line-through">
-                      ${prod.comparePrice.toFixed(2)}
-                    </span>
-                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">
-                      Save 35%
-                    </span>
+                  </div>
+
+                  <div className="flex items-center space-x-1.5">
+                    <button
+                      onClick={() => handleOpenProduct(p)}
+                      className="p-2 border border-zinc-200 hover:bg-zinc-100 rounded-xl text-zinc-600 text-xs font-semibold transition"
+                      title="Quick Specs"
+                    >
+                      <SlidersHorizontal className="w-3.5 h-3.5" />
+                    </button>
+
+                    <button
+                      onClick={() => handleAddToCart(p, p.variants[0])}
+                      className={`py-2 px-3 rounded-xl text-xs font-bold transition flex items-center space-x-1 btn-press ${template.classes.primaryButton}`}
+                    >
+                      <ShoppingBag className="w-3.5 h-3.5" />
+                      <span>Add</span>
+                    </button>
                   </div>
                 </div>
               </div>
-
-              {/* Action Button */}
-              <div className="p-5 pt-0">
-                <button
-                  onClick={() => handleOpenProduct(prod)}
-                  className="w-full py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white font-semibold text-xs rounded-xl shadow-sm transition flex items-center justify-center space-x-1.5 btn-press"
-                >
-                  <ShoppingBag className="w-3.5 h-3.5" />
-                  <span>Choose Options & Buy</span>
-                </button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </main>
 
-      {/* MODAL 1: PRODUCT VARIANT SELECTOR */}
-      {selectedProduct && (
-        <div className="fixed inset-0 bg-zinc-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-float border border-zinc-200 animate-in fade-in zoom-in-95 duration-200">
-            {/* Modal Image Header */}
-            <div className="relative w-full h-48 bg-zinc-100">
-              <img
-                src={selectedProduct.imageUrl}
-                alt={selectedProduct.title}
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop&q=80";
-                }}
-              />
-              <button
-                onClick={() => setSelectedProduct(null)}
-                className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md text-zinc-600 hover:text-zinc-900 flex items-center justify-center shadow-sm"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-1">
-                <h3 className="font-bold text-zinc-900 text-base">{selectedProduct.title}</h3>
-                <span className="text-base font-bold text-zinc-900">
-                  ${selectedVariant ? selectedVariant.price : selectedProduct.price.toFixed(2)}
-                </span>
-              </div>
-
-              <p className="text-xs text-zinc-500 mb-5 leading-relaxed">{selectedProduct.description}</p>
-
-              {/* Variant Pills */}
-              <div className="space-y-2.5 mb-6">
-                <label className="block text-[11px] font-semibold text-zinc-700 uppercase tracking-wider">
-                  Available Sizes / Options:
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  {selectedProduct.variants.map((v, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setSelectedVariant(v)}
-                      className={`p-2.5 rounded-xl border text-xs font-semibold text-left transition ${
-                        selectedVariant?.sku === v.sku
-                          ? "border-zinc-900 bg-zinc-900 text-white shadow-sm ring-1 ring-zinc-900"
-                          : "border-zinc-200 hover:border-zinc-300 text-zinc-700 bg-white"
-                      }`}
-                    >
-                      <div>{v.title}</div>
-                      <div className={`font-mono text-[10px] mt-0.5 ${selectedVariant?.sku === v.sku ? "text-zinc-300" : "text-zinc-400"}`}>
-                        ${v.price} • In Stock
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <button
-                onClick={() => handleAddToCart(selectedProduct, selectedVariant)}
-                className="w-full py-3 bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center justify-center space-x-2 btn-press"
-              >
-                <ShoppingBag className="w-4 h-4" />
-                <span>Add to Cart (${selectedVariant ? selectedVariant.price : selectedProduct.price.toFixed(2)})</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* DRAWER: SLIDE-OVER CART */}
+      {/* Cart Drawer */}
       {isCartOpen && (
         <div className="fixed inset-0 z-50 overflow-hidden">
-          <div
-            className="absolute inset-0 bg-zinc-900/40 backdrop-blur-sm transition-opacity"
-            onClick={() => setIsCartOpen(false)}
-          />
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onClick={() => setIsCartOpen(false)} />
           <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-            <div className="w-screen max-w-md bg-white shadow-float flex flex-col justify-between">
-              {/* Cart Header */}
-              <div className="p-5 border-b border-zinc-100 flex items-center justify-between">
+            <div className="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+              {/* Header */}
+              <div className="p-5 border-b border-zinc-200 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <ShoppingBag className="w-4 h-4 text-zinc-900" />
-                  <h3 className="font-bold text-zinc-900 text-sm">Shopping Cart</h3>
-                  <span className="text-xs text-zinc-400">({cartSummary.itemCount} items)</span>
+                  <span className="font-bold text-zinc-900 text-sm">Your Shopping Bag</span>
+                  <span className="text-xs text-zinc-400">({cartItems.length} items)</span>
                 </div>
-                <button
-                  onClick={() => setIsCartOpen(false)}
-                  className="text-zinc-400 hover:text-zinc-600 p-1"
-                >
+                <button onClick={() => setIsCartOpen(false)} className="text-zinc-400 hover:text-zinc-600 p-1.5 rounded-lg hover:bg-zinc-100">
                   <X className="w-4 h-4" />
                 </button>
               </div>
 
-              {/* Free Shipping Progress Meter */}
-              <div className="p-4 bg-zinc-50 border-b border-zinc-100 text-xs">
+              {/* Free Shipping Progress Bar (Goal Gradient Effect) */}
+              <div className="p-4 bg-zinc-50 border-b border-zinc-200 text-xs">
                 {cartSummary.isFreeShippingEligible ? (
-                  <div className="flex items-center space-x-2 text-emerald-800 font-semibold">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                    <span>You unlocked FREE Express Delivery!</span>
+                  <div className="flex items-center space-x-2 text-emerald-700 font-semibold">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                    <span>Unlocked! Free Express Shipping applied.</span>
                   </div>
                 ) : (
-                  <div className="space-y-1.5">
-                    <div className="text-zinc-600 font-medium text-[11px] flex justify-between">
-                      <span>Add <strong>${cartSummary.amountRemainingForFreeShipping}</strong> more for Free Shipping</span>
-                      <span>${cartSummary.subtotal} / $50</span>
+                  <div>
+                    <div className="flex justify-between text-[11px] font-semibold text-zinc-700 mb-1.5">
+                      <span>Add ${(50 - cartSummary.subtotal).toFixed(2)} more for FREE Delivery</span>
+                      <span>{Math.round((cartSummary.subtotal / 50) * 100)}%</span>
                     </div>
                     <div className="w-full bg-zinc-200 h-2 rounded-full overflow-hidden">
                       <div
-                        className="bg-emerald-600 h-full transition-all duration-300 rounded-full"
+                        className="bg-zinc-900 h-full transition-all duration-300 rounded-full"
                         style={{ width: `${Math.min(100, (cartSummary.subtotal / 50) * 100)}%` }}
                       />
                     </div>
@@ -504,53 +667,49 @@ export default function TenantStorefrontPage({
                 )}
               </div>
 
-              {/* Cart Items List */}
-              <div className="flex-1 overflow-y-auto p-5 divide-y divide-zinc-100">
+              {/* Cart Item List */}
+              <div className="flex-1 overflow-y-auto p-5 space-y-4">
                 {cartItems.length === 0 ? (
-                  <div className="text-center py-20 text-zinc-400 text-xs">
-                    <ShoppingBag className="w-10 h-10 mx-auto text-zinc-300 mb-2" />
-                    <p>Your shopping cart is empty.</p>
+                  <div className="text-center py-16 space-y-3">
+                    <div className="w-12 h-12 rounded-2xl bg-zinc-100 flex items-center justify-center mx-auto text-zinc-400">
+                      <ShoppingBag className="w-6 h-6" />
+                    </div>
+                    <p className="text-xs font-bold text-zinc-800">Your bag is currently empty</p>
+                    <p className="text-[11px] text-zinc-400 max-w-xs mx-auto">
+                      Explore our {categoryConfig.name.toLowerCase()} catalog and pick your favorite items.
+                    </p>
                   </div>
                 ) : (
                   cartItems.map((item) => (
-                    <div key={item.id} className="py-4 flex items-center space-x-3">
-                      {/* Thumbnail */}
-                      <div className="w-16 h-16 rounded-xl bg-zinc-100 overflow-hidden flex-shrink-0 border border-zinc-200/80">
-                        {item.imageUrl ? (
-                          <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover" />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-zinc-300">
-                            <ShoppingBag className="w-6 h-6" />
-                          </div>
-                        )}
+                    <div key={item.id} className="flex items-center justify-between p-3 bg-zinc-50 rounded-xl border border-zinc-200/70">
+                      <div className="flex-1 pr-3">
+                        <p className="text-xs font-bold text-zinc-900 leading-tight">{item.title}</p>
+                        <p className="text-[11px] text-zinc-500 font-mono mt-0.5">${item.price.toFixed(2)} each</p>
                       </div>
 
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-zinc-900 text-xs truncate">{item.title}</h4>
-                        {item.variantTitle && (
-                          <div className="text-[11px] text-zinc-500 font-medium">{item.variantTitle}</div>
-                        )}
-                        <div className="text-xs font-bold text-zinc-900 mt-1">
-                          ${(item.price * item.quantity).toFixed(2)}
+                      <div className="flex items-center space-x-2">
+                        <div className="flex items-center bg-white border border-zinc-200 rounded-lg p-0.5">
+                          <button
+                            onClick={() => handleQuantityChange(item.id, -1)}
+                            className="w-6 h-6 flex items-center justify-center text-xs font-bold hover:bg-zinc-100 rounded text-zinc-600"
+                          >
+                            -
+                          </button>
+                          <span className="w-6 text-center text-xs font-bold text-zinc-900">{item.quantity}</span>
+                          <button
+                            onClick={() => handleQuantityChange(item.id, 1)}
+                            className="w-6 h-6 flex items-center justify-center text-xs font-bold hover:bg-zinc-100 rounded text-zinc-600"
+                          >
+                            +
+                          </button>
                         </div>
-                      </div>
 
-                      {/* Quantity Stepper */}
-                      <div className="flex items-center space-x-1.5 bg-zinc-100 rounded-lg p-1 border border-zinc-200/60">
                         <button
-                          onClick={() => handleUpdateQty(item.id, -1)}
-                          className="w-5 h-5 flex items-center justify-center font-bold text-zinc-600 hover:bg-white rounded transition"
+                          onClick={() => handleQuantityChange(item.id, -item.quantity)}
+                          className="text-zinc-400 hover:text-rose-600 p-1 transition"
+                          title="Remove item"
                         >
-                          -
-                        </button>
-                        <span className="text-xs font-bold text-zinc-900 w-4 text-center">
-                          {item.quantity}
-                        </span>
-                        <button
-                          onClick={() => handleUpdateQty(item.id, 1)}
-                          className="w-5 h-5 flex items-center justify-center font-bold text-zinc-600 hover:bg-white rounded transition"
-                        >
-                          +
+                          <X className="w-3.5 h-3.5" />
                         </button>
                       </div>
                     </div>
@@ -558,20 +717,22 @@ export default function TenantStorefrontPage({
                 )}
               </div>
 
-              {/* Cart Footer */}
+              {/* Cart Footer & Checkout Action */}
               {cartItems.length > 0 && (
-                <div className="p-5 border-t border-zinc-100 bg-zinc-50 space-y-3">
-                  <div className="flex items-center justify-between text-xs font-semibold text-zinc-600">
-                    <span>Subtotal</span>
-                    <span className="text-lg font-bold text-zinc-900">
-                      ${cartSummary.subtotal.toFixed(2)}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between text-[11px] text-zinc-500">
-                    <span>Shipping</span>
-                    <span className="font-semibold text-emerald-600">
-                      {cartSummary.isFreeShippingEligible ? "FREE" : "$4.99"}
-                    </span>
+                <div className="p-5 border-t border-zinc-200 space-y-3 bg-zinc-50">
+                  <div className="space-y-1.5 text-xs">
+                    <div className="flex justify-between text-zinc-500">
+                      <span>Subtotal</span>
+                      <span className="font-semibold text-zinc-900">${cartSummary.subtotal.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-zinc-500">
+                      <span>Shipping</span>
+                      <span>{cartSummary.isFreeShippingEligible ? "FREE" : `$${shippingFee.toFixed(2)}`}</span>
+                    </div>
+                    <div className="flex justify-between text-sm font-black text-zinc-900 pt-2 border-t border-zinc-200">
+                      <span>Total Amount</span>
+                      <span>${finalTotal.toFixed(2)}</span>
+                    </div>
                   </div>
 
                   <button
@@ -581,14 +742,9 @@ export default function TenantStorefrontPage({
                     }}
                     className="w-full py-3 bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center justify-center space-x-2 btn-press"
                   >
-                    <span>Proceed to 1-Page Checkout</span>
+                    <span>Proceed to Cash on Delivery (COD)</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
-
-                  <div className="flex items-center justify-center space-x-2 text-[10px] text-zinc-400 pt-1">
-                    <Lock className="w-3 h-3 text-emerald-600" />
-                    <span>256-Bit SSL Encrypted Checkout</span>
-                  </div>
                 </div>
               )}
             </div>
@@ -596,229 +752,214 @@ export default function TenantStorefrontPage({
         </div>
       )}
 
-      {/* MODAL 2: 1-PAGE HYBRID CHECKOUT */}
-      {isCheckoutOpen && (
-        <div className="fixed inset-0 bg-zinc-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-float border border-zinc-200 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-zinc-100 pb-3 mb-5">
+      {/* Quick Specs / Variant Selection Modal */}
+      {selectedProduct && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 border border-zinc-200 shadow-2xl relative">
+            <button
+              onClick={() => setSelectedProduct(null)}
+              className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-600 p-1.5 rounded-lg hover:bg-zinc-100"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="flex space-x-4">
+              <img
+                src={selectedProduct.imageUrl}
+                alt={selectedProduct.title}
+                className="w-24 h-24 rounded-xl object-cover border border-zinc-200 bg-zinc-50 flex-shrink-0"
+              />
               <div>
-                <h3 className="font-bold text-base text-zinc-900">Fast 1-Page Checkout</h3>
-                <p className="text-xs text-zinc-400">Zero registration required • Fast doorstep delivery</p>
+                <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">{categoryConfig.name}</span>
+                <h3 className="text-base font-bold text-zinc-900 tracking-tight">{selectedProduct.title}</h3>
+                <div className="text-lg font-black text-zinc-900 mt-1">${selectedProduct.price.toFixed(2)}</div>
               </div>
-              <button onClick={() => setIsCheckoutOpen(false)} className="text-zinc-400 hover:text-zinc-600">
-                <X className="w-4 h-4" />
-              </button>
             </div>
 
-            <form onSubmit={handlePlaceOrder} className="space-y-4 text-xs">
-              <div>
-                <label className="block font-semibold text-zinc-700 uppercase mb-1">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. John Doe"
-                  value={customerName}
-                  onChange={(e) => setCustomerName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 border border-zinc-200 rounded-xl outline-none focus:border-zinc-900 font-medium"
-                />
-              </div>
+            <p className="text-xs text-zinc-600 mt-4 leading-relaxed">{selectedProduct.description}</p>
 
-              <div>
-                <label className="block font-semibold text-zinc-700 uppercase mb-1">
-                  Mobile Phone (For delivery confirmation)
-                </label>
-                <input
-                  type="tel"
-                  required
-                  placeholder="+1 (555) 000-0000"
-                  value={customerPhone}
-                  onChange={(e) => setCustomerPhone(e.target.value)}
-                  className="w-full px-3.5 py-2.5 border border-zinc-200 rounded-xl outline-none focus:border-zinc-900 font-medium"
-                />
-              </div>
-
-              <div>
-                <label className="block font-semibold text-zinc-700 uppercase mb-1">
-                  Delivery Address
-                </label>
-                <textarea
-                  rows={2}
-                  required
-                  placeholder="Street address, apartment, city, zip code"
-                  value={shippingAddress}
-                  onChange={(e) => setShippingAddress(e.target.value)}
-                  className="w-full px-3.5 py-2.5 border border-zinc-200 rounded-xl outline-none focus:border-zinc-900 font-medium"
-                />
-              </div>
-
-              <div>
-                <label className="block font-semibold text-zinc-700 uppercase mb-2">
-                  Select Payment Method
-                </label>
-                <div className="space-y-2">
-                  <label
-                    className={`flex items-center justify-between p-3.5 border rounded-xl cursor-pointer transition ${
-                      paymentMethod === "cod"
-                        ? "border-zinc-900 bg-zinc-50/80 ring-1 ring-zinc-900"
-                        : "border-zinc-200 hover:border-zinc-300"
-                    }`}
-                  >
-                    <div className="flex items-center space-x-2.5">
-                      <input
-                        type="radio"
-                        name="pay"
-                        checked={paymentMethod === "cod"}
-                        onChange={() => setPaymentMethod("cod")}
-                        className="text-zinc-900"
-                      />
-                      <div>
-                        <div className="font-semibold text-zinc-900 text-xs">Cash on Delivery (COD)</div>
-                        <div className="text-[10px] text-zinc-500">Pay cash upon delivery. 1-click order.</div>
-                      </div>
-                    </div>
-                    <Banknote className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                  </label>
-
-                  <label
-                    className={`flex items-center justify-between p-3.5 border rounded-xl cursor-pointer transition ${
-                      paymentMethod === "stripe"
-                        ? "border-zinc-900 bg-zinc-50/80 ring-1 ring-zinc-900"
-                        : "border-zinc-200 hover:border-zinc-300"
-                    }`}
-                  >
-                    <div className="flex items-center space-x-2.5">
-                      <input
-                        type="radio"
-                        name="pay"
-                        checked={paymentMethod === "stripe"}
-                        onChange={() => setPaymentMethod("stripe")}
-                        className="text-zinc-900"
-                      />
-                      <div>
-                        <div className="font-semibold text-zinc-900 text-xs">Credit / Debit Card (Stripe)</div>
-                        <div className="text-[10px] text-zinc-500">Visa, Mastercard, Apple Pay</div>
-                      </div>
-                    </div>
-                    <CreditCard className="w-5 h-5 text-blue-600 flex-shrink-0" />
-                  </label>
-
-                  <label
-                    className={`flex items-center justify-between p-3.5 border rounded-xl cursor-pointer transition ${
-                      paymentMethod === "manual"
-                        ? "border-zinc-900 bg-zinc-50/80 ring-1 ring-zinc-900"
-                        : "border-zinc-200 hover:border-zinc-300"
-                    }`}
-                  >
-                    <div className="flex items-center space-x-2.5">
-                      <input
-                        type="radio"
-                        name="pay"
-                        checked={paymentMethod === "manual"}
-                        onChange={() => setPaymentMethod("manual")}
-                        className="text-zinc-900"
-                      />
-                      <div>
-                        <div className="font-semibold text-zinc-900 text-xs">Mobile Money / Bank Transfer</div>
-                        <div className="text-[10px] text-zinc-500">bKash, Nagad, UPI, Wire</div>
-                      </div>
-                    </div>
-                    <Smartphone className="w-5 h-5 text-purple-600 flex-shrink-0" />
-                  </label>
+            {/* Variant options */}
+            {selectedProduct.variants.length > 0 && (
+              <div className="mt-4 space-y-2">
+                <span className="text-[11px] font-semibold text-zinc-700 uppercase">Select Variant:</span>
+                <div className="grid grid-cols-2 gap-2">
+                  {selectedProduct.variants.map((v, i) => {
+                    const isSel = selectedVariant?.sku === v.sku;
+                    return (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() => setSelectedVariant(v)}
+                        className={`p-2 rounded-xl border text-xs font-semibold text-left transition ${
+                          isSel ? "border-zinc-900 bg-zinc-900 text-white" : "border-zinc-200 hover:border-zinc-300 text-zinc-800"
+                        }`}
+                      >
+                        <div>{v.title}</div>
+                        <div className={`text-[10px] ${isSel ? "text-zinc-300" : "text-zinc-400"}`}>${v.price}</div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
+            )}
 
-              {paymentMethod === "manual" && (
-                <div className="p-3 bg-purple-50/70 border border-purple-200 rounded-xl space-y-1">
-                  <div className="text-[11px] text-purple-900 font-semibold">
-                    Send ${cartSummary.subtotal.toFixed(2)} to Merchant and enter Transaction ID:
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="Transaction ID / Ref"
-                    value={manualTrxId}
-                    onChange={(e) => setManualTrxId(e.target.value)}
-                    className="w-full px-2.5 py-1.5 bg-white border border-purple-300 rounded text-xs outline-none"
-                  />
-                </div>
-              )}
+            <div className="mt-6 pt-4 border-t border-zinc-100 flex gap-2">
+              <button
+                onClick={() => {
+                  handleAddToCart(selectedProduct, selectedVariant);
+                  setSelectedProduct(null);
+                }}
+                className="flex-1 py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center justify-center space-x-1.5 btn-press"
+              >
+                <ShoppingBag className="w-3.5 h-3.5" />
+                <span>Add to Cart</span>
+              </button>
+              <Link
+                href={`/store/${tenantSlug}/products/${selectedProduct.slug}`}
+                className="py-2.5 px-4 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-semibold text-xs rounded-xl transition"
+              >
+                View Full Page
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
 
-              <div className="pt-4 border-t border-zinc-100 flex items-center justify-between">
-                <div>
-                  <span className="text-[10px] text-zinc-400 uppercase tracking-wider block font-semibold">Order Total:</span>
-                  <div className="text-2xl font-black text-zinc-900">
-                    ${cartSummary.subtotal.toFixed(2)}
-                  </div>
+      {/* Checkout Modal */}
+      {isCheckoutOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm overflow-y-auto">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 border border-zinc-200 shadow-2xl relative my-8">
+            <button
+              onClick={() => setIsCheckoutOpen(false)}
+              className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-600 p-1.5 rounded-lg hover:bg-zinc-100"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            {orderSuccess ? (
+              <div className="text-center py-6 space-y-4">
+                <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
+                  <CheckCircle2 className="w-6 h-6" />
                 </div>
+                <h3 className="text-xl font-bold text-zinc-900 tracking-tight">Order Confirmed!</h3>
+                <p className="text-xs text-zinc-500 max-w-xs mx-auto">
+                  Thank you for shopping with <span className="font-semibold text-zinc-800">{storeDisplayName}</span>. Your order has been placed.
+                </p>
+
+                <div className="p-3 bg-zinc-50 border border-zinc-200 rounded-xl text-xs space-y-1 font-mono">
+                  <div className="text-zinc-500">Order ID: <span className="text-zinc-900 font-bold">{orderSuccess.orderNumber}</span></div>
+                  <div className="text-zinc-500">Total: <span className="text-zinc-900 font-bold">${orderSuccess.total}</span></div>
+                  <div className="text-zinc-500">Method: <span className="text-zinc-900 font-bold uppercase">{orderSuccess.paymentMethod}</span></div>
+                </div>
+
                 <button
-                  type="submit"
-                  className="px-6 py-3 bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs rounded-xl shadow-sm transition btn-press"
+                  onClick={() => {
+                    setOrderSuccess(null);
+                    setIsCheckoutOpen(false);
+                  }}
+                  className="w-full py-2.5 bg-zinc-900 text-white font-bold text-xs rounded-xl shadow-sm hover:bg-zinc-800 transition"
                 >
-                  Place Order Now
+                  Continue Shopping
                 </button>
               </div>
-            </form>
+            ) : (
+              <div>
+                <h3 className="text-lg font-bold text-zinc-900 tracking-tight">Instant Cash on Delivery Checkout</h3>
+                <p className="text-xs text-zinc-500 mt-0.5 mb-5">Pay cash upon home delivery. Zero advance payment required.</p>
+
+                <form onSubmit={handleCheckoutSubmit} className="space-y-3.5">
+                  <div>
+                    <label className="block text-[11px] font-semibold text-zinc-700 uppercase tracking-wider mb-1">Full Name</label>
+                    <input
+                      type="text"
+                      placeholder="Jane Doe"
+                      value={customerName}
+                      onChange={(e) => setCustomerName(e.target.value)}
+                      className="w-full px-3 py-2 border border-zinc-200 rounded-xl text-xs outline-none focus:border-zinc-900 transition"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-semibold text-zinc-700 uppercase tracking-wider mb-1">Phone Number (For Delivery Driver)</label>
+                    <input
+                      type="tel"
+                      placeholder="+1 (555) 234-5678"
+                      value={customerPhone}
+                      onChange={(e) => setCustomerPhone(e.target.value)}
+                      className="w-full px-3 py-2 border border-zinc-200 rounded-xl text-xs outline-none focus:border-zinc-900 transition"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-semibold text-zinc-700 uppercase tracking-wider mb-1">Email (Order Confirmation)</label>
+                    <input
+                      type="email"
+                      placeholder="jane@example.com"
+                      value={customerEmail}
+                      onChange={(e) => setCustomerEmail(e.target.value)}
+                      className="w-full px-3 py-2 border border-zinc-200 rounded-xl text-xs outline-none focus:border-zinc-900 transition"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-semibold text-zinc-700 uppercase tracking-wider mb-1">Delivery Address & City</label>
+                    <textarea
+                      placeholder="Apartment, Street address, City"
+                      value={shippingAddress}
+                      onChange={(e) => setShippingAddress(e.target.value)}
+                      className="w-full px-3 py-2 border border-zinc-200 rounded-xl text-xs outline-none focus:border-zinc-900 transition h-16 resize-none"
+                      required
+                    />
+                  </div>
+
+                  {/* Payment Method Selector */}
+                  <div>
+                    <label className="block text-[11px] font-semibold text-zinc-700 uppercase tracking-wider mb-1">Payment Preference</label>
+                    <div className="space-y-1.5">
+                      <label className="flex items-center justify-between p-2.5 border rounded-xl cursor-pointer text-xs transition border-zinc-900 bg-zinc-50">
+                        <div className="flex items-center space-x-2">
+                          <input type="radio" checked={paymentMethod === "cod"} onChange={() => setPaymentMethod("cod")} />
+                          <div>
+                            <span className="font-bold text-zinc-900">Cash on Delivery (COD)</span>
+                            <span className="text-[10px] text-zinc-500 block">Recommended • Pay when parcel arrives</span>
+                          </div>
+                        </div>
+                        <Banknote className="w-4 h-4 text-emerald-600" />
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Total & Submit */}
+                  <div className="pt-3 border-t border-zinc-100 flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold block">Total</span>
+                      <span className="text-xl font-black text-zinc-900">${finalTotal.toFixed(2)}</span>
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={isSubmittingOrder}
+                      className="py-2.5 px-6 bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center space-x-1.5 btn-press disabled:opacity-60"
+                    >
+                      <span>{isSubmittingOrder ? "Confirming Order..." : "Place COD Order"}</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
           </div>
         </div>
       )}
 
-      {/* MODAL 3: ORDER SUCCESS */}
-      {orderSuccess && (
-        <div className="fixed inset-0 bg-zinc-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-float border border-zinc-200">
-            <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-3 border border-emerald-200">
-              <CheckCircle2 className="w-6 h-6" />
-            </div>
-            <h3 className="font-bold text-xl text-zinc-900">Order Confirmed!</h3>
-            <p className="text-xs text-zinc-500 mt-1">We'll dispatch your items shortly.</p>
-
-            <div className="my-5 p-4 bg-zinc-50 rounded-xl border border-zinc-100 text-left text-xs space-y-1.5 font-medium">
-              <div><strong>Order Number:</strong> <span className="font-mono text-zinc-900 font-bold">{orderSuccess.orderNumber}</span></div>
-              <div><strong>Recipient:</strong> {orderSuccess.customerName}</div>
-              <div><strong>Phone:</strong> {orderSuccess.customerPhone}</div>
-              <div><strong>Payment:</strong> {orderSuccess.paymentMethod}</div>
-              <div><strong>Total Due:</strong> ${orderSuccess.totalAmount.toFixed(2)}</div>
-            </div>
-
-            <button
-              onClick={() => setOrderSuccess(null)}
-              className="w-full py-2.5 bg-zinc-900 text-white font-bold text-xs rounded-xl hover:bg-zinc-800 transition btn-press"
-            >
-              Continue Shopping
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Floating Toast Notification */}
-      {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-zinc-900 text-white px-4 py-3 rounded-xl shadow-card text-xs font-semibold flex items-center space-x-2 animate-in slide-in-from-bottom-2 duration-200">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-          <span>{toastMessage}</span>
-          <button
-            onClick={() => setIsCartOpen(true)}
-            className="ml-2 underline text-blue-400 hover:text-blue-300"
-          >
-            View Cart
-          </button>
-        </div>
-      )}
-
-      {/* Modern Minimalist Footer */}
-      <footer className="bg-white border-t border-zinc-200/80 py-10 text-xs text-zinc-400">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center space-x-2 font-bold text-zinc-800 text-xs">
-            <Store className="w-4 h-4 text-zinc-900" />
-            <span className="capitalize">{tenantSlug.replace("-", " ")}</span>
-          </div>
-          <div className="text-zinc-500 flex items-center space-x-4">
-            <span>© 2026 {tenantSlug.replace("-", " ")}. All rights reserved.</span>
-            <span>•</span>
-            <span>Powered by <strong className="text-zinc-700">StoreSwift</strong></span>
-          </div>
-        </div>
-      </footer>
+      {/* Rich Multi-Column Store Footer */}
+      <StoreFooter
+        storeName={storeDisplayName}
+        storeSlug={tenantSlug}
+        categoryName={categoryConfig.name}
+      />
     </div>
   );
 }

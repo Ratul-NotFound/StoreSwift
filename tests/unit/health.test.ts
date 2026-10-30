@@ -13,3 +13,4 @@ describe("Load Balancer Health Probe API (/api/health)", () => {
     expect(typeof data.system.heapUsedMb).toBe("number");
   });
 });
+

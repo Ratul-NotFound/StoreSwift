@@ -31,7 +31,7 @@ export function createProductSvgDataUri(
   <!-- Central Showcase Card -->
   <rect x="220" y="100" width="360" height="380" rx="28" fill="#ffffff" filter="url(#shadow)" />
   
-  <!-- Central Graphic -->
+  <!-- Central Graphic Glow -->
   <circle cx="400" cy="250" r="80" fill="${accentColor}" opacity="0.15" />
   
   ${getCentralGraphic(iconType)}
@@ -67,7 +67,7 @@ function getCentralGraphic(type: string): string {
       return `
         <!-- T-Shirt Silhouette -->
         <path d="M350 190 L320 230 L345 250 L360 235 V310 H440 V235 L455 250 L480 230 L450 190 C430 205 370 205 350 190 Z" 
-          fill="#18181b" opacity="0.85" rx="4" />
+          fill="#18181b" opacity="0.85" />
       `;
     case "jeans":
       return `
@@ -78,10 +78,53 @@ function getCentralGraphic(type: string): string {
       `;
     case "sneaker":
       return `
-        <!-- Minimal Sneaker Silhouette -->
-        <path d="M330 260 C330 260 360 210 400 210 C440 210 460 250 475 255 L475 285 L330 285 Z" 
-          fill="#d97706" opacity="0.85" />
-        <rect x="325" y="280" width="155" height="15" rx="4" fill="#ffffff" stroke="#18181b" stroke-width="2" />
+        <!-- Athletic Sneaker Silhouette -->
+        <path d="M325 255 C330 230 360 205 405 210 C440 215 465 240 480 255 L480 285 L320 285 Z" 
+          fill="#0ea5e9" opacity="0.9" />
+        <path d="M360 235 L400 225 L430 245" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round" />
+        <rect x="315" y="280" width="170" height="16" rx="5" fill="#f8fafc" stroke="#0f172a" stroke-width="2" />
+      `;
+    case "boot":
+      return `
+        <!-- Leather Chelsea Boot -->
+        <path d="M350 180 H415 L420 235 C445 245 470 260 480 275 L480 295 L345 295 L345 220 Z" 
+          fill="#78350f" opacity="0.95" />
+        <rect x="340" y="290" width="145" height="15" rx="3" fill="#18181b" />
+        <path d="M380 180 L375 220 L395 220 L390 180" fill="#451a03" />
+      `;
+    case "loafer":
+      return `
+        <!-- Classic Loafer Shoe -->
+        <path d="M330 250 C350 230 430 230 475 255 L475 285 L325 285 Z" fill="#292524" />
+        <rect x="320" y="280" width="160" height="14" rx="4" fill="#1c1917" />
+        <rect x="385" y="240" width="30" height="6" rx="2" fill="#d97706" />
+      `;
+    case "lipstick":
+      return `
+        <!-- Luxury Lipstick -->
+        <rect x="385" y="240" width="30" height="60" rx="3" fill="#18181b" />
+        <rect x="380" y="235" width="40" height="8" rx="2" fill="#d4af37" />
+        <path d="M390 235 L390 195 C390 190 410 180 415 190 L415 235 Z" fill="#e11d48" />
+      `;
+    case "serum":
+      return `
+        <!-- Dropper Serum Bottle -->
+        <rect x="392" y="185" width="16" height="25" rx="3" fill="#64748b" />
+        <path d="M370 220 H430 V295 H370 Z" fill="#38bdf8" opacity="0.85" rx="8" />
+        <line x1="400" y1="230" x2="400" y2="280" stroke="#ffffff" stroke-width="2" />
+      `;
+    case "balm":
+      return `
+        <!-- Body Balm / Moisturizer Jar -->
+        <rect x="355" y="230" width="90" height="20" rx="4" fill="#fb7185" opacity="0.9" />
+        <rect x="360" y="250" width="80" height="35" rx="4" fill="#ffe4e6" />
+        <circle cx="400" cy="268" r="12" fill="#ffffff" />
+      `;
+    case "cleanser":
+      return `
+        <!-- Cleanser Tube -->
+        <path d="M365 200 H435 L425 280 H375 Z" fill="#0d9488" opacity="0.9" />
+        <rect x="380" y="280" width="40" height="15" rx="2" fill="#134e4a" />
       `;
     case "headphones":
       return `
@@ -100,7 +143,7 @@ function getCentralGraphic(type: string): string {
       `;
     case "keyboard":
       return `
-        <!-- Keyboard -->
+        <!-- Mechanical Keyboard -->
         <rect x="330" y="220" width="140" height="65" rx="8" fill="#1e293b" />
         <circle cx="355" cy="240" r="5" fill="#38bdf8" />
         <circle cx="375" cy="240" r="5" fill="#38bdf8" />
@@ -109,46 +152,34 @@ function getCentralGraphic(type: string): string {
         <circle cx="435" cy="240" r="5" fill="#38bdf8" />
         <rect x="365" y="260" width="70" height="8" rx="3" fill="#cbd5e1" />
       `;
+    case "watch":
+      return `
+        <!-- Minimalist Luxury Watch -->
+        <rect x="388" y="170" width="24" height="150" rx="3" fill="#1c1917" />
+        <circle cx="400" cy="245" r="45" fill="#f8fafc" stroke="#d4af37" stroke-width="4" />
+        <line x1="400" y1="245" x2="400" y2="220" stroke="#18181b" stroke-width="2" />
+        <line x1="400" y1="245" x2="420" y2="245" stroke="#18181b" stroke-width="2" />
+      `;
     case "coffee":
       return `
-        <!-- Coffee Bag -->
+        <!-- Artisan Coffee Bag -->
         <path d="M360 200 H440 L450 290 H350 Z" fill="#78350f" opacity="0.9" />
         <circle cx="400" cy="245" r="18" fill="#fbbf24" opacity="0.3" />
-        <text x="400" y="250" font-family="sans-serif" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle">☕</text>
+        <circle cx="400" cy="245" r="8" fill="#fbbf24" />
       `;
     case "honey":
       return `
-        <!-- Honey Jar -->
+        <!-- Mountain Honey Jar -->
         <rect x="375" y="200" width="50" height="15" rx="3" fill="#b45309" />
         <path d="M360 215 H440 L445 285 C445 295 435 300 400 300 C365 300 355 295 355 285 Z" fill="#f59e0b" />
-        <text x="400" y="265" font-family="sans-serif" font-size="18" text-anchor="middle">🍯</text>
+        <rect x="380" y="240" width="40" height="25" rx="3" fill="#fef3c7" opacity="0.8" />
       `;
     case "oil":
       return `
-        <!-- Olive Oil Bottle -->
+        <!-- Extra Virgin Olive Oil -->
         <rect x="388" y="195" width="24" height="20" rx="2" fill="#3f6212" />
         <path d="M370 235 L388 215 H412 L430 235 V295 H370 Z" fill="#65a30d" opacity="0.9" />
         <circle cx="400" cy="265" r="10" fill="#a3e635" opacity="0.6" />
-      `;
-    case "serum":
-      return `
-        <!-- Serum Bottle -->
-        <rect x="390" y="190" width="20" height="25" rx="4" fill="#0284c7" />
-        <path d="M370 225 H430 V295 H370 Z" fill="#38bdf8" opacity="0.85" rx="8" />
-        <line x1="400" y1="235" x2="400" y2="280" stroke="#ffffff" stroke-width="2" />
-      `;
-    case "balm":
-      return `
-        <!-- Body Balm Jar -->
-        <rect x="355" y="230" width="90" height="20" rx="4" fill="#e11d48" opacity="0.9" />
-        <rect x="360" y="250" width="80" height="35" rx="4" fill="#fda4af" />
-        <circle cx="400" cy="268" r="12" fill="#ffffff" />
-      `;
-    case "cleanser":
-      return `
-        <!-- Cleanser Tube -->
-        <path d="M365 200 H435 L425 280 H375 Z" fill="#0d9488" opacity="0.9" />
-        <rect x="380" y="280" width="40" height="15" rx="2" fill="#134e4a" />
       `;
     default:
       return `
@@ -156,4 +187,3 @@ function getCentralGraphic(type: string): string {
       `;
   }
 }
-
