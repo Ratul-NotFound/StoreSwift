@@ -438,7 +438,7 @@ export default function TenantStorefrontPage({
           <div className="lg:col-span-7 space-y-5">
             <div className={`inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-bold border shadow-sm ${template.classes.heroBadge}`}>
               <Sparkles className="w-3.5 h-3.5" />
-              <span>{categoryConfig.name} • {template.name}</span>
+              <span>{template.formatHeroBadge(categoryConfig.name)}</span>
             </div>
 
             <div className="space-y-2">
@@ -517,32 +517,27 @@ export default function TenantStorefrontPage({
         </div>
       </section>
 
-      {/* Editorial Quality Standard & Fulfillment Manifesto Ribbon */}
+      {/* Editorial Quality Standard & Fulfillment Manifesto Ribbon (Polymorphic OOP Method) */}
       <section className="border-b border-current/10 py-7 px-4 sm:px-6 bg-black/[0.02] dark:bg-white/[0.02]">
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="space-y-1.5 border-l-2 border-current/30 pl-3.5">
-            <span className="text-[10px] font-mono opacity-50 uppercase tracking-widest block">01 / PROVENANCE</span>
-            <h4 className="text-xs font-bold uppercase tracking-wider">100% Genuine Origin</h4>
-            <p className="text-[11px] opacity-70 leading-relaxed">Direct-from-creator stock. Every item is verified for material authenticity.</p>
-          </div>
-
-          <div className="space-y-1.5 border-l-2 border-emerald-500 pl-3.5">
-            <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 uppercase tracking-widest block">02 / PAYMENT</span>
-            <h4 className="text-xs font-bold uppercase tracking-wider">Cash on Delivery</h4>
-            <p className="text-[11px] opacity-70 leading-relaxed">Open and inspect your package at your doorstep before paying a single dollar.</p>
-          </div>
-
-          <div className="space-y-1.5 border-l-2 border-current/30 pl-3.5">
-            <span className="text-[10px] font-mono opacity-50 uppercase tracking-widest block">03 / FULFILLMENT</span>
-            <h4 className="text-xs font-bold uppercase tracking-wider">48h Express Dispatch</h4>
-            <p className="text-[11px] opacity-70 leading-relaxed">Priority packaging with automated SMS status tracking from dispatch to arrival.</p>
-          </div>
-
-          <div className="space-y-1.5 border-l-2 border-current/30 pl-3.5">
-            <span className="text-[10px] font-mono opacity-50 uppercase tracking-widest block">04 / GUARANTEE</span>
-            <h4 className="text-xs font-bold uppercase tracking-wider">7-Day Free Returns</h4>
-            <p className="text-[11px] opacity-70 leading-relaxed">Zero-friction courier exchange for size or style swaps with door-to-door pickup.</p>
-          </div>
+          {template.getManifestoPillars().map((pillar) => (
+            <div
+              key={pillar.index}
+              className={`space-y-1.5 border-l-2 pl-3.5 ${
+                pillar.highlight ? "border-emerald-500" : "border-current/30"
+              }`}
+            >
+              <span
+                className={`text-[10px] font-mono uppercase tracking-widest block ${
+                  pillar.highlight ? "text-emerald-600 dark:text-emerald-400 font-bold" : "opacity-50"
+                }`}
+              >
+                {pillar.index} / {pillar.category}
+              </span>
+              <h4 className="text-xs font-bold uppercase tracking-wider">{pillar.title}</h4>
+              <p className="text-[11px] opacity-70 leading-relaxed">{pillar.description}</p>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -558,40 +553,45 @@ export default function TenantStorefrontPage({
         />
       )}
 
-      {/* Curated Lookbook & Styling Gallery Section */}
-      <section className={`py-12 px-4 sm:px-6 transition-colors ${template.classes.lookbookBg}`}>
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="max-w-xl space-y-3">
-            <span className={template.classes.editorialTag}>THE CURATED LOOKBOOK EDIT // 2026</span>
-            <h3 className="text-2xl sm:text-3xl font-black tracking-tight">
-              Designed with architectural precision, crafted without compromise.
-            </h3>
-            <p className="text-xs sm:text-sm opacity-75 leading-relaxed">
-              Our {categoryConfig.name} line blends ergonomic balance with tactile durability. Each piece in the archive is built to withstand seasons of continuous wear.
-            </p>
-            <div className="flex flex-wrap gap-2 pt-2">
-              <span className="text-[10px] font-mono px-2.5 py-1 rounded-full border border-current/20 uppercase">
-                Certified Provenance
-              </span>
-              <span className="text-[10px] font-mono px-2.5 py-1 rounded-full border border-current/20 uppercase">
-                Ethical Craftsmanship
-              </span>
-              <span className="text-[10px] font-mono px-2.5 py-1 rounded-full border border-current/20 uppercase">
-                Nationwide COD
-              </span>
+      {/* Curated Lookbook & Styling Gallery Section (Polymorphic Philosophy) */}
+      {(() => {
+        const philosophy = template.getDesignPhilosophy();
+        return (
+          <section className={`py-12 px-4 sm:px-6 transition-colors ${template.classes.lookbookBg}`}>
+            <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="max-w-xl space-y-3">
+                <span className={template.classes.editorialTag}>THE CURATED LOOKBOOK EDIT // 2026</span>
+                <h3 className="text-2xl sm:text-3xl font-black tracking-tight leading-tight">
+                  {philosophy.curationQuote}
+                </h3>
+                <p className="text-xs sm:text-sm opacity-75 leading-relaxed">
+                  {philosophy.ethos} {philosophy.materialsFocus ? `Materials: ${philosophy.materialsFocus}.` : ""}
+                </p>
+                <div className="flex flex-wrap gap-2 pt-2">
+                  <span className="text-[10px] font-mono px-2.5 py-1 rounded-full border border-current/20 uppercase">
+                    Certified Provenance
+                  </span>
+                  <span className="text-[10px] font-mono px-2.5 py-1 rounded-full border border-current/20 uppercase">
+                    Ethical Craftsmanship
+                  </span>
+                  <span className="text-[10px] font-mono px-2.5 py-1 rounded-full border border-current/20 uppercase">
+                    Nationwide COD
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center space-x-3">
+                <a
+                  href="#catalog"
+                  className={`py-3.5 px-6 rounded-xl font-bold text-xs transition flex items-center space-x-2 btn-press ${template.classes.primaryButton}`}
+                >
+                  <span>Explore Archive Collection</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </a>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center space-x-3">
-            <a
-              href="#catalog"
-              className={`py-3.5 px-6 rounded-xl font-bold text-xs transition flex items-center space-x-2 btn-press ${template.classes.primaryButton}`}
-            >
-              <span>Explore Archive Collection</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </a>
-          </div>
-        </div>
-      </section>
+          </section>
+        );
+      })()}
 
       {/* Main Catalog View */}
       <main id="catalog" className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-10">
@@ -700,7 +700,7 @@ export default function TenantStorefrontPage({
             {(() => {
               const p = filteredProducts[0];
               const isWishlisted = wishlist.includes(p.id);
-              const discountPct = Math.round(((p.comparePrice - p.price) / p.comparePrice) * 100);
+              const discountPct = template.calculateDiscount(p.price, p.comparePrice);
 
               return (
                 <div
@@ -710,7 +710,7 @@ export default function TenantStorefrontPage({
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
                     {/* Left: Portrait Photo Frame with Smooth Crossfade Hover */}
                     <div
-                      className="relative aspect-[4/5] rounded-xl overflow-hidden bg-black/5 dark:bg-white/5 border border-current/10 cursor-pointer"
+                      className={`relative ${template.getProductCardAspect()} rounded-xl overflow-hidden bg-black/5 dark:bg-white/5 border border-current/10 cursor-pointer`}
                       onClick={() => handleOpenProduct(p)}
                     >
                       <img
@@ -724,10 +724,10 @@ export default function TenantStorefrontPage({
                         className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                       />
 
-                      {/* Badge */}
+                      {/* Badge (Polymorphic OOP formatting) */}
                       {p.badge && (
                         <span className="absolute top-3 left-3 bg-zinc-950/90 text-white text-[10px] font-mono font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow">
-                          {p.badge}
+                          {template.formatProductBadge(p.badge)}
                         </span>
                       )}
 
@@ -779,10 +779,10 @@ export default function TenantStorefrontPage({
                         {p.description}
                       </p>
 
-                      {/* Scarcity Pill */}
+                      {/* Scarcity Pill (Polymorphic OOP method) */}
                       <div className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 flex items-center space-x-1.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
-                        <span>Limited Allocation: 5 units remaining in current batch</span>
+                        <span>{template.getScarcityUrgency(5)}</span>
                       </div>
 
                       {/* Variant Options Preview */}
@@ -809,10 +809,10 @@ export default function TenantStorefrontPage({
                       <div className="pt-3 border-t border-current/10 flex items-center justify-between">
                         <div>
                           <div className="text-2xl font-black">
-                            ${p.price.toFixed(2)}
+                            {template.formatPrice(p.price)}
                           </div>
                           <span className="text-xs opacity-40 line-through">
-                            ${p.comparePrice.toFixed(2)}
+                            {template.formatPrice(p.comparePrice)}
                           </span>
                         </div>
 
@@ -842,7 +842,7 @@ export default function TenantStorefrontPage({
             {/* CARDS 1 & 2: VERTICAL PORTRAIT CARDS */}
             {filteredProducts.slice(1, 3).map((p) => {
               const isWishlisted = wishlist.includes(p.id);
-              const discountPct = Math.round(((p.comparePrice - p.price) / p.comparePrice) * 100);
+              const discountPct = template.calculateDiscount(p.price, p.comparePrice);
 
               return (
                 <div
@@ -852,7 +852,7 @@ export default function TenantStorefrontPage({
                   <div>
                     {/* Portrait Photo Frame with Smooth Hover Crossfade */}
                     <div
-                      className="relative aspect-[3/4] rounded-xl overflow-hidden bg-black/5 dark:bg-white/5 border border-current/10 mb-4 cursor-pointer"
+                      className={`relative ${template.getProductCardAspect()} rounded-xl overflow-hidden bg-black/5 dark:bg-white/5 border border-current/10 mb-4 cursor-pointer`}
                       onClick={() => handleOpenProduct(p)}
                     >
                       <img
@@ -866,10 +866,10 @@ export default function TenantStorefrontPage({
                         className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                       />
 
-                      {/* Badge */}
+                      {/* Badge (Polymorphic OOP formatting) */}
                       {p.badge && (
                         <span className="absolute top-2.5 left-2.5 bg-zinc-950/90 text-white text-[10px] font-mono font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">
-                          {p.badge}
+                          {template.formatProductBadge(p.badge)}
                         </span>
                       )}
 
@@ -930,10 +930,10 @@ export default function TenantStorefrontPage({
                   <div className="mt-4 pt-3.5 border-t border-current/10 flex items-center justify-between">
                     <div>
                       <div className="text-base font-black">
-                        ${p.price.toFixed(2)}
+                        {template.formatPrice(p.price)}
                       </div>
                       <span className="text-[11px] opacity-40 line-through">
-                        ${p.comparePrice.toFixed(2)}
+                        {template.formatPrice(p.comparePrice)}
                       </span>
                     </div>
 
@@ -964,7 +964,7 @@ export default function TenantStorefrontPage({
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredProducts.map((p) => {
               const isWishlisted = wishlist.includes(p.id);
-              const discountPct = Math.round(((p.comparePrice - p.price) / p.comparePrice) * 100);
+              const discountPct = template.calculateDiscount(p.price, p.comparePrice);
 
               return (
                 <div
@@ -974,7 +974,7 @@ export default function TenantStorefrontPage({
                   <div>
                     {/* Portrait Photo Frame with Overlays */}
                     <div
-                      className="relative aspect-[3/4] rounded-xl overflow-hidden bg-black/5 dark:bg-white/5 border border-current/10 mb-4 cursor-pointer"
+                      className={`relative ${template.getProductCardAspect()} rounded-xl overflow-hidden bg-black/5 dark:bg-white/5 border border-current/10 mb-4 cursor-pointer`}
                       onClick={() => handleOpenProduct(p)}
                     >
                       <img
@@ -988,10 +988,10 @@ export default function TenantStorefrontPage({
                         className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                       />
 
-                      {/* Badge */}
+                      {/* Badge (Polymorphic OOP formatting) */}
                       {p.badge && (
                         <span className="absolute top-2.5 left-2.5 bg-zinc-950/90 text-white text-[10px] font-mono font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">
-                          {p.badge}
+                          {template.formatProductBadge(p.badge)}
                         </span>
                       )}
 
@@ -1052,10 +1052,10 @@ export default function TenantStorefrontPage({
                   <div className="mt-4 pt-3.5 border-t border-current/10 flex items-center justify-between">
                     <div>
                       <div className="text-base font-black">
-                        ${p.price.toFixed(2)}
+                        {template.formatPrice(p.price)}
                       </div>
                       <span className="text-[11px] opacity-40 line-through">
-                        ${p.comparePrice.toFixed(2)}
+                        {template.formatPrice(p.comparePrice)}
                       </span>
                     </div>
 
