@@ -12,6 +12,7 @@ export interface SpotlightProduct {
   price: number;
   comparePrice: number;
   imageUrl?: string;
+  secondaryImage?: string;
   badge?: string;
   rating?: number;
   variants: any[];
@@ -53,12 +54,19 @@ export function SpotlightDrop({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
           {/* Left Column: Product Artwork */}
           <div className="lg:col-span-5 relative group">
-            <div className="aspect-square rounded-2xl overflow-hidden bg-black/20 border border-white/10 shadow-inner">
+            <div className="aspect-square rounded-2xl overflow-hidden bg-black/20 border border-white/10 shadow-inner relative">
               <img
                 src={product.imageUrl}
                 alt={product.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                className="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0"
               />
+              {product.secondaryImage && (
+                <img
+                  src={product.secondaryImage}
+                  alt={`${product.title} - Lookbook`}
+                  className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                />
+              )}
             </div>
             {discount > 0 && (
               <span className="absolute top-3 left-3 bg-rose-600 text-white font-black text-xs px-2.5 py-1 rounded-full shadow">

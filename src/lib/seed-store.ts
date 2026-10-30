@@ -7,6 +7,7 @@ export interface SeedProduct {
   description: string;
   basePrice: string;
   imageUrl?: string;
+  secondaryImage?: string;
   badge?: string;
   rating?: number;
   isPublished: boolean;
@@ -40,6 +41,7 @@ export function generateStoreSeedData(storeId: string, category: string): SeedDa
       description: sample.description,
       basePrice: sample.basePrice,
       imageUrl: sample.imageUrl,
+      secondaryImage: sample.secondaryImage,
       badge: sample.badge,
       rating: sample.rating,
       isPublished: true

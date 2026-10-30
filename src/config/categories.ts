@@ -4,8 +4,9 @@ export interface CategoryConfig {
   id: string;
   name: string;
   tagline: string;
+  editorialSubtitle?: string;
   iconName?: string;
-  heroImage?: string;
+  heroImage: string;
   recommendedTemplate: string;
   defaultOptions: string[];
   sampleProducts: Array<{
@@ -13,7 +14,8 @@ export interface CategoryConfig {
     slug: string;
     description: string;
     basePrice: string;
-    imageUrl?: string;
+    imageUrl: string;
+    secondaryImage?: string;
     badge?: string;
     rating?: number;
     options: Record<string, string[]>;
@@ -24,246 +26,270 @@ export const CATEGORIES_MAP: Record<string, CategoryConfig> = {
   fashion: {
     id: "fashion",
     name: "Fashion & Apparel",
-    tagline: "Trending streetwear, modern fits, and premium organic fabrics.",
+    tagline: "Uncompromising textiles, architectural silhouettes, and modern fits.",
+    editorialSubtitle: "STUDIO ARCHIVE 2026 • COMPILED WITH CERTIFIED ORGANIC YARNS",
     iconName: "Shirt",
     recommendedTemplate: "minimal",
-    heroImage: createProductSvgDataUri("Clothing & Apparel", "Autumn 2026 Collection", "#18181b", "#27272a", "tshirt"),
+    heroImage: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1600&auto=format&fit=crop&q=85",
     defaultOptions: ["Size", "Color"],
     sampleProducts: [
       {
-        title: "Heavyweight Cotton Oversized Tee",
+        title: "Heavyweight Organic Oversized Tee",
         slug: "heavyweight-cotton-oversized-tee",
-        description: "280 GSM combed organic cotton with relaxed drop-shoulder cut and ribbed collar.",
-        basePrice: "28.00",
-        imageUrl: createProductSvgDataUri("Heavyweight Oversized Tee", "Clothing & Apparel", "#f4f4f5", "#e4e4e7", "tshirt"),
-        badge: "Best Seller",
+        description: "280 GSM combed organic cotton with relaxed drop-shoulder cut, blind-stitched hem, and durable ribbed collar.",
+        basePrice: "34.00",
+        imageUrl: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=1000&auto=format&fit=crop&q=85",
+        secondaryImage: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1000&auto=format&fit=crop&q=85",
+        badge: "Essential Drop",
         rating: 4.9,
         options: { Size: ["S", "M", "L", "XL"], Color: ["Pitch Black", "Washed Slate", "Bone White"] }
       },
       {
-        title: "Relaxed Taper Denim Jeans",
+        title: "Japanese Selvedge Taper Denim",
         slug: "relaxed-taper-denim-jeans",
-        description: "13.5oz Japanese selvedge denim with comfortable tailored taper and antique brass hardware.",
-        basePrice: "68.00",
-        imageUrl: createProductSvgDataUri("Relaxed Taper Denim", "Clothing & Apparel", "#eff6ff", "#dbeafe", "jeans"),
-        badge: "Trending",
-        rating: 4.8,
+        description: "13.5oz Kurabo raw indigo selvedge denim with tailored modern taper and hand-hammered antique copper rivets.",
+        basePrice: "98.00",
+        imageUrl: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=1000&auto=format&fit=crop&q=85",
+        secondaryImage: "https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=1000&auto=format&fit=crop&q=85",
+        badge: "Selvedge Denim",
+        rating: 5.0,
         options: { Size: ["30", "32", "34", "36"], Color: ["Raw Indigo", "Faded Stonewash"] }
       },
       {
-        title: "French Terry Raglan Hoodie",
+        title: "French Terry 450GSM Raglan Hoodie",
         slug: "french-terry-raglan-hoodie",
-        description: "Ultra-dense 450 GSM French terry hoodie with double-lined hood and seamless kangaroo pouch.",
-        basePrice: "62.00",
-        imageUrl: createProductSvgDataUri("French Terry Hoodie", "Clothing & Apparel", "#fafaf9", "#e7e5e4", "tshirt"),
-        badge: "Essential",
-        rating: 5.0,
-        options: { Size: ["M", "L", "XL"], Color: ["Heather Grey", "Onyx"] }
+        description: "Ultra-dense custom loopback French terry hoodie with double-walled hood and seamless zero-chafing kangaroo pocket.",
+        basePrice: "85.00",
+        imageUrl: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=1000&auto=format&fit=crop&q=85",
+        secondaryImage: "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=1000&auto=format&fit=crop&q=85",
+        badge: "Winter Heavyweight",
+        rating: 4.9,
+        options: { Size: ["M", "L", "XL"], Color: ["Heather Grey", "Onyx Black"] }
       }
     ]
   },
   shoes: {
     id: "shoes",
     name: "Footwear & Shoes",
-    tagline: "Performance sneakers, handcrafted leather boots, and everyday loafers.",
+    tagline: "Performance kinetics, handcrafted pull-up leathers, and heritage silhouettes.",
+    editorialSubtitle: "BUILT FOR LIFELONG COMFORT • GOODYEAR WELTED CRAFTSMANSHIP",
     iconName: "Footprints",
     recommendedTemplate: "artisan",
-    heroImage: createProductSvgDataUri("Footwear & Shoes", "Master Craftsman Series", "#78350f", "#451a03", "boot"),
+    heroImage: "https://images.unsplash.com/photo-1552346154-21d32810aba3?w=1600&auto=format&fit=crop&q=85",
     defaultOptions: ["Shoe Size", "Color"],
     sampleProducts: [
       {
-        title: "Pro-Stride Cloud Running Sneaker",
+        title: "Pro-Stride Carbon Running Sneaker",
         slug: "pro-stride-cloud-running-sneaker",
-        description: "Zero-gravity foam cushioning with engineered breathable knit upper and carbon torsion plate.",
-        basePrice: "115.00",
-        imageUrl: createProductSvgDataUri("Pro-Stride Cloud Sneaker", "Footwear & Shoes", "#f0f9ff", "#bae6fd", "sneaker"),
-        badge: "Top Rated",
+        description: "Dynamic dual-density nitrogen foam sole with engineered breathable monomesh upper and carbon torsion propulsion plate.",
+        basePrice: "145.00",
+        imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1000&auto=format&fit=crop&q=85",
+        secondaryImage: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=1000&auto=format&fit=crop&q=85",
+        badge: "Propulsion Plate",
         rating: 4.9,
-        options: { "Shoe Size": ["8", "9", "10", "11", "12"], Color: ["Electric Ice", "Triple Black"] }
+        options: { "Shoe Size": ["8", "9", "10", "11", "12"], Color: ["Electric Crimson", "Triple Onyx"] }
       },
       {
-        title: "Artisan Leather Chelsea Boot",
+        title: "Full-Grain Leather Chelsea Boot",
         slug: "artisan-leather-chelsea-boot",
-        description: "Full-grain pull-up leather boot with Goodyear welt construction and durable Vibram sole.",
-        basePrice: "165.00",
-        imageUrl: createProductSvgDataUri("Artisan Chelsea Boot", "Footwear & Shoes", "#fffbeb", "#fde68a", "boot"),
-        badge: "Heritage",
+        description: "Handcrafted Horween Chromexcel leather with 360-degree storm welt and resoleable Vibram lug outsole.",
+        basePrice: "210.00",
+        imageUrl: "https://images.unsplash.com/photo-1638247025967-b4e38f787b76?w=1000&auto=format&fit=crop&q=85",
+        secondaryImage: "https://images.unsplash.com/photo-1520639888713-7851133b1ed0?w=1000&auto=format&fit=crop&q=85",
+        badge: "Goodyear Welted",
         rating: 5.0,
-        options: { "Shoe Size": ["8", "9", "10", "11"], Color: ["Dark Cognac", "Espresso"] }
+        options: { "Shoe Size": ["8", "9", "10", "11"], Color: ["Espresso Brown", "Midnight Black"] }
       },
       {
-        title: "Classic Penny Loafer Suede",
+        title: "Italian Velour Suede Penny Loafer",
         slug: "classic-penny-loafer-suede",
-        description: "Velvety Italian calfskin suede loafer with padded leather footbed and rubber heel cap.",
-        basePrice: "98.00",
-        imageUrl: createProductSvgDataUri("Classic Penny Loafer", "Footwear & Shoes", "#fef3c7", "#fde68a", "loafer"),
-        badge: "Trending",
+        description: "Buttery soft Tuscan calfskin suede with unlined breathable vamp and cushioned memory foam footbed.",
+        basePrice: "128.00",
+        imageUrl: "https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=1000&auto=format&fit=crop&q=85",
+        secondaryImage: "https://images.unsplash.com/photo-1533867617858-e7b97e060509?w=1000&auto=format&fit=crop&q=85",
+        badge: "Italian Suede",
         rating: 4.8,
-        options: { "Shoe Size": ["8", "9", "10", "11"], Color: ["Tobacco Suede", "Navy"] }
+        options: { "Shoe Size": ["8", "9", "10", "11"], Color: ["Tobacco Tan", "Navy Blue"] }
       }
     ]
   },
   beauty_cosmetics: {
     id: "beauty_cosmetics",
     name: "Beauty & Cosmetics",
-    tagline: "Clean botanical skincare, velvet lip pigments, and nourishing daily rituals.",
+    tagline: "Pure botanical extractions, lipid barrier repair, and velvet matte pigments.",
+    editorialSubtitle: "CLEAN BOTANICAL LABS • DERMATOLOGICALLY PROVEN FORMULATIONS",
     iconName: "Sparkles",
     recommendedTemplate: "glow",
-    heroImage: createProductSvgDataUri("Beauty & Cosmetics", "Clean Organic Beauty", "#881337", "#9f1239", "serum"),
-    defaultOptions: ["Shade", "Volume"],
+    heroImage: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1600&auto=format&fit=crop&q=85",
+    defaultOptions: ["Volume", "Shade"],
     sampleProducts: [
       {
-        title: "Pure Glow Hyaluronic Dew Serum",
+        title: "Pure Glow Triple Hyaluronic Dew Serum",
         slug: "pure-glow-hyaluronic-dew-serum",
-        description: "Multi-weight triple hyaluronic acid infused with snow mushroom and niacinamide for radiant glass skin.",
-        basePrice: "34.00",
-        imageUrl: createProductSvgDataUri("Pure Glow Dew Serum", "Beauty & Care", "#fff1f2", "#ffe4e6", "serum"),
+        description: "Multi-depth molecular hyaluronic acid infused with Tremella mushroom, niacinamide, and prebiotic squalane for glass-skin hydration.",
+        basePrice: "42.00",
+        imageUrl: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=1000&auto=format&fit=crop&q=85",
+        secondaryImage: "https://images.unsplash.com/photo-1608248597359-38c2020e26b1?w=1000&auto=format&fit=crop&q=85",
         badge: "Clean Beauty",
-        rating: 4.9,
-        options: { Volume: ["30ml Dropper", "60ml Value"] }
-      },
-      {
-        title: "Velvet Matte Moisture Lipstick",
-        slug: "velvet-matte-moisture-lipstick",
-        description: "Hydrating high-pigment matte formula enriched with camellia oil and vitamin E for 12-hour comfortable wear.",
-        basePrice: "24.00",
-        imageUrl: createProductSvgDataUri("Velvet Matte Lipstick", "Beauty & Care", "#ffe4e6", "#fecdd3", "lipstick"),
-        badge: "Award Winner",
         rating: 5.0,
-        options: { Shade: ["Ruby Whisper", "Berry Nude", "Terracotta Glow"] }
+        options: { Volume: ["30ml Amber Dropper", "60ml Refill"] }
       },
       {
-        title: "Botanical Restorative Body Balm",
+        title: "Velvet Satin Moisture Lipstick",
+        slug: "velvet-matte-moisture-lipstick",
+        description: "Weightless buildable pigment enriched with camellia flower oil and hyaluronic spheres for zero-feathering all-day comfort.",
+        basePrice: "28.00",
+        imageUrl: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=1000&auto=format&fit=crop&q=85",
+        secondaryImage: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=1000&auto=format&fit=crop&q=85",
+        badge: "Allure Best of Beauty",
+        rating: 4.9,
+        options: { Shade: ["Ruby Whisper", "Berry Nude", "Terracotta Rose"] }
+      },
+      {
+        title: "Whipped Botanical Lipid Barrier Balm",
         slug: "botanical-restorative-body-balm",
-        description: "Whipped shea butter, jojoba, and cold-pressed rosehip oil to soothe and reinforce your skin barrier.",
-        basePrice: "29.50",
-        imageUrl: createProductSvgDataUri("Restorative Body Balm", "Beauty & Care", "#f0fdf4", "#dcfce7", "balm"),
-        badge: "Derm Approved",
-        rating: 4.8,
-        options: { Scent: ["Vanilla Sandalwood", "Unscented Pure"] }
+        description: "Cold-pressed rosehip seed butter, ceramides, and calendula extract that melts into skin for intense overnight barrier reinforcement.",
+        basePrice: "36.00",
+        imageUrl: "https://images.unsplash.com/photo-1608248597359-38c2020e26b1?w=1000&auto=format&fit=crop&q=85",
+        secondaryImage: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=1000&auto=format&fit=crop&q=85",
+        badge: "Barrier Rescue",
+        rating: 4.9,
+        options: { Scent: ["Vanilla Sandalwood", "Fragrance Free"] }
       }
     ]
   },
   electronics: {
     id: "electronics",
     name: "Electronics & Tech",
-    tagline: "Precision acoustic headphones, pro gaming peripherals, and high-speed hubs.",
+    tagline: "Acoustic precision, tactile mechanical switches, and aerospace-grade chassis.",
+    editorialSubtitle: "PRECISION HARDWARE ARCHITECTURE • HIGH-RES WIRELESS AUDIO",
     iconName: "Headphones",
     recommendedTemplate: "bold",
-    heroImage: createProductSvgDataUri("Electronics & Tech", "Next-Gen Audio & Gear", "#0f172a", "#1e293b", "headphones"),
+    heroImage: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1600&auto=format&fit=crop&q=85",
     defaultOptions: ["Color", "Storage"],
     sampleProducts: [
       {
-        title: "Spatial Pro ANC Wireless Headphones",
+        title: "Acoustic Pro Hybrid ANC Wireless Headphones",
         slug: "spatial-pro-anc-headphones",
-        description: "Hybrid active noise cancellation with 40mm beryllium drivers and 45-hour ultra-fast battery.",
-        basePrice: "94.00",
-        imageUrl: createProductSvgDataUri("Spatial Pro Headphones", "Electronics & Tech", "#f8fafc", "#e2e8f0", "headphones"),
-        badge: "Top Rated",
-        rating: 4.9,
-        options: { Color: ["Space Gray", "Silver Frost", "Midnight Blue"] }
-      },
-      {
-        title: "ThunderLink 7-in-1 Aluminum USB-C Hub",
-        slug: "thunderlink-7-in-1-usb-c-hub",
-        description: "Dual 4K@60Hz HDMI, 100W PD passthrough charging, Gigabit LAN, and high-speed SD card readers.",
-        basePrice: "44.00",
-        imageUrl: createProductSvgDataUri("ThunderLink USB-C Hub", "Electronics & Tech", "#f1f5f9", "#cbd5e1", "hub"),
-        badge: "Essential",
-        rating: 4.8,
-        options: { Color: ["Anodized Gray", "Matte Black"] }
-      },
-      {
-        title: "Quantum 75% Mechanical Gaming Keyboard",
-        slug: "quantum-mechanical-keyboard",
-        description: "Gasket-mounted hot-swap PCB with pre-lubed linear switches and double-shot PBT keycaps.",
-        basePrice: "89.00",
-        imageUrl: createProductSvgDataUri("Quantum Gaming Keyboard", "Electronics & Tech", "#0f172a", "#1e293b", "keyboard"),
-        badge: "Popular",
+        description: "40mm custom beryllium drivers with lossless Bluetooth 5.4, multi-microphone spatial beamforming, and 45h battery life.",
+        basePrice: "169.00",
+        imageUrl: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1000&auto=format&fit=crop&q=85",
+        secondaryImage: "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=1000&auto=format&fit=crop&q=85",
+        badge: "Beryllium Drivers",
         rating: 5.0,
-        options: { Switches: ["Red Linear (Silent)", "Brown Tactile"] }
+        options: { Color: ["Matte Obsidian", "Brushed Silver", "Midnight Navy"] }
+      },
+      {
+        title: "ThunderLink 7-in-1 CNC Aluminum Hub",
+        slug: "thunderlink-7-in-1-usb-c-hub",
+        description: "Dual 4K@60Hz HDMI, 100W Power Delivery 3.0 passthrough, Gigabit Ethernet, and 10Gbps USB 3.2 in a single block of milled aluminum.",
+        basePrice: "58.00",
+        imageUrl: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=1000&auto=format&fit=crop&q=85",
+        secondaryImage: "https://images.unsplash.com/photo-1544652478-6653e09f18a2?w=1000&auto=format&fit=crop&q=85",
+        badge: "10Gbps Transfer",
+        rating: 4.8,
+        options: { Color: ["Space Gray Anodized", "Silver Frost"] }
+      },
+      {
+        title: "Quantum 75% Gasket-Mounted Mechanical Keyboard",
+        slug: "quantum-mechanical-keyboard",
+        description: "Polycarbonate plate with PORON dampening foam, factory pre-lubed linear switches, hot-swap sockets, and PBT dye-sub keycaps.",
+        basePrice: "119.00",
+        imageUrl: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=1000&auto=format&fit=crop&q=85",
+        secondaryImage: "https://images.unsplash.com/photo-1595225476474-87563907a212?w=1000&auto=format&fit=crop&q=85",
+        badge: "Gasket Mounted",
+        rating: 4.9,
+        options: { Switches: ["Red Linear 45g (Silent)", "Brown Tactile 55g"] }
       }
     ]
   },
   jewelry: {
     id: "jewelry",
     name: "Jewelry & Luxury",
-    tagline: "Timeless sapphire chronographs, 18k solid gold signets, and bespoke gems.",
+    tagline: "Swiss automatic horology, solid recycled gold, and optical grade titanium.",
+    editorialSubtitle: "HEIRLOOM QUALITY PIECES • INDIVIDUALLY NUMBERED ATELIER EDITIONS",
     iconName: "Watch",
     recommendedTemplate: "minimal",
-    heroImage: createProductSvgDataUri("Jewelry & Luxury", "Bespoke Horology", "#1c1917", "#292524", "watch"),
+    heroImage: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1600&auto=format&fit=crop&q=85",
     defaultOptions: ["Material", "Size"],
     sampleProducts: [
       {
-        title: "Heritage Automatic Sapphire Watch",
+        title: "Heritage 39mm Automatic Sapphire Chronograph",
         slug: "heritage-automatic-sapphire-watch",
-        description: "Japanese 24-jewel automatic movement with scratch-resistant sapphire crystal and Italian leather strap.",
-        basePrice: "185.00",
-        imageUrl: createProductSvgDataUri("Heritage Sapphire Watch", "Jewelry & Luxury", "#fffbeb", "#fef3c7", "watch"),
-        badge: "Limited Edition",
+        description: "28,800 vph automatic caliber with exhibition caseback, anti-reflective domed sapphire, and Italian hand-stitched leather strap.",
+        basePrice: "240.00",
+        imageUrl: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=1000&auto=format&fit=crop&q=85",
+        secondaryImage: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1000&auto=format&fit=crop&q=85",
+        badge: "Numbered Edition",
         rating: 5.0,
-        options: { Strap: ["Italian Tan Leather", "Steel Mesh"] }
+        options: { Strap: ["Italian Tan Leather", "Brushed Mesh Steel"] }
       },
       {
-        title: "18k Gold Plated Signet Ring",
+        title: "18k Heavy Gold-Vermeil Signet Ring",
         slug: "18k-gold-plated-signet-ring",
-        description: "Solid 925 sterling silver layered with 2.5 microns of 18k gold for lasting shine.",
-        basePrice: "65.00",
-        imageUrl: createProductSvgDataUri("18k Gold Signet Ring", "Jewelry & Luxury", "#fef3c7", "#fde68a", "watch"),
-        badge: "Handcrafted",
+        description: "Solid 925 sterling silver base plated with 3.0 microns of 18k yellow gold with satin brushed face for custom monogramming.",
+        basePrice: "88.00",
+        imageUrl: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=1000&auto=format&fit=crop&q=85",
+        secondaryImage: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=1000&auto=format&fit=crop&q=85",
+        badge: "18k Gold Vermeil",
         rating: 4.9,
         options: { "Ring Size": ["7", "8", "9", "10", "11"] }
       },
       {
-        title: "Titanium Polarized Aviator Sunglasses",
+        title: "Beta-Titanium Polarized Aviators",
         slug: "titanium-polarized-aviator",
-        description: "Featherweight Japanese titanium frames with UV400 anti-reflective polarized lenses.",
-        basePrice: "79.00",
-        imageUrl: createProductSvgDataUri("Titanium Aviator", "Jewelry & Luxury", "#f8fafc", "#e2e8f0", "watch"),
-        badge: "Essential",
+        description: "Laser-cut 14-gram aerospace titanium frame with nylon polarized lenses offering 100% UV400 and hydrophobic oleophobic coating.",
+        basePrice: "115.00",
+        imageUrl: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=1000&auto=format&fit=crop&q=85",
+        secondaryImage: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=1000&auto=format&fit=crop&q=85",
+        badge: "14g Ultra-Light",
         rating: 4.8,
-        options: { Finish: ["Gold & Green", "Gunmetal & Smoke"] }
+        options: { Finish: ["Brushed 18k Gold", "Matte Gunmetal"] }
       }
     ]
   },
   grocery_food: {
     id: "grocery_food",
     name: "Food & Grocery",
-    tagline: "Single-origin mountain coffees, raw wildflower honeys, and organic delicacies.",
+    tagline: "Single-origin micro-lots, alpine raw honey, and cold-pressed estate olive oil.",
+    editorialSubtitle: "ARTISANAL ESTATE BOTTLING • REGENERATIVE FARMSTEAD SOURCING",
     iconName: "Coffee",
     recommendedTemplate: "artisan",
-    heroImage: createProductSvgDataUri("Food & Grocery", "Artisan Farmstead", "#451a03", "#78350f", "coffee"),
+    heroImage: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1600&auto=format&fit=crop&q=85",
     defaultOptions: ["Pack Size"],
     sampleProducts: [
       {
-        title: "Single-Origin Ethiopian Yirgacheffe Coffee",
+        title: "Single-Origin Yirgacheffe Heirloom Coffee (1kg)",
         slug: "ethiopian-yirgacheffe-coffee",
-        description: "Direct-trade micro-lot with floral jasmine aroma, bergamot citrus, and honey finish.",
-        basePrice: "18.50",
-        imageUrl: createProductSvgDataUri("Ethiopian Coffee Micro-Lot", "Food & Grocery", "#fef3c7", "#fde68a", "coffee"),
-        badge: "Direct Trade",
+        description: "Direct-trade natural processed coffee roasted in small batches with notes of bergamot citrus, candied peach, and dark cacao.",
+        basePrice: "24.50",
+        imageUrl: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=1000&auto=format&fit=crop&q=85",
+        secondaryImage: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=1000&auto=format&fit=crop&q=85",
+        badge: "Direct Trade Micro-Lot",
         rating: 5.0,
-        options: { "Grind Type": ["Whole Bean", "Ground Espresso", "Coarse French Press"] }
+        options: { "Grind Type": ["Whole Bean (Recommended)", "Ground Espresso", "Coarse French Press"] }
       },
       {
-        title: "Raw Alpine Wildflower Honey (500g)",
+        title: "Raw Wild Alpine High-Meadow Honey (500g)",
         slug: "raw-alpine-wildflower-honey",
-        description: "Unheated, unfiltered mountain honey collected from pristine high-altitude wildflowers.",
-        basePrice: "14.00",
-        imageUrl: createProductSvgDataUri("Raw Wildflower Honey", "Food & Grocery", "#fffbeb", "#fef3c7", "honey"),
-        badge: "100% Pure",
+        description: "Unfiltered, unheated raw honey harvested at 2,200m elevation from wild alpine flora with natural propolis and pollen intact.",
+        basePrice: "18.00",
+        imageUrl: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=1000&auto=format&fit=crop&q=85",
+        secondaryImage: "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=1000&auto=format&fit=crop&q=85",
+        badge: "100% Raw Alpine",
         rating: 4.9,
-        options: { Size: ["250g Jar", "500g Value"] }
+        options: { Size: ["250g Glass Jar", "500g Stone Crock"] }
       },
       {
-        title: "First Cold-Pressed Koroneiki Olive Oil",
+        title: "Early-Harvest Koroneiki Extra Virgin Olive Oil",
         slug: "cold-pressed-koroneiki-olive-oil",
-        description: "Early-harvest Greek olive oil boasting exceptionally high polyphenols and peppery finish.",
-        basePrice: "24.00",
-        imageUrl: createProductSvgDataUri("Koroneiki Extra Virgin Oil", "Food & Grocery", "#f7fee7", "#ecfccb", "oil"),
-        badge: "Gourmet",
+        description: "Single-estate early harvest from hand-picked green Koroneiki olives cold-pressed within 4 hours. Acidity below 0.18%.",
+        basePrice: "29.00",
+        imageUrl: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=1000&auto=format&fit=crop&q=85",
+        secondaryImage: "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=1000&auto=format&fit=crop&q=85",
+        badge: "High Polyphenol",
         rating: 5.0,
-        options: { Volume: ["500ml Glass", "1L Tin"] }
+        options: { Volume: ["500ml Dark UV Glass", "1L Kitchen Tin"] }
       }
     ]
   }
@@ -273,7 +299,6 @@ export const ALL_CATEGORIES = Object.keys(CATEGORIES_MAP);
 
 export function getCategoryConfig(categoryKey: string): CategoryConfig {
   const clean = (categoryKey || "").toLowerCase().trim();
-  // Alias mapping
   if (clean === "shoes" || clean === "footwear" || clean === "sneakers") {
     return CATEGORIES_MAP.shoes;
   }

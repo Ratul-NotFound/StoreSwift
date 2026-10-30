@@ -233,13 +233,21 @@ export default function PlatformLandingPage() {
                   key={idx}
                   className="bg-white rounded-xl border border-zinc-200 overflow-hidden shadow-subtle flex flex-col justify-between"
                 >
-                  <div className="relative h-44 bg-zinc-100 overflow-hidden">
+                  <div className="relative h-48 bg-zinc-100 overflow-hidden group">
                     <img
                       src={p.imageUrl}
                       alt={p.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0"
                       loading="lazy"
                     />
+                    {p.secondaryImage && (
+                      <img
+                        src={p.secondaryImage}
+                        alt={`${p.title} - Lookbook`}
+                        className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                        loading="lazy"
+                      />
+                    )}
                     {p.badge && (
                       <span className="absolute top-2.5 left-2.5 bg-zinc-900/90 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
                         {p.badge}

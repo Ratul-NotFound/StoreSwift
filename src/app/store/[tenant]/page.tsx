@@ -83,6 +83,7 @@ export default function TenantStorefrontPage({
       price: parseFloat(p.basePrice),
       comparePrice: parseFloat(p.basePrice) * 1.35,
       imageUrl: p.imageUrl || "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=80",
+      secondaryImage: p.secondaryImage || p.imageUrl || "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&auto=format&fit=crop&q=80",
       badge: p.badge || (idx === 0 ? "Best Seller" : idx === 1 ? "Trending" : "New"),
       rating: p.rating || 4.9,
       variants: seed.variants.filter((v) => v.productSlug === p.slug)
@@ -100,6 +101,7 @@ export default function TenantStorefrontPage({
         price: parseFloat(p.basePrice),
         comparePrice: parseFloat(p.basePrice) * 1.35,
         imageUrl: p.imageUrl || "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=80",
+        secondaryImage: p.secondaryImage || p.imageUrl || "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&auto=format&fit=crop&q=80",
         badge: p.badge || (idx === 0 ? "Best Seller" : idx === 1 ? "Trending" : "New"),
         rating: p.rating || 4.9,
         variants: seed.variants.filter((v) => v.productSlug === p.slug)
@@ -121,6 +123,7 @@ export default function TenantStorefrontPage({
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<typeof products[0] | null>(null);
   const [selectedVariant, setSelectedVariant] = useState<any>(null);
+  const [modalImageAngle, setModalImageAngle] = useState<"primary" | "secondary">("primary");
 
   // Checkout modal state
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
@@ -173,6 +176,7 @@ export default function TenantStorefrontPage({
   const handleOpenProduct = (prod: typeof products[0]) => {
     setSelectedProduct(prod);
     setSelectedVariant(prod.variants[0] || null);
+    setModalImageAngle("primary");
   };
 
   const handleAddToCart = (prod: any, variant: any) => {
@@ -293,7 +297,7 @@ export default function TenantStorefrontPage({
   const storeDisplayName = tenantSlug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
 
   return (
-    <div className="min-h-screen bg-[#fafafa] flex flex-col font-sans selection:bg-zinc-900 selection:text-white">
+    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${template.classes.pageBg}`}>
       {/* Top Notification / Ticker Bar */}
       <div className={`py-2 px-4 text-xs font-semibold text-center tracking-wide transition-colors ${template.classes.announcementBar}`}>
         <div className="max-w-6xl mx-auto flex items-center justify-between">
@@ -306,7 +310,7 @@ export default function TenantStorefrontPage({
       </div>
 
       {/* Main Sticky Brand Header */}
-      <header className="bg-white/90 backdrop-blur-md border-b border-zinc-200/80 sticky top-0 z-30 shadow-subtle">
+      <header className={`sticky top-0 z-30 shadow-subtle transition-colors duration-300 ${template.classes.headerBg}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           {/* Logo & Category indicator */}
           <Link href={`/store/${tenantSlug}`} className="flex items-center space-x-2.5 flex-shrink-0 group">
@@ -314,10 +318,10 @@ export default function TenantStorefrontPage({
               <Store className="w-4 h-4" />
             </div>
             <div>
-              <span className="font-extrabold text-zinc-900 tracking-tight text-sm block">
+              <span className="font-extrabold tracking-tight text-sm block">
                 {storeDisplayName}
               </span>
-              <span className="text-[10px] text-zinc-400 font-medium block -mt-0.5">
+              <span className="text-[10px] opacity-70 font-medium block -mt-0.5">
                 {categoryConfig.name} • {template.name}
               </span>
             </div>
@@ -326,11 +330,11 @@ export default function TenantStorefrontPage({
           {/* Search Trigger Input */}
           <div
             onClick={() => setIsSearchOpen(true)}
-            className="flex-1 max-w-md hidden sm:flex items-center space-x-2 px-3.5 py-2 bg-zinc-50 border border-zinc-200/90 rounded-xl text-xs text-zinc-400 cursor-pointer hover:border-zinc-400 transition"
+            className="flex-1 max-w-md hidden sm:flex items-center space-x-2 px-3.5 py-2 bg-black/5 dark:bg-white/5 border border-current/15 rounded-xl text-xs opacity-75 cursor-pointer hover:opacity-100 hover:border-current/30 transition"
           >
             <Search className="w-3.5 h-3.5" />
             <span>Search {categoryConfig.name.toLowerCase()}...</span>
-            <kbd className="ml-auto text-[10px] bg-zinc-200/70 text-zinc-600 px-1.5 py-0.5 rounded font-mono">⌘K</kbd>
+            <kbd className="ml-auto text-[10px] bg-black/10 dark:bg-white/10 px-1.5 py-0.5 rounded font-mono">⌘K</kbd>
           </div>
 
           {/* Header Action Controls */}
@@ -338,7 +342,7 @@ export default function TenantStorefrontPage({
             {/* Mobile Search Button */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="sm:hidden p-2 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-xl transition"
+              className="sm:hidden p-2 opacity-75 hover:opacity-100 rounded-xl transition"
               title="Search"
             >
               <Search className="w-4 h-4" />
@@ -347,7 +351,7 @@ export default function TenantStorefrontPage({
             {/* Wishlist Icon */}
             <button
               onClick={() => success("Wishlist", `${wishlist.length} saved item(s).`)}
-              className="p-2 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-xl transition relative"
+              className="p-2 opacity-75 hover:opacity-100 rounded-xl transition relative"
               title="Saved Wishlist"
             >
               <Heart className="w-4 h-4" />
@@ -376,7 +380,7 @@ export default function TenantStorefrontPage({
       </header>
 
       {/* Category & Template Switcher Bar */}
-      <div className="bg-white border-b border-zinc-200/60 py-2.5 px-4 overflow-x-auto scrollbar-none sticky top-16 z-20">
+      <div className={`py-2.5 px-4 overflow-x-auto scrollbar-none sticky top-16 z-20 transition-colors ${template.classes.navPillBg}`}>
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
           {/* Shop Category Tabs */}
           <div className="flex items-center space-x-1.5 flex-nowrap">
@@ -429,93 +433,115 @@ export default function TenantStorefrontPage({
       </div>
 
       {/* Dynamic Hero Section */}
-      <section className={`relative overflow-hidden py-12 sm:py-16 ${template.classes.heroSection}`}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          <div className="space-y-4">
-            <div className={`inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-bold border ${template.classes.heroBadge}`}>
+      <section className={`relative overflow-hidden py-14 sm:py-20 border-b transition-colors ${template.classes.heroSection}`}>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          <div className="lg:col-span-7 space-y-5">
+            <div className={`inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-bold border shadow-sm ${template.classes.heroBadge}`}>
               <Sparkles className="w-3.5 h-3.5" />
               <span>{categoryConfig.name} • {template.name}</span>
             </div>
 
-            <h1 className={`text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight ${template.classes.heroTitle}`}>
-              {categoryConfig.tagline}
-            </h1>
+            <div className="space-y-2">
+              <span className={`block ${template.classes.editorialTag}`}>
+                {categoryConfig.editorialSubtitle || "STUDIO ARCHIVE 2026 // ATELIER SELECTION"}
+              </span>
+              <h1 className={`text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-[0.95] ${template.classes.heroTitle}`}>
+                {categoryConfig.tagline}
+              </h1>
+            </div>
 
-            <p className={`text-xs sm:text-sm leading-relaxed max-w-lg ${template.classes.heroSubtitle}`}>
-              Welcome to the official {storeDisplayName} storefront. Browse authenticated items with nationwide cash on delivery, 48-hour dispatch, and 7-day hassle-free returns.
+            <p className={`text-xs sm:text-sm leading-relaxed max-w-xl opacity-80 ${template.classes.heroSubtitle}`}>
+              Welcome to the official {storeDisplayName} storefront. Browse authenticated items with nationwide cash on delivery, 48-hour express dispatch, and 7-day hassle-free returns.
             </p>
 
-            <div className="pt-2 flex flex-wrap gap-3">
+            <div className="pt-3 flex flex-wrap items-center gap-3">
               <a
                 href="#catalog"
-                className={`py-3 px-6 rounded-xl font-bold text-xs transition flex items-center space-x-2 btn-press ${template.classes.primaryButton}`}
+                className={`py-3.5 px-7 rounded-xl font-bold text-xs transition flex items-center space-x-2 btn-press ${template.classes.primaryButton}`}
               >
-                <span>Shop Catalog ({products.length} Items)</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <span>Shop Curated Catalog ({products.length} Items)</span>
+                <ArrowRight className="w-4 h-4" />
               </a>
               <button
                 onClick={() => success("Free Shipping", "Add $50+ of items to your cart to unlock free express delivery.")}
-                className={`py-3 px-5 rounded-xl font-semibold text-xs border transition ${template.classes.secondaryButton}`}
+                className={`py-3.5 px-6 rounded-xl font-semibold text-xs border transition ${template.classes.secondaryButton}`}
               >
-                View Shipping Perks
+                Inspect Quality Guarantees
               </button>
+            </div>
+
+            {/* Quick Metrics */}
+            <div className="pt-4 flex items-center space-x-6 text-[11px] opacity-75 font-mono">
+              <div className="flex items-center space-x-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse" />
+                <span>48h Dispatch</span>
+              </div>
+              <div className="flex items-center space-x-1.5">
+                <span className="w-2 h-2 rounded-full bg-blue-500 inline-block" />
+                <span>COD Enabled</span>
+              </div>
+              <div className="flex items-center space-x-1.5">
+                <span className="w-2 h-2 rounded-full bg-purple-500 inline-block" />
+                <span>100% Genuine</span>
+              </div>
             </div>
           </div>
 
-          {/* Hero Illustration Graphic */}
-          <div className="relative rounded-3xl overflow-hidden border border-zinc-200/80 shadow-card bg-zinc-100 aspect-video md:aspect-auto md:h-80 group">
-            <img
-              src={categoryConfig.heroImage}
-              alt={categoryConfig.name}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-            <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md p-3 rounded-2xl flex items-center justify-between border border-white/60 shadow-sm">
-              <div>
-                <p className="text-xs font-bold text-zinc-900">{categoryConfig.name}</p>
-                <p className="text-[10px] text-zinc-500">Verified Quality Guarantee</p>
+          {/* Hero Illustration Graphic with Secondary Hover Flip */}
+          <div className="lg:col-span-5 relative group">
+            <div className="relative rounded-3xl overflow-hidden border border-current/15 shadow-2xl aspect-[4/5] bg-black/5 dark:bg-white/5">
+              <img
+                src={categoryConfig.heroImage}
+                alt={categoryConfig.name}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+              
+              {/* Floating Top Pill */}
+              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white text-[10px] font-mono uppercase px-3 py-1 rounded-full border border-white/20">
+                LOOKBOOK // VOL. 26
               </div>
-              <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
-                COD Enabled
-              </span>
+
+              {/* Bottom Glass Bar */}
+              <div className="absolute bottom-4 left-4 right-4 bg-white/90 dark:bg-black/80 backdrop-blur-md p-3.5 rounded-2xl flex items-center justify-between border border-white/60 dark:border-white/10 shadow-lg">
+                <div>
+                  <p className="text-xs font-bold text-zinc-900 dark:text-white">{categoryConfig.name}</p>
+                  <p className="text-[10px] text-zinc-500 dark:text-zinc-400">Verified Quality Guarantee</p>
+                </div>
+                <span className="text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/80 px-2.5 py-1 rounded-full border border-emerald-200 dark:border-emerald-800">
+                  COD Available
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 4-Column Trust Perks Strip */}
-      <section className="bg-zinc-50/70 border-b border-zinc-200/70 py-6 px-4">
-        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="flex items-center space-x-3 p-3 bg-white rounded-xl border border-zinc-200/60 shadow-subtle">
-            <Truck className="w-5 h-5 text-blue-600 flex-shrink-0" />
-            <div>
-              <p className="text-xs font-bold text-zinc-900">48h Dispatch</p>
-              <p className="text-[11px] text-zinc-500">Fast tracking alerts</p>
-            </div>
+      {/* Editorial Quality Standard & Fulfillment Manifesto Ribbon */}
+      <section className="border-b border-current/10 py-7 px-4 sm:px-6 bg-black/[0.02] dark:bg-white/[0.02]">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="space-y-1.5 border-l-2 border-current/30 pl-3.5">
+            <span className="text-[10px] font-mono opacity-50 uppercase tracking-widest block">01 / PROVENANCE</span>
+            <h4 className="text-xs font-bold uppercase tracking-wider">100% Genuine Origin</h4>
+            <p className="text-[11px] opacity-70 leading-relaxed">Direct-from-creator stock. Every item is verified for material authenticity.</p>
           </div>
 
-          <div className="flex items-center space-x-3 p-3 bg-white rounded-xl border border-zinc-200/60 shadow-subtle">
-            <Banknote className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-            <div>
-              <p className="text-xs font-bold text-zinc-900">Cash on Delivery</p>
-              <p className="text-[11px] text-zinc-500">Inspect before paying</p>
-            </div>
+          <div className="space-y-1.5 border-l-2 border-emerald-500 pl-3.5">
+            <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 uppercase tracking-widest block">02 / PAYMENT</span>
+            <h4 className="text-xs font-bold uppercase tracking-wider">Cash on Delivery</h4>
+            <p className="text-[11px] opacity-70 leading-relaxed">Open and inspect your package at your doorstep before paying a single dollar.</p>
           </div>
 
-          <div className="flex items-center space-x-3 p-3 bg-white rounded-xl border border-zinc-200/60 shadow-subtle">
-            <ShieldCheck className="w-5 h-5 text-purple-600 flex-shrink-0" />
-            <div>
-              <p className="text-xs font-bold text-zinc-900">100% Genuine</p>
-              <p className="text-[11px] text-zinc-500">Certified merchant items</p>
-            </div>
+          <div className="space-y-1.5 border-l-2 border-current/30 pl-3.5">
+            <span className="text-[10px] font-mono opacity-50 uppercase tracking-widest block">03 / FULFILLMENT</span>
+            <h4 className="text-xs font-bold uppercase tracking-wider">48h Express Dispatch</h4>
+            <p className="text-[11px] opacity-70 leading-relaxed">Priority packaging with automated SMS status tracking from dispatch to arrival.</p>
           </div>
 
-          <div className="flex items-center space-x-3 p-3 bg-white rounded-xl border border-zinc-200/60 shadow-subtle">
-            <RotateCcw className="w-5 h-5 text-amber-600 flex-shrink-0" />
-            <div>
-              <p className="text-xs font-bold text-zinc-900">7-Day Free Returns</p>
-              <p className="text-[11px] text-zinc-500">Zero hassle replacement</p>
-            </div>
+          <div className="space-y-1.5 border-l-2 border-current/30 pl-3.5">
+            <span className="text-[10px] font-mono opacity-50 uppercase tracking-widest block">04 / GUARANTEE</span>
+            <h4 className="text-xs font-bold uppercase tracking-wider">7-Day Free Returns</h4>
+            <p className="text-[11px] opacity-70 leading-relaxed">Zero-friction courier exchange for size or style swaps with door-to-door pickup.</p>
           </div>
         </div>
       </section>
@@ -523,40 +549,78 @@ export default function TenantStorefrontPage({
       {/* Weekly Spotlight Limited Drop */}
       {products[0] && (
         <SpotlightDrop
-          product={products[0]}
+          product={{
+            ...products[0],
+            secondaryImage: products[0].secondaryImage
+          }}
           template={template}
           onAddToCart={handleAddToCart}
         />
       )}
 
+      {/* Curated Lookbook & Styling Gallery Section */}
+      <section className={`py-12 px-4 sm:px-6 transition-colors ${template.classes.lookbookBg}`}>
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="max-w-xl space-y-3">
+            <span className={template.classes.editorialTag}>THE CURATED LOOKBOOK EDIT // 2026</span>
+            <h3 className="text-2xl sm:text-3xl font-black tracking-tight">
+              Designed with architectural precision, crafted without compromise.
+            </h3>
+            <p className="text-xs sm:text-sm opacity-75 leading-relaxed">
+              Our {categoryConfig.name} line blends ergonomic balance with tactile durability. Each piece in the archive is built to withstand seasons of continuous wear.
+            </p>
+            <div className="flex flex-wrap gap-2 pt-2">
+              <span className="text-[10px] font-mono px-2.5 py-1 rounded-full border border-current/20 uppercase">
+                Certified Provenance
+              </span>
+              <span className="text-[10px] font-mono px-2.5 py-1 rounded-full border border-current/20 uppercase">
+                Ethical Craftsmanship
+              </span>
+              <span className="text-[10px] font-mono px-2.5 py-1 rounded-full border border-current/20 uppercase">
+                Nationwide COD
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center space-x-3">
+            <a
+              href="#catalog"
+              className={`py-3.5 px-6 rounded-xl font-bold text-xs transition flex items-center space-x-2 btn-press ${template.classes.primaryButton}`}
+            >
+              <span>Explore Archive Collection</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* Main Catalog View */}
-      <main id="catalog" className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8">
+      <main id="catalog" className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-10">
         {/* Catalog Control Toolbar: Search indicator, filters & sort */}
-        <div className="bg-white rounded-2xl p-4 border border-zinc-200/80 shadow-subtle mb-8 space-y-3">
+        <div className={`rounded-2xl p-4 border shadow-subtle mb-10 space-y-3.5 transition-colors ${template.classes.toolbarBg}`}>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h2 className="text-lg font-bold text-zinc-900 tracking-tight">
+              <h2 className="text-lg font-bold tracking-tight">
                 Featured {categoryConfig.name}
               </h2>
-              <p className="text-xs text-zinc-500 mt-0.5">
+              <p className="text-xs opacity-60 mt-0.5">
                 Showing {filteredProducts.length} items • In stock with instant delivery
               </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-2.5">
               {/* Sort Selector */}
-              <div className="flex items-center space-x-1.5 text-xs text-zinc-500 bg-zinc-50 border border-zinc-200 rounded-xl px-3 py-1.5">
-                <SlidersHorizontal className="w-3.5 h-3.5 text-zinc-400" />
+              <div className="flex items-center space-x-1.5 text-xs opacity-75 bg-black/5 dark:bg-white/5 border border-current/15 rounded-xl px-3 py-1.5">
+                <SlidersHorizontal className="w-3.5 h-3.5 opacity-60" />
                 <span>Sort:</span>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
-                  className="bg-transparent font-semibold text-zinc-800 outline-none cursor-pointer text-xs"
+                  className="bg-transparent font-semibold outline-none cursor-pointer text-xs"
                 >
-                  <option value="featured">Featured First</option>
-                  <option value="price-asc">Price: Low to High</option>
-                  <option value="price-desc">Price: High to Low</option>
-                  <option value="rating">Highest Rated</option>
+                  <option value="featured" className="text-black">Featured First</option>
+                  <option value="price-asc" className="text-black">Price: Low to High</option>
+                  <option value="price-desc" className="text-black">Price: High to Low</option>
+                  <option value="rating" className="text-black">Highest Rated</option>
                 </select>
               </div>
 
@@ -565,8 +629,8 @@ export default function TenantStorefrontPage({
                 onClick={() => setInStockOnly(!inStockOnly)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition border ${
                   inStockOnly
-                    ? "bg-emerald-50 text-emerald-800 border-emerald-300"
-                    : "bg-zinc-50 text-zinc-600 border-zinc-200 hover:bg-zinc-100"
+                    ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+                    : "bg-black/5 dark:bg-white/5 border-current/15 hover:border-current/30"
                 }`}
               >
                 {inStockOnly ? "✓ In Stock Only" : "All Availability"}
@@ -575,38 +639,38 @@ export default function TenantStorefrontPage({
           </div>
 
           {/* Price Range Filter Pills */}
-          <div className="flex items-center space-x-2 pt-2 border-t border-zinc-100 overflow-x-auto">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 mr-1 flex-shrink-0">
+          <div className="flex items-center space-x-2 pt-2.5 border-t border-current/10 overflow-x-auto">
+            <span className="text-[11px] font-bold uppercase tracking-wider opacity-60 mr-1 flex-shrink-0">
               Price:
             </span>
             <button
               onClick={() => setPriceFilter("all")}
-              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition ${
-                priceFilter === "all" ? "bg-zinc-900 text-white" : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+              className={`px-3 py-1 rounded-lg text-xs font-semibold transition ${
+                priceFilter === "all" ? template.classes.pillActive : "bg-black/5 dark:bg-white/5 opacity-80 hover:opacity-100"
               }`}
             >
               All Prices
             </button>
             <button
               onClick={() => setPriceFilter("under-35")}
-              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition ${
-                priceFilter === "under-35" ? "bg-zinc-900 text-white" : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+              className={`px-3 py-1 rounded-lg text-xs font-semibold transition ${
+                priceFilter === "under-35" ? template.classes.pillActive : "bg-black/5 dark:bg-white/5 opacity-80 hover:opacity-100"
               }`}
             >
               Under $35
             </button>
             <button
               onClick={() => setPriceFilter("35-80")}
-              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition ${
-                priceFilter === "35-80" ? "bg-zinc-900 text-white" : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+              className={`px-3 py-1 rounded-lg text-xs font-semibold transition ${
+                priceFilter === "35-80" ? template.classes.pillActive : "bg-black/5 dark:bg-white/5 opacity-80 hover:opacity-100"
               }`}
             >
               $35 to $80
             </button>
             <button
               onClick={() => setPriceFilter("over-80")}
-              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition ${
-                priceFilter === "over-80" ? "bg-zinc-900 text-white" : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+              className={`px-3 py-1 rounded-lg text-xs font-semibold transition ${
+                priceFilter === "over-80" ? template.classes.pillActive : "bg-black/5 dark:bg-white/5 opacity-80 hover:opacity-100"
               }`}
             >
               Over $80
@@ -614,108 +678,410 @@ export default function TenantStorefrontPage({
           </div>
         </div>
 
-        {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProducts.map((p) => {
-            const isWishlisted = wishlist.includes(p.id);
-            const discountPct = Math.round(((p.comparePrice - p.price) / p.comparePrice) * 100);
+        {/* Asymmetrical Editorial Product Showcase */}
+        {filteredProducts.length === 0 ? (
+          <div className="text-center py-20 space-y-3">
+            <p className="text-sm font-bold opacity-80">No products match your filter criteria.</p>
+            <button
+              onClick={() => {
+                setSearchQuery("");
+                setPriceFilter("all");
+                setInStockOnly(false);
+              }}
+              className="text-xs underline opacity-75 hover:opacity-100 font-semibold"
+            >
+              Reset Filters
+            </button>
+          </div>
+        ) : !searchQuery && priceFilter === "all" && !inStockOnly && filteredProducts.length >= 3 ? (
+          /* Editorial Asymmetric Layout: 1 Grand Lead Showcase + 2 Vertical Portrait Cards */
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* CARD 0: GRAND LEAD SHOWCASE PIECE (Spans 2 columns on desktop) */}
+            {(() => {
+              const p = filteredProducts[0];
+              const isWishlisted = wishlist.includes(p.id);
+              const discountPct = Math.round(((p.comparePrice - p.price) / p.comparePrice) * 100);
 
-            return (
-              <div
-                key={p.id}
-                className={`rounded-2xl border p-4 shadow-subtle hover:shadow-card transition-all flex flex-col justify-between group ${template.classes.productCard}`}
-              >
-                <div>
-                  {/* Photo Frame with Overlays */}
-                  <div
-                    className="relative aspect-square rounded-xl bg-zinc-100 overflow-hidden border border-zinc-200/60 mb-4 cursor-pointer"
-                    onClick={() => handleOpenProduct(p)}
-                  >
-                    <img
-                      src={p.imageUrl}
-                      alt={p.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-
-                    {/* Badge */}
-                    {p.badge && (
-                      <span className="absolute top-2.5 left-2.5 bg-zinc-900/90 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">
-                        {p.badge}
-                      </span>
-                    )}
-
-                    {/* Discount Pill */}
-                    {discountPct > 0 && (
-                      <span className="absolute top-2.5 right-2.5 bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow">
-                        -{discountPct}%
-                      </span>
-                    )}
-
-                    {/* Wishlist Button */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleWishlist(p.id);
-                      }}
-                      className="absolute bottom-2.5 right-2.5 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-zinc-600 hover:text-rose-600 shadow-sm transition"
-                    >
-                      <Heart className={`w-4 h-4 ${isWishlisted ? "text-rose-500 fill-current" : ""}`} />
-                    </button>
-                  </div>
-
-                  {/* Rating */}
-                  <div className="flex items-center space-x-1 text-amber-500 text-xs mb-1.5">
-                    <Star className="w-3.5 h-3.5 fill-current" />
-                    <span className="font-bold text-zinc-800">{p.rating}</span>
-                    <span className="text-zinc-400 text-[11px]">(48 reviews)</span>
-                  </div>
-
-                  {/* Title & Description */}
-                  <h3
-                    onClick={() => handleOpenProduct(p)}
-                    className="font-bold text-sm text-zinc-900 tracking-tight leading-snug cursor-pointer hover:text-blue-600 transition"
-                  >
-                    {p.title}
-                  </h3>
-
-                  <p className="text-xs text-zinc-500 mt-1 line-clamp-2 leading-relaxed">
-                    {p.description}
-                  </p>
-                </div>
-
-                {/* Price & Action Row */}
-                <div className="mt-4 pt-4 border-t border-zinc-100 flex items-center justify-between">
-                  <div>
-                    <div className="text-base font-black text-zinc-900">
-                      ${p.price.toFixed(2)}
-                    </div>
-                    <span className="text-[11px] text-zinc-400 line-through">
-                      ${p.comparePrice.toFixed(2)}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center space-x-1.5">
-                    <button
+              return (
+                <div
+                  key={p.id}
+                  className={`lg:col-span-2 rounded-2xl border p-5 shadow-card hover:shadow-xl transition-all duration-300 group ${template.classes.productCard}`}
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
+                    {/* Left: Portrait Photo Frame with Smooth Crossfade Hover */}
+                    <div
+                      className="relative aspect-[4/5] rounded-xl overflow-hidden bg-black/5 dark:bg-white/5 border border-current/10 cursor-pointer"
                       onClick={() => handleOpenProduct(p)}
-                      className="p-2 border border-zinc-200 hover:bg-zinc-100 rounded-xl text-zinc-600 text-xs font-semibold transition"
-                      title="Quick Specs"
                     >
-                      <SlidersHorizontal className="w-3.5 h-3.5" />
-                    </button>
+                      <img
+                        src={p.imageUrl}
+                        alt={p.title}
+                        className="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0"
+                      />
+                      <img
+                        src={p.secondaryImage || p.imageUrl}
+                        alt={`${p.title} - Lookbook View`}
+                        className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                      />
 
-                    <button
-                      onClick={() => handleAddToCart(p, p.variants[0])}
-                      className={`py-2 px-3 rounded-xl text-xs font-bold transition flex items-center space-x-1 btn-press ${template.classes.primaryButton}`}
-                    >
-                      <ShoppingBag className="w-3.5 h-3.5" />
-                      <span>Add</span>
-                    </button>
+                      {/* Badge */}
+                      {p.badge && (
+                        <span className="absolute top-3 left-3 bg-zinc-950/90 text-white text-[10px] font-mono font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow">
+                          {p.badge}
+                        </span>
+                      )}
+
+                      {/* Discount Pill */}
+                      {discountPct > 0 && (
+                        <span className="absolute top-3 right-3 bg-rose-600 text-white text-[10px] font-black px-2 py-0.5 rounded-full shadow">
+                          -{discountPct}%
+                        </span>
+                      )}
+
+                      {/* Wishlist Button */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleWishlist(p.id);
+                        }}
+                        className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-white/90 dark:bg-black/80 backdrop-blur-md flex items-center justify-center text-zinc-700 dark:text-zinc-200 hover:text-rose-600 shadow-sm transition"
+                      >
+                        <Heart className={`w-4 h-4 ${isWishlisted ? "text-rose-500 fill-current" : ""}`} />
+                      </button>
+
+                      {/* Angle Indicator Pill */}
+                      <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-sm text-white text-[9px] font-mono px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        LOOKBOOK VIEW
+                      </div>
+                    </div>
+
+                    {/* Right: Editorial Narrative & Action Box */}
+                    <div className="space-y-3.5">
+                      <div className="flex items-center space-x-2">
+                        <span className={template.classes.editorialTag}>
+                          SIGNATURE ARCHIVE // 01
+                        </span>
+                        <div className="flex items-center space-x-1 text-amber-500 text-xs">
+                          <Star className="w-3.5 h-3.5 fill-current" />
+                          <span className="font-bold">{p.rating}</span>
+                          <span className="opacity-50 text-[10px]">(48 reviews)</span>
+                        </div>
+                      </div>
+
+                      <h3
+                        onClick={() => handleOpenProduct(p)}
+                        className="font-black text-xl sm:text-2xl tracking-tight cursor-pointer hover:opacity-80 transition"
+                      >
+                        {p.title}
+                      </h3>
+
+                      <p className="text-xs opacity-75 leading-relaxed line-clamp-3">
+                        {p.description}
+                      </p>
+
+                      {/* Scarcity Pill */}
+                      <div className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 flex items-center space-x-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
+                        <span>Limited Allocation: 5 units remaining in current batch</span>
+                      </div>
+
+                      {/* Variant Options Preview */}
+                      {p.variants.length > 0 && (
+                        <div className="space-y-1.5 pt-1">
+                          <span className="text-[10px] font-mono uppercase tracking-wider opacity-60">
+                            Available Sizes / Colors:
+                          </span>
+                          <div className="flex flex-wrap gap-1.5">
+                            {p.variants.slice(0, 4).map((v, vi) => (
+                              <button
+                                key={vi}
+                                onClick={() => handleAddToCart(p, v)}
+                                className="px-2.5 py-1 rounded-lg text-[10px] font-mono border border-current/20 hover:border-current/50 transition"
+                              >
+                                {v.title}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Price & Action */}
+                      <div className="pt-3 border-t border-current/10 flex items-center justify-between">
+                        <div>
+                          <div className="text-2xl font-black">
+                            ${p.price.toFixed(2)}
+                          </div>
+                          <span className="text-xs opacity-40 line-through">
+                            ${p.comparePrice.toFixed(2)}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center space-x-2">
+                          <button
+                            onClick={() => handleOpenProduct(p)}
+                            className="p-2.5 border border-current/20 hover:border-current/40 rounded-xl transition"
+                            title="Inspect Details"
+                          >
+                            <SlidersHorizontal className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleAddToCart(p, p.variants[0])}
+                            className={`py-2.5 px-4 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 btn-press ${template.classes.primaryButton}`}
+                          >
+                            <ShoppingBag className="w-3.5 h-3.5" />
+                            <span>Add to Bag</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })()}
+
+            {/* CARDS 1 & 2: VERTICAL PORTRAIT CARDS */}
+            {filteredProducts.slice(1, 3).map((p) => {
+              const isWishlisted = wishlist.includes(p.id);
+              const discountPct = Math.round(((p.comparePrice - p.price) / p.comparePrice) * 100);
+
+              return (
+                <div
+                  key={p.id}
+                  className={`rounded-2xl border p-4 shadow-subtle hover:shadow-card transition-all flex flex-col justify-between group ${template.classes.productCard}`}
+                >
+                  <div>
+                    {/* Portrait Photo Frame with Smooth Hover Crossfade */}
+                    <div
+                      className="relative aspect-[3/4] rounded-xl overflow-hidden bg-black/5 dark:bg-white/5 border border-current/10 mb-4 cursor-pointer"
+                      onClick={() => handleOpenProduct(p)}
+                    >
+                      <img
+                        src={p.imageUrl}
+                        alt={p.title}
+                        className="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0"
+                      />
+                      <img
+                        src={p.secondaryImage || p.imageUrl}
+                        alt={`${p.title} - Lookbook View`}
+                        className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                      />
+
+                      {/* Badge */}
+                      {p.badge && (
+                        <span className="absolute top-2.5 left-2.5 bg-zinc-950/90 text-white text-[10px] font-mono font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">
+                          {p.badge}
+                        </span>
+                      )}
+
+                      {/* Discount Pill */}
+                      {discountPct > 0 && (
+                        <span className="absolute top-2.5 right-2.5 bg-rose-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow">
+                          -{discountPct}%
+                        </span>
+                      )}
+
+                      {/* Wishlist Button */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleWishlist(p.id);
+                        }}
+                        className="absolute bottom-2.5 right-2.5 w-8 h-8 rounded-full bg-white/90 dark:bg-black/80 backdrop-blur-md flex items-center justify-center text-zinc-700 dark:text-zinc-200 hover:text-rose-600 shadow-sm transition"
+                      >
+                        <Heart className={`w-4 h-4 ${isWishlisted ? "text-rose-500 fill-current" : ""}`} />
+                      </button>
+
+                      {/* Slide-up Quick Add Drawer on Hover */}
+                      <div className="absolute inset-x-3 bottom-3 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleAddToCart(p, p.variants[0]);
+                          }}
+                          className={`w-full py-2.5 rounded-xl font-bold text-xs shadow-lg flex items-center justify-center space-x-1.5 btn-press ${template.classes.primaryButton}`}
+                        >
+                          <ShoppingBag className="w-3.5 h-3.5" />
+                          <span>Quick Add to Bag</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Rating */}
+                    <div className="flex items-center space-x-1 text-amber-500 text-xs mb-1.5">
+                      <Star className="w-3.5 h-3.5 fill-current" />
+                      <span className="font-bold">{p.rating}</span>
+                      <span className="opacity-40 text-[10px]">(48 reviews)</span>
+                    </div>
+
+                    {/* Title & Description */}
+                    <h3
+                      onClick={() => handleOpenProduct(p)}
+                      className="font-bold text-sm tracking-tight leading-snug cursor-pointer hover:opacity-80 transition"
+                    >
+                      {p.title}
+                    </h3>
+
+                    <p className="text-xs opacity-60 mt-1 line-clamp-2 leading-relaxed">
+                      {p.description}
+                    </p>
+                  </div>
+
+                  {/* Price & Action Row */}
+                  <div className="mt-4 pt-3.5 border-t border-current/10 flex items-center justify-between">
+                    <div>
+                      <div className="text-base font-black">
+                        ${p.price.toFixed(2)}
+                      </div>
+                      <span className="text-[11px] opacity-40 line-through">
+                        ${p.comparePrice.toFixed(2)}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center space-x-1.5">
+                      <button
+                        onClick={() => handleOpenProduct(p)}
+                        className="p-2 border border-current/20 hover:border-current/40 rounded-xl text-xs font-semibold transition"
+                        title="Quick Specs"
+                      >
+                        <SlidersHorizontal className="w-3.5 h-3.5" />
+                      </button>
+
+                      <button
+                        onClick={() => handleAddToCart(p, p.variants[0])}
+                        className={`py-2 px-3 rounded-xl text-xs font-bold transition flex items-center space-x-1 btn-press ${template.classes.primaryButton}`}
+                      >
+                        <ShoppingBag className="w-3.5 h-3.5" />
+                        <span>Add</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          /* Standard Filtered Grid (All Cards have Portrait Ratio & Hover Crossfade) */
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProducts.map((p) => {
+              const isWishlisted = wishlist.includes(p.id);
+              const discountPct = Math.round(((p.comparePrice - p.price) / p.comparePrice) * 100);
+
+              return (
+                <div
+                  key={p.id}
+                  className={`rounded-2xl border p-4 shadow-subtle hover:shadow-card transition-all flex flex-col justify-between group ${template.classes.productCard}`}
+                >
+                  <div>
+                    {/* Portrait Photo Frame with Overlays */}
+                    <div
+                      className="relative aspect-[3/4] rounded-xl overflow-hidden bg-black/5 dark:bg-white/5 border border-current/10 mb-4 cursor-pointer"
+                      onClick={() => handleOpenProduct(p)}
+                    >
+                      <img
+                        src={p.imageUrl}
+                        alt={p.title}
+                        className="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0"
+                      />
+                      <img
+                        src={p.secondaryImage || p.imageUrl}
+                        alt={`${p.title} - Lookbook View`}
+                        className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                      />
+
+                      {/* Badge */}
+                      {p.badge && (
+                        <span className="absolute top-2.5 left-2.5 bg-zinc-950/90 text-white text-[10px] font-mono font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow">
+                          {p.badge}
+                        </span>
+                      )}
+
+                      {/* Discount Pill */}
+                      {discountPct > 0 && (
+                        <span className="absolute top-2.5 right-2.5 bg-rose-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow">
+                          -{discountPct}%
+                        </span>
+                      )}
+
+                      {/* Wishlist Button */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleWishlist(p.id);
+                        }}
+                        className="absolute bottom-2.5 right-2.5 w-8 h-8 rounded-full bg-white/90 dark:bg-black/80 backdrop-blur-md flex items-center justify-center text-zinc-700 dark:text-zinc-200 hover:text-rose-600 shadow-sm transition"
+                      >
+                        <Heart className={`w-4 h-4 ${isWishlisted ? "text-rose-500 fill-current" : ""}`} />
+                      </button>
+
+                      {/* Slide-up Quick Add Drawer on Hover */}
+                      <div className="absolute inset-x-3 bottom-3 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleAddToCart(p, p.variants[0]);
+                          }}
+                          className={`w-full py-2.5 rounded-xl font-bold text-xs shadow-lg flex items-center justify-center space-x-1.5 btn-press ${template.classes.primaryButton}`}
+                        >
+                          <ShoppingBag className="w-3.5 h-3.5" />
+                          <span>Quick Add to Bag</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Rating */}
+                    <div className="flex items-center space-x-1 text-amber-500 text-xs mb-1.5">
+                      <Star className="w-3.5 h-3.5 fill-current" />
+                      <span className="font-bold">{p.rating}</span>
+                      <span className="opacity-40 text-[10px]">(48 reviews)</span>
+                    </div>
+
+                    {/* Title & Description */}
+                    <h3
+                      onClick={() => handleOpenProduct(p)}
+                      className="font-bold text-sm tracking-tight leading-snug cursor-pointer hover:opacity-80 transition"
+                    >
+                      {p.title}
+                    </h3>
+
+                    <p className="text-xs opacity-60 mt-1 line-clamp-2 leading-relaxed">
+                      {p.description}
+                    </p>
+                  </div>
+
+                  {/* Price & Action Row */}
+                  <div className="mt-4 pt-3.5 border-t border-current/10 flex items-center justify-between">
+                    <div>
+                      <div className="text-base font-black">
+                        ${p.price.toFixed(2)}
+                      </div>
+                      <span className="text-[11px] opacity-40 line-through">
+                        ${p.comparePrice.toFixed(2)}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center space-x-1.5">
+                      <button
+                        onClick={() => handleOpenProduct(p)}
+                        className="p-2 border border-current/20 hover:border-current/40 rounded-xl text-xs font-semibold transition"
+                        title="Quick Specs"
+                      >
+                        <SlidersHorizontal className="w-3.5 h-3.5" />
+                      </button>
+
+                      <button
+                        onClick={() => handleAddToCart(p, p.variants[0])}
+                        className={`py-2 px-3 rounded-xl text-xs font-bold transition flex items-center space-x-1 btn-press ${template.classes.primaryButton}`}
+                      >
+                        <ShoppingBag className="w-3.5 h-3.5" />
+                        <span>Add</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </main>
 
       {/* Verified Customer Reviews & Testimonials Section */}
@@ -922,16 +1288,43 @@ export default function TenantStorefrontPage({
               <X className="w-4 h-4" />
             </button>
 
-            <div className="flex space-x-4">
-              <img
-                src={selectedProduct.imageUrl}
-                alt={selectedProduct.title}
-                className="w-24 h-24 rounded-xl object-cover border border-zinc-200 bg-zinc-50 flex-shrink-0"
-              />
+            <div className="flex space-x-4 items-start">
+              <div className="space-y-1.5 flex-shrink-0">
+                <div className="w-28 h-28 rounded-xl overflow-hidden border border-zinc-200 bg-zinc-50 relative shadow-inner">
+                  <img
+                    src={modalImageAngle === "primary" ? selectedProduct.imageUrl : (selectedProduct.secondaryImage || selectedProduct.imageUrl)}
+                    alt={selectedProduct.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                {selectedProduct.secondaryImage && (
+                  <div className="flex gap-1 justify-center">
+                    <button
+                      type="button"
+                      onClick={() => setModalImageAngle("primary")}
+                      className={`text-[9px] font-mono px-2 py-0.5 rounded border transition ${
+                        modalImageAngle === "primary" ? "bg-zinc-900 text-white border-zinc-900" : "bg-zinc-100 text-zinc-600 border-zinc-200"
+                      }`}
+                    >
+                      Studio
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setModalImageAngle("secondary")}
+                      className={`text-[9px] font-mono px-2 py-0.5 rounded border transition ${
+                        modalImageAngle === "secondary" ? "bg-zinc-900 text-white border-zinc-900" : "bg-zinc-100 text-zinc-600 border-zinc-200"
+                      }`}
+                    >
+                      Lookbook
+                    </button>
+                  </div>
+                )}
+              </div>
               <div>
                 <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">{categoryConfig.name}</span>
                 <h3 className="text-base font-bold text-zinc-900 tracking-tight">{selectedProduct.title}</h3>
                 <div className="text-lg font-black text-zinc-900 mt-1">${selectedProduct.price.toFixed(2)}</div>
+                <div className="text-[11px] text-emerald-600 font-semibold mt-1">✓ Available for Cash on Delivery</div>
               </div>
             </div>
 

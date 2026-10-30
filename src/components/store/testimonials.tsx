@@ -116,3 +116,4 @@ export function TestimonialsSection({ storeName }: { storeName: string }) {
     </section>
   );
 }
+
