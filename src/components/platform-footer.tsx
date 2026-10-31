@@ -14,7 +14,7 @@ export const DEMO_STORES_LIST = [
 
 export function PlatformFooter() {
   return (
-    <footer className="bg-slate-50 dark:bg-[#07080c] text-zinc-600 dark:text-zinc-400 font-sans border-t border-slate-200/80 dark:border-indigo-500/10 mt-auto transition-colors">
+    <footer className="bg-slate-50 dark:bg-[#090b14] text-zinc-600 dark:text-zinc-400 font-sans border-t border-slate-200/80 dark:border-indigo-500/10 mt-auto transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Column 1 & 2: Brand & Operating System Overview */}
