@@ -19,13 +19,13 @@
 }
 
 .dark {
-  --background: #06090f;
+  --background: #050811;
   --foreground: #f1f5f9;
-  --card: #0b101b;
+  --card: #0b1220;
   --card-foreground: #f8fafc;
-  --muted: #101726;
+  --muted: #0f172a;
   --muted-foreground: #94a3b8;
-  --border: rgba(59, 130, 246, 0.14);
+  --border: rgba(96, 165, 250, 0.18);
   --primary: #3b82f6;
   --primary-foreground: #ffffff;
   --accent: #60a5fa;
@@ -120,22 +120,24 @@ body {
 
 /* Unified Enterprise Sapphire & Cool Titanium Tokens (100% Synchronized with .dark on <html>) */
 .studio-canvas {
-  background-color: #f8fafc;
+  background-color: #f1f5f9;
   background-image: 
-    radial-gradient(ellipse 90% 60% at 50% -8%, rgba(37, 99, 235, 0.08), transparent 70%),
-    radial-gradient(ellipse 70% 50% at 85% 20%, rgba(59, 130, 246, 0.05), transparent 65%),
-    radial-gradient(ellipse 70% 50% at 15% 45%, rgba(37, 99, 235, 0.04), transparent 65%),
-    linear-gradient(180deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);
+    radial-gradient(ellipse 100% 70% at 50% -10%, rgba(37, 99, 235, 0.14), transparent 70%),
+    radial-gradient(ellipse 80% 60% at 90% 25%, rgba(59, 130, 246, 0.08), transparent 60%),
+    radial-gradient(ellipse 75% 55% at 10% 45%, rgba(37, 99, 235, 0.06), transparent 60%),
+    linear-gradient(180deg, #f8faff 0%, #edf2f9 50%, #e2e8f0 100%);
+  background-attachment: fixed;
 }
 
 .dark .studio-canvas {
-  background-color: #06090f;
+  background-color: #050811;
   background-image: 
-    radial-gradient(ellipse 100% 70% at 50% -10%, rgba(37, 99, 235, 0.28), transparent 70%),
-    radial-gradient(ellipse 85% 55% at 85% 15%, rgba(59, 130, 246, 0.15), transparent 65%),
-    radial-gradient(ellipse 75% 50% at 15% 45%, rgba(29, 78, 216, 0.14), transparent 65%),
-    radial-gradient(ellipse 90% 60% at 50% 85%, rgba(37, 99, 235, 0.16), transparent 70%),
-    radial-gradient(circle at 50% 30%, #0d1424 0%, #06090f 100%);
+    radial-gradient(ellipse 110% 75% at 50% -12%, rgba(37, 99, 235, 0.42) 0%, rgba(29, 78, 216, 0.18) 45%, transparent 75%),
+    radial-gradient(ellipse 75% 65% at 85% 18%, rgba(59, 130, 246, 0.28) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 60% at 15% 42%, rgba(30, 64, 175, 0.28) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 60% at 80% 75%, rgba(59, 130, 246, 0.20) 0%, transparent 65%),
+    linear-gradient(180deg, #090e1d 0%, #060913 50%, #03050a 100%);
+  background-attachment: fixed;
 }
 
 /* Lightweight Interactive Cursor Halo & Reactive Grid Spotlight (Zero Dependencies, GPU-Accelerated) */
@@ -144,27 +146,24 @@ body {
   inset: 0;
   pointer-events: none;
   z-index: 1;
-  opacity: 0;
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0.75;
+  transition: background 0.05s ease-out;
   background: radial-gradient(
-    700px circle at var(--mouse-x, 50vw) var(--mouse-y, 30vh),
-    rgba(37, 99, 235, 0.12),
-    rgba(59, 130, 246, 0.06) 40%,
+    650px circle at var(--mouse-x, 50vw) var(--mouse-y, 35vh),
+    rgba(37, 99, 235, 0.20),
+    rgba(59, 130, 246, 0.10) 40%,
     transparent 70%
   );
   will-change: background;
 }
 
-.has-mouse .interactive-cursor-glow {
-  opacity: 1;
-}
-
 .dark .interactive-cursor-glow {
+  opacity: 0.90;
   background: radial-gradient(
-    800px circle at var(--mouse-x, 50vw) var(--mouse-y, 30vh),
-    rgba(59, 130, 246, 0.22),
-    rgba(37, 99, 235, 0.12) 40%,
-    rgba(29, 78, 216, 0.05) 60%,
+    750px circle at var(--mouse-x, 50vw) var(--mouse-y, 35vh),
+    rgba(59, 130, 246, 0.32) 0%,
+    rgba(37, 99, 235, 0.18) 35%,
+    rgba(29, 78, 216, 0.08) 55%,
     transparent 75%
   );
 }
@@ -174,52 +173,49 @@ body {
   inset: 0;
   pointer-events: none;
   z-index: 2;
-  opacity: 0;
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0.65;
+  transition: opacity 0.3s ease;
   background-image: 
-    linear-gradient(to right, rgba(37, 99, 235, 0.10) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(37, 99, 235, 0.10) 1px, transparent 1px);
+    linear-gradient(to right, rgba(37, 99, 235, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(37, 99, 235, 0.15) 1px, transparent 1px);
   background-size: 36px 36px;
   mask-image: radial-gradient(
-    520px circle at var(--mouse-x, 50vw) var(--mouse-y, 30vh),
-    rgba(0, 0, 0, 0.85) 0%,
-    rgba(0, 0, 0, 0.35) 45%,
+    520px circle at var(--mouse-x, 50vw) var(--mouse-y, 35vh),
+    rgba(0, 0, 0, 0.90) 0%,
+    rgba(0, 0, 0, 0.40) 45%,
     transparent 80%
   );
   -webkit-mask-image: radial-gradient(
-    520px circle at var(--mouse-x, 50vw) var(--mouse-y, 30vh),
-    rgba(0, 0, 0, 0.85) 0%,
-    rgba(0, 0, 0, 0.35) 45%,
+    520px circle at var(--mouse-x, 50vw) var(--mouse-y, 35vh),
+    rgba(0, 0, 0, 0.90) 0%,
+    rgba(0, 0, 0, 0.40) 45%,
     transparent 80%
   );
 }
 
-.has-mouse .interactive-grid-spotlight {
-  opacity: 1;
-}
-
 .dark .interactive-grid-spotlight {
+  opacity: 0.85;
   background-image: 
-    linear-gradient(to right, rgba(59, 130, 246, 0.16) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(59, 130, 246, 0.16) 1px, transparent 1px);
+    linear-gradient(to right, rgba(96, 165, 250, 0.22) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(96, 165, 250, 0.22) 1px, transparent 1px);
 }
 
 /* Precision Micro-Grid Engineering Matrix (Linear / Raycast Style) */
 .bg-grid-mesh {
   background-image: 
-    linear-gradient(to right, rgba(37, 99, 235, 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(37, 99, 235, 0.06) 1px, transparent 1px);
+    linear-gradient(to right, rgba(37, 99, 235, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(37, 99, 235, 0.08) 1px, transparent 1px);
   background-size: 36px 36px;
-  mask-image: radial-gradient(ellipse 80% 65% at 50% 25%, #000 40%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 65% at 50% 25%, #000 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse 85% 65% at 50% 25%, #000 45%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 25%, #000 45%, transparent 100%);
 }
 
 .dark .bg-grid-mesh {
   background-image: 
-    linear-gradient(to right, rgba(59, 130, 246, 0.08) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(59, 130, 246, 0.08) 1px, transparent 1px);
-  mask-image: radial-gradient(ellipse 85% 65% at 50% 25%, #000 45%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 25%, #000 45%, transparent 100%);
+    linear-gradient(to right, rgba(96, 165, 250, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(96, 165, 250, 0.12) 1px, transparent 1px);
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 25%, #000 50%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 25%, #000 50%, transparent 100%);
 }
 
 /* Subtle Organic Matte Grain Texture */
@@ -231,51 +227,50 @@ body {
 }
 
 .dark .bg-noise-grain {
-  opacity: 0.03;
+  opacity: 0.035;
   mix-blend-mode: color-dodge;
 }
 
 .luxury-card {
   background-color: #ffffff;
-  border: 1px solid rgba(226, 232, 240, 0.9);
+  border: 1px solid rgba(219, 234, 254, 0.9);
   box-shadow: 
     0 1px 2px rgba(15, 23, 42, 0.03),
-    0 8px 24px -4px rgba(37, 99, 235, 0.04),
+    0 8px 24px -4px rgba(37, 99, 235, 0.06),
     0 24px 48px -12px rgba(15, 23, 42, 0.03),
     inset 0 1px 0 rgba(255, 255, 255, 1);
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
 }
 
 .luxury-card:hover {
-  border-color: rgba(37, 99, 235, 0.3);
+  border-color: rgba(37, 99, 235, 0.4);
   box-shadow: 
     0 2px 4px rgba(15, 23, 42, 0.04),
-    0 16px 36px -6px rgba(37, 99, 235, 0.08),
+    0 16px 36px -6px rgba(37, 99, 235, 0.12),
     0 32px 64px -12px rgba(15, 23, 42, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
 .dark .luxury-card {
-  background-color: rgba(11, 16, 27, 0.78);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(59, 130, 246, 0.16);
+  background-color: rgba(11, 18, 33, 0.68);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(96, 165, 250, 0.22);
   box-shadow: 
     0 1px 2px rgba(0, 0, 0, 0.4),
     0 12px 32px -8px rgba(0, 0, 0, 0.65),
-    0 32px 64px -16px rgba(4, 6, 11, 0.8),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 32px 64px -16px rgba(3, 7, 18, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
     inset 0 -1px 0 rgba(0, 0, 0, 0.4);
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
 }
 
 .dark .luxury-card:hover {
-  border-color: rgba(96, 165, 250, 0.4);
+  border-color: rgba(96, 165, 250, 0.60);
   box-shadow: 
-    0 2px 4px rgba(0, 0, 0, 0.5),
-    0 20px 48px -8px rgba(37, 99, 235, 0.25),
-    0 40px 80px -16px rgba(4, 6, 11, 0.9),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 0 35px -5px rgba(37, 99, 235, 0.40),
+    0 20px 48px -8px rgba(0, 0, 0, 0.70),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
     inset 0 -1px 0 rgba(0, 0, 0, 0.5);
 }
 
@@ -283,10 +278,10 @@ body {
 .btn-glass-primary {
   background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
   color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   box-shadow: 
     0 1px 2px rgba(0, 0, 0, 0.1),
-    0 8px 24px -4px rgba(37, 99, 235, 0.45),
+    0 8px 24px -4px rgba(37, 99, 235, 0.55),
     inset 0 1px 0 rgba(255, 255, 255, 0.35);
   transition: all 0.15s ease-out;
 }
@@ -295,8 +290,8 @@ body {
   background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%) !important;
   box-shadow: 
     0 2px 4px rgba(0, 0, 0, 0.15),
-    0 12px 30px -4px rgba(37, 99, 235, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    0 12px 30px -4px rgba(37, 99, 235, 0.75),
+    inset 0 1px 0 rgba(255, 255, 255, 0.50);
   transform: translateY(-1px);
 }
 

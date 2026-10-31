@@ -179,7 +179,7 @@ export default function PlatformLandingPage() {
       {/* Global Micro-Matte Grain Texture Overlay */}
       <div className="fixed inset-0 bg-noise-grain pointer-events-none z-30" />
       {/* ─── 1. Platform Navigation Bar ─────────────────────────────────────── */}
-      <header className="border-b border-slate-200/80 dark:border-blue-500/15 bg-white/85 dark:bg-[#06090f]/85 backdrop-blur-2xl sticky top-0 z-50 transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
+      <header className="border-b border-slate-200/80 dark:border-blue-500/15 bg-white/85 dark:bg-[#050811]/85 backdrop-blur-2xl sticky top-0 z-50 transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center space-x-2.5 group flex-shrink-0">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-blue-500 text-white flex items-center justify-center font-bold shadow-md shadow-blue-500/25 group-hover:scale-105 transition-transform">
@@ -319,14 +319,14 @@ export default function PlatformLandingPage() {
         <div className="absolute inset-0 bg-grid-mesh pointer-events-none" />
 
         {/* Precision Architectural Top Horizon Seam with Focused Sapphire Beam */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-[2px] bg-gradient-to-r from-transparent via-blue-500/60 via-sky-400/80 to-transparent pointer-events-none" />
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-3/4 max-w-3xl h-14 bg-gradient-to-r from-transparent via-blue-600/30 to-transparent blur-2xl pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-[2px] bg-gradient-to-r from-transparent via-blue-500/80 via-sky-400/90 to-transparent pointer-events-none" />
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-3/4 max-w-3xl h-14 bg-gradient-to-r from-transparent via-blue-600/40 to-transparent blur-2xl pointer-events-none" />
 
         {/* Enterprise Sapphire Primary Light Cone */}
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] lg:w-[1250px] h-[520px] bg-gradient-to-b from-blue-600/[0.18] dark:from-blue-600/[0.26] via-blue-500/[0.08] to-transparent rounded-full blur-[90px] pointer-events-none" />
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] lg:w-[1250px] h-[520px] bg-gradient-to-b from-blue-600/[0.25] dark:from-blue-600/[0.45] via-blue-500/[0.12] dark:via-blue-500/[0.22] to-transparent rounded-full blur-[90px] pointer-events-none" />
 
         {/* Secondary Sapphire Ambient Glow */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] lg:w-[950px] h-[360px] bg-gradient-to-tr from-blue-500/[0.06] dark:from-blue-500/[0.12] to-transparent rounded-full blur-[80px] pointer-events-none" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] lg:w-[950px] h-[360px] bg-gradient-to-tr from-blue-500/[0.10] dark:from-blue-500/[0.22] to-transparent rounded-full blur-[80px] pointer-events-none" />
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 sm:space-y-7 my-auto">
           {/* Status Capsule Badge */}
@@ -400,7 +400,7 @@ export default function PlatformLandingPage() {
       {/* ─── 4. Core Platform Capabilities (Precision Hardware Cards) ────────── */}
       <section id="features" className="relative overflow-hidden min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-blue-500/15 scroll-mt-16 transition-colors">
         {/* Ambient Sapphire Backlight behind Feature Cards */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] lg:w-[1150px] h-[440px] bg-gradient-to-b from-blue-600/[0.08] dark:from-blue-600/[0.15] to-transparent rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] lg:w-[1150px] h-[440px] bg-gradient-to-b from-blue-600/[0.12] dark:from-blue-600/[0.28] dark:via-blue-500/[0.12] to-transparent rounded-full blur-[100px] pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12 w-full my-auto">
           <div className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">
@@ -550,7 +550,7 @@ export default function PlatformLandingPage() {
       {/* ─── 5. How It Works (Minimalist Schematic Workflow) ───────────────── */}
       <section id="how-it-works" className="relative overflow-hidden min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-blue-500/15 scroll-mt-16 transition-colors">
         {/* Subtle Ambient Sapphire Backlight */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] lg:w-[1000px] h-[360px] bg-gradient-to-b from-blue-600/[0.06] dark:from-blue-600/[0.12] to-transparent rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] lg:w-[1000px] h-[360px] bg-gradient-to-b from-blue-600/[0.10] dark:from-blue-600/[0.25] dark:via-blue-500/[0.10] to-transparent rounded-full blur-[100px] pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-14 w-full my-auto">
           <div className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">
@@ -667,7 +667,7 @@ export default function PlatformLandingPage() {
       {/* ─── 6. Bespoke Turnkey Storefronts (Studio Frame) ───────────────────── */}
       <section id="storefronts" className="relative overflow-hidden min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-blue-500/15 scroll-mt-16 transition-colors">
         {/* Ambient Sapphire Backdrop behind Store Showcase */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[950px] lg:w-[1200px] h-[480px] bg-gradient-to-b from-blue-600/[0.08] dark:from-blue-600/[0.16] to-transparent rounded-full blur-[110px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[950px] lg:w-[1200px] h-[480px] bg-gradient-to-b from-blue-600/[0.12] dark:from-blue-600/[0.28] dark:via-blue-500/[0.12] to-transparent rounded-full blur-[110px] pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 w-full my-auto">
           <div className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">
@@ -780,7 +780,7 @@ export default function PlatformLandingPage() {
       {/* ─── 7. Transparent Pricing (Hardware Tier Insets) ──────────────────── */}
       <section id="pricing" className="relative overflow-hidden min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-blue-500/15 scroll-mt-16 transition-colors">
         {/* Sapphire Bloom behind Popular Tier */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] lg:w-[950px] h-[400px] bg-gradient-to-b from-blue-600/[0.12] dark:from-blue-600/[0.22] to-transparent rounded-full blur-[90px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] lg:w-[950px] h-[400px] bg-gradient-to-b from-blue-600/[0.18] dark:from-blue-600/[0.36] dark:via-blue-500/[0.16] to-transparent rounded-full blur-[90px] pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 w-full my-auto">
           <div className="text-center max-w-xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">
@@ -970,7 +970,7 @@ export default function PlatformLandingPage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto">
           <div className="luxury-card rounded-3xl p-8 sm:p-14 text-center space-y-6 relative overflow-hidden">
             {/* Top Interior Ambient Sapphire Bloom */}
-            <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[750px] h-[280px] bg-gradient-to-b from-blue-600/[0.18] dark:from-blue-600/[0.28] to-transparent rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[750px] h-[280px] bg-gradient-to-b from-blue-600/[0.25] dark:from-blue-600/[0.45] dark:via-blue-500/[0.20] to-transparent rounded-full blur-3xl pointer-events-none" />
             <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight relative leading-tight bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400/80 bg-clip-text text-transparent">
               Ready to launch your store?
             </h2>
