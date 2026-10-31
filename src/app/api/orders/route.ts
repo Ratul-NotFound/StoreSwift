@@ -5,6 +5,7 @@ import { eq, desc, sql } from "drizzle-orm";
 import { getSessionFromRequest } from "@/lib/api-auth";
 import { verifyAndDeductStock } from "@/lib/stock";
 import { generateConsignment } from "@/lib/courier";
+import { fireServerSidePixelEvent } from "@/lib/pixels";
 
 const orderCreateSchema = z.object({
   storeSlug: z.string().optional(),
@@ -171,6 +172,14 @@ export async function POST(request: Request) {
         currency: "$"
       }, "steadfast", data.deliveryZone);
 
+      fireServerSidePixelEvent("Purchase", {
+        orderNumber: newOrder.orderNumber,
+        totalAmount: parseFloat(newOrder.totalAmount),
+        currency: "$",
+        customerPhone: data.customerPhone,
+        customerEmail: data.customerEmail
+      });
+
       return NextResponse.json({
         ok: true,
         orderId: newOrder.id,
@@ -208,6 +217,14 @@ export async function POST(request: Request) {
         totalAmount,
         currency: "$"
       }, "steadfast", data.deliveryZone);
+
+      fireServerSidePixelEvent("Purchase", {
+        orderNumber,
+        totalAmount,
+        currency: "$",
+        customerPhone: data.customerPhone,
+        customerEmail: data.customerEmail
+      });
 
       return NextResponse.json({
         ok: true,

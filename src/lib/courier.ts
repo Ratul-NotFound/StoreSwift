@@ -280,3 +280,4 @@ export const WHOLESALE_SUPPLIER_CATALOG: WholesaleSupplierProduct[] = [
     imageUrl: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=800&q=80"
   }
 ];
+

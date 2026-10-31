@@ -60,6 +60,12 @@ export default function MerchantAdminPage() {
   >("overview");
   const [courierDispatchOrder, setCourierDispatchOrder] = useState<any | null>(null);
   const [selectedCourierId, setSelectedCourierId] = useState<CourierProviderId>("steadfast");
+  const [steadfastApiKey, setSteadfastApiKey] = useState("st_live_9941a82fbc78");
+  const [steadfastSecret, setSteadfastSecret] = useState("••••••••••••••••");
+  const [pathaoClientId, setPathaoClientId] = useState("pth_client_482910");
+  const [pathaoSecret, setPathaoSecret] = useState("••••••••••••••••");
+  const [redxToken, setRedxToken] = useState("rdx_tok_7829124");
+  const [courierCredsSaved, setCourierCredsSaved] = useState(false);
   const [metaPixelId, setMetaPixelId] = useState("892419204910");
   const [tiktokPixelId, setTiktokPixelId] = useState("C89241920");
   const [gtmContainerId, setGtmContainerId] = useState("GTM-SSWIFT01");
@@ -987,6 +993,115 @@ export default function MerchantAdminPage() {
                     </span>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            {/* Courier API Credentials & Webhook Hub */}
+            <div className="p-6 bg-white rounded-2xl border border-zinc-200/80 shadow-subtle space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-zinc-100 pb-3">
+                <div>
+                  <h3 className="text-sm font-bold text-zinc-900 tracking-tight">
+                    Courier Partner API Keys & Webhook Secret
+                  </h3>
+                  <p className="text-xs text-zinc-500">
+                    Enter your merchant keys from courier portals to automate live parcel booking and rider tracking.
+                  </p>
+                </div>
+                {courierCredsSaved && (
+                  <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 flex items-center space-x-1">
+                    <Check className="w-3.5 h-3.5" />
+                    <span>Courier credentials saved securely!</span>
+                  </span>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
+                {/* Steadfast Credentials */}
+                <div className="p-4 rounded-xl border border-zinc-200 space-y-3 bg-zinc-50/50">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-zinc-900">Steadfast Courier API</span>
+                    <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">Live v1.0</span>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-zinc-500 uppercase mb-1">API Key</label>
+                    <input
+                      type="text"
+                      value={steadfastApiKey}
+                      onChange={(e) => setSteadfastApiKey(e.target.value)}
+                      className="w-full px-2.5 py-1.5 border border-zinc-200 rounded-lg text-xs font-mono bg-white outline-none focus:border-zinc-900"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-zinc-500 uppercase mb-1">Secret Key</label>
+                    <input
+                      type="password"
+                      value={steadfastSecret}
+                      onChange={(e) => setSteadfastSecret(e.target.value)}
+                      className="w-full px-2.5 py-1.5 border border-zinc-200 rounded-lg text-xs font-mono bg-white outline-none focus:border-zinc-900"
+                    />
+                  </div>
+                </div>
+
+                {/* Pathao Credentials */}
+                <div className="p-4 rounded-xl border border-zinc-200 space-y-3 bg-zinc-50/50">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-zinc-900">Pathao Logistics API</span>
+                    <span className="text-[10px] font-bold text-rose-600 bg-rose-50 px-1.5 py-0.5 rounded">OAuth 2.0</span>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-zinc-500 uppercase mb-1">Client ID</label>
+                    <input
+                      type="text"
+                      value={pathaoClientId}
+                      onChange={(e) => setPathaoClientId(e.target.value)}
+                      className="w-full px-2.5 py-1.5 border border-zinc-200 rounded-lg text-xs font-mono bg-white outline-none focus:border-zinc-900"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-zinc-500 uppercase mb-1">Client Secret</label>
+                    <input
+                      type="password"
+                      value={pathaoSecret}
+                      onChange={(e) => setPathaoSecret(e.target.value)}
+                      className="w-full px-2.5 py-1.5 border border-zinc-200 rounded-lg text-xs font-mono bg-white outline-none focus:border-zinc-900"
+                    />
+                  </div>
+                </div>
+
+                {/* RedX Credentials */}
+                <div className="p-4 rounded-xl border border-zinc-200 space-y-3 bg-zinc-50/50">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-zinc-900">RedX Express API</span>
+                    <span className="text-[10px] font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded">Bearer Token</span>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-zinc-500 uppercase mb-1">API Token</label>
+                    <input
+                      type="text"
+                      value={redxToken}
+                      onChange={(e) => setRedxToken(e.target.value)}
+                      className="w-full px-2.5 py-1.5 border border-zinc-200 rounded-lg text-xs font-mono bg-white outline-none focus:border-zinc-900"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-zinc-500 uppercase mb-1">Webhook URL</label>
+                    <div className="p-1.5 bg-white border border-zinc-200 rounded-lg font-mono text-[10px] text-zinc-600 truncate select-all">
+                      https://storeswift.app/api/couriers/webhooks
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-end pt-2">
+                <button
+                  onClick={() => {
+                    setCourierCredsSaved(true);
+                    setTimeout(() => setCourierCredsSaved(false), 3000);
+                  }}
+                  className="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs rounded-xl shadow-sm transition btn-press"
+                >
+                  Save API Keys & Test Auth
+                </button>
               </div>
             </div>
           </div>

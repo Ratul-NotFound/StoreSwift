@@ -9,10 +9,15 @@ export interface ResolvedTenant {
 }
 
 export function resolveTenantFromHost(host: string, rootDomain = "platform.com"): ResolvedTenant {
-  const cleanHost = host.split(":")[0].toLowerCase().trim();
+  const rawHost = host.split(":")[0].toLowerCase().trim();
+  const cleanHost = rawHost.replace(/[^a-z0-9.-]/g, "");
   const cleanRoot = rootDomain.toLowerCase().trim();
 
-  if (cleanHost === cleanRoot || cleanHost === `www.${cleanRoot}` || cleanHost === "localhost") {
+  if (!cleanHost || cleanHost.length > 253) {
+    return { type: "platform" };
+  }
+
+  if (cleanHost === cleanRoot || cleanHost === `www.${cleanRoot}` || cleanHost === "localhost" || cleanHost === "127.0.0.1") {
     return { type: "platform" };
   }
 
