@@ -145,24 +145,12 @@ export default function PlatformLandingPage() {
   ];
 
   return (
-    <div className="relative flex flex-col min-h-screen bg-white text-zinc-900 dark:bg-[#09090b] dark:text-zinc-100 font-sans selection:bg-blue-600 selection:text-white antialiased transition-colors duration-150 overflow-x-hidden">
-      {/* ─── Premium Ambient Background Architecture (Linear/Vercel Aesthetic) ─── */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
-        {/* Subtle High-Precision Engineering Grid with Vignette */}
-        <div className="absolute inset-0 enterprise-grid opacity-85 dark:opacity-55" />
-
-        {/* Top Horizon Light Beacon */}
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[1100px] h-[550px] bg-gradient-to-b from-blue-500/18 via-indigo-500/10 to-transparent dark:from-blue-600/30 dark:via-indigo-600/15 dark:to-transparent blur-[120px] rounded-full" />
-
-        {/* Secondary Ambient Accent Glows */}
-        <div className="absolute top-[35%] -right-40 w-[600px] h-[600px] bg-gradient-to-br from-indigo-500/8 via-blue-500/5 to-transparent dark:from-purple-600/12 dark:via-blue-600/6 dark:to-transparent blur-[140px] rounded-full" />
-        <div className="absolute top-[65%] -left-40 w-[600px] h-[600px] bg-gradient-to-tr from-blue-500/8 via-emerald-500/4 to-transparent dark:from-blue-600/12 dark:via-emerald-600/5 dark:to-transparent blur-[140px] rounded-full" />
-      </div>
+    <div className="flex flex-col min-h-screen studio-canvas-light dark:studio-canvas-dark text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-900 selection:text-white dark:selection:bg-white dark:selection:text-zinc-950 antialiased transition-colors duration-150">
       {/* ─── 1. Platform Navigation Bar ─────────────────────────────────────── */}
-      <header className="border-b border-zinc-200 dark:border-white/[0.08] bg-white/80 dark:bg-[#09090b]/85 backdrop-blur-2xl sticky top-0 z-50 shadow-sm dark:shadow-[0_1px_3px_rgba(0,0,0,0.5)] transition-colors">
+      <header className="border-b border-zinc-200/80 dark:border-white/[0.06] bg-white/80 dark:bg-[#070709]/80 backdrop-blur-2xl sticky top-0 z-50 transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center space-x-2.5 group flex-shrink-0">
-            <div className="w-8 h-8 rounded-lg bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 flex items-center justify-center font-bold shadow-sm group-hover:scale-105 transition-transform">
+            <div className="w-8 h-8 rounded-lg bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 flex items-center justify-center font-bold shadow-sm group-hover:scale-105 transition-transform">
               <Store className="w-4 h-4" />
             </div>
             <span className="text-base font-bold tracking-tight text-zinc-950 dark:text-white">
@@ -185,7 +173,7 @@ export default function PlatformLandingPage() {
               {isNavDropdownOpen && (
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setIsNavDropdownOpen(false)} />
-                  <div className="absolute left-0 mt-2 w-64 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-zinc-200 dark:border-white/10 z-50 py-2 divide-y divide-zinc-100 dark:divide-white/5 text-xs animate-fade-in">
+                  <div className="absolute left-0 mt-2 w-64 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-2xl rounded-2xl shadow-xl border border-zinc-200 dark:border-white/10 z-50 py-2 divide-y divide-zinc-100 dark:divide-white/5 text-xs animate-fade-in">
                     <div className="px-3.5 py-2 text-[10px] uppercase font-mono font-bold tracking-wider text-zinc-500">
                       Explore 6 Live Stores
                     </div>
@@ -223,14 +211,14 @@ export default function PlatformLandingPage() {
 
             <Link
               href="/admin?store=apex-fashion"
-              className="text-xs font-semibold text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white px-3.5 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-900/80 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-white/10 transition hidden sm:inline-flex items-center space-x-1.5 shadow-sm"
+              className="text-xs font-semibold text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white px-3.5 py-2 rounded-xl bg-white hover:bg-zinc-50 dark:bg-zinc-900/80 dark:hover:bg-zinc-800 border border-zinc-200/90 dark:border-white/[0.08] transition hidden sm:inline-flex items-center space-x-1.5 shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
             >
               <span>Merchant Admin</span>
-              <ExternalLink className="w-3 h-3 text-zinc-500" />
+              <ExternalLink className="w-3 h-3 text-zinc-400 dark:text-zinc-500" />
             </Link>
             <Link
               href="/onboarding"
-              className="inline-flex items-center space-x-1.5 text-xs font-bold bg-zinc-950 hover:bg-zinc-800 text-white dark:bg-white dark:hover:bg-zinc-200 dark:text-zinc-950 px-4 py-2 rounded-xl shadow-sm dark:shadow-[0_0_20px_rgba(255,255,255,0.2)] transition btn-press"
+              className="inline-flex items-center space-x-1.5 text-xs font-bold bg-zinc-950 hover:bg-black text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-zinc-950 px-4 py-2 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.1)] transition btn-press"
             >
               <span>Start Free Trial</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -248,7 +236,7 @@ export default function PlatformLandingPage() {
 
         {/* Mobile Navigation Drawer */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden border-t border-zinc-200 dark:border-white/10 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-2xl px-4 py-4 space-y-4 animate-fade-in shadow-2xl">
+          <div className="lg:hidden border-t border-zinc-200/80 dark:border-white/10 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-2xl px-4 py-4 space-y-4 animate-fade-in shadow-2xl">
             <div className="space-y-1">
               <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-zinc-500 block px-2">
                 Explore 6 Live Stores
@@ -292,26 +280,22 @@ export default function PlatformLandingPage() {
           </div>
         )}
       </header>
-      <div className="relative z-40 h-[1px] w-full horizon-laser opacity-90" aria-hidden="true" />
 
-      {/* ─── 2. Hero Section: Clean, Breathable, Full Viewport Synced ─────────── */}
-      <section className="relative z-10 overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-between items-center py-12 sm:py-16 lg:py-16 border-b border-zinc-200/80 dark:border-white/[0.08] transition-colors">
-        {/* Subtle Ambient Radial Lighting */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1100px] h-[550px] bg-gradient-to-b from-blue-500/10 via-indigo-500/5 to-transparent dark:from-blue-600/12 dark:via-indigo-600/6 blur-[140px] pointer-events-none" />
-
+      {/* ─── 2. Hero Section: Studio Depth & Architectural Calm ─────────────── */}
+      <section className="relative overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-between items-center py-12 sm:py-16 lg:py-16 border-b border-zinc-200/80 dark:border-white/[0.06] transition-colors">
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 sm:space-y-7 my-auto">
           {/* Status Capsule Badge */}
-          <div className="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full bg-zinc-100 dark:bg-white/[0.05] border border-zinc-200 dark:border-white/[0.1] text-zinc-700 dark:text-zinc-300 text-xs font-medium backdrop-blur-md shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.7)]" />
+          <div className="inline-flex items-center space-x-2.5 px-3.5 py-1.5 rounded-full bg-white dark:bg-zinc-900/80 border border-zinc-200/90 dark:border-white/[0.08] text-zinc-600 dark:text-zinc-300 text-xs font-medium shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.7)]" />
             <span className="font-semibold text-zinc-950 dark:text-white">StoreSwift 2.0</span>
-            <span className="text-zinc-400 dark:text-zinc-600">•</span>
+            <span className="text-zinc-300 dark:text-zinc-700">•</span>
             <span>Commerce Operating System for Direct Brands</span>
           </div>
 
           {/* Master Headline */}
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.035em] text-zinc-950 dark:text-white max-w-5xl mx-auto leading-[1.1]">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.035em] text-zinc-950 dark:text-white max-w-5xl mx-auto leading-[1.08]">
             Build your online store. <br className="hidden sm:inline" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-zinc-900 dark:from-blue-400 dark:via-indigo-200 dark:to-white">
+            <span className="text-zinc-950 dark:text-white">
               Sell faster with 1-page checkout.
             </span>
           </h1>
@@ -325,32 +309,32 @@ export default function PlatformLandingPage() {
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5">
             <Link
               href="/onboarding"
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-bold bg-zinc-950 hover:bg-zinc-800 text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-zinc-950 px-7 py-3.5 rounded-xl shadow-md dark:shadow-[0_0_25px_rgba(255,255,255,0.25)] transition btn-press group"
+              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-bold bg-zinc-950 hover:bg-black text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-zinc-950 px-7 py-3.5 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_12px_rgba(255,255,255,0.15)] transition btn-press group"
             >
               <span>Start 14-Day Free Trial</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
               href="/admin?store=apex-fashion"
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-semibold bg-zinc-100 hover:bg-zinc-200 text-zinc-800 border border-zinc-200 dark:bg-zinc-900/80 dark:hover:bg-zinc-800 dark:text-zinc-200 dark:border-white/10 px-6 py-3.5 rounded-xl transition shadow-sm"
+              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-semibold bg-white hover:bg-zinc-50 text-zinc-800 border border-zinc-200/90 dark:bg-zinc-900/80 dark:hover:bg-zinc-800 dark:text-zinc-200 dark:border-white/[0.08] px-6 py-3.5 rounded-xl transition shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
             >
               <span>Open Merchant Cockpit</span>
-              <ExternalLink className="w-4 h-4 text-zinc-500" />
+              <ExternalLink className="w-4 h-4 text-zinc-400 dark:text-zinc-500" />
             </Link>
           </div>
 
           {/* Trust Indicators Strip */}
-          <div className="pt-3 flex flex-wrap items-center justify-center gap-5 sm:gap-8 text-xs text-zinc-600 dark:text-zinc-400 font-medium">
+          <div className="pt-3 flex flex-wrap items-center justify-center gap-5 sm:gap-8 text-xs text-zinc-500 dark:text-zinc-400 font-medium">
             <div className="flex items-center space-x-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
               <span>0% physical order commission</span>
             </div>
             <div className="flex items-center space-x-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
               <span>Steadfast & Pathao 1-click sync</span>
             </div>
             <div className="flex items-center space-x-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
               <span>Anti-Fraud RTO Shield included</span>
             </div>
           </div>
@@ -360,7 +344,7 @@ export default function PlatformLandingPage() {
         <div className="relative pt-6 pb-2 flex justify-center">
           <a
             href="#features"
-            className="inline-flex items-center space-x-1.5 text-xs font-mono font-medium text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-300 transition group"
+            className="inline-flex items-center space-x-1.5 text-xs font-mono font-medium text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300 transition group"
           >
             <span>Explore platform capabilities</span>
             <ChevronDown className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" />
@@ -368,8 +352,8 @@ export default function PlatformLandingPage() {
         </div>
       </section>
 
-      {/* ─── 4. Core Platform Capabilities (Pristine 3-Pillar Architecture) ─ */}
-      <section id="features" className="relative z-10 min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-zinc-50/70 dark:bg-zinc-950/60 backdrop-blur-sm border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 transition-colors">
+      {/* ─── 4. Core Platform Capabilities (Precision Hardware Cards) ────────── */}
+      <section id="features" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-white/[0.06] scroll-mt-16 transition-colors">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12 w-full my-auto">
           <div className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
@@ -385,13 +369,13 @@ export default function PlatformLandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {/* Card 01: 20-Second Checkout */}
-            <div className="p-6 sm:p-8 lg:p-8 bg-white dark:bg-zinc-900/30 backdrop-blur-xl rounded-3xl border border-zinc-200/90 dark:border-white/[0.08] hover:border-zinc-300 dark:hover:border-white/20 transition-all shadow-md dark:shadow-xl flex flex-col justify-between space-y-6">
+            <div className="luxury-card-light dark:luxury-card-dark rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 transition-transform duration-200 hover:-translate-y-1">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center shadow-sm">
+                  <div className="w-10 h-10 rounded-2xl bg-zinc-100 dark:bg-white/10 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm">
                     <Zap className="w-5 h-5" />
                   </div>
-                  <span className="text-[10px] font-mono font-bold bg-blue-500/10 text-blue-600 dark:text-blue-400 px-2.5 py-1 rounded-full border border-blue-500/20">
+                  <span className="text-[10px] font-mono font-bold bg-zinc-100 dark:bg-white/10 text-zinc-800 dark:text-zinc-300 px-2.5 py-1 rounded-full border border-zinc-200 dark:border-white/10">
                     &lt; 20s Flow
                   </span>
                 </div>
@@ -407,15 +391,15 @@ export default function PlatformLandingPage() {
 
                 <div className="space-y-2.5 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
                   <div className="flex items-start space-x-2.5">
-                    <Check className="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>Automatic Inside Dhaka (৳60) and Nationwide (৳130) rates</span>
                   </div>
                   <div className="flex items-start space-x-2.5">
-                    <Check className="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>1-Tap bKash, Nagad, and Cash on Delivery with open parcel check</span>
                   </div>
                   <div className="flex items-start space-x-2.5">
-                    <Check className="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>1-Tap English and Bengali (বাংলা) language toggle</span>
                   </div>
                 </div>
@@ -423,18 +407,18 @@ export default function PlatformLandingPage() {
 
               <div className="pt-4 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
                 <span>Speed Benchmark:</span>
-                <span className="text-blue-600 dark:text-blue-400 font-mono font-bold">+42.8% Conversion Lift</span>
+                <span className="text-zinc-900 dark:text-white font-mono font-bold">+42.8% Conversion Lift</span>
               </div>
             </div>
 
             {/* Card 02: Automated Logistics & Courier */}
-            <div className="p-6 sm:p-8 lg:p-8 bg-white dark:bg-zinc-900/30 backdrop-blur-xl rounded-3xl border border-zinc-200/90 dark:border-white/[0.08] hover:border-zinc-300 dark:hover:border-white/20 transition-all shadow-md dark:shadow-xl flex flex-col justify-between space-y-6">
+            <div className="luxury-card-light dark:luxury-card-dark rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 transition-transform duration-200 hover:-translate-y-1">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-sm">
+                  <div className="w-10 h-10 rounded-2xl bg-zinc-100 dark:bg-white/10 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm">
                     <Truck className="w-5 h-5" />
                   </div>
-                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20">
+                  <span className="text-[10px] font-mono font-bold bg-zinc-100 dark:bg-white/10 text-zinc-800 dark:text-zinc-300 px-2.5 py-1 rounded-full border border-zinc-200 dark:border-white/10">
                     Steadfast & Pathao
                   </span>
                 </div>
@@ -466,18 +450,18 @@ export default function PlatformLandingPage() {
 
               <div className="pt-4 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
                 <span>Logistics Partners:</span>
-                <span className="text-emerald-600 dark:text-emerald-400 font-mono font-bold">1-Click Dispatch Active</span>
+                <span className="text-zinc-900 dark:text-white font-mono font-bold">1-Click Dispatch Active</span>
               </div>
             </div>
 
             {/* Card 03: Margin Protection & Anti-Fraud */}
-            <div className="p-6 sm:p-8 lg:p-8 bg-white dark:bg-zinc-900/30 backdrop-blur-xl rounded-3xl border border-zinc-200/90 dark:border-white/[0.08] hover:border-zinc-300 dark:hover:border-white/20 transition-all shadow-md dark:shadow-xl flex flex-col justify-between space-y-6">
+            <div className="luxury-card-light dark:luxury-card-dark rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 transition-transform duration-200 hover:-translate-y-1">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-purple-600 dark:text-purple-400 flex items-center justify-center shadow-sm">
+                  <div className="w-10 h-10 rounded-2xl bg-zinc-100 dark:bg-white/10 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm">
                     <ShieldCheck className="w-5 h-5" />
                   </div>
-                  <span className="text-[10px] font-mono font-bold bg-purple-500/10 text-purple-600 dark:text-purple-400 px-2.5 py-1 rounded-full border border-purple-500/20">
+                  <span className="text-[10px] font-mono font-bold bg-zinc-100 dark:bg-white/10 text-zinc-800 dark:text-zinc-300 px-2.5 py-1 rounded-full border border-zinc-200 dark:border-white/10">
                     COD Risk Defense
                   </span>
                 </div>
@@ -493,15 +477,15 @@ export default function PlatformLandingPage() {
 
                 <div className="space-y-2.5 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
                   <div className="flex items-start space-x-2.5">
-                    <Check className="w-4 h-4 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>0–100% delivery confidence rating before parcel dispatch</span>
                   </div>
                   <div className="flex items-start space-x-2.5">
-                    <Check className="w-4 h-4 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>Advance delivery charge alerts for high-risk customer orders</span>
                   </div>
                   <div className="flex items-start space-x-2.5">
-                    <Check className="w-4 h-4 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>Row-level atomic SQL stock locks eliminate overselling during drops</span>
                   </div>
                 </div>
@@ -509,19 +493,16 @@ export default function PlatformLandingPage() {
 
               <div className="pt-4 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
                 <span>Profit Guarantee:</span>
-                <span className="text-purple-600 dark:text-purple-400 font-mono font-bold">0% Order Commission</span>
+                <span className="text-zinc-900 dark:text-white font-mono font-bold">0% Order Commission</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ─── 5. How It Works (Streamlined Minimalist Workflow) ─────────────── */}
-      <section id="how-it-works" className="relative z-10 min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-transparent border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 overflow-hidden transition-colors">
-        {/* Subtle Ambient Radial Lighting */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[450px] bg-blue-500/5 dark:bg-blue-600/5 blur-[120px] pointer-events-none" />
-
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-14 w-full my-auto">
+      {/* ─── 5. How It Works (Minimalist Schematic Workflow) ───────────────── */}
+      <section id="how-it-works" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-white/[0.06] scroll-mt-16 transition-colors">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-14 w-full my-auto">
           <div className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
               Onboarding Velocity
@@ -534,24 +515,20 @@ export default function PlatformLandingPage() {
             </p>
           </div>
 
-          {/* Connected Minimalist Timeline Workflow (Luminous Relevant Nodes) */}
           <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-8 lg:gap-12">
-            {/* Horizontal Connecting Guide Line (Desktop Only) */}
-            <div className="hidden md:block absolute top-7 sm:top-8 left-[16.6%] right-[16.6%] h-[2px] bg-gradient-to-r from-blue-500/40 via-emerald-500/40 to-purple-500/40 pointer-events-none" />
-
-            {/* Vertical Connecting Guide Line (Mobile Only) */}
-            <div className="md:hidden absolute top-7 bottom-12 left-7 -translate-x-1/2 w-[2px] bg-gradient-to-b from-blue-500/40 via-emerald-500/40 to-purple-500/40 pointer-events-none" />
+            {/* Architectural Connecting Guide Line */}
+            <div className="hidden md:block absolute top-8 left-[16.6%] right-[16.6%] h-[1px] border-t border-dashed border-zinc-300 dark:border-zinc-800 pointer-events-none" />
 
             {/* Step 01 */}
             <div className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group">
-              <div className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-blue-50 via-white to-blue-100/50 dark:from-blue-500/15 dark:via-zinc-900 dark:to-zinc-950 border border-blue-300 dark:border-blue-500/40 text-blue-600 dark:text-blue-400 flex items-center justify-center shadow-sm dark:shadow-[0_0_25px_rgba(59,130,246,0.25)] group-hover:border-blue-500 dark:group-hover:border-blue-400 group-hover:shadow-md dark:group-hover:shadow-[0_0_35px_rgba(59,130,246,0.4)] transition-all flex-shrink-0">
-                <Store className="w-6 h-6 md:w-7 md:h-7 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform" />
-                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300 border border-blue-300 dark:border-blue-500/40 shadow-sm">
+              <div className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/90 dark:border-white/10 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform flex-shrink-0">
+                <Store className="w-6 h-6 md:w-7 md:h-7 text-zinc-900 dark:text-white" />
+                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 shadow-sm">
                   01
                 </span>
               </div>
               <div className="space-y-1.5 md:space-y-2">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-blue-600 dark:text-blue-400 font-bold block">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400 font-bold block">
                   Step 01 • Template Setup
                 </span>
                 <h3 className="text-lg md:text-xl font-bold text-zinc-950 dark:text-white tracking-tight">
@@ -575,14 +552,14 @@ export default function PlatformLandingPage() {
 
             {/* Step 02 */}
             <div className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group">
-              <div className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-emerald-50 via-white to-emerald-100/50 dark:from-emerald-500/15 dark:via-zinc-900 dark:to-zinc-950 border border-emerald-300 dark:border-emerald-500/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-sm dark:shadow-[0_0_25px_rgba(16,185,129,0.25)] group-hover:border-emerald-500 dark:group-hover:border-emerald-400 group-hover:shadow-md dark:group-hover:shadow-[0_0_35px_rgba(16,185,129,0.4)] transition-all flex-shrink-0">
-                <Truck className="w-6 h-6 md:w-7 md:h-7 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform" />
-                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/40 shadow-sm">
+              <div className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/90 dark:border-white/10 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform flex-shrink-0">
+                <Truck className="w-6 h-6 md:w-7 md:h-7 text-zinc-900 dark:text-white" />
+                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 shadow-sm">
                   02
                 </span>
               </div>
               <div className="space-y-1.5 md:space-y-2">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-bold block">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400 font-bold block">
                   Step 02 • Local Integrations
                 </span>
                 <h3 className="text-lg md:text-xl font-bold text-zinc-950 dark:text-white tracking-tight">
@@ -606,14 +583,14 @@ export default function PlatformLandingPage() {
 
             {/* Step 03 */}
             <div className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group">
-              <div className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-purple-50 via-white to-purple-100/50 dark:from-purple-500/15 dark:via-zinc-900 dark:to-zinc-950 border border-purple-300 dark:border-purple-500/40 text-purple-600 dark:text-purple-400 flex items-center justify-center shadow-sm dark:shadow-[0_0_25px_rgba(168,85,247,0.25)] group-hover:border-purple-500 dark:group-hover:border-purple-400 group-hover:shadow-md dark:group-hover:shadow-[0_0_35px_rgba(168,85,247,0.4)] transition-all flex-shrink-0">
-                <Rocket className="w-6 h-6 md:w-7 md:h-7 text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform" />
-                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300 border border-purple-300 dark:border-purple-500/40 shadow-sm">
+              <div className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/90 dark:border-white/10 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform flex-shrink-0">
+                <Rocket className="w-6 h-6 md:w-7 md:h-7 text-zinc-900 dark:text-white" />
+                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 shadow-sm">
                   03
                 </span>
               </div>
               <div className="space-y-1.5 md:space-y-2">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-purple-600 dark:text-purple-400 font-bold block">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400 font-bold block">
                   Step 03 • High-Speed Selling
                 </span>
                 <h3 className="text-lg md:text-xl font-bold text-zinc-950 dark:text-white tracking-tight">
@@ -638,8 +615,8 @@ export default function PlatformLandingPage() {
         </div>
       </section>
 
-      {/* ─── 6. Bespoke Turnkey Storefronts (Luxury Studio) ─────────────────── */}
-      <section id="storefronts" className="relative z-10 min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-zinc-50/70 dark:bg-zinc-950/60 backdrop-blur-sm border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 transition-colors">
+      {/* ─── 6. Bespoke Turnkey Storefronts (Studio Frame) ───────────────────── */}
+      <section id="storefronts" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-white/[0.06] scroll-mt-16 transition-colors">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 w-full my-auto">
           <div className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
@@ -663,8 +640,8 @@ export default function PlatformLandingPage() {
                   onClick={() => setSelectedStoreSlug(store.slug)}
                   className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
                     isSelected
-                      ? "bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 shadow-md font-bold scale-105"
-                      : "bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                      ? "bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 shadow-sm font-bold scale-105"
+                      : "bg-white dark:bg-zinc-900/60 border border-zinc-200/90 dark:border-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800"
                   }`}
                 >
                   {store.category}
@@ -674,7 +651,7 @@ export default function PlatformLandingPage() {
           </div>
 
           {/* Featured Store Showcase: Clean Studio Frame */}
-          <div className="bg-white dark:bg-zinc-900/30 backdrop-blur-xl rounded-3xl border border-zinc-200/90 dark:border-white/[0.08] overflow-hidden shadow-xl dark:shadow-2xl grid grid-cols-1 lg:grid-cols-12 items-stretch">
+          <div className="luxury-card-light dark:luxury-card-dark rounded-3xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 items-stretch">
             {/* Left: High-Res Visual Preview */}
             <div className="lg:col-span-7 relative min-h-[260px] sm:min-h-[340px] lg:min-h-[440px] bg-zinc-950 overflow-hidden group">
               <img
@@ -693,7 +670,7 @@ export default function PlatformLandingPage() {
             </div>
 
             {/* Right: Technical Features & Actions */}
-            <div className="lg:col-span-5 p-6 sm:p-7 lg:p-8 flex flex-col justify-between space-y-6 bg-zinc-50/60 dark:bg-zinc-950/80 backdrop-blur-xl border-t lg:border-t-0 lg:border-l border-zinc-200 dark:border-white/[0.08]">
+            <div className="lg:col-span-5 p-6 sm:p-7 lg:p-8 flex flex-col justify-between space-y-6 bg-zinc-50/40 dark:bg-zinc-950/60 border-t lg:border-t-0 lg:border-l border-zinc-200/80 dark:border-white/[0.06]">
               <div className="space-y-4 sm:space-y-5">
                 <div>
                   <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-500">
@@ -707,7 +684,7 @@ export default function PlatformLandingPage() {
                   </p>
                 </div>
 
-                <div className="space-y-2 pt-3 border-t border-zinc-200 dark:border-white/[0.06]">
+                <div className="space-y-2 pt-3 border-t border-zinc-200/80 dark:border-white/[0.06]">
                   <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-500 block mb-1">
                     Industry Capabilities Included:
                   </span>
@@ -722,18 +699,18 @@ export default function PlatformLandingPage() {
                 </div>
               </div>
 
-              <div className="space-y-3 pt-4 border-t border-zinc-200 dark:border-white/[0.06]">
+              <div className="space-y-3 pt-4 border-t border-zinc-200/80 dark:border-white/[0.06]">
                 <div className="flex flex-col sm:flex-row gap-2.5">
                   <Link
                     href={`/store/${activeStore.slug}`}
-                    className="flex-1 py-3 px-4 bg-zinc-950 hover:bg-zinc-800 text-white dark:bg-white dark:hover:bg-zinc-200 dark:text-zinc-950 font-bold text-xs rounded-xl transition text-center flex items-center justify-center space-x-1.5 shadow-sm dark:shadow-[0_0_20px_rgba(255,255,255,0.2)] btn-press"
+                    className="flex-1 py-3 px-4 bg-zinc-950 hover:bg-black text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-zinc-950 font-bold text-xs rounded-xl transition text-center flex items-center justify-center space-x-1.5 shadow-[0_1px_3px_rgba(0,0,0,0.1)] btn-press"
                   >
                     <span>Open Live Storefront</span>
-                    <ArrowUpRight className="w-4 h-4 text-zinc-300 dark:text-zinc-800" />
+                    <ArrowUpRight className="w-4 h-4" />
                   </Link>
                   <Link
                     href={`/onboarding?category=${activeStore.categoryParam}`}
-                    className="py-3 px-5 bg-zinc-100 hover:bg-zinc-200 border border-zinc-200 text-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 dark:text-zinc-300 dark:hover:text-white font-semibold text-xs rounded-xl transition text-center shadow-sm"
+                    className="py-3 px-5 bg-white hover:bg-zinc-50 border border-zinc-200/90 text-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 dark:text-zinc-300 dark:hover:text-white font-semibold text-xs rounded-xl transition text-center shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
                   >
                     <span>Clone Template</span>
                   </Link>
@@ -741,7 +718,7 @@ export default function PlatformLandingPage() {
                 <div className="flex items-center justify-between text-[11px] text-zinc-500 dark:text-zinc-400 px-1">
                   <span>Commission: <strong className="text-emerald-600 dark:text-emerald-400 font-mono">0%</strong></span>
                   <span>Setup: <strong className="text-zinc-950 dark:text-white">3 Minutes</strong></span>
-                  <span>Mobile: <strong className="text-blue-600 dark:text-blue-400">100% Ready</strong></span>
+                  <span>Mobile: <strong className="text-zinc-950 dark:text-white">100% Ready</strong></span>
                 </div>
               </div>
             </div>
@@ -749,8 +726,8 @@ export default function PlatformLandingPage() {
         </div>
       </section>
 
-      {/* ─── 7. Transparent Pricing (Clean, Uncluttered 3 Tiers) ─────────────── */}
-      <section id="pricing" className="relative z-10 min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-transparent border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 transition-colors">
+      {/* ─── 7. Transparent Pricing (Hardware Tier Insets) ──────────────────── */}
+      <section id="pricing" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-white/[0.06] scroll-mt-16 transition-colors">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 w-full my-auto">
           <div className="text-center max-w-xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
@@ -765,7 +742,7 @@ export default function PlatformLandingPage() {
 
             {/* Billing Cadence Toggle */}
             <div className="pt-2 sm:pt-3 flex items-center justify-center">
-              <div className="p-1 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 flex items-center space-x-1 text-xs">
+              <div className="p-1 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/90 dark:border-white/10 flex items-center space-x-1 text-xs">
                 <button
                   type="button"
                   onClick={() => setPricingBilling("monthly")}
@@ -787,7 +764,7 @@ export default function PlatformLandingPage() {
                   }`}
                 >
                   <span>Annual Billing</span>
-                  <span className="bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400 text-[10px] font-bold px-1.5 py-0.2 rounded-full border border-emerald-300 dark:border-emerald-500/30">
+                  <span className="bg-emerald-100 text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-400 text-[10px] font-bold px-1.5 py-0.2 rounded-full">
                     Save 20%
                   </span>
                 </button>
@@ -797,7 +774,7 @@ export default function PlatformLandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch pt-2">
             {/* Starter Plan */}
-            <div className="bg-zinc-50/70 dark:bg-zinc-900/40 backdrop-blur-xl rounded-3xl border border-zinc-200/90 dark:border-white/[0.08] p-6 sm:p-7 lg:p-8 flex flex-col justify-between shadow-md dark:shadow-2xl">
+            <div className="luxury-card-light dark:luxury-card-dark rounded-3xl p-6 sm:p-8 flex flex-col justify-between">
               <div className="space-y-4">
                 <div>
                   <h3 className="text-lg font-bold text-zinc-950 dark:text-white">Starter</h3>
@@ -812,7 +789,7 @@ export default function PlatformLandingPage() {
                     <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono ml-1">billed annually</span>
                   )}
                 </div>
-                <ul className="space-y-2.5 text-xs text-zinc-700 dark:text-zinc-300 pt-3 border-t border-zinc-200 dark:border-white/[0.08]">
+                <ul className="space-y-2.5 text-xs text-zinc-700 dark:text-zinc-300 pt-3 border-t border-zinc-200/80 dark:border-white/[0.08]">
                   <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Up to 500 products</span></li>
                   <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>20s 1-Page Express Checkout</span></li>
                   <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Steadfast & Pathao courier booking</span></li>
@@ -820,14 +797,14 @@ export default function PlatformLandingPage() {
                   <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Free StoreSwift subdomain with SSL</span></li>
                 </ul>
               </div>
-              <Link href="/onboarding?plan=starter" className="mt-6 w-full py-3 bg-zinc-200/80 hover:bg-zinc-300 border border-zinc-300 dark:bg-zinc-800/80 dark:hover:bg-zinc-700 dark:border-white/10 text-zinc-900 dark:text-white font-bold text-xs rounded-xl transition text-center btn-press">
+              <Link href="/onboarding?plan=starter" className="mt-6 w-full py-3 bg-zinc-100 hover:bg-zinc-200 border border-zinc-200/90 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 text-zinc-900 dark:text-white font-bold text-xs rounded-xl transition text-center btn-press">
                 Start 14-Day Free Trial
               </Link>
             </div>
 
-            {/* Growth Plan (Popular) */}
-            <div className="bg-white dark:bg-zinc-900/80 backdrop-blur-xl rounded-3xl border-2 border-blue-600 dark:border-blue-500/60 p-6 sm:p-7 lg:p-8 flex flex-col justify-between shadow-xl dark:shadow-[0_0_50px_rgba(59,130,246,0.18)] relative ring-1 ring-blue-500/20">
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[10px] font-bold uppercase tracking-wider px-4 py-1 rounded-full shadow-md">
+            {/* Growth Plan (Popular - Titanium Ring Elevation) */}
+            <div className="luxury-card-light dark:luxury-card-dark ring-2 ring-zinc-950 dark:ring-white/30 rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative shadow-lg">
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 text-[10px] font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-sm">
                 Most Popular
               </div>
               <div className="space-y-4">
@@ -844,7 +821,7 @@ export default function PlatformLandingPage() {
                     <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono ml-1">billed annually</span>
                   )}
                 </div>
-                <ul className="space-y-2.5 text-xs text-zinc-700 dark:text-zinc-200 pt-3 border-t border-zinc-200 dark:border-white/10">
+                <ul className="space-y-2.5 text-xs text-zinc-700 dark:text-zinc-200 pt-3 border-t border-zinc-200/80 dark:border-white/10">
                   <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Up to 2,000 products</span></li>
                   <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Custom domain with automated SSL</span></li>
                   <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Anti-Fraud RTO Risk Shield</span></li>
@@ -853,13 +830,13 @@ export default function PlatformLandingPage() {
                   <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Priority customer support</span></li>
                 </ul>
               </div>
-              <Link href="/onboarding?plan=growth" className="mt-6 w-full py-3 bg-blue-600 hover:bg-blue-700 text-white dark:bg-white dark:hover:bg-zinc-200 dark:text-zinc-950 font-bold text-xs rounded-xl transition text-center shadow-md dark:shadow-[0_0_20px_rgba(255,255,255,0.25)] btn-press">
+              <Link href="/onboarding?plan=growth" className="mt-6 w-full py-3 bg-zinc-950 hover:bg-black text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-zinc-950 font-bold text-xs rounded-xl transition text-center shadow-[0_1px_3px_rgba(0,0,0,0.1)] btn-press">
                 Start 14-Day Free Trial
               </Link>
             </div>
 
             {/* Pro Plan */}
-            <div className="bg-zinc-50/70 dark:bg-zinc-900/40 backdrop-blur-xl rounded-3xl border border-zinc-200/90 dark:border-white/[0.08] p-6 sm:p-7 lg:p-8 flex flex-col justify-between shadow-md dark:shadow-2xl">
+            <div className="luxury-card-light dark:luxury-card-dark rounded-3xl p-6 sm:p-8 flex flex-col justify-between">
               <div className="space-y-4">
                 <div>
                   <h3 className="text-lg font-bold text-zinc-950 dark:text-white">Pro Enterprise</h3>
@@ -874,7 +851,7 @@ export default function PlatformLandingPage() {
                     <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono ml-1">billed annually</span>
                   )}
                 </div>
-                <ul className="space-y-2.5 text-xs text-zinc-700 dark:text-zinc-300 pt-3 border-t border-zinc-200 dark:border-white/[0.08]">
+                <ul className="space-y-2.5 text-xs text-zinc-700 dark:text-zinc-300 pt-3 border-t border-zinc-200/80 dark:border-white/[0.08]">
                   <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Unlimited products & orders</span></li>
                   <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Wholesale Orders & Invoicing</span></li>
                   <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Dedicated 24/7 account manager</span></li>
@@ -882,7 +859,7 @@ export default function PlatformLandingPage() {
                   <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Custom courier API credentials</span></li>
                 </ul>
               </div>
-              <Link href="/onboarding?plan=pro" className="mt-6 w-full py-3 bg-zinc-200/80 hover:bg-zinc-300 border border-zinc-300 dark:bg-zinc-800/80 dark:hover:bg-zinc-700 dark:border-white/10 text-zinc-900 dark:text-white font-bold text-xs rounded-xl transition text-center btn-press">
+              <Link href="/onboarding?plan=pro" className="mt-6 w-full py-3 bg-zinc-100 hover:bg-zinc-200 border border-zinc-200/90 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 text-zinc-900 dark:text-white font-bold text-xs rounded-xl transition text-center btn-press">
                 Start 14-Day Free Trial
               </Link>
             </div>
@@ -891,7 +868,7 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 8. Frequently Asked Questions (FAQ) ────────────────────────────── */}
-      <section id="faq" className="relative z-10 min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-zinc-50/70 dark:bg-zinc-950/60 backdrop-blur-sm border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 transition-colors">
+      <section id="faq" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-white/[0.06] scroll-mt-16 transition-colors">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 w-full my-auto">
           <div className="text-center max-w-xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
@@ -905,7 +882,7 @@ export default function PlatformLandingPage() {
             </p>
           </div>
 
-          <div className="divide-y divide-zinc-200 dark:divide-white/[0.08] bg-white dark:bg-zinc-900/40 backdrop-blur-xl rounded-3xl border border-zinc-200/90 dark:border-white/[0.08] p-5 sm:p-7 md:p-8 shadow-md dark:shadow-2xl">
+          <div className="luxury-card-light dark:luxury-card-dark rounded-3xl p-5 sm:p-8 divide-y divide-zinc-200 dark:divide-white/[0.08]">
             {faqs.map((faq, index) => {
               const isOpen = activeFaq === index;
               return (
@@ -936,12 +913,10 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 9. Final Call to Action ────────────────────────────────────────── */}
-      <section className="relative z-10 min-h-0 lg:min-h-[75vh] flex flex-col justify-center py-16 sm:py-20 lg:py-20 bg-transparent border-b border-zinc-200/80 dark:border-white/[0.08] transition-colors">
+      <section className="relative min-h-0 lg:min-h-[75vh] flex flex-col justify-center py-16 sm:py-20 lg:py-20 border-b border-zinc-200/80 dark:border-white/[0.06] transition-colors">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto">
-          <div className="rounded-3xl bg-gradient-to-b from-zinc-50 to-zinc-100/80 dark:from-zinc-900/90 dark:to-zinc-950 text-zinc-950 dark:text-white p-8 sm:p-12 lg:p-14 text-center space-y-6 border border-zinc-200 dark:border-white/10 shadow-xl dark:shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-blue-500/10 blur-3xl pointer-events-none" />
-
-            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight relative leading-tight">
+          <div className="luxury-card-light dark:luxury-card-dark rounded-3xl p-8 sm:p-14 text-center space-y-6 relative overflow-hidden">
+            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight relative leading-tight text-zinc-950 dark:text-white">
               Ready to launch your store?
             </h2>
             <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto leading-relaxed relative">
@@ -950,17 +925,17 @@ export default function PlatformLandingPage() {
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5 relative">
               <Link
                 href="/onboarding"
-                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-xs font-bold bg-zinc-950 hover:bg-zinc-800 text-white dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 px-7 py-3.5 rounded-xl shadow-md dark:shadow-[0_0_20px_rgba(255,255,255,0.2)] transition btn-press"
+                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-xs font-bold bg-zinc-950 hover:bg-black text-white dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100 px-7 py-3.5 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_12px_rgba(255,255,255,0.15)] transition btn-press"
               >
                 <span>Start 14-Day Free Trial</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/admin?store=apex-fashion"
-                className="w-full sm:w-auto inline-flex items-center justify-center space-x-1.5 text-xs font-semibold bg-white hover:bg-zinc-100 border border-zinc-200 text-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 dark:text-zinc-300 px-6 py-3.5 rounded-xl transition shadow-sm"
+                className="w-full sm:w-auto inline-flex items-center justify-center space-x-1.5 text-xs font-semibold bg-white hover:bg-zinc-50 border border-zinc-200/90 text-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/[0.08] dark:text-zinc-200 px-6 py-3.5 rounded-xl transition shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
               >
                 <span>Explore Demo Admin</span>
-                <ExternalLink className="w-3.5 h-3.5 text-zinc-500" />
+                <ExternalLink className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500" />
               </Link>
             </div>
           </div>
