@@ -871,7 +871,7 @@ export function FashionStorefront({
                 <span className={`text-[11px] font-mono font-bold block text-center ${
                   col.isRecommended ? "text-emerald-700" : "text-zinc-400"
                 }`}>
-                  {col.isRecommended ? "✓ Guaranteed No Shrinkage or Collar Baconing" : "✗ Prone to Pilling & Warping"}
+                  {col.isRecommended ? "Guaranteed Collar Retention & Zero Seam Warping" : "Prone to Pilling & Warping"}
                 </span>
               </div>
             </div>

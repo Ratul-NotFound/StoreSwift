@@ -58,7 +58,7 @@ export function TrackOrderModal({
         phone: query.includes("01") ? query : "01711-234567",
         status: "out_for_delivery",
         statusText: "Out for Delivery with Rider",
-        hub: "Dhaka Central Tejgaon Hub ➔ Gulshan / Banani Local Hub",
+        hub: "Dhaka Central Tejgaon Hub → Gulshan / Banani Local Hub",
         riderName: "Al-Amin Hossain",
         riderPhone: "+880 1819-876543",
         estimatedArrival: "Today before 7:00 PM",

@@ -56,7 +56,7 @@ import {
 import { generateVariantMatrix, GeneratedVariant } from "@/lib/matrix";
 import { generateStoreSeedData } from "@/lib/seed-store";
 
-export interface AdminDemoStore {
+interface AdminDemoStore {
   name: string;
   category: string;
   categoryKey: string;
@@ -64,7 +64,7 @@ export interface AdminDemoStore {
   plan: string;
 }
 
-export const DEMO_STORES_MAP: Record<string, AdminDemoStore> = {
+const DEMO_STORES_MAP: Record<string, AdminDemoStore> = {
   "apex-fashion": {
     name: "Apex Fashion Hub",
     category: "Fashion & Apparel",
@@ -133,7 +133,7 @@ export default function MerchantAdminPage() {
   const [subscriptionPlan, setSubscriptionPlan] = useState("Starter ($9/mo)");
 
   // Theme customizer state
-  const [announcementText, setAnnouncementText] = useState("⚡ Free shipping on orders over $50! Fast delivery.");
+  const [announcementText, setAnnouncementText] = useState("Free nationwide express shipping on orders over $50.");
   const [primaryBrandColor, setPrimaryBrandColor] = useState("#18181b");
   const [heroHeadline, setHeroHeadline] = useState("Discover Quality Essentials");
   const [heroTagline, setHeroTagline] = useState("Trending styles, modern fits, and premium fabrics.");
@@ -155,7 +155,7 @@ export default function MerchantAdminPage() {
         const parsed = JSON.parse(savedData);
         if (parsed.name) setStoreName(parsed.name);
         if (parsed.currency) setCurrency(parsed.currency === "BDT" ? "৳" : "$");
-      } catch {}
+      } catch { }
     }
 
     // Provision products matching this store's industry category
@@ -370,11 +370,11 @@ export default function MerchantAdminPage() {
       prev.map(o =>
         o.id === order.id
           ? {
-              ...o,
-              fulfillmentStatus: "Shipped",
-              courier: consignment.courierName,
-              consignmentId: consignment.consignmentId
-            }
+            ...o,
+            fulfillmentStatus: "Shipped",
+            courier: consignment.courierName,
+            consignmentId: consignment.consignmentId
+          }
           : o
       )
     );
@@ -464,9 +464,8 @@ export default function MerchantAdminPage() {
                             key={slug}
                             type="button"
                             onClick={() => handleSwitchStore(slug)}
-                            className={`w-full text-left px-3 py-2 flex items-center justify-between hover:bg-zinc-50 transition ${
-                              isCurrent ? "bg-zinc-50 font-bold text-zinc-900" : "text-zinc-600"
-                            }`}
+                            className={`w-full text-left px-3 py-2 flex items-center justify-between hover:bg-zinc-50 transition ${isCurrent ? "bg-zinc-50 font-bold text-zinc-900" : "text-zinc-600"
+                              }`}
                           >
                             <div>
                               <p className="text-xs font-semibold">{s.name}</p>
@@ -514,11 +513,10 @@ export default function MerchantAdminPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`px-3 py-2 rounded-lg flex items-center space-x-1.5 whitespace-nowrap transition-colors btn-press ${
-                  isActive
+                className={`px-3 py-2 rounded-lg flex items-center space-x-1.5 whitespace-nowrap transition-colors btn-press ${isActive
                     ? "bg-zinc-900 text-white font-semibold shadow-sm"
                     : "hover:bg-zinc-100 hover:text-zinc-800"
-                }`}
+                  }`}
               >
                 <Icon className="w-3.5 h-3.5" />
                 <span>{tab.label}</span>
@@ -659,13 +657,12 @@ export default function MerchantAdminPage() {
                         {currency}{ord.totalAmount.toFixed(2)}
                       </span>
                       <span
-                        className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${
-                          ord.fulfillmentStatus === "Delivered"
+                        className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${ord.fulfillmentStatus === "Delivered"
                             ? "bg-emerald-50 text-emerald-700 border-emerald-200/60"
                             : ord.fulfillmentStatus === "Shipped"
-                            ? "bg-blue-50 text-blue-700 border-blue-200/60"
-                            : "bg-amber-50 text-amber-700 border-amber-200/60"
-                        }`}
+                              ? "bg-blue-50 text-blue-700 border-blue-200/60"
+                              : "bg-amber-50 text-amber-700 border-amber-200/60"
+                          }`}
                       >
                         {ord.fulfillmentStatus}
                       </span>
@@ -879,7 +876,7 @@ export default function MerchantAdminPage() {
 
               <div className="flex items-center space-x-2">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
-                  ⚡ Auto-Courier Sync: Active
+                  Automated Courier Dispatch: Active
                 </span>
               </div>
             </div>
@@ -918,7 +915,7 @@ export default function MerchantAdminPage() {
                               className={`text-[9px] font-bold px-2 py-0.5 rounded-full border inline-flex items-center space-x-1 ${risk.badgeClass}`}
                               title={risk.recommendation}
                             >
-                              <span>{risk.level === "VERIFIED_SAFE" ? "● Safe COD" : risk.level === "MODERATE_RISK" ? "▲ Verify Phone" : "✕ High RTO Risk"}</span>
+                              <span>{risk.level === "VERIFIED_SAFE" ? "Safe COD" : risk.level === "MODERATE_RISK" ? "Verify Phone" : "High RTO Risk"}</span>
                               <span>({risk.deliveryRatePercent}%)</span>
                             </span>
                           </div>
@@ -1101,7 +1098,7 @@ export default function MerchantAdminPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
                 <div className="p-3 rounded-xl border border-zinc-200/80 space-y-1">
-                  <span className="font-bold text-zinc-800 block">⚡ Auto-Consignment Booking</span>
+                  <span className="font-bold text-zinc-800 block">Automated Consignment Dispatch</span>
                   <p className="text-[11px] text-zinc-500">
                     Automatically book courier rider as soon as a customer completes 1-page checkout.
                   </p>
@@ -1113,7 +1110,7 @@ export default function MerchantAdminPage() {
                 </div>
 
                 <div className="p-3 rounded-xl border border-zinc-200/80 space-y-1">
-                  <span className="font-bold text-zinc-800 block">📱 SMS Tracking Notification</span>
+                  <span className="font-bold text-zinc-800 block">Customer SMS Dispatch Alert</span>
                   <p className="text-[11px] text-zinc-500">
                     Send customer tracking SMS link automatically upon courier rider pickup.
                   </p>
@@ -1125,7 +1122,7 @@ export default function MerchantAdminPage() {
                 </div>
 
                 <div className="p-3 rounded-xl border border-zinc-200/80 space-y-1">
-                  <span className="font-bold text-zinc-800 block">🛡️ Anti-RTO Fraud Filter</span>
+                  <span className="font-bold text-zinc-800 block">Anti-Fraud RTO Risk Shield</span>
                   <p className="text-[11px] text-zinc-500">
                     Hold orders from phone numbers with &gt;50% past return rates for manual review.
                   </p>
@@ -1327,11 +1324,10 @@ export default function MerchantAdminPage() {
                     <button
                       onClick={() => handleImportSupplierItem(item)}
                       disabled={isImported}
-                      className={`w-full py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-1.5 btn-press ${
-                        isImported
+                      className={`w-full py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-1.5 btn-press ${isImported
                           ? "bg-zinc-100 text-zinc-400 border border-zinc-200 cursor-not-allowed"
                           : "bg-zinc-900 hover:bg-zinc-800 text-white shadow-sm"
-                      }`}
+                        }`}
                     >
                       {isImported ? (
                         <>
@@ -1541,9 +1537,8 @@ export default function MerchantAdminPage() {
                         key={color}
                         type="button"
                         onClick={() => setPrimaryBrandColor(color)}
-                        className={`w-7 h-7 rounded-full border-2 transition ${
-                          primaryBrandColor === color ? "border-zinc-900 scale-110 shadow-sm" : "border-transparent"
-                        }`}
+                        className={`w-7 h-7 rounded-full border-2 transition ${primaryBrandColor === color ? "border-zinc-900 scale-110 shadow-sm" : "border-transparent"
+                          }`}
                         style={{ backgroundColor: color }}
                       />
                     ))}
@@ -1566,18 +1561,16 @@ export default function MerchantAdminPage() {
                 <div className="flex items-center space-x-1.5 bg-white border border-zinc-200 rounded-xl p-1 shadow-subtle">
                   <button
                     onClick={() => setPreviewDevice("desktop")}
-                    className={`p-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1 ${
-                      previewDevice === "desktop" ? "bg-zinc-100 text-zinc-900" : "text-zinc-400"
-                    }`}
+                    className={`p-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1 ${previewDevice === "desktop" ? "bg-zinc-100 text-zinc-900" : "text-zinc-400"
+                      }`}
                   >
                     <Monitor className="w-3.5 h-3.5" />
                     <span>Desktop</span>
                   </button>
                   <button
                     onClick={() => setPreviewDevice("mobile")}
-                    className={`p-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1 ${
-                      previewDevice === "mobile" ? "bg-zinc-100 text-zinc-900" : "text-zinc-400"
-                    }`}
+                    className={`p-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1 ${previewDevice === "mobile" ? "bg-zinc-100 text-zinc-900" : "text-zinc-400"
+                      }`}
                   >
                     <Smartphone className="w-3.5 h-3.5" />
                     <span>Mobile</span>
@@ -1587,9 +1580,8 @@ export default function MerchantAdminPage() {
 
               <div className="flex justify-center">
                 <div
-                  className={`bg-white rounded-2xl border border-zinc-300 shadow-card overflow-hidden transition-all duration-300 ${
-                    previewDevice === "mobile" ? "w-[340px]" : "w-full"
-                  }`}
+                  className={`bg-white rounded-2xl border border-zinc-300 shadow-card overflow-hidden transition-all duration-300 ${previewDevice === "mobile" ? "w-[340px]" : "w-full"
+                    }`}
                 >
                   <div className="text-white text-[11px] py-1.5 px-3 text-center truncate font-medium bg-zinc-900">
                     {announcementText}
@@ -1662,11 +1654,10 @@ export default function MerchantAdminPage() {
                   ].map((p) => (
                     <div
                       key={p.name}
-                      className={`p-4 rounded-xl border flex flex-col justify-between ${
-                        p.featured
+                      className={`p-4 rounded-xl border flex flex-col justify-between ${p.featured
                           ? "border-zinc-900 bg-zinc-900 text-white shadow-sm"
                           : "border-zinc-200 bg-zinc-50 text-zinc-800"
-                      }`}
+                        }`}
                     >
                       <div>
                         <div className="font-bold text-xs">{p.name}</div>
@@ -1679,11 +1670,10 @@ export default function MerchantAdminPage() {
                       </div>
                       <button
                         onClick={() => setSubscriptionPlan(`${p.name} (${p.price}${p.period})`)}
-                        className={`mt-4 py-1.5 font-bold text-xs rounded-lg transition btn-press ${
-                          p.featured
+                        className={`mt-4 py-1.5 font-bold text-xs rounded-lg transition btn-press ${p.featured
                             ? "bg-white text-zinc-900 hover:bg-zinc-100"
                             : "bg-white border border-zinc-200 text-zinc-800 hover:bg-zinc-100"
-                        }`}
+                          }`}
                       >
                         Select {p.name}
                       </button>
@@ -1932,11 +1922,10 @@ export default function MerchantAdminPage() {
                     key={cid}
                     type="button"
                     onClick={() => setSelectedCourierId(cid)}
-                    className={`w-full p-2.5 rounded-xl border text-left text-xs transition flex items-center justify-between ${
-                      isSelected
+                    className={`w-full p-2.5 rounded-xl border text-left text-xs transition flex items-center justify-between ${isSelected
                         ? "border-zinc-900 bg-zinc-900 text-white shadow-sm"
                         : "border-zinc-200 hover:border-zinc-300 bg-white text-zinc-800"
-                    }`}
+                      }`}
                   >
                     <div>
                       <div className="font-bold">{c.name}</div>

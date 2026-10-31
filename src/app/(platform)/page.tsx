@@ -46,7 +46,7 @@ export default function PlatformLandingPage() {
   const faqs = [
     {
       q: "How does StoreSwift compare to generic builders like Zatiq or Shopify?",
-      a: "StoreSwift is purpose-built for high-conversion commerce. Unlike generic cookie-cutter templates, StoreSwift features 6 distinct category-tailored quiet luxury storefronts, a 20-second 1-Page Express Checkout with automatic 64-district delivery zone calculation, automated Steadfast & Pathao courier booking with 4x6 thermal barcode labels, and an AI-powered Anti-Fraud RTO Shield to eliminate costly COD returns."
+      a: "StoreSwift is purpose-built for high-conversion commerce. Unlike generic cookie-cutter templates, StoreSwift features 6 distinct category-tailored storefronts, a 20-second 1-Page Express Checkout with automatic 64-district delivery zone calculation, automated Steadfast & Pathao courier booking with 4x6 thermal barcode labels, and an AI-powered Anti-Fraud RTO Shield to eliminate costly COD returns."
     },
     {
       q: "Can I accept Cash on Delivery (COD), bKash, and Nagad?",
@@ -247,7 +247,7 @@ export default function PlatformLandingPage() {
           {/* Top Pill Announcement */}
           <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-zinc-100 border border-zinc-200 text-zinc-800 text-xs font-semibold mb-6 shadow-subtle">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Modern Quiet Luxury Commerce Engine</span>
+            <span>Modern High-Conversion Commerce Engine</span>
             <span className="text-zinc-300">•</span>
             <span className="text-zinc-500 font-normal">Ready in 3 minutes</span>
           </div>
@@ -258,7 +258,7 @@ export default function PlatformLandingPage() {
           </h1>
 
           <p className="mt-6 text-sm sm:text-base text-zinc-600 max-w-2xl mx-auto leading-relaxed">
-            Everything your brand needs to scale: 20-second 1-Page Express Checkout, automated Steadfast & Pathao courier dispatch, bKash & Nagad payments, and 6 bespoke quiet luxury storefront templates.
+            Everything your brand needs to scale: 20-second 1-Page Express Checkout, automated Steadfast & Pathao courier dispatch, bKash & Nagad payments, and 6 bespoke turnkey storefront templates.
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">

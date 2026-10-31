@@ -46,8 +46,6 @@ import { calculateCartTotals, CartItem } from "@/lib/cart";
 import { useToast } from "@/components/ui/toast";
 import { StoreFooter } from "@/components/footer";
 import { SearchModal } from "@/components/store/search-modal";
-import { SpotlightDrop } from "@/components/store/spotlight-drop";
-import { TestimonialsSection } from "@/components/store/testimonials";
 import { ExpressCheckoutModal } from "@/components/store/express-checkout-modal";
 import { DemoStoreBar } from "@/components/store/demo-store-bar";
 import { TrackOrderModal } from "@/components/store/track-order-modal";
@@ -704,7 +702,7 @@ export default function TenantStorefrontPage({
               </button>
               <button onClick={() => { handleAddToCart(selectedProduct, selectedVariant); setSelectedProduct(null); setIsCheckoutOpen(true); }}
                 className="flex-1 py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center justify-center space-x-1.5 btn-press">
-                <span>⚡ Buy Now</span>
+                <span>Buy with COD</span>
               </button>
               <Link href={`/store/${tenantSlug}/products/${selectedProduct.slug}`} className="py-2.5 px-3 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-semibold text-xs rounded-xl transition">
                 Details

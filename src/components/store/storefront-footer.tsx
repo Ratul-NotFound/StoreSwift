@@ -253,8 +253,9 @@ export function StorefrontFooter({
               <li className="text-[11px] text-zinc-400">
                 <span>Outside Dhaka: Flat ৳130 / $5.00 (72h)</span>
               </li>
-              <li className="pt-1 text-[11px] text-emerald-400 font-semibold">
-                <span>✓ Open Parcel Inspection Guarantee</span>
+              <li className="pt-1 text-[11px] text-emerald-400 font-semibold flex items-center space-x-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+                <span>Open Parcel Inspection Guaranteed</span>
               </li>
             </ul>
           </div>
@@ -309,24 +310,24 @@ export function StorefrontFooter({
           </div>
 
           {/* Payment & Courier Badges */}
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            <span className="px-2 py-1 bg-zinc-900 rounded-md border border-zinc-800 text-[10px] font-bold text-emerald-400">
-              💵 Cash on Delivery
+          <div className="flex flex-wrap items-center justify-center gap-2 text-[10px]">
+            <span className="px-2.5 py-1 bg-zinc-900 rounded-lg border border-zinc-800 font-medium text-zinc-300">
+              Cash on Delivery (COD)
             </span>
-            <span className="px-2 py-1 bg-pink-950/60 rounded-md border border-pink-900/60 text-[10px] font-bold text-[#E2136E]">
-              🌸 bKash
+            <span className="px-2.5 py-1 bg-zinc-900 rounded-lg border border-zinc-800 font-medium text-[#E2136E]">
+              bKash Express
             </span>
-            <span className="px-2 py-1 bg-amber-950/60 rounded-md border border-amber-900/60 text-[10px] font-bold text-[#F7931E]">
-              🟠 Nagad
+            <span className="px-2.5 py-1 bg-zinc-900 rounded-lg border border-zinc-800 font-medium text-[#F7931E]">
+              Nagad Direct
             </span>
-            <span className="px-2 py-1 bg-zinc-900 rounded-md border border-zinc-800 text-[10px] font-semibold text-zinc-300">
-              💳 VISA / MC
+            <span className="px-2.5 py-1 bg-zinc-900 rounded-lg border border-zinc-800 font-medium text-zinc-300">
+              Visa • Mastercard
             </span>
-            <span className="px-2 py-1 bg-emerald-950/60 rounded-md border border-emerald-900/60 text-[10px] font-bold text-emerald-400">
-              🚚 Steadfast API
+            <span className="px-2.5 py-1 bg-zinc-900 rounded-lg border border-zinc-800 font-medium text-emerald-400">
+              Steadfast Logistics
             </span>
-            <span className="px-2 py-1 bg-rose-950/60 rounded-md border border-rose-900/60 text-[10px] font-bold text-rose-400">
-              🏍️ Pathao
+            <span className="px-2.5 py-1 bg-zinc-900 rounded-lg border border-zinc-800 font-medium text-rose-400">
+              Pathao Courier
             </span>
           </div>
         </div>

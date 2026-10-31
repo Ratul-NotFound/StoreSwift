@@ -371,8 +371,8 @@ export default function ProductDetailPage({
                   onClick={() => setIsCheckoutOpen(true)}
                   className="py-3 px-5 bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs rounded-xl shadow-sm transition text-center btn-press flex items-center justify-center space-x-1.5"
                 >
-                  <Zap className="w-3.5 h-3.5 text-amber-400" />
-                  <span>⚡ Buy Now (COD)</span>
+                  <Banknote className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Buy with Cash on Delivery</span>
                 </button>
               </div>
 

@@ -655,13 +655,16 @@ export function ExpressCheckoutModal({
               {/* COD Inspection Guarantee */}
               {paymentMethod === "cod" && (
                 <div className="p-3 rounded-xl bg-zinc-50 border border-zinc-200 text-xs flex items-center justify-between">
-                  <div className="space-y-0.5 pr-2">
-                    <span className="font-bold text-zinc-900 block text-[11px]">
-                      📦 {t.inspectionGuarantee}
-                    </span>
-                    <p className="text-[10px] text-zinc-500">
-                      {t.inspectionGuaranteeNote}
-                    </p>
+                  <div className="flex items-center space-x-2.5 pr-2">
+                    <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                    <div>
+                      <span className="font-bold text-zinc-900 block text-[11px]">
+                        {t.inspectionGuarantee}
+                      </span>
+                      <p className="text-[10px] text-zinc-500">
+                        {t.inspectionGuaranteeNote}
+                      </p>
+                    </div>
                   </div>
                   <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100/70 px-2 py-1 rounded-md border border-emerald-200 whitespace-nowrap">
                     {lang === "bn" ? "নিশ্চিত" : "Guaranteed"}

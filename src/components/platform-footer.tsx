@@ -202,21 +202,26 @@ export function PlatformFooter() {
           </div>
 
           {/* Partner & Logistics Badges */}
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            <span className="px-2 py-1 bg-zinc-900 rounded-md border border-zinc-800 text-[10px] font-bold text-emerald-400">
-              🚚 Steadfast Official API
+          <div className="flex flex-wrap items-center justify-center gap-2 text-[10px]">
+            <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 bg-zinc-900 rounded-lg border border-zinc-800 font-semibold text-emerald-400">
+              <Truck className="w-3 h-3 text-emerald-400" />
+              <span>Steadfast Official API</span>
             </span>
-            <span className="px-2 py-1 bg-rose-950/60 rounded-md border border-rose-900/60 text-[10px] font-bold text-rose-400">
-              🏍️ Pathao Logistics Sync
+            <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 bg-zinc-900 rounded-lg border border-zinc-800 font-semibold text-rose-400">
+              <Zap className="w-3 h-3 text-rose-400" />
+              <span>Pathao Logistics Sync</span>
             </span>
-            <span className="px-2 py-1 bg-pink-950/60 rounded-md border border-pink-900/60 text-[10px] font-bold text-[#E2136E]">
-              🌸 bKash Merchant API
+            <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 bg-zinc-900 rounded-lg border border-zinc-800 font-semibold text-[#E2136E]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#E2136E]" />
+              <span>bKash Merchant API</span>
             </span>
-            <span className="px-2 py-1 bg-amber-950/60 rounded-md border border-amber-900/60 text-[10px] font-bold text-[#F7931E]">
-              🟠 Nagad Direct
+            <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 bg-zinc-900 rounded-lg border border-zinc-800 font-semibold text-[#F7931E]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#F7931E]" />
+              <span>Nagad Direct MFS</span>
             </span>
-            <span className="px-2 py-1 bg-zinc-900 rounded-md border border-zinc-800 text-[10px] font-semibold text-zinc-300">
-              🔒 256-Bit SSL
+            <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 bg-zinc-900 rounded-lg border border-zinc-800 font-semibold text-zinc-300">
+              <ShieldCheck className="w-3 h-3 text-zinc-400" />
+              <span>256-Bit SSL Certified</span>
             </span>
           </div>
         </div>

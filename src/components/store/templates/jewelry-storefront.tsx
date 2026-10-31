@@ -785,8 +785,8 @@ export function JewelryStorefront({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 font-serif">
             {[
               {
-                author: "Lord Edward V.",
-                role: "Watch Collector & Patron",
+                author: "Evelyn Sterling",
+                role: "Fine Watch Collector & Patron",
                 piece: "Heritage 39mm Sapphire Chronograph",
                 comment: "The 28,800 vph automatic caliber has a magnificent sweep. The exhibition caseback reveals beautifully finished perlage and blued screws. Inspecting it with the loupe at my door was a true luxury experience.",
                 rating: 5
