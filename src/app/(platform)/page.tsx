@@ -25,6 +25,7 @@ import {
   Rocket
 } from "lucide-react";
 import { PlatformFooter, DEMO_STORES_LIST } from "@/components/platform-footer";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 interface IndustryStorefront {
   slug: string;
@@ -144,35 +145,35 @@ export default function PlatformLandingPage() {
   ];
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#09090b] text-zinc-100 font-sans selection:bg-white selection:text-zinc-950 antialiased">
+    <div className="flex flex-col min-h-screen bg-white text-zinc-900 dark:bg-[#09090b] dark:text-zinc-100 font-sans selection:bg-blue-600 selection:text-white antialiased transition-colors duration-150">
       {/* ─── 1. Platform Navigation Bar ─────────────────────────────────────── */}
-      <header className="border-b border-white/[0.08] bg-[#09090b]/85 backdrop-blur-2xl sticky top-0 z-50 shadow-[0_1px_3px_rgba(0,0,0,0.5)]">
+      <header className="border-b border-zinc-200 dark:border-white/[0.08] bg-white/80 dark:bg-[#09090b]/85 backdrop-blur-2xl sticky top-0 z-50 shadow-sm dark:shadow-[0_1px_3px_rgba(0,0,0,0.5)] transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center space-x-2.5 group flex-shrink-0">
-            <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-zinc-950 font-bold shadow-[0_0_15px_rgba(255,255,255,0.2)] group-hover:scale-105 transition-transform">
+            <div className="w-8 h-8 rounded-lg bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 flex items-center justify-center font-bold shadow-sm group-hover:scale-105 transition-transform">
               <Store className="w-4 h-4" />
             </div>
-            <span className="text-base font-bold tracking-tight text-white">
-              Store<span className="text-blue-500">Swift</span>
+            <span className="text-base font-bold tracking-tight text-zinc-950 dark:text-white">
+              Store<span className="text-blue-600 dark:text-blue-500">Swift</span>
             </span>
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center space-x-8 text-xs font-semibold text-zinc-400">
+          <nav className="hidden lg:flex items-center space-x-8 text-xs font-semibold text-zinc-600 dark:text-zinc-400">
             <div className="relative">
               <button
                 onClick={() => setIsNavDropdownOpen(!isNavDropdownOpen)}
-                className="hover:text-white transition flex items-center space-x-1.5 py-1"
+                className="hover:text-zinc-950 dark:hover:text-white transition flex items-center space-x-1.5 py-1"
               >
                 <span>Live Stores</span>
-                <span className="text-[10px] bg-white/10 text-zinc-300 px-1.5 py-0.5 rounded font-bold">6</span>
-                <ChevronDown className="w-3 h-3 text-zinc-500" />
+                <span className="text-[10px] bg-zinc-100 dark:bg-white/10 text-zinc-700 dark:text-zinc-300 px-1.5 py-0.5 rounded font-bold">6</span>
+                <ChevronDown className="w-3 h-3 text-zinc-400 dark:text-zinc-500" />
               </button>
 
               {isNavDropdownOpen && (
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setIsNavDropdownOpen(false)} />
-                  <div className="absolute left-0 mt-2 w-64 bg-zinc-900/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/10 z-50 py-2 divide-y divide-white/5 text-xs animate-fade-in">
+                  <div className="absolute left-0 mt-2 w-64 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-zinc-200 dark:border-white/10 z-50 py-2 divide-y divide-zinc-100 dark:divide-white/5 text-xs animate-fade-in">
                     <div className="px-3.5 py-2 text-[10px] uppercase font-mono font-bold tracking-wider text-zinc-500">
                       Explore 6 Live Stores
                     </div>
@@ -182,13 +183,13 @@ export default function PlatformLandingPage() {
                           key={s.slug}
                           href={`/store/${s.slug}`}
                           onClick={() => setIsNavDropdownOpen(false)}
-                          className="flex items-center justify-between px-3.5 py-2.5 hover:bg-white/5 transition group"
+                          className="flex items-center justify-between px-3.5 py-2.5 hover:bg-zinc-100 dark:hover:bg-white/5 transition group"
                         >
                           <div>
-                            <p className="font-bold text-white group-hover:text-blue-400 transition">{s.name}</p>
+                            <p className="font-bold text-zinc-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition">{s.name}</p>
                             <p className="text-[10px] text-zinc-500">{s.category}</p>
                           </div>
-                          <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 text-blue-400 transition" />
+                          <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 text-blue-600 dark:text-blue-400 transition" />
                         </Link>
                       ))}
                     </div>
@@ -196,25 +197,28 @@ export default function PlatformLandingPage() {
                 </>
               )}
             </div>
-            <a href="#features" className="hover:text-white transition">Features</a>
-            <a href="#how-it-works" className="hover:text-white transition">How It Works</a>
-            <a href="#storefronts" className="hover:text-white transition">Storefronts</a>
-            <a href="#pricing" className="hover:text-white transition">Pricing</a>
-            <a href="#faq" className="hover:text-white transition">FAQ</a>
+            <a href="#features" className="hover:text-zinc-950 dark:hover:text-white transition">Features</a>
+            <a href="#how-it-works" className="hover:text-zinc-950 dark:hover:text-white transition">How It Works</a>
+            <a href="#storefronts" className="hover:text-zinc-950 dark:hover:text-white transition">Storefronts</a>
+            <a href="#pricing" className="hover:text-zinc-950 dark:hover:text-white transition">Pricing</a>
+            <a href="#faq" className="hover:text-zinc-950 dark:hover:text-white transition">FAQ</a>
           </nav>
 
           {/* Action Buttons & Mobile Hamburger */}
-          <div className="flex items-center space-x-3 flex-shrink-0">
+          <div className="flex items-center space-x-2.5 sm:space-x-3 flex-shrink-0">
+            {/* Theme Toggle Button */}
+            <ThemeToggle />
+
             <Link
               href="/admin?store=apex-fashion"
-              className="text-xs font-semibold text-zinc-300 hover:text-white px-3.5 py-2 rounded-xl bg-zinc-900/80 hover:bg-zinc-800 border border-white/10 transition hidden sm:inline-flex items-center space-x-1.5 shadow-sm"
+              className="text-xs font-semibold text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white px-3.5 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-900/80 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-white/10 transition hidden sm:inline-flex items-center space-x-1.5 shadow-sm"
             >
               <span>Merchant Admin</span>
               <ExternalLink className="w-3 h-3 text-zinc-500" />
             </Link>
             <Link
               href="/onboarding"
-              className="inline-flex items-center space-x-1.5 text-xs font-bold bg-white hover:bg-zinc-200 text-zinc-950 px-4 py-2 rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.2)] transition btn-press"
+              className="inline-flex items-center space-x-1.5 text-xs font-bold bg-zinc-950 hover:bg-zinc-800 text-white dark:bg-white dark:hover:bg-zinc-200 dark:text-zinc-950 px-4 py-2 rounded-xl shadow-sm dark:shadow-[0_0_20px_rgba(255,255,255,0.2)] transition btn-press"
             >
               <span>Start Free Trial</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -222,7 +226,7 @@ export default function PlatformLandingPage() {
             <button
               type="button"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl border border-white/10 text-zinc-300 hover:bg-white/5 transition"
+              className="lg:hidden p-2 rounded-xl border border-zinc-200 dark:border-white/10 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-white/5 transition"
               aria-label="Toggle navigation menu"
             >
               {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
@@ -232,7 +236,7 @@ export default function PlatformLandingPage() {
 
         {/* Mobile Navigation Drawer */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden border-t border-white/10 bg-zinc-950/95 backdrop-blur-2xl px-4 py-4 space-y-4 animate-fade-in shadow-2xl">
+          <div className="lg:hidden border-t border-zinc-200 dark:border-white/10 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-2xl px-4 py-4 space-y-4 animate-fade-in shadow-2xl">
             <div className="space-y-1">
               <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-zinc-500 block px-2">
                 Explore 6 Live Stores
@@ -243,58 +247,64 @@ export default function PlatformLandingPage() {
                     key={s.slug}
                     href={`/store/${s.slug}`}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="p-2.5 rounded-xl bg-zinc-900/60 border border-white/5 hover:bg-zinc-800 transition text-xs"
+                    className="p-2.5 rounded-xl bg-zinc-100/70 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/5 hover:bg-zinc-200/70 dark:hover:bg-zinc-800 transition text-xs"
                   >
-                    <p className="font-bold text-white">{s.name.split(" ")[0]} Store</p>
+                    <p className="font-bold text-zinc-900 dark:text-white">{s.name.split(" ")[0]} Store</p>
                     <p className="text-[10px] text-zinc-500">{s.category.split("&")[0].trim()}</p>
                   </Link>
                 ))}
               </div>
             </div>
 
-            <div className="border-t border-white/10 pt-3 space-y-2 text-xs font-semibold text-zinc-300">
-              <a href="#features" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-1.5 rounded-lg hover:bg-white/5">Features</a>
-              <a href="#how-it-works" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-1.5 rounded-lg hover:bg-white/5">How It Works</a>
-              <a href="#storefronts" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-1.5 rounded-lg hover:bg-white/5">Storefronts</a>
-              <a href="#pricing" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-1.5 rounded-lg hover:bg-white/5">Pricing Plans</a>
-              <a href="#faq" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-1.5 rounded-lg hover:bg-white/5">FAQ</a>
+            <div className="border-t border-zinc-200 dark:border-white/10 pt-3 space-y-2 text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+              <a href="#features" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/5">Features</a>
+              <a href="#how-it-works" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/5">How It Works</a>
+              <a href="#storefronts" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/5">Storefronts</a>
+              <a href="#pricing" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/5">Pricing Plans</a>
+              <a href="#faq" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/5">FAQ</a>
               <Link
                 href="/admin?store=apex-fashion"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center justify-between px-2 py-1.5 rounded-lg hover:bg-white/5 text-blue-400 font-bold"
+                className="flex items-center justify-between px-2 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/5 text-blue-600 dark:text-blue-400 font-bold"
               >
                 <span>Open Merchant Admin Demo</span>
                 <ExternalLink className="w-3.5 h-3.5" />
               </Link>
+            </div>
+
+            {/* Mobile Theme Toggle Row */}
+            <div className="border-t border-zinc-200 dark:border-white/10 pt-3 flex items-center justify-between px-2">
+              <span className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">Display Theme</span>
+              <ThemeToggle showLabel />
             </div>
           </div>
         )}
       </header>
 
       {/* ─── 2. Hero Section: Clean, Breathable, Full Viewport Synced ─────────── */}
-      <section className="relative overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-between items-center py-12 sm:py-16 lg:py-16 border-b border-white/[0.08]">
+      <section className="relative overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-between items-center py-12 sm:py-16 lg:py-16 border-b border-zinc-200 dark:border-white/[0.08] transition-colors">
         {/* Subtle Ambient Radial Lighting */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1100px] h-[550px] bg-gradient-to-b from-blue-600/12 via-indigo-600/6 to-transparent blur-[140px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1100px] h-[550px] bg-gradient-to-b from-blue-500/10 via-indigo-500/5 to-transparent dark:from-blue-600/12 dark:via-indigo-600/6 blur-[140px] pointer-events-none" />
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 sm:space-y-7 my-auto">
           {/* Status Capsule Badge */}
-          <div className="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full bg-white/[0.05] border border-white/[0.1] text-zinc-300 text-xs font-medium backdrop-blur-md shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-            <span className="font-semibold text-white">StoreSwift 2.0</span>
-            <span className="text-zinc-600">•</span>
+          <div className="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full bg-zinc-100 dark:bg-white/[0.05] border border-zinc-200 dark:border-white/[0.1] text-zinc-700 dark:text-zinc-300 text-xs font-medium backdrop-blur-md shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.7)]" />
+            <span className="font-semibold text-zinc-950 dark:text-white">StoreSwift 2.0</span>
+            <span className="text-zinc-400 dark:text-zinc-600">•</span>
             <span>Commerce Operating System for Direct Brands</span>
           </div>
 
           {/* Master Headline */}
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.035em] text-white max-w-5xl mx-auto leading-[1.1]">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.035em] text-zinc-950 dark:text-white max-w-5xl mx-auto leading-[1.1]">
             Build your online store. <br className="hidden sm:inline" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-200 to-white">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-zinc-900 dark:from-blue-400 dark:via-indigo-200 dark:to-white">
               Sell faster with 1-page checkout.
             </span>
           </h1>
 
           {/* Subtitle */}
-          <p className="text-base sm:text-lg text-zinc-400 max-w-2xl mx-auto leading-relaxed font-normal">
+          <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed font-normal">
             Turnkey category storefronts, 20-second frictionless checkout, automated Steadfast & Pathao courier dispatch, and zero commission on physical orders.
           </p>
 
@@ -302,14 +312,14 @@ export default function PlatformLandingPage() {
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5">
             <Link
               href="/onboarding"
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-bold bg-white hover:bg-zinc-100 text-zinc-950 px-7 py-3.5 rounded-xl shadow-[0_0_25px_rgba(255,255,255,0.25)] transition btn-press group"
+              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-bold bg-zinc-950 hover:bg-zinc-800 text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-zinc-950 px-7 py-3.5 rounded-xl shadow-md dark:shadow-[0_0_25px_rgba(255,255,255,0.25)] transition btn-press group"
             >
               <span>Start 14-Day Free Trial</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
               href="/admin?store=apex-fashion"
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-semibold bg-zinc-900/80 hover:bg-zinc-800 text-zinc-200 border border-white/10 px-6 py-3.5 rounded-xl transition"
+              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-semibold bg-zinc-100 hover:bg-zinc-200 text-zinc-800 border border-zinc-200 dark:bg-zinc-900/80 dark:hover:bg-zinc-800 dark:text-zinc-200 dark:border-white/10 px-6 py-3.5 rounded-xl transition shadow-sm"
             >
               <span>Open Merchant Cockpit</span>
               <ExternalLink className="w-4 h-4 text-zinc-500" />
@@ -317,17 +327,17 @@ export default function PlatformLandingPage() {
           </div>
 
           {/* Trust Indicators Strip */}
-          <div className="pt-3 flex flex-wrap items-center justify-center gap-5 sm:gap-8 text-xs text-zinc-400 font-medium">
+          <div className="pt-3 flex flex-wrap items-center justify-center gap-5 sm:gap-8 text-xs text-zinc-600 dark:text-zinc-400 font-medium">
             <div className="flex items-center space-x-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
               <span>0% physical order commission</span>
             </div>
             <div className="flex items-center space-x-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
               <span>Steadfast & Pathao 1-click sync</span>
             </div>
             <div className="flex items-center space-x-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
               <span>Anti-Fraud RTO Shield included</span>
             </div>
           </div>
@@ -337,7 +347,7 @@ export default function PlatformLandingPage() {
         <div className="relative pt-6 pb-2 flex justify-center">
           <a
             href="#features"
-            className="inline-flex items-center space-x-1.5 text-xs font-mono font-medium text-zinc-500 hover:text-zinc-300 transition group"
+            className="inline-flex items-center space-x-1.5 text-xs font-mono font-medium text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-300 transition group"
           >
             <span>Explore platform capabilities</span>
             <ChevronDown className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" />
@@ -346,147 +356,147 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 4. Core Platform Capabilities (Pristine 3-Pillar Architecture) ─ */}
-      <section id="features" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-[#09090b] border-b border-white/[0.08] scroll-mt-16">
+      <section id="features" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-zinc-50/50 dark:bg-[#09090b] border-b border-zinc-200 dark:border-white/[0.08] scroll-mt-16 transition-colors">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12 w-full my-auto">
           <div className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
               Core Capabilities
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-white tracking-tight leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-zinc-950 dark:text-white tracking-tight leading-tight">
               Engineered for High-Velocity Commerce
             </h2>
-            <p className="text-xs sm:text-sm lg:text-base text-zinc-400 leading-relaxed">
+            <p className="text-xs sm:text-sm lg:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
               StoreSwift replaces fragile third-party plugins with three deeply integrated, high-conversion commerce engines.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {/* Card 01: 20-Second Checkout */}
-            <div className="p-6 sm:p-8 lg:p-8 bg-zinc-900/30 backdrop-blur-xl rounded-3xl border border-white/[0.08] hover:border-white/20 transition-all shadow-xl flex flex-col justify-between space-y-6">
+            <div className="p-6 sm:p-8 lg:p-8 bg-white dark:bg-zinc-900/30 backdrop-blur-xl rounded-3xl border border-zinc-200/90 dark:border-white/[0.08] hover:border-zinc-300 dark:hover:border-white/20 transition-all shadow-md dark:shadow-xl flex flex-col justify-between space-y-6">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center shadow-sm">
+                  <div className="w-10 h-10 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center shadow-sm">
                     <Zap className="w-5 h-5" />
                   </div>
-                  <span className="text-[10px] font-mono font-bold bg-blue-500/10 text-blue-400 px-2.5 py-1 rounded-full border border-blue-500/20">
+                  <span className="text-[10px] font-mono font-bold bg-blue-500/10 text-blue-600 dark:text-blue-400 px-2.5 py-1 rounded-full border border-blue-500/20">
                     &lt; 20s Flow
                   </span>
                 </div>
 
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+                  <h3 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white tracking-tight">
                     1-Page Express Checkout
                   </h3>
-                  <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed mt-2">
+                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
                     Traditional multi-step checkout carts abandon over 65% of mobile customers. StoreSwift compresses checkout into a single 20-second screen.
                   </p>
                 </div>
 
-                <div className="space-y-2.5 pt-1 text-xs text-zinc-300">
+                <div className="space-y-2.5 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
                   <div className="flex items-start space-x-2.5">
-                    <Check className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
                     <span>Automatic Inside Dhaka (৳60) and Nationwide (৳130) rates</span>
                   </div>
                   <div className="flex items-start space-x-2.5">
-                    <Check className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
                     <span>1-Tap bKash, Nagad, and Cash on Delivery with open parcel check</span>
                   </div>
                   <div className="flex items-start space-x-2.5">
-                    <Check className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
                     <span>1-Tap English and Bengali (বাংলা) language toggle</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-white/[0.06] flex items-center justify-between text-xs text-zinc-400">
+              <div className="pt-4 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
                 <span>Speed Benchmark:</span>
-                <span className="text-blue-400 font-mono font-bold">+42.8% Conversion Lift</span>
+                <span className="text-blue-600 dark:text-blue-400 font-mono font-bold">+42.8% Conversion Lift</span>
               </div>
             </div>
 
             {/* Card 02: Automated Logistics & Courier */}
-            <div className="p-6 sm:p-8 lg:p-8 bg-zinc-900/30 backdrop-blur-xl rounded-3xl border border-white/[0.08] hover:border-white/20 transition-all shadow-xl flex flex-col justify-between space-y-6">
+            <div className="p-6 sm:p-8 lg:p-8 bg-white dark:bg-zinc-900/30 backdrop-blur-xl rounded-3xl border border-zinc-200/90 dark:border-white/[0.08] hover:border-zinc-300 dark:hover:border-white/20 transition-all shadow-md dark:shadow-xl flex flex-col justify-between space-y-6">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shadow-sm">
+                  <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-sm">
                     <Truck className="w-5 h-5" />
                   </div>
-                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20">
+                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20">
                     Steadfast & Pathao
                   </span>
                 </div>
 
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+                  <h3 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white tracking-tight">
                     Automated Courier Dispatch
                   </h3>
-                  <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed mt-2">
+                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
                     Never copy-paste customer orders into courier apps. Generate tracking IDs with one click and print standard 4x6 thermal barcode labels.
                   </p>
                 </div>
 
-                <div className="space-y-2.5 pt-1 text-xs text-zinc-300">
+                <div className="space-y-2.5 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
                   <div className="flex items-start space-x-2.5">
-                    <Check className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>1-Click consignment creation directly from your admin orders</span>
                   </div>
                   <div className="flex items-start space-x-2.5">
-                    <Check className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>Ready-to-print 4x6 thermal barcode stickers for rider pickup</span>
                   </div>
                   <div className="flex items-start space-x-2.5">
-                    <Check className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>Real-time webhook sync for delivery status and COD remittances</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-white/[0.06] flex items-center justify-between text-xs text-zinc-400">
+              <div className="pt-4 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
                 <span>Logistics Partners:</span>
-                <span className="text-emerald-400 font-mono font-bold">1-Click Dispatch Active</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-mono font-bold">1-Click Dispatch Active</span>
               </div>
             </div>
 
             {/* Card 03: Margin Protection & Anti-Fraud */}
-            <div className="p-6 sm:p-8 lg:p-8 bg-zinc-900/30 backdrop-blur-xl rounded-3xl border border-white/[0.08] hover:border-white/20 transition-all shadow-xl flex flex-col justify-between space-y-6">
+            <div className="p-6 sm:p-8 lg:p-8 bg-white dark:bg-zinc-900/30 backdrop-blur-xl rounded-3xl border border-zinc-200/90 dark:border-white/[0.08] hover:border-zinc-300 dark:hover:border-white/20 transition-all shadow-md dark:shadow-xl flex flex-col justify-between space-y-6">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center shadow-sm">
+                  <div className="w-10 h-10 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-purple-600 dark:text-purple-400 flex items-center justify-center shadow-sm">
                     <ShieldCheck className="w-5 h-5" />
                   </div>
-                  <span className="text-[10px] font-mono font-bold bg-purple-500/10 text-purple-400 px-2.5 py-1 rounded-full border border-purple-500/20">
+                  <span className="text-[10px] font-mono font-bold bg-purple-500/10 text-purple-600 dark:text-purple-400 px-2.5 py-1 rounded-full border border-purple-500/20">
                     COD Risk Defense
                   </span>
                 </div>
 
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+                  <h3 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white tracking-tight">
                     Predictive Anti-Fraud Shield
                   </h3>
-                  <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed mt-2">
+                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
                     Uncollected COD parcels drain 15–25% of merchant profits. Screen phone numbers to flag repeat returners before spending ৳130 on return fees.
                   </p>
                 </div>
 
-                <div className="space-y-2.5 pt-1 text-xs text-zinc-300">
+                <div className="space-y-2.5 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
                   <div className="flex items-start space-x-2.5">
-                    <Check className="w-4 h-4 text-purple-400 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
                     <span>0–100% delivery confidence rating before parcel dispatch</span>
                   </div>
                   <div className="flex items-start space-x-2.5">
-                    <Check className="w-4 h-4 text-purple-400 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
                     <span>Advance delivery charge alerts for high-risk customer orders</span>
                   </div>
                   <div className="flex items-start space-x-2.5">
-                    <Check className="w-4 h-4 text-purple-400 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
                     <span>Row-level atomic SQL stock locks eliminate overselling during drops</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-white/[0.06] flex items-center justify-between text-xs text-zinc-400">
+              <div className="pt-4 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
                 <span>Profit Guarantee:</span>
-                <span className="text-purple-400 font-mono font-bold">0% Order Commission</span>
+                <span className="text-purple-600 dark:text-purple-400 font-mono font-bold">0% Order Commission</span>
               </div>
             </div>
           </div>
@@ -494,19 +504,19 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 5. How It Works (Streamlined Minimalist Workflow) ─────────────── */}
-      <section id="how-it-works" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-[#09090b] border-b border-white/[0.08] scroll-mt-16 overflow-hidden">
+      <section id="how-it-works" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-white dark:bg-[#09090b] border-b border-zinc-200 dark:border-white/[0.08] scroll-mt-16 overflow-hidden transition-colors">
         {/* Subtle Ambient Radial Lighting */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[450px] bg-blue-600/5 blur-[120px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[450px] bg-blue-500/5 dark:bg-blue-600/5 blur-[120px] pointer-events-none" />
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-14 w-full my-auto">
           <div className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
               Onboarding Velocity
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-white tracking-tight leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-zinc-950 dark:text-white tracking-tight leading-tight">
               Three Simple Steps to Go Live
             </h2>
-            <p className="text-xs sm:text-sm lg:text-base text-zinc-400 leading-relaxed">
+            <p className="text-xs sm:text-sm lg:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
               No developer hiring, no complex agency retainers, and zero plugin maintenance. Launch your online store in under 3 minutes.
             </p>
           </div>
@@ -521,30 +531,30 @@ export default function PlatformLandingPage() {
 
             {/* Step 01 */}
             <div className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group">
-              <div className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-blue-500/15 via-zinc-900 to-zinc-950 border border-blue-500/40 text-blue-400 flex items-center justify-center shadow-[0_0_25px_rgba(59,130,246,0.25)] group-hover:border-blue-400 group-hover:shadow-[0_0_35px_rgba(59,130,246,0.4)] transition-all flex-shrink-0">
-                <Store className="w-6 h-6 md:w-7 md:h-7 text-blue-400 group-hover:scale-110 transition-transform" />
-                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-blue-500/20 text-blue-300 border border-blue-500/40 shadow-sm">
+              <div className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-blue-50 via-white to-blue-100/50 dark:from-blue-500/15 dark:via-zinc-900 dark:to-zinc-950 border border-blue-300 dark:border-blue-500/40 text-blue-600 dark:text-blue-400 flex items-center justify-center shadow-sm dark:shadow-[0_0_25px_rgba(59,130,246,0.25)] group-hover:border-blue-500 dark:group-hover:border-blue-400 group-hover:shadow-md dark:group-hover:shadow-[0_0_35px_rgba(59,130,246,0.4)] transition-all flex-shrink-0">
+                <Store className="w-6 h-6 md:w-7 md:h-7 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform" />
+                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300 border border-blue-300 dark:border-blue-500/40 shadow-sm">
                   01
                 </span>
               </div>
               <div className="space-y-1.5 md:space-y-2">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-blue-400 font-bold block">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-blue-600 dark:text-blue-400 font-bold block">
                   Step 01 • Template Setup
                 </span>
-                <h3 className="text-lg md:text-xl font-bold text-white tracking-tight">
+                <h3 className="text-lg md:text-xl font-bold text-zinc-950 dark:text-white tracking-tight">
                   Select Your Storefront
                 </h3>
-                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
                   Choose from 6 bespoke category storefronts (Fashion, Cosmetics, Tech, Food, Jewelry, Shoes) pre-configured with industry conversion features.
                 </p>
               </div>
               <div className="pt-1 md:pt-2 space-y-1.5 md:space-y-2">
-                <div className="flex items-center space-x-2 text-xs text-zinc-300">
-                  <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300">
+                  <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
                   <span>6 Pre-configured commerce verticals</span>
                 </div>
-                <div className="flex items-center space-x-2 text-xs text-zinc-300">
-                  <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300">
+                  <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
                   <span>Ready to deploy in &lt; 60 seconds</span>
                 </div>
               </div>
@@ -552,30 +562,30 @@ export default function PlatformLandingPage() {
 
             {/* Step 02 */}
             <div className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group">
-              <div className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-emerald-500/15 via-zinc-900 to-zinc-950 border border-emerald-500/40 text-emerald-400 flex items-center justify-center shadow-[0_0_25px_rgba(168,85,247,0.25)] group-hover:border-emerald-400 group-hover:shadow-[0_0_35px_rgba(16,185,129,0.4)] transition-all flex-shrink-0">
-                <Truck className="w-6 h-6 md:w-7 md:h-7 text-emerald-400 group-hover:scale-110 transition-transform" />
-                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm">
+              <div className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-emerald-50 via-white to-emerald-100/50 dark:from-emerald-500/15 dark:via-zinc-900 dark:to-zinc-950 border border-emerald-300 dark:border-emerald-500/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-sm dark:shadow-[0_0_25px_rgba(16,185,129,0.25)] group-hover:border-emerald-500 dark:group-hover:border-emerald-400 group-hover:shadow-md dark:group-hover:shadow-[0_0_35px_rgba(16,185,129,0.4)] transition-all flex-shrink-0">
+                <Truck className="w-6 h-6 md:w-7 md:h-7 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform" />
+                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/40 shadow-sm">
                   02
                 </span>
               </div>
               <div className="space-y-1.5 md:space-y-2">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-bold block">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-bold block">
                   Step 02 • Local Integrations
                 </span>
-                <h3 className="text-lg md:text-xl font-bold text-white tracking-tight">
+                <h3 className="text-lg md:text-xl font-bold text-zinc-950 dark:text-white tracking-tight">
                   Connect Courier & Payments
                 </h3>
-                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
                   Link Steadfast or Pathao API keys alongside bKash & Nagad merchant accounts. 64-district delivery rates activate automatically.
                 </p>
               </div>
               <div className="pt-1 md:pt-2 space-y-1.5 md:space-y-2">
-                <div className="flex items-center space-x-2 text-xs text-zinc-300">
-                  <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300">
+                  <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
                   <span>Steadfast & Pathao 1-click sync</span>
                 </div>
-                <div className="flex items-center space-x-2 text-xs text-zinc-300">
-                  <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300">
+                  <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
                   <span>Automated ৳60 / ৳130 district rates</span>
                 </div>
               </div>
@@ -583,30 +593,30 @@ export default function PlatformLandingPage() {
 
             {/* Step 03 */}
             <div className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group">
-              <div className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-purple-500/15 via-zinc-900 to-zinc-950 border border-purple-500/40 text-purple-400 flex items-center justify-center shadow-[0_0_25px_rgba(168,85,247,0.25)] group-hover:border-purple-400 group-hover:shadow-[0_0_35px_rgba(168,85,247,0.4)] transition-all flex-shrink-0">
-                <Rocket className="w-6 h-6 md:w-7 md:h-7 text-purple-400 group-hover:scale-110 transition-transform" />
-                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40 shadow-sm">
+              <div className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-purple-50 via-white to-purple-100/50 dark:from-purple-500/15 dark:via-zinc-900 dark:to-zinc-950 border border-purple-300 dark:border-purple-500/40 text-purple-600 dark:text-purple-400 flex items-center justify-center shadow-sm dark:shadow-[0_0_25px_rgba(168,85,247,0.25)] group-hover:border-purple-500 dark:group-hover:border-purple-400 group-hover:shadow-md dark:group-hover:shadow-[0_0_35px_rgba(168,85,247,0.4)] transition-all flex-shrink-0">
+                <Rocket className="w-6 h-6 md:w-7 md:h-7 text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform" />
+                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300 border border-purple-300 dark:border-purple-500/40 shadow-sm">
                   03
                 </span>
               </div>
               <div className="space-y-1.5 md:space-y-2">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-purple-400 font-bold block">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-purple-600 dark:text-purple-400 font-bold block">
                   Step 03 • High-Speed Selling
                 </span>
-                <h3 className="text-lg md:text-xl font-bold text-white tracking-tight">
+                <h3 className="text-lg md:text-xl font-bold text-zinc-950 dark:text-white tracking-tight">
                   Launch & Collect Orders
                 </h3>
-                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
                   Capture mobile shoppers with 20-second 1-page checkout. Print 4x6 thermal barcode labels with 1 click and keep 100% of sales.
                 </p>
               </div>
               <div className="pt-1 md:pt-2 space-y-1.5 md:space-y-2">
-                <div className="flex items-center space-x-2 text-xs text-zinc-300">
-                  <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300">
+                  <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
                   <span>20-Second friction-free checkout</span>
                 </div>
-                <div className="flex items-center space-x-2 text-xs text-zinc-300">
-                  <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300">
+                  <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
                   <span>0% physical order commission</span>
                 </div>
               </div>
@@ -616,16 +626,16 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 6. Bespoke Turnkey Storefronts (Luxury Studio) ─────────────────── */}
-      <section id="storefronts" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-[#09090b] border-b border-white/[0.08] scroll-mt-16">
+      <section id="storefronts" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-zinc-50/50 dark:bg-[#09090b] border-b border-zinc-200 dark:border-white/[0.08] scroll-mt-16 transition-colors">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 w-full my-auto">
           <div className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
               Turnkey Storefront Architectures
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-white tracking-tight leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-zinc-950 dark:text-white tracking-tight leading-tight">
               6 Tailored Industry Storefronts
             </h2>
-            <p className="text-xs sm:text-sm lg:text-base text-zinc-400 leading-relaxed">
+            <p className="text-xs sm:text-sm lg:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
               Every vertical requires tailored customer psychology. Select an industry to preview its pre-configured store architecture.
             </p>
           </div>
@@ -640,8 +650,8 @@ export default function PlatformLandingPage() {
                   onClick={() => setSelectedStoreSlug(store.slug)}
                   className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
                     isSelected
-                      ? "bg-white text-zinc-950 shadow-md font-bold scale-105"
-                      : "bg-zinc-900/60 border border-white/[0.06] text-zinc-400 hover:text-white hover:bg-zinc-800"
+                      ? "bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 shadow-md font-bold scale-105"
+                      : "bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800"
                   }`}
                 >
                   {store.category}
@@ -651,7 +661,7 @@ export default function PlatformLandingPage() {
           </div>
 
           {/* Featured Store Showcase: Clean Studio Frame */}
-          <div className="bg-zinc-900/30 backdrop-blur-xl rounded-3xl border border-white/[0.08] overflow-hidden shadow-2xl grid grid-cols-1 lg:grid-cols-12 items-stretch">
+          <div className="bg-white dark:bg-zinc-900/30 backdrop-blur-xl rounded-3xl border border-zinc-200/90 dark:border-white/[0.08] overflow-hidden shadow-xl dark:shadow-2xl grid grid-cols-1 lg:grid-cols-12 items-stretch">
             {/* Left: High-Res Visual Preview */}
             <div className="lg:col-span-7 relative min-h-[260px] sm:min-h-[340px] lg:min-h-[440px] bg-zinc-950 overflow-hidden group">
               <img
@@ -670,28 +680,28 @@ export default function PlatformLandingPage() {
             </div>
 
             {/* Right: Technical Features & Actions */}
-            <div className="lg:col-span-5 p-6 sm:p-7 lg:p-8 flex flex-col justify-between space-y-6 bg-zinc-950/80 backdrop-blur-xl border-t lg:border-t-0 lg:border-l border-white/[0.08]">
+            <div className="lg:col-span-5 p-6 sm:p-7 lg:p-8 flex flex-col justify-between space-y-6 bg-zinc-50/60 dark:bg-zinc-950/80 backdrop-blur-xl border-t lg:border-t-0 lg:border-l border-zinc-200 dark:border-white/[0.08]">
               <div className="space-y-4 sm:space-y-5">
                 <div>
                   <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-500">
                     Pre-Configured Architecture
                   </span>
-                  <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight mt-1">
+                  <h3 className="text-xl sm:text-2xl font-bold text-zinc-950 dark:text-white tracking-tight mt-1">
                     {activeStore.name}
                   </h3>
-                  <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed mt-2">
+                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
                     {activeStore.description}
                   </p>
                 </div>
 
-                <div className="space-y-2 pt-3 border-t border-white/[0.06]">
+                <div className="space-y-2 pt-3 border-t border-zinc-200 dark:border-white/[0.06]">
                   <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-500 block mb-1">
                     Industry Capabilities Included:
                   </span>
                   {activeStore.highlights.map((feat, idx) => (
-                    <div key={idx} className="flex items-center space-x-2.5 text-xs text-zinc-300">
-                      <div className="w-4 h-4 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center flex-shrink-0 border border-emerald-500/20">
-                        <Check className="w-3 h-3 text-emerald-400" />
+                    <div key={idx} className="flex items-center space-x-2.5 text-xs text-zinc-700 dark:text-zinc-300">
+                      <div className="w-4 h-4 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 border border-emerald-500/20">
+                        <Check className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                       </div>
                       <span className="font-medium">{feat}</span>
                     </div>
@@ -699,26 +709,26 @@ export default function PlatformLandingPage() {
                 </div>
               </div>
 
-              <div className="space-y-3 pt-4 border-t border-white/[0.06]">
+              <div className="space-y-3 pt-4 border-t border-zinc-200 dark:border-white/[0.06]">
                 <div className="flex flex-col sm:flex-row gap-2.5">
                   <Link
                     href={`/store/${activeStore.slug}`}
-                    className="flex-1 py-3 px-4 bg-white hover:bg-zinc-200 text-zinc-950 font-bold text-xs rounded-xl transition text-center flex items-center justify-center space-x-1.5 shadow-[0_0_20px_rgba(255,255,255,0.2)] btn-press"
+                    className="flex-1 py-3 px-4 bg-zinc-950 hover:bg-zinc-800 text-white dark:bg-white dark:hover:bg-zinc-200 dark:text-zinc-950 font-bold text-xs rounded-xl transition text-center flex items-center justify-center space-x-1.5 shadow-sm dark:shadow-[0_0_20px_rgba(255,255,255,0.2)] btn-press"
                   >
                     <span>Open Live Storefront</span>
-                    <ArrowUpRight className="w-4 h-4 text-zinc-800" />
+                    <ArrowUpRight className="w-4 h-4 text-zinc-300 dark:text-zinc-800" />
                   </Link>
                   <Link
                     href={`/onboarding?category=${activeStore.categoryParam}`}
-                    className="py-3 px-5 bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-zinc-300 hover:text-white font-semibold text-xs rounded-xl transition text-center"
+                    className="py-3 px-5 bg-zinc-100 hover:bg-zinc-200 border border-zinc-200 text-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 dark:text-zinc-300 dark:hover:text-white font-semibold text-xs rounded-xl transition text-center shadow-sm"
                   >
                     <span>Clone Template</span>
                   </Link>
                 </div>
-                <div className="flex items-center justify-between text-[11px] text-zinc-400 px-1">
-                  <span>Commission: <strong className="text-emerald-400 font-mono">0%</strong></span>
-                  <span>Setup: <strong className="text-white">3 Minutes</strong></span>
-                  <span>Mobile: <strong className="text-blue-400">100% Ready</strong></span>
+                <div className="flex items-center justify-between text-[11px] text-zinc-500 dark:text-zinc-400 px-1">
+                  <span>Commission: <strong className="text-emerald-600 dark:text-emerald-400 font-mono">0%</strong></span>
+                  <span>Setup: <strong className="text-zinc-950 dark:text-white">3 Minutes</strong></span>
+                  <span>Mobile: <strong className="text-blue-600 dark:text-blue-400">100% Ready</strong></span>
                 </div>
               </div>
             </div>
@@ -727,29 +737,29 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 7. Transparent Pricing (Clean, Uncluttered 3 Tiers) ─────────────── */}
-      <section id="pricing" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-zinc-950/70 border-b border-white/[0.08] scroll-mt-16">
+      <section id="pricing" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-white dark:bg-zinc-950/70 border-b border-zinc-200 dark:border-white/[0.08] scroll-mt-16 transition-colors">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 w-full my-auto">
           <div className="text-center max-w-xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
               Transparent Pricing Plans
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-white tracking-tight leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-zinc-950 dark:text-white tracking-tight leading-tight">
               Simple, Predictable Pricing
             </h2>
-            <p className="text-xs sm:text-sm text-zinc-400">
+            <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
               Zero commission on physical orders. Keep 100% of your retail margin.
             </p>
 
             {/* Billing Cadence Toggle */}
             <div className="pt-2 sm:pt-3 flex items-center justify-center">
-              <div className="p-1 rounded-full bg-zinc-900 border border-white/10 flex items-center space-x-1 text-xs">
+              <div className="p-1 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 flex items-center space-x-1 text-xs">
                 <button
                   type="button"
                   onClick={() => setPricingBilling("monthly")}
                   className={`px-4 py-1.5 rounded-full transition font-semibold ${
                     pricingBilling === "monthly"
-                      ? "bg-white text-zinc-950 shadow-md"
-                      : "text-zinc-400 hover:text-white"
+                      ? "bg-white text-zinc-950 shadow-sm"
+                      : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white"
                   }`}
                 >
                   Monthly Billing
@@ -759,12 +769,12 @@ export default function PlatformLandingPage() {
                   onClick={() => setPricingBilling("annual")}
                   className={`px-4 py-1.5 rounded-full transition font-semibold flex items-center space-x-1.5 ${
                     pricingBilling === "annual"
-                      ? "bg-white text-zinc-950 shadow-md"
-                      : "text-zinc-400 hover:text-white"
+                      ? "bg-white text-zinc-950 shadow-sm"
+                      : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white"
                   }`}
                 >
                   <span>Annual Billing</span>
-                  <span className="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-1.5 py-0.2 rounded-full border border-emerald-500/30">
+                  <span className="bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400 text-[10px] font-bold px-1.5 py-0.2 rounded-full border border-emerald-300 dark:border-emerald-500/30">
                     Save 20%
                   </span>
                 </button>
@@ -774,92 +784,92 @@ export default function PlatformLandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch pt-2">
             {/* Starter Plan */}
-            <div className="bg-zinc-900/40 backdrop-blur-xl rounded-3xl border border-white/[0.08] p-6 sm:p-7 lg:p-8 flex flex-col justify-between shadow-2xl">
+            <div className="bg-zinc-50/70 dark:bg-zinc-900/40 backdrop-blur-xl rounded-3xl border border-zinc-200/90 dark:border-white/[0.08] p-6 sm:p-7 lg:p-8 flex flex-col justify-between shadow-md dark:shadow-2xl">
               <div className="space-y-4">
                 <div>
-                  <h3 className="text-lg font-bold text-white">Starter</h3>
-                  <p className="text-xs text-zinc-400 mt-1">For new brands launching online</p>
+                  <h3 className="text-lg font-bold text-zinc-950 dark:text-white">Starter</h3>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">For new brands launching online</p>
                 </div>
                 <div className="flex items-baseline space-x-1.5">
-                  <span className="text-3xl sm:text-4xl font-extrabold text-white">
+                  <span className="text-3xl sm:text-4xl font-extrabold text-zinc-950 dark:text-white">
                     {pricingBilling === "monthly" ? "৳599" : "৳479"}
                   </span>
-                  <span className="text-xs text-zinc-400 font-medium">/month</span>
+                  <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">/month</span>
                   {pricingBilling === "annual" && (
-                    <span className="text-[10px] text-emerald-400 font-mono ml-1">billed annually</span>
+                    <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono ml-1">billed annually</span>
                   )}
                 </div>
-                <ul className="space-y-2.5 text-xs text-zinc-300 pt-3 border-t border-white/[0.08]">
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-400 flex-shrink-0" /><span>Up to 500 products</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-400 flex-shrink-0" /><span>20s 1-Page Express Checkout</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-400 flex-shrink-0" /><span>Steadfast & Pathao courier booking</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-400 flex-shrink-0" /><span>0% physical order commission</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-400 flex-shrink-0" /><span>Free StoreSwift subdomain with SSL</span></li>
+                <ul className="space-y-2.5 text-xs text-zinc-700 dark:text-zinc-300 pt-3 border-t border-zinc-200 dark:border-white/[0.08]">
+                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Up to 500 products</span></li>
+                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>20s 1-Page Express Checkout</span></li>
+                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Steadfast & Pathao courier booking</span></li>
+                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>0% physical order commission</span></li>
+                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Free StoreSwift subdomain with SSL</span></li>
                 </ul>
               </div>
-              <Link href="/onboarding?plan=starter" className="mt-6 w-full py-3 bg-zinc-800/80 hover:bg-zinc-700 border border-white/10 text-white font-bold text-xs rounded-xl transition text-center btn-press">
+              <Link href="/onboarding?plan=starter" className="mt-6 w-full py-3 bg-zinc-200/80 hover:bg-zinc-300 border border-zinc-300 dark:bg-zinc-800/80 dark:hover:bg-zinc-700 dark:border-white/10 text-zinc-900 dark:text-white font-bold text-xs rounded-xl transition text-center btn-press">
                 Start 14-Day Free Trial
               </Link>
             </div>
 
             {/* Growth Plan (Popular) */}
-            <div className="bg-zinc-900/80 backdrop-blur-xl rounded-3xl border-2 border-blue-500/60 p-6 sm:p-7 lg:p-8 flex flex-col justify-between shadow-[0_0_50px_rgba(59,130,246,0.18)] relative ring-1 ring-blue-500/20">
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[10px] font-bold uppercase tracking-wider px-4 py-1 rounded-full shadow-[0_0_15px_rgba(37,99,235,0.5)]">
+            <div className="bg-white dark:bg-zinc-900/80 backdrop-blur-xl rounded-3xl border-2 border-blue-600 dark:border-blue-500/60 p-6 sm:p-7 lg:p-8 flex flex-col justify-between shadow-xl dark:shadow-[0_0_50px_rgba(59,130,246,0.18)] relative ring-1 ring-blue-500/20">
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[10px] font-bold uppercase tracking-wider px-4 py-1 rounded-full shadow-md">
                 Most Popular
               </div>
               <div className="space-y-4">
                 <div>
-                  <h3 className="text-lg font-bold text-white">Growth</h3>
-                  <p className="text-xs text-zinc-300 mt-1">For scaling direct & social commerce brands</p>
+                  <h3 className="text-lg font-bold text-zinc-950 dark:text-white">Growth</h3>
+                  <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-1">For scaling direct & social commerce brands</p>
                 </div>
                 <div className="flex items-baseline space-x-1.5">
-                  <span className="text-3xl sm:text-4xl font-extrabold text-white">
+                  <span className="text-3xl sm:text-4xl font-extrabold text-zinc-950 dark:text-white">
                     {pricingBilling === "monthly" ? "৳1,099" : "৳879"}
                   </span>
-                  <span className="text-xs text-zinc-300 font-medium">/month</span>
+                  <span className="text-xs text-zinc-600 dark:text-zinc-300 font-medium">/month</span>
                   {pricingBilling === "annual" && (
-                    <span className="text-[10px] text-emerald-400 font-mono ml-1">billed annually</span>
+                    <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono ml-1">billed annually</span>
                   )}
                 </div>
-                <ul className="space-y-2.5 text-xs text-zinc-200 pt-3 border-t border-white/10">
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-400 flex-shrink-0" /><span>Up to 2,000 products</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-400 flex-shrink-0" /><span>Custom domain with automated SSL</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-400 flex-shrink-0" /><span>Anti-Fraud RTO Risk Shield</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-400 flex-shrink-0" /><span>Meta Pixel, TikTok & GTM CAPI</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-400 flex-shrink-0" /><span>Unlimited courier API bookings</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-400 flex-shrink-0" /><span>Priority customer support</span></li>
+                <ul className="space-y-2.5 text-xs text-zinc-700 dark:text-zinc-200 pt-3 border-t border-zinc-200 dark:border-white/10">
+                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Up to 2,000 products</span></li>
+                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Custom domain with automated SSL</span></li>
+                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Anti-Fraud RTO Risk Shield</span></li>
+                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Meta Pixel, TikTok & GTM CAPI</span></li>
+                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Unlimited courier API bookings</span></li>
+                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Priority customer support</span></li>
                 </ul>
               </div>
-              <Link href="/onboarding?plan=growth" className="mt-6 w-full py-3 bg-white hover:bg-zinc-200 text-zinc-950 font-bold text-xs rounded-xl transition text-center shadow-[0_0_20px_rgba(255,255,255,0.25)] btn-press">
+              <Link href="/onboarding?plan=growth" className="mt-6 w-full py-3 bg-blue-600 hover:bg-blue-700 text-white dark:bg-white dark:hover:bg-zinc-200 dark:text-zinc-950 font-bold text-xs rounded-xl transition text-center shadow-md dark:shadow-[0_0_20px_rgba(255,255,255,0.25)] btn-press">
                 Start 14-Day Free Trial
               </Link>
             </div>
 
             {/* Pro Plan */}
-            <div className="bg-zinc-900/40 backdrop-blur-xl rounded-3xl border border-white/[0.08] p-6 sm:p-7 lg:p-8 flex flex-col justify-between shadow-2xl">
+            <div className="bg-zinc-50/70 dark:bg-zinc-900/40 backdrop-blur-xl rounded-3xl border border-zinc-200/90 dark:border-white/[0.08] p-6 sm:p-7 lg:p-8 flex flex-col justify-between shadow-md dark:shadow-2xl">
               <div className="space-y-4">
                 <div>
-                  <h3 className="text-lg font-bold text-white">Pro Enterprise</h3>
-                  <p className="text-xs text-zinc-400 mt-1">For high-volume multi-channel stores</p>
+                  <h3 className="text-lg font-bold text-zinc-950 dark:text-white">Pro Enterprise</h3>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">For high-volume multi-channel stores</p>
                 </div>
                 <div className="flex items-baseline space-x-1.5">
-                  <span className="text-3xl sm:text-4xl font-extrabold text-white">
+                  <span className="text-3xl sm:text-4xl font-extrabold text-zinc-950 dark:text-white">
                     {pricingBilling === "monthly" ? "৳2,499" : "৳1,999"}
                   </span>
-                  <span className="text-xs text-zinc-400 font-medium">/month</span>
+                  <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">/month</span>
                   {pricingBilling === "annual" && (
-                    <span className="text-[10px] text-emerald-400 font-mono ml-1">billed annually</span>
+                    <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono ml-1">billed annually</span>
                   )}
                 </div>
-                <ul className="space-y-2.5 text-xs text-zinc-300 pt-3 border-t border-white/[0.08]">
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-400 flex-shrink-0" /><span>Unlimited products & orders</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-400 flex-shrink-0" /><span>Wholesale Orders & Invoicing</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-400 flex-shrink-0" /><span>Dedicated 24/7 account manager</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-400 flex-shrink-0" /><span>Global CDN & sub-second response</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-400 flex-shrink-0" /><span>Custom courier API credentials</span></li>
+                <ul className="space-y-2.5 text-xs text-zinc-700 dark:text-zinc-300 pt-3 border-t border-zinc-200 dark:border-white/[0.08]">
+                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Unlimited products & orders</span></li>
+                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Wholesale Orders & Invoicing</span></li>
+                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Dedicated 24/7 account manager</span></li>
+                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Global CDN & sub-second response</span></li>
+                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Custom courier API credentials</span></li>
                 </ul>
               </div>
-              <Link href="/onboarding?plan=pro" className="mt-6 w-full py-3 bg-zinc-800/80 hover:bg-zinc-700 border border-white/10 text-white font-bold text-xs rounded-xl transition text-center btn-press">
+              <Link href="/onboarding?plan=pro" className="mt-6 w-full py-3 bg-zinc-200/80 hover:bg-zinc-300 border border-zinc-300 dark:bg-zinc-800/80 dark:hover:bg-zinc-700 dark:border-white/10 text-zinc-900 dark:text-white font-bold text-xs rounded-xl transition text-center btn-press">
                 Start 14-Day Free Trial
               </Link>
             </div>
@@ -868,21 +878,21 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 8. Frequently Asked Questions (FAQ) ────────────────────────────── */}
-      <section id="faq" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-[#09090b] border-b border-white/[0.08] scroll-mt-16">
+      <section id="faq" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-zinc-50/50 dark:bg-[#09090b] border-b border-zinc-200 dark:border-white/[0.08] scroll-mt-16 transition-colors">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 w-full my-auto">
           <div className="text-center max-w-xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
               Questions & Answers
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-white tracking-tight leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-zinc-950 dark:text-white tracking-tight leading-tight">
               Frequently Asked Questions
             </h2>
-            <p className="text-xs sm:text-sm text-zinc-400">
+            <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
               Everything you need to know about setting up and operating your store.
             </p>
           </div>
 
-          <div className="divide-y divide-white/[0.08] bg-zinc-900/40 backdrop-blur-xl rounded-3xl border border-white/[0.08] p-5 sm:p-7 md:p-8 shadow-2xl">
+          <div className="divide-y divide-zinc-200 dark:divide-white/[0.08] bg-white dark:bg-zinc-900/40 backdrop-blur-xl rounded-3xl border border-zinc-200/90 dark:border-white/[0.08] p-5 sm:p-7 md:p-8 shadow-md dark:shadow-2xl">
             {faqs.map((faq, index) => {
               const isOpen = activeFaq === index;
               return (
@@ -891,17 +901,17 @@ export default function PlatformLandingPage() {
                     onClick={() => setActiveFaq(isOpen ? null : index)}
                     className="w-full flex items-center justify-between text-left focus:outline-none group"
                   >
-                    <span className="font-bold text-sm text-white group-hover:text-blue-400 transition">
+                    <span className="font-bold text-sm text-zinc-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition">
                       {faq.q}
                     </span>
                     <ChevronDown
-                      className={`w-4 h-4 text-zinc-500 transition-transform duration-200 ${
-                        isOpen ? "transform rotate-180 text-white" : ""
+                      className={`w-4 h-4 text-zinc-400 dark:text-zinc-500 transition-transform duration-200 ${
+                        isOpen ? "transform rotate-180 text-zinc-950 dark:text-white" : ""
                       }`}
                     />
                   </button>
                   {isOpen && (
-                    <p className="mt-2.5 text-xs sm:text-sm text-zinc-400 leading-relaxed">
+                    <p className="mt-2.5 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
                       {faq.a}
                     </p>
                   )}
@@ -913,28 +923,28 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 9. Final Call to Action ────────────────────────────────────────── */}
-      <section className="relative min-h-0 lg:min-h-[75vh] flex flex-col justify-center py-16 sm:py-20 lg:py-20 bg-zinc-950 border-b border-white/[0.08]">
+      <section className="relative min-h-0 lg:min-h-[75vh] flex flex-col justify-center py-16 sm:py-20 lg:py-20 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-white/[0.08] transition-colors">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto">
-          <div className="rounded-3xl bg-gradient-to-b from-zinc-900/90 to-zinc-950 text-white p-8 sm:p-12 lg:p-14 text-center space-y-6 border border-white/10 shadow-2xl relative overflow-hidden">
+          <div className="rounded-3xl bg-gradient-to-b from-zinc-50 to-zinc-100/80 dark:from-zinc-900/90 dark:to-zinc-950 text-zinc-950 dark:text-white p-8 sm:p-12 lg:p-14 text-center space-y-6 border border-zinc-200 dark:border-white/10 shadow-xl dark:shadow-2xl relative overflow-hidden">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-blue-500/10 blur-3xl pointer-events-none" />
 
             <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight relative leading-tight">
               Ready to launch your store?
             </h2>
-            <p className="text-xs sm:text-sm text-zinc-400 max-w-xl mx-auto leading-relaxed relative">
+            <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto leading-relaxed relative">
               Start selling in minutes with pre-configured logistics, localized payments, and industry-tailored storefronts.
             </p>
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5 relative">
               <Link
                 href="/onboarding"
-                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-xs font-bold bg-white text-zinc-950 hover:bg-zinc-200 px-7 py-3.5 rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.2)] transition btn-press"
+                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-xs font-bold bg-zinc-950 hover:bg-zinc-800 text-white dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 px-7 py-3.5 rounded-xl shadow-md dark:shadow-[0_0_20px_rgba(255,255,255,0.2)] transition btn-press"
               >
                 <span>Start 14-Day Free Trial</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/admin?store=apex-fashion"
-                className="w-full sm:w-auto inline-flex items-center justify-center space-x-1.5 text-xs font-semibold bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-zinc-300 px-6 py-3.5 rounded-xl transition"
+                className="w-full sm:w-auto inline-flex items-center justify-center space-x-1.5 text-xs font-semibold bg-white hover:bg-zinc-100 border border-zinc-200 text-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 dark:text-zinc-300 px-6 py-3.5 rounded-xl transition shadow-sm"
               >
                 <span>Explore Demo Admin</span>
                 <ExternalLink className="w-3.5 h-3.5 text-zinc-500" />
