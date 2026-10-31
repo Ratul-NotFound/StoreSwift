@@ -96,11 +96,11 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
     slug: "artisan-food",
     name: "Artisan Pantry",
     category: "Gourmet Food & Coffee",
-    template: "Artisan Pantry",
-    headline: "Single-origin micro-lots, roast freshness dates and brew guides",
-    description: "Purpose-built for specialty coffee, raw honey, and gourmet provisions with harvest altitude metrics, roast freshness tracking, and brew guides.",
-    image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=1200&auto=format&fit=crop&q=85",
-    highlights: ["48h roast date freshness", "Harvest altitude (MASL)", "Brew ratio extraction guides", "Aroma seal guarantee"],
+    template: "Organic Farmstead",
+    headline: "Farmstead provisions, raw alpine honey, and small-batch micro-lots",
+    description: "Purpose-built for specialty coffee, raw honey, and gourmet provisions with harvest altitude metrics, roast freshness tracking, and harvest dates.",
+    image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&auto=format&fit=crop&q=85",
+    highlights: ["48h harvest & roast freshness", "100% raw unheated alpine honey", "Cold-pressed extra virgin olive oil", "Tamper-evident airtight seal protocol"],
     categoryParam: "grocery_food"
   }
 ];
@@ -756,7 +756,7 @@ export default function PlatformLandingPage() {
                 alt={activeStore.name}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-zinc-950" />
+              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/85 via-zinc-950/20 to-transparent pointer-events-none" />
               <div className="absolute top-5 left-5 bg-zinc-950/85 backdrop-blur-md text-white text-[11px] font-bold px-3.5 py-1.5 rounded-full border border-white/10 shadow-lg">
                 {activeStore.template} • {activeStore.category}
               </div>
@@ -767,7 +767,7 @@ export default function PlatformLandingPage() {
             </div>
 
             {/* Right: Technical Features & Actions */}
-            <div className="lg:col-span-5 p-8 sm:p-10 flex flex-col justify-between space-y-8 bg-zinc-950/80 backdrop-blur-xl">
+            <div className="lg:col-span-5 p-8 sm:p-10 flex flex-col justify-between space-y-8 bg-zinc-950/80 backdrop-blur-xl border-t lg:border-t-0 lg:border-l border-white/[0.08]">
               <div className="space-y-6">
                 <div>
                   <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-500">
