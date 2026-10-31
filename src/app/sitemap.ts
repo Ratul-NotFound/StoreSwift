@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const rootUrl = process.env.NEXT_PUBLIC_APP_URL || "https://storeswift.com";
+  const rootUrl = process.env.NEXT_PUBLIC_APP_URL || "https://storeswift.app";
   const now = new Date();
 
   return [
@@ -33,8 +33,37 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${rootUrl}/store/apex-fashion`,
       lastModified: now,
       changeFrequency: "daily",
-      priority: 0.8
+      priority: 0.85
+    },
+    {
+      url: `${rootUrl}/store/luxe-glow-beauty`,
+      lastModified: now,
+      changeFrequency: "daily",
+      priority: 0.85
+    },
+    {
+      url: `${rootUrl}/store/craft-shoes`,
+      lastModified: now,
+      changeFrequency: "daily",
+      priority: 0.85
+    },
+    {
+      url: `${rootUrl}/store/cyber-tech`,
+      lastModified: now,
+      changeFrequency: "daily",
+      priority: 0.85
+    },
+    {
+      url: `${rootUrl}/store/maison-jewelry`,
+      lastModified: now,
+      changeFrequency: "daily",
+      priority: 0.85
+    },
+    {
+      url: `${rootUrl}/store/artisan-food`,
+      lastModified: now,
+      changeFrequency: "daily",
+      priority: 0.85
     }
   ];
 }
-

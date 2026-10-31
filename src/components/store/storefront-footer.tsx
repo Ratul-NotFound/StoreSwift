@@ -17,7 +17,7 @@ import {
   Package,
   MessageCircle
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useToast } from "../ui/toast";
 
 export interface StorefrontFooterProps {
@@ -26,6 +26,51 @@ export interface StorefrontFooterProps {
   categoryName?: string;
   onOpenTrackOrder?: () => void;
 }
+
+// Category-specific verified section anchors
+const STORE_CATALOG_LINKS: Record<string, Array<{ label: string; href: string }>> = {
+  fashion: [
+    { label: "Archival Silhouettes", href: "#catalog" },
+    { label: "Editorial Lookbook", href: "#outfits" },
+    { label: "Textile & GSM Guide", href: "#fabric-guide" },
+    { label: "Doorstep Inspection", href: "#catalog" }
+  ],
+  beauty_cosmetics: [
+    { label: "Daily Rituals", href: "#rituals" },
+    { label: "Skin Concerns", href: "#concerns" },
+    { label: "3-Step Glass Skin", href: "#bundle" },
+    { label: "Bio-Actives Guide", href: "#actives" },
+    { label: "Patch Test Protocol", href: "#protocol" }
+  ],
+  shoes: [
+    { label: "Bench Footwear", href: "#footwear" },
+    { label: "Welt Construction", href: "#silhouettes" },
+    { label: "Anatomical Soles", href: "#anatomy" },
+    { label: "Guild Standards", href: "#ensemble" },
+    { label: "Doorstep Fitting Check", href: "#trial" }
+  ],
+  electronics: [
+    { label: "Hardware Catalog", href: "#hardware" },
+    { label: "Device Categories", href: "#categories" },
+    { label: "Telemetry Specs", href: "#benchmarks" },
+    { label: "Desk Ensemble", href: "#ensemble" },
+    { label: "Anti-Tamper Protocol", href: "#protocol" }
+  ],
+  jewelry: [
+    { label: "Haute Joaillerie", href: "#creations" },
+    { label: "40x Loupe Inspection", href: "#loupe" },
+    { label: "Maison Collections", href: "#collections" },
+    { label: "Bridal Ensemble", href: "#ensemble" },
+    { label: "Assay Hallmarks (750)", href: "#standards" }
+  ],
+  grocery_food: [
+    { label: "Pantry Provisions", href: "#provisions" },
+    { label: "Micro-Lot Harvests", href: "#categories" },
+    { label: "Farmgate Standards", href: "#standards" },
+    { label: "Breakfast Ensemble", href: "#ensemble" },
+    { label: "Aroma Seal Inspection", href: "#aroma" }
+  ]
+};
 
 export function StorefrontFooter({
   storeName = "Apex Fashion Hub",
@@ -43,6 +88,18 @@ export function StorefrontFooter({
       setEmail("");
     }
   };
+
+  const categoryKey = useMemo(() => {
+    const slug = (storeSlug || "").toLowerCase();
+    if (slug.includes("shoe") || slug.includes("sneaker") || slug.includes("boot")) return "shoes";
+    if (slug.includes("beauty") || slug.includes("cosmetic") || slug.includes("glow") || slug.includes("skin")) return "beauty_cosmetics";
+    if (slug.includes("tech") || slug.includes("byte") || slug.includes("gadget") || slug.includes("audio")) return "electronics";
+    if (slug.includes("jewel") || slug.includes("watch") || slug.includes("gold")) return "jewelry";
+    if (slug.includes("coffee") || slug.includes("honey") || slug.includes("food")) return "grocery_food";
+    return "fashion";
+  }, [storeSlug]);
+
+  const catalogLinks = STORE_CATALOG_LINKS[categoryKey] || STORE_CATALOG_LINKS.fashion;
 
   return (
     <footer className="bg-zinc-950 text-zinc-300 font-sans border-t border-zinc-900 mt-auto">
@@ -109,12 +166,23 @@ export function StorefrontFooter({
               Official authenticated storefront for {storeName}. Curated {categoryName.toLowerCase()}, nationwide automated courier delivery across all 64 districts, and open parcel doorstep inspection.
             </p>
 
-            {/* Support Hotline & Hub */}
+            {/* Support Hotline, WhatsApp & Hub */}
             <div className="space-y-1.5 text-xs text-zinc-400 pt-1">
               <div className="flex items-center space-x-2 text-zinc-300">
                 <PhoneCall className="w-3.5 h-3.5 text-emerald-400" />
                 <span className="font-mono font-semibold">+880 1711-234567</span>
                 <span className="text-zinc-500">• 10 AM - 10 PM Everyday</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <MessageCircle className="w-3.5 h-3.5 text-emerald-500" />
+                <a
+                  href="https://wa.me/8801711234567"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-emerald-400 transition underline underline-offset-2"
+                >
+                  WhatsApp Ordering & Instant Inquiries
+                </a>
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="w-3.5 h-3.5 text-blue-400" />
@@ -149,15 +217,18 @@ export function StorefrontFooter({
             </div>
           </div>
 
-          {/* Column 3: Curated Store Catalog */}
+          {/* Column 3: Verified Store Catalog Links (Dynamic per Category) */}
           <div className="space-y-3">
             <p className="text-xs font-bold uppercase tracking-wider text-white">Store Catalog</p>
             <ul className="space-y-2 text-xs text-zinc-400">
-              <li><a href="#catalog" className="hover:text-white transition">Full Collection</a></li>
-              <li><a href="#catalog" className="hover:text-white transition">New Arrivals 2026</a></li>
-              <li><a href="#catalog" className="hover:text-white transition">Best Sellers & Trending</a></li>
-              <li><a href="#features" className="hover:text-white transition">Specifications & Guide</a></li>
-              <li><a href="#reviews" className="hover:text-white transition">Verified Customer Reviews</a></li>
+              {catalogLinks.map((item, idx) => (
+                <li key={idx}>
+                  <a href={item.href} className="hover:text-white transition flex items-center justify-between group">
+                    <span>{item.label}</span>
+                    <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity text-blue-400" />
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -174,13 +245,13 @@ export function StorefrontFooter({
                 <span className="font-semibold">Pathao Logistics Integration</span>
               </li>
               <li className="pt-1 text-[11px] text-zinc-400">
-                <span>Inside Dhaka: Flat ৳60 (24h)</span>
+                <span>Inside Dhaka: Flat ৳60 / $2.50 (24h)</span>
               </li>
               <li className="text-[11px] text-zinc-400">
-                <span>Greater Dhaka / Suburbs: Flat ৳100 (48h)</span>
+                <span>Greater Dhaka: Flat ৳100 / $4.00 (48h)</span>
               </li>
               <li className="text-[11px] text-zinc-400">
-                <span>Outside Dhaka: Flat ৳130 (72h)</span>
+                <span>Outside Dhaka: Flat ৳130 / $5.00 (72h)</span>
               </li>
               <li className="pt-1 text-[11px] text-emerald-400 font-semibold">
                 <span>✓ Open Parcel Inspection Guarantee</span>
@@ -263,4 +334,3 @@ export function StorefrontFooter({
     </footer>
   );
 }
-

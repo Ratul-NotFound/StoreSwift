@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
-  const rootUrl = process.env.NEXT_PUBLIC_APP_URL || "https://storeswift.com";
+  const rootUrl = process.env.NEXT_PUBLIC_APP_URL || "https://storeswift.app";
 
   return {
     rules: [
@@ -14,4 +14,3 @@ export default function robots(): MetadataRoute.Robots {
     sitemap: `${rootUrl}/sitemap.xml`
   };
 }
-

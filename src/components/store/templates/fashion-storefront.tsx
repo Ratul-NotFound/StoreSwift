@@ -4,6 +4,7 @@ import { StoreFooter } from "@/components/footer";
 
 import { useState } from "react";
 import Link from "next/link";
+import { useToast } from "@/components/ui/toast";
 import {
   ShoppingBag,
   Store,
@@ -180,6 +181,7 @@ export function FashionStorefront({
   categoriesMap,
   storeTemplatesMap
 }: FashionStorefrontProps) {
+  const { success: toastSuccess } = useToast();
   // Card-level state: Selected color swatches and active sizes
   const [selectedColors, setSelectedColors] = useState<Record<string, string>>({});
   const [selectedSizes, setSelectedSizes] = useState<Record<string, string>>({});
@@ -299,7 +301,7 @@ export function FashionStorefront({
             </button>
 
             <button
-              onClick={() => alert(`Saved to Wishlist: ${wishlist.length} item(s)`)}
+              onClick={() => toastSuccess("Saved to Wishlist", `${wishlist.length} item(s) saved in this session.`)}
               className="p-2 rounded-xl border border-zinc-200 hover:border-zinc-400 transition relative"
               title="Saved Wishlist"
             >

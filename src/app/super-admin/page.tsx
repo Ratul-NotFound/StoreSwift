@@ -27,7 +27,7 @@ export default function PlatformSuperAdminPage() {
       slug: "apex-fashion",
       ownerEmail: "sarah@apexfashion.com",
       category: "Fashion & Apparel",
-      plan: "Growth ($29/mo)",
+      plan: "Growth (৳1,099/mo)",
       productsCount: 42,
       ordersCount: 158,
       status: "Active",
@@ -35,51 +35,63 @@ export default function PlatformSuperAdminPage() {
     },
     {
       id: "store-2",
-      name: "ByteMart Tech Gear",
-      slug: "bytemart",
-      ownerEmail: "alex@bytemart.io",
-      category: "Electronics & Tech",
-      plan: "Starter ($9/mo)",
-      productsCount: 18,
-      ordersCount: 64,
-      status: "Active",
-      createdAt: "Oct 19, 2026"
-    },
-    {
-      id: "store-3",
-      name: "Green Valley Organics",
-      slug: "green-valley",
-      ownerEmail: "farmer@greenvalley.com",
-      category: "Food & Grocery",
-      plan: "Free Trial (14 days)",
-      productsCount: 12,
-      ordersCount: 19,
-      status: "Trial",
-      createdAt: "Oct 27, 2026"
-    },
-    {
-      id: "store-4",
-      name: "Glow & Radiance Skincare",
-      slug: "glow-radiance",
-      ownerEmail: "beauty@glow.com",
-      category: "Beauty & Cosmetics",
-      plan: "Pro ($79/mo)",
-      productsCount: 85,
-      ordersCount: 412,
+      name: "Luxe Glow Beauty",
+      slug: "luxe-glow-beauty",
+      ownerEmail: "nadia@luxeglow.com",
+      category: "Beauty & Skincare",
+      plan: "Pro Enterprise (৳2,499/mo)",
+      productsCount: 36,
+      ordersCount: 284,
       status: "Active",
       createdAt: "Sep 28, 2026"
     },
     {
+      id: "store-3",
+      name: "Craft Bench Shoes",
+      slug: "craft-shoes",
+      ownerEmail: "tariq@craftshoes.com",
+      category: "Footwear & Leather",
+      plan: "Growth (৳1,099/mo)",
+      productsCount: 24,
+      ordersCount: 92,
+      status: "Active",
+      createdAt: "Oct 19, 2026"
+    },
+    {
+      id: "store-4",
+      name: "CyberTech Audio",
+      slug: "cyber-tech",
+      ownerEmail: "alex@cybertech.io",
+      category: "Consumer Tech & Audio",
+      plan: "Pro Enterprise (৳2,499/mo)",
+      productsCount: 52,
+      ordersCount: 340,
+      status: "Active",
+      createdAt: "Oct 05, 2026"
+    },
+    {
       id: "store-5",
-      name: "Urban Craft Studio",
-      slug: "urban-craft",
-      ownerEmail: "mark@urbancraft.com",
-      category: "General Crafts",
-      plan: "Past Due",
-      productsCount: 9,
-      ordersCount: 7,
-      status: "Suspended",
+      name: "Maison Opulente",
+      slug: "maison-jewelry",
+      ownerEmail: "elena@maisonopulente.com",
+      category: "Fine Jewelry & Watches",
+      plan: "Pro Enterprise (৳2,499/mo)",
+      productsCount: 64,
+      ordersCount: 118,
+      status: "Active",
       createdAt: "Aug 15, 2026"
+    },
+    {
+      id: "store-6",
+      name: "Artisan Pantry",
+      slug: "artisan-food",
+      ownerEmail: "rohim@artisanpantry.com",
+      category: "Gourmet Food & Coffee",
+      plan: "Starter (৳599/mo)",
+      productsCount: 18,
+      ordersCount: 45,
+      status: "Active",
+      createdAt: "Oct 27, 2026"
     }
   ]);
 
@@ -129,7 +141,7 @@ export default function PlatformSuperAdminPage() {
             ← Public Website
           </Link>
           <Link
-            href="/admin"
+            href="/admin?store=apex-fashion"
             className="text-xs font-semibold text-slate-400 hover:text-white transition"
           >
             Merchant Admin
@@ -224,7 +236,7 @@ export default function PlatformSuperAdminPage() {
                     <td className="px-6 py-4">
                       <div className="font-bold text-white">{store.name}</div>
                       <div className="text-xs text-indigo-400 font-mono">
-                        {store.slug}.platform.com
+                        {store.slug}.storeswift.app
                       </div>
                       <div className="text-[11px] text-slate-400">{store.ownerEmail}</div>
                     </td>
@@ -262,6 +274,13 @@ export default function PlatformSuperAdminPage() {
                           title="Open Storefront"
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
+                        </Link>
+                        <Link
+                          href={`/admin?store=${store.slug}`}
+                          className="p-1.5 rounded-lg bg-indigo-900/60 hover:bg-indigo-800 text-indigo-300 transition"
+                          title="Open Merchant Admin"
+                        >
+                          <Store className="w-3.5 h-3.5" />
                         </Link>
                         <button
                           onClick={() => handleToggleStoreStatus(store.id)}

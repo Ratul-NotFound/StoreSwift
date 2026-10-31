@@ -17,12 +17,17 @@ import {
   Lock,
   ArrowRight,
   Flame,
-  Banknote
+  Banknote,
+  Zap
 } from "lucide-react";
 import { generateStoreSeedData } from "@/lib/seed-store";
 import { getCategoryConfig } from "@/config/categories";
 import { TemplateFactory } from "@/templates";
 import { ProductJsonLd } from "@/components/seo/product-jsonld";
+import { DemoStoreBar } from "@/components/store/demo-store-bar";
+import { ExpressCheckoutModal } from "@/components/store/express-checkout-modal";
+import { TrackOrderModal } from "@/components/store/track-order-modal";
+import { StorefrontFooter } from "@/components/store/storefront-footer";
 import { useToast } from "@/components/ui/toast";
 import { trackEvent } from "@/lib/analytics";
 
@@ -36,6 +41,8 @@ export default function ProductDetailPage({
   const productSlug = resolvedParams.slug || "classic-cotton-tshirt";
 
   const { success } = useToast();
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [isTrackOrderOpen, setIsTrackOrderOpen] = useState(false);
 
   const categoryKey = useMemo(() => {
     const combined = (tenantSlug + " " + productSlug).toLowerCase();
@@ -95,6 +102,15 @@ export default function ProductDetailPage({
 
   return (
     <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${template.classes.pageBg}`}>
+      {/* ─── Top Demo Store Preview Bar ──────────────────────────────────── */}
+      <DemoStoreBar
+        currentSlug={tenantSlug}
+        storeDisplayName={tenantSlug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
+        categoryName={categoryConfig.name}
+        onOpenCheckout={() => setIsCheckoutOpen(true)}
+        onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
+      />
+
       {/* Schema.org Structured Data for SEO Rich Snippets */}
       <ProductJsonLd
         product={{
@@ -350,13 +366,14 @@ export default function ProductDetailPage({
                   <ShoppingBag className="w-4 h-4" />
                   <span>Add to Bag • {template.formatPrice(currentPrice * quantity)}</span>
                 </button>
-                <Link
-                  href={`/store/${tenantSlug}`}
-                  className="py-3 px-5 border border-current/20 hover:border-current/40 font-semibold text-xs rounded-xl transition text-center btn-press flex items-center justify-center space-x-1.5"
+                <button
+                  type="button"
+                  onClick={() => setIsCheckoutOpen(true)}
+                  className="py-3 px-5 bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs rounded-xl shadow-sm transition text-center btn-press flex items-center justify-center space-x-1.5"
                 >
-                  <Banknote className="w-3.5 h-3.5 text-emerald-500" />
-                  <span>Cash on Delivery (COD)</span>
-                </Link>
+                  <Zap className="w-3.5 h-3.5 text-amber-400" />
+                  <span>⚡ Buy Now (COD)</span>
+                </button>
               </div>
 
               <div className="pt-3 flex items-center justify-between text-[11px] opacity-60">
@@ -503,9 +520,41 @@ export default function ProductDetailPage({
         </button>
       </div>
 
-      <footer className={`py-6 text-center text-xs opacity-60 border-t ${template.classes.headerBg}`}>
-        Powered by StoreSwift eCommerce • Verified Merchant
-      </footer>
+      {/* ─── 1-Page Express Checkout Modal ──────────────────────────────── */}
+      <ExpressCheckoutModal
+        isOpen={isCheckoutOpen}
+        onClose={() => setIsCheckoutOpen(false)}
+        items={[
+          {
+            id: matchingProduct.slug,
+            variantId: selectedVariant?.sku || "sku-default",
+            title: matchingProduct.title,
+            variantTitle: selectedVariant?.title,
+            price: currentPrice,
+            quantity,
+            imageUrl: matchingProduct.imageUrl
+          }
+        ]}
+        storeDisplayName={tenantSlug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
+        tenantSlug={tenantSlug}
+        currency="$"
+      />
+
+      {/* ─── Live Track Order Modal ──────────────────────────────────────── */}
+      <TrackOrderModal
+        isOpen={isTrackOrderOpen}
+        onClose={() => setIsTrackOrderOpen(false)}
+        storeDisplayName={tenantSlug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
+        tenantSlug={tenantSlug}
+      />
+
+      {/* ─── Unified Storefront Multi-Column Footer ────────────────────────── */}
+      <StorefrontFooter
+        storeName={tenantSlug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
+        storeSlug={tenantSlug}
+        categoryName={categoryConfig.name}
+        onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
+      />
     </div>
   );
 }

@@ -16,6 +16,7 @@ import {
   Star,
   Check,
   X,
+  Menu,
   CreditCard,
   Layers,
   ChevronDown,
@@ -38,6 +39,7 @@ export default function PlatformLandingPage() {
   const [selectedDemoCategory, setSelectedDemoCategory] = useState("fashion");
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [isNavDropdownOpen, setIsNavDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const activeCategory = getCategoryConfig(selectedDemoCategory);
 
@@ -141,7 +143,7 @@ export default function PlatformLandingPage() {
             <a href="#faq" className="hover:text-zinc-950 transition">FAQ</a>
           </nav>
 
-          {/* Action Buttons */}
+          {/* Action Buttons & Mobile Hamburger */}
           <div className="flex items-center space-x-2.5 flex-shrink-0">
             <Link
               href="/admin?store=apex-fashion"
@@ -152,13 +154,91 @@ export default function PlatformLandingPage() {
             </Link>
             <Link
               href="/onboarding"
-              className="inline-flex items-center space-x-1.5 text-xs font-bold bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-2 rounded-xl shadow-sm transition btn-press"
+              className="inline-flex items-center space-x-1.5 text-xs font-bold bg-zinc-900 hover:bg-zinc-800 text-white px-3.5 sm:px-4 py-2 rounded-xl shadow-sm transition btn-press"
             >
               <span>Launch Store</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
+            <button
+              type="button"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="lg:hidden p-2 rounded-xl border border-zinc-200 text-zinc-700 hover:bg-zinc-100 transition"
+              aria-label="Toggle navigation menu"
+            >
+              {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Navigation Drawer */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden border-t border-zinc-200 bg-white px-4 py-4 space-y-4 animate-fade-in shadow-lg">
+            <div className="space-y-1">
+              <span className="text-[10px] uppercase font-bold tracking-wider text-zinc-400 block px-2">
+                Explore 6 Live Stores
+              </span>
+              <div className="grid grid-cols-2 gap-2 pt-1">
+                {DEMO_STORES_LIST.map((s) => (
+                  <Link
+                    key={s.slug}
+                    href={`/store/${s.slug}`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="p-2.5 rounded-xl bg-zinc-50 border border-zinc-100 hover:bg-zinc-100 transition text-xs"
+                  >
+                    <p className="font-bold text-zinc-900">{s.name.split(" ")[0]} Store</p>
+                    <p className="text-[10px] text-zinc-400">{s.category.split("&")[0].trim()}</p>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="border-t border-zinc-100 pt-3 space-y-2 text-xs font-semibold text-zinc-700">
+              <a
+                href="#logistics"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block px-2 py-1.5 rounded-lg hover:bg-zinc-50"
+              >
+                Logistics & Couriers
+              </a>
+              <a
+                href="#checkout"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block px-2 py-1.5 rounded-lg hover:bg-zinc-50"
+              >
+                1-Page Checkout
+              </a>
+              <a
+                href="#demo"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block px-2 py-1.5 rounded-lg hover:bg-zinc-50"
+              >
+                Catalog & Matrix
+              </a>
+              <a
+                href="#pricing"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block px-2 py-1.5 rounded-lg hover:bg-zinc-50"
+              >
+                Pricing Plans
+              </a>
+              <a
+                href="#faq"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block px-2 py-1.5 rounded-lg hover:bg-zinc-50"
+              >
+                FAQ
+              </a>
+              <Link
+                href="/admin?store=apex-fashion"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center justify-between px-2 py-1.5 rounded-lg hover:bg-zinc-50 text-blue-600 font-bold"
+              >
+                <span>Open Merchant Admin Demo</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* ─── 3. Hero Section ────────────────────────────────────────────────── */}

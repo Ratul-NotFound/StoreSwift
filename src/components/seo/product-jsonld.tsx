@@ -9,6 +9,7 @@ export interface ProductJsonLdProps {
     rating?: number;
     inStock?: boolean;
     brandName?: string;
+    storeSlug?: string;
   };
 }
 
@@ -28,7 +29,7 @@ export function ProductJsonLd({ product }: ProductJsonLdProps) {
       price: product.basePrice,
       priceCurrency: product.currency || "USD",
       availability: product.inStock !== false ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-      url: `https://storeswift.com/products/${product.slug}`
+      url: `https://storeswift.app/store/${product.storeSlug || "apex-fashion"}/products/${product.slug}`
     },
     aggregateRating: {
       "@type": "AggregateRating",
@@ -44,4 +45,3 @@ export function ProductJsonLd({ product }: ProductJsonLdProps) {
     />
   );
 }
-

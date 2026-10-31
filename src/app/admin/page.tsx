@@ -27,6 +27,7 @@ import {
   ShieldCheck,
   Check,
   ChevronRight,
+  ChevronDown,
   RefreshCw,
   Eye,
   SlidersHorizontal,
@@ -42,6 +43,7 @@ import {
   FileText,
   X
 } from "lucide-react";
+import { useToast } from "@/components/ui/toast";
 import {
   COURIER_PROVIDERS,
   DELIVERY_ZONES,
@@ -53,6 +55,59 @@ import {
 } from "@/lib/courier";
 import { generateVariantMatrix, GeneratedVariant } from "@/lib/matrix";
 import { generateStoreSeedData } from "@/lib/seed-store";
+
+export interface AdminDemoStore {
+  name: string;
+  category: string;
+  categoryKey: string;
+  currency: string;
+  plan: string;
+}
+
+export const DEMO_STORES_MAP: Record<string, AdminDemoStore> = {
+  "apex-fashion": {
+    name: "Apex Fashion Hub",
+    category: "Fashion & Apparel",
+    categoryKey: "fashion",
+    currency: "$",
+    plan: "Growth ($19/mo)"
+  },
+  "luxe-glow-beauty": {
+    name: "Luxe Glow Beauty",
+    category: "Beauty & Skincare",
+    categoryKey: "beauty_cosmetics",
+    currency: "$",
+    plan: "Pro Enterprise ($49/mo)"
+  },
+  "craft-shoes": {
+    name: "Craft Bench Shoes",
+    category: "Footwear & Leather",
+    categoryKey: "shoes",
+    currency: "$",
+    plan: "Growth ($19/mo)"
+  },
+  "cyber-tech": {
+    name: "CyberTech Audio",
+    category: "Consumer Tech & Audio",
+    categoryKey: "electronics",
+    currency: "$",
+    plan: "Pro Enterprise ($49/mo)"
+  },
+  "maison-jewelry": {
+    name: "Maison Opulente",
+    category: "Fine Jewelry & Watches",
+    categoryKey: "jewelry",
+    currency: "$",
+    plan: "Pro Enterprise ($49/mo)"
+  },
+  "artisan-food": {
+    name: "Artisan Pantry",
+    category: "Gourmet Food & Coffee",
+    categoryKey: "grocery_food",
+    currency: "$",
+    plan: "Starter ($9/mo)"
+  }
+};
 
 export default function MerchantAdminPage() {
   const [activeTab, setActiveTab] = useState<
@@ -71,6 +126,7 @@ export default function MerchantAdminPage() {
   const [gtmContainerId, setGtmContainerId] = useState("GTM-SSWIFT01");
   const [importedSupplierIds, setImportedSupplierIds] = useState<string[]>([]);
   const [supplierImportSuccess, setSupplierImportSuccess] = useState<string | null>(null);
+  const { success } = useToast();
   const [storeSlug, setStoreSlug] = useState("apex-fashion");
   const [storeName, setStoreName] = useState("Apex Fashion Hub");
   const [currency, setCurrency] = useState("$");
@@ -84,20 +140,66 @@ export default function MerchantAdminPage() {
   const [previewDevice, setPreviewDevice] = useState<"desktop" | "mobile">("desktop");
   const [savedSuccess, setSavedSuccess] = useState(false);
 
+  const [isStoreSwitcherOpen, setIsStoreSwitcherOpen] = useState(false);
+
+  const loadStoreData = (slug: string) => {
+    const config = DEMO_STORES_MAP[slug] || DEMO_STORES_MAP["apex-fashion"];
+    setStoreSlug(slug);
+    setStoreName(config.name);
+    setCurrency(config.currency);
+    setSubscriptionPlan(config.plan);
+
+    const savedData = typeof window !== "undefined" ? localStorage.getItem(`store_${slug}`) : null;
+    if (savedData) {
+      try {
+        const parsed = JSON.parse(savedData);
+        if (parsed.name) setStoreName(parsed.name);
+        if (parsed.currency) setCurrency(parsed.currency === "BDT" ? "৳" : "$");
+      } catch {}
+    }
+
+    // Provision products matching this store's industry category
+    const seed = generateStoreSeedData(slug, config.categoryKey);
+    setProductsList(
+      seed.products.map((p, idx) => ({
+        id: `prod-${idx + 1}`,
+        title: p.title,
+        sku: `${p.slug.slice(0, 4).toUpperCase()}-001`,
+        basePrice: p.basePrice,
+        stock: 25,
+        category: config.category.split("&")[0].trim(),
+        imageUrl: p.imageUrl,
+        variants: seed.variants
+          .filter((v) => v.productSlug === p.slug)
+          .map((v) => ({
+            title: v.title,
+            sku: v.sku,
+            price: v.price,
+            inventoryQuantity: v.inventoryQuantity,
+            options: v.options
+          }))
+      }))
+    );
+  };
+
+  const handleSwitchStore = (newSlug: string) => {
+    setIsStoreSwitcherOpen(false);
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      url.searchParams.set("store", newSlug);
+      window.history.replaceState(null, "", url.toString());
+      localStorage.setItem("current_store", newSlug);
+    }
+    loadStoreData(newSlug);
+    success("Switched Active Store", `Now managing ${DEMO_STORES_MAP[newSlug]?.name || newSlug}`);
+  };
+
   // Load store config from URL or localStorage
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const queryStore = params.get("store") || localStorage.getItem("current_store") || "apex-fashion";
-      setStoreSlug(queryStore);
-      const savedData = localStorage.getItem(`store_${queryStore}`);
-      if (savedData) {
-        try {
-          const parsed = JSON.parse(savedData);
-          if (parsed.name) setStoreName(parsed.name);
-          if (parsed.currency) setCurrency(parsed.currency === "BDT" ? "৳" : "$");
-        } catch {}
-      }
+      loadStoreData(queryStore);
     }
   }, []);
 
@@ -331,13 +433,53 @@ export default function MerchantAdminPage() {
 
             <span className="text-zinc-300 hidden sm:inline">/</span>
 
-            {/* Active Store Chip */}
-            <div className="flex items-center space-x-2 bg-zinc-50 border border-zinc-200/80 px-3 py-1.5 rounded-xl">
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span className="font-semibold text-xs text-zinc-900">{storeName}</span>
-              <span className="text-[10px] text-zinc-400 font-mono hidden md:inline">
-                ({storeSlug}.storeswift.com)
-              </span>
+            {/* Active Store Chip & Interactive Multi-Store Switcher */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setIsStoreSwitcherOpen(!isStoreSwitcherOpen)}
+                className="flex items-center space-x-2 bg-zinc-50 hover:bg-zinc-100 border border-zinc-200/80 px-3 py-1.5 rounded-xl transition text-left group"
+              >
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse flex-shrink-0" />
+                <span className="font-semibold text-xs text-zinc-900">{storeName}</span>
+                <span className="text-[10px] text-zinc-400 font-mono hidden md:inline">
+                  ({storeSlug}.storeswift.app)
+                </span>
+                <ChevronDown className="w-3.5 h-3.5 text-zinc-400 group-hover:text-zinc-600 transition" />
+              </button>
+
+              {isStoreSwitcherOpen && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setIsStoreSwitcherOpen(false)} />
+                  <div className="absolute left-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-zinc-200 z-50 py-2 divide-y divide-zinc-100 text-xs animate-fade-in">
+                    <div className="px-3 py-1.5 text-[10px] uppercase font-bold tracking-wider text-zinc-400 flex items-center justify-between">
+                      <span>Switch Storefront</span>
+                      <span className="font-mono text-zinc-400">6 Live Stores</span>
+                    </div>
+                    <div className="py-1">
+                      {Object.entries(DEMO_STORES_MAP).map(([slug, s]) => {
+                        const isCurrent = slug === storeSlug;
+                        return (
+                          <button
+                            key={slug}
+                            type="button"
+                            onClick={() => handleSwitchStore(slug)}
+                            className={`w-full text-left px-3 py-2 flex items-center justify-between hover:bg-zinc-50 transition ${
+                              isCurrent ? "bg-zinc-50 font-bold text-zinc-900" : "text-zinc-600"
+                            }`}
+                          >
+                            <div>
+                              <p className="text-xs font-semibold">{s.name}</p>
+                              <p className="text-[10px] text-zinc-400">{s.category} • {s.plan}</p>
+                            </div>
+                            {isCurrent && <Check className="w-3.5 h-3.5 text-emerald-600" />}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
 
@@ -941,7 +1083,7 @@ export default function MerchantAdminPage() {
                   <div className="flex items-center justify-between text-xs pt-1 border-t border-zinc-100">
                     <span className="text-[11px] text-zinc-400 truncate max-w-[160px]">{c.hub}</span>
                     <button
-                      onClick={() => alert(`${c.name} API connection verified! Webhooks operating normally.`)}
+                      onClick={() => success("Courier API Active", `${c.name} API connection verified! Webhooks operating normally.`)}
                       className="text-xs font-semibold text-zinc-700 hover:text-zinc-900 bg-zinc-100 hover:bg-zinc-200 px-2.5 py-1 rounded-lg transition"
                     >
                       Test API Ping
@@ -1326,7 +1468,7 @@ export default function MerchantAdminPage() {
                 <span className="text-[11px] text-zinc-400">All conversion pixels inject automatically across your storefront.</span>
               </div>
               <button
-                onClick={() => alert("Marketing pixels updated and live across your storefront!")}
+                onClick={() => success("Pixel Settings Saved", "Meta CAPI, TikTok & Google Tag Manager updated across storefront!")}
                 className="px-4 py-2 bg-white text-zinc-900 font-bold text-xs rounded-xl hover:bg-zinc-100 transition shadow-sm btn-press"
               >
                 Save Pixel Settings

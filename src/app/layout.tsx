@@ -3,7 +3,7 @@ import "./globals.css";
 import { ToastProvider } from "@/components/ui/toast";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://storeswift.com"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://storeswift.app"),
   title: {
     default: "StoreSwift — Instant eCommerce SaaS Platform for Startups",
     template: "%s | StoreSwift"
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://storeswift.com",
+    url: "https://storeswift.app",
     siteName: "StoreSwift",
     title: "StoreSwift — Instant eCommerce SaaS Platform for Startups",
     description: "Launch your category-ready online storefront, real-time inventory engine, and merchant dashboard in 3 minutes.",

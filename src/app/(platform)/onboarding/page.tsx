@@ -35,6 +35,7 @@ export default function OnboardingWizardPage() {
   const [selectedCategory, setSelectedCategory] = useState("fashion");
   const [selectedTemplate, setSelectedTemplate] = useState("minimal");
   const [enableCod, setEnableCod] = useState(true);
+  const [enableBkash, setEnableBkash] = useState(true);
   const [enableStripe, setEnableStripe] = useState(false);
   const [manualPaymentNotes, setManualPaymentNotes] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
@@ -111,9 +112,15 @@ export default function OnboardingWizardPage() {
     setIsCompleted(true);
   };
 
+  const getStoreUrl = () => {
+    if (typeof window !== "undefined") {
+      return `${window.location.origin}/store/${subdomain}`;
+    }
+    return `https://${subdomain}.storeswift.app`;
+  };
+
   const handleCopyUrl = () => {
-    const fullUrl = `https://${subdomain}.storeswift.com`;
-    navigator.clipboard.writeText(fullUrl);
+    navigator.clipboard.writeText(getStoreUrl());
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -244,12 +251,12 @@ export default function OnboardingWizardPage() {
                         className="flex-1 px-4 py-3 outline-none text-sm font-medium text-zinc-900 placeholder:text-zinc-400 bg-white"
                       />
                       <span className="bg-zinc-100 px-4 py-3 text-xs font-bold text-zinc-500 border-l border-zinc-200 flex items-center">
-                        .storeswift.com
+                        .storeswift.app
                       </span>
                     </div>
                     <p className="text-[11px] text-zinc-400 mt-1.5 flex items-center space-x-1">
                       <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />
-                      <span>Live Address: https://{subdomain || "yourstore"}.storeswift.com</span>
+                      <span>Live Address: https://{subdomain || "yourstore"}.storeswift.app</span>
                     </p>
                   </div>
 
@@ -412,6 +419,32 @@ export default function OnboardingWizardPage() {
                   </div>
 
                   <div
+                    onClick={() => setEnableBkash(!enableBkash)}
+                    className={`p-4 rounded-xl border cursor-pointer transition flex items-start space-x-3.5 ${
+                      enableBkash
+                        ? "border-pink-600 bg-pink-50/50 ring-1 ring-pink-600"
+                        : "border-zinc-200 hover:border-zinc-300 bg-white"
+                    }`}
+                  >
+                    <div className="pt-0.5">
+                      <Smartphone className="w-5 h-5 text-pink-600" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-xs text-zinc-900">
+                          bKash & Nagad Express (MFS)
+                        </span>
+                        <span className="text-[10px] font-bold bg-pink-100 text-pink-800 px-2 py-0.5 rounded-full">
+                          95% South Asia Volume
+                        </span>
+                      </div>
+                      <p className="text-xs text-zinc-500 mt-0.5">
+                        Accept direct merchant mobile wallet payments with automated TrxID verification and zero gateway fees.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div
                     onClick={() => setEnableStripe(!enableStripe)}
                     className={`p-4 rounded-xl border cursor-pointer transition flex items-start space-x-3.5 ${
                       enableStripe
@@ -506,7 +539,7 @@ export default function OnboardingWizardPage() {
             {/* Live Link Box */}
             <div className="my-6 p-3 rounded-xl bg-zinc-50 border border-zinc-200 flex items-center justify-between text-xs">
               <span className="font-mono text-zinc-800 font-semibold truncate mr-2">
-                https://{subdomain}.storeswift.com
+                {typeof window !== "undefined" ? `${window.location.host}/store/${subdomain}` : `${subdomain}.storeswift.app`}
               </span>
               <button
                 onClick={handleCopyUrl}

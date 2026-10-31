@@ -15,7 +15,8 @@ import {
   MapPin,
   ExternalLink,
   Smartphone,
-  Globe
+  Globe,
+  AlertCircle
 } from "lucide-react";
 import { DELIVERY_ZONES, DeliveryZoneId, generateConsignment, COURIER_PROVIDERS } from "@/lib/courier";
 import { firePixelEvent } from "@/lib/pixels";
@@ -64,6 +65,7 @@ export function ExpressCheckoutModal({
   const [trxId, setTrxId] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [copiedNumber, setCopiedNumber] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
   const [orderConfirmed, setOrderConfirmed] = useState<{
     orderNumber: string;
     totalAmount: string;
@@ -103,15 +105,24 @@ export function ExpressCheckoutModal({
   const handleSubmitOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!customerName.trim() || !customerPhone.trim() || !shippingAddress.trim()) {
-      alert(lang === "bn" ? "দয়া করে আপনার নাম, মোবাইল নম্বর এবং ঠিকানা পূরণ করুন।" : "Please fill in your name, phone number, and delivery address.");
+      setFormError(
+        lang === "bn"
+          ? "দয়া করে আপনার নাম, মোবাইল নম্বর এবং সম্পূর্ণ ডেলিভারি ঠিকানা দিন।"
+          : "Please fill in your name, mobile phone number, and delivery address."
+      );
       return;
     }
 
     if ((paymentMethod === "bkash" || paymentMethod === "nagad") && !trxId.trim()) {
-      alert(lang === "bn" ? `অনুগ্রহ করে আপনার ${paymentMethod === "bkash" ? "বিকাশ" : "নগদ"} ট্রানজেকশন আইডি (TrxID) দিন।` : `Please enter your 8-10 digit ${paymentMethod.toUpperCase()} Transaction ID (TrxID).`);
+      setFormError(
+        lang === "bn"
+          ? `অনুগ্রহ করে আপনার ${paymentMethod === "bkash" ? "বিকাশ" : "নগদ"} ট্রানজেকশন আইডি (TrxID) দিন।`
+          : `Please enter your 8-10 digit ${paymentMethod.toUpperCase()} Transaction ID (TrxID).`
+      );
       return;
     }
 
+    setFormError(null);
     setIsSubmitting(true);
 
     try {
@@ -176,7 +187,7 @@ export function ExpressCheckoutModal({
         if (onClearCart) onClearCart();
         if (onSuccessOrder) onSuccessOrder(data);
       } else {
-        alert(data.error || (lang === "bn" ? "অর্ডারে সমস্যা হয়েছে। আবার চেষ্টা করুন।" : "Failed to place order. Please try again."));
+        setFormError(data.error || (lang === "bn" ? "অর্ডারে সমস্যা হয়েছে। আবার চেষ্টা করুন।" : "Failed to place order. Please try again."));
       }
     } catch {
       // Offline fallback
@@ -493,7 +504,7 @@ export function ExpressCheckoutModal({
                           isSelected ? "text-emerald-400" : "text-emerald-600"
                         }`}
                       >
-                        {currency}{fee.toFixed(0)}
+                        {currency}{fee.toFixed(isBDT ? 0 : 2)}
                       </div>
                       <div
                         className={`text-[9px] mt-1 ${
@@ -679,6 +690,13 @@ export function ExpressCheckoutModal({
                   <span>{currency}{finalTotal.toFixed(2)}</span>
                 </div>
               </div>
+
+              {formError && (
+                <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-medium flex items-center space-x-2 animate-fade-in">
+                  <AlertCircle className="w-4 h-4 text-rose-600 flex-shrink-0" />
+                  <span>{formError}</span>
+                </div>
+              )}
 
               <button
                 type="submit"
