@@ -14,7 +14,7 @@ export const DEMO_STORES_LIST = [
 
 export function PlatformFooter() {
   return (
-    <footer className="bg-zinc-50 dark:bg-zinc-950 text-zinc-600 dark:text-zinc-400 font-sans border-t border-zinc-200 dark:border-white/[0.08] mt-auto transition-colors">
+    <footer className="bg-zinc-50 dark:bg-[#070709] text-zinc-600 dark:text-zinc-400 font-sans border-t border-zinc-200/80 dark:border-white/[0.06] mt-auto transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Column 1 & 2: Brand & Operating System Overview */}
@@ -122,7 +122,7 @@ export function PlatformFooter() {
         </div>
 
         {/* ─── Clean Bottom Bar & Legal ────────────────────────────────────────── */}
-        <div className="mt-12 pt-8 border-t border-zinc-200 dark:border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
+        <div className="mt-12 pt-8 border-t border-zinc-200/80 dark:border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
           <p>© {new Date().getFullYear()} StoreSwift Technologies Ltd. All rights reserved.</p>
 
           <div className="flex items-center space-x-6 text-zinc-500">

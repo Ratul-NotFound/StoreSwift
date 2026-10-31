@@ -16,6 +16,18 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 const THEME_STORAGE_KEY = "storeswift-theme";
 
+function applyDomTheme(active: ResolvedTheme) {
+  if (typeof document === "undefined") return;
+  const root = document.documentElement;
+  if (active === "dark") {
+    root.classList.add("dark");
+    root.classList.remove("light");
+  } else {
+    root.classList.add("light");
+    root.classList.remove("dark");
+  }
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>("dark");
   const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>("dark");
@@ -23,50 +35,34 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     setMounted(true);
+    let initial: Theme = "dark";
     try {
       const stored = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
       if (stored === "light" || stored === "dark" || stored === "system") {
-        setThemeState(stored);
-      } else {
-        // Default to dark mode for the platform aesthetic
-        setThemeState("dark");
+        initial = stored;
+      } else if (document.documentElement.classList.contains("light")) {
+        initial = "light";
       }
     } catch {
-      setThemeState("dark");
+      initial = "dark";
     }
+
+    setThemeState(initial);
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const active: ResolvedTheme =
+      initial === "system" ? (mediaQuery.matches ? "dark" : "light") : initial;
+    setResolvedTheme(active);
+    applyDomTheme(active);
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || theme !== "system") return;
 
-    const root = document.documentElement;
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-
-    const applyTheme = () => {
-      let active: ResolvedTheme = "dark";
-      if (theme === "system") {
-        active = mediaQuery.matches ? "dark" : "light";
-      } else {
-        active = theme;
-      }
-
+    const listener = (e: MediaQueryListEvent) => {
+      const active: ResolvedTheme = e.matches ? "dark" : "light";
       setResolvedTheme(active);
-
-      if (active === "dark") {
-        root.classList.add("dark");
-        root.classList.remove("light");
-      } else {
-        root.classList.add("light");
-        root.classList.remove("dark");
-      }
-    };
-
-    applyTheme();
-
-    const listener = () => {
-      if (theme === "system") {
-        applyTheme();
-      }
+      applyDomTheme(active);
     };
 
     mediaQuery.addEventListener("change", listener);
@@ -75,15 +71,24 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
+    let active: ResolvedTheme = "dark";
+    if (newTheme === "system") {
+      active = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    } else {
+      active = newTheme;
+    }
+    setResolvedTheme(active);
+    applyDomTheme(active);
+
     try {
       localStorage.setItem(THEME_STORAGE_KEY, newTheme);
     } catch {
-      // localStorage may fail in private mode
+      // localStorage may fail in restricted/private contexts
     }
   };
 
   const toggleTheme = () => {
-    const next = resolvedTheme === "dark" ? "light" : "dark";
+    const next: ResolvedTheme = resolvedTheme === "dark" ? "light" : "dark";
     setTheme(next);
   };
 

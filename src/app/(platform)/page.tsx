@@ -145,7 +145,7 @@ export default function PlatformLandingPage() {
   ];
 
   return (
-    <div className="flex flex-col min-h-screen studio-canvas-light dark:studio-canvas-dark text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-900 selection:text-white dark:selection:bg-white dark:selection:text-zinc-950 antialiased transition-colors duration-150">
+    <div className="flex flex-col min-h-screen studio-canvas text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-900 selection:text-white dark:selection:bg-white dark:selection:text-zinc-950 antialiased transition-colors duration-150">
       {/* ─── 1. Platform Navigation Bar ─────────────────────────────────────── */}
       <header className="border-b border-zinc-200/80 dark:border-white/[0.06] bg-white/80 dark:bg-[#070709]/80 backdrop-blur-2xl sticky top-0 z-50 transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
@@ -369,7 +369,7 @@ export default function PlatformLandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {/* Card 01: 20-Second Checkout */}
-            <div className="luxury-card-light dark:luxury-card-dark rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 transition-transform duration-200 hover:-translate-y-1">
+            <div className="luxury-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 transition-transform duration-200 hover:-translate-y-1">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="w-10 h-10 rounded-2xl bg-zinc-100 dark:bg-white/10 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm">
@@ -412,7 +412,7 @@ export default function PlatformLandingPage() {
             </div>
 
             {/* Card 02: Automated Logistics & Courier */}
-            <div className="luxury-card-light dark:luxury-card-dark rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 transition-transform duration-200 hover:-translate-y-1">
+            <div className="luxury-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 transition-transform duration-200 hover:-translate-y-1">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="w-10 h-10 rounded-2xl bg-zinc-100 dark:bg-white/10 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm">
@@ -455,7 +455,7 @@ export default function PlatformLandingPage() {
             </div>
 
             {/* Card 03: Margin Protection & Anti-Fraud */}
-            <div className="luxury-card-light dark:luxury-card-dark rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 transition-transform duration-200 hover:-translate-y-1">
+            <div className="luxury-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 transition-transform duration-200 hover:-translate-y-1">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="w-10 h-10 rounded-2xl bg-zinc-100 dark:bg-white/10 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm">
@@ -651,7 +651,7 @@ export default function PlatformLandingPage() {
           </div>
 
           {/* Featured Store Showcase: Clean Studio Frame */}
-          <div className="luxury-card-light dark:luxury-card-dark rounded-3xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 items-stretch">
+          <div className="luxury-card rounded-3xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 items-stretch">
             {/* Left: High-Res Visual Preview */}
             <div className="lg:col-span-7 relative min-h-[260px] sm:min-h-[340px] lg:min-h-[440px] bg-zinc-950 overflow-hidden group">
               <img
@@ -774,7 +774,7 @@ export default function PlatformLandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch pt-2">
             {/* Starter Plan */}
-            <div className="luxury-card-light dark:luxury-card-dark rounded-3xl p-6 sm:p-8 flex flex-col justify-between">
+            <div className="luxury-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between">
               <div className="space-y-4">
                 <div>
                   <h3 className="text-lg font-bold text-zinc-950 dark:text-white">Starter</h3>
@@ -803,7 +803,7 @@ export default function PlatformLandingPage() {
             </div>
 
             {/* Growth Plan (Popular - Titanium Ring Elevation) */}
-            <div className="luxury-card-light dark:luxury-card-dark ring-2 ring-zinc-950 dark:ring-white/30 rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative shadow-lg">
+            <div className="luxury-card ring-2 ring-zinc-950 dark:ring-white/30 rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative shadow-lg">
               <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 text-[10px] font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-sm">
                 Most Popular
               </div>
@@ -836,7 +836,7 @@ export default function PlatformLandingPage() {
             </div>
 
             {/* Pro Plan */}
-            <div className="luxury-card-light dark:luxury-card-dark rounded-3xl p-6 sm:p-8 flex flex-col justify-between">
+            <div className="luxury-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between">
               <div className="space-y-4">
                 <div>
                   <h3 className="text-lg font-bold text-zinc-950 dark:text-white">Pro Enterprise</h3>
@@ -882,7 +882,7 @@ export default function PlatformLandingPage() {
             </p>
           </div>
 
-          <div className="luxury-card-light dark:luxury-card-dark rounded-3xl p-5 sm:p-8 divide-y divide-zinc-200 dark:divide-white/[0.08]">
+          <div className="luxury-card rounded-3xl p-5 sm:p-8 divide-y divide-zinc-200 dark:divide-white/[0.08]">
             {faqs.map((faq, index) => {
               const isOpen = activeFaq === index;
               return (
@@ -915,7 +915,7 @@ export default function PlatformLandingPage() {
       {/* ─── 9. Final Call to Action ────────────────────────────────────────── */}
       <section className="relative min-h-0 lg:min-h-[75vh] flex flex-col justify-center py-16 sm:py-20 lg:py-20 border-b border-zinc-200/80 dark:border-white/[0.06] transition-colors">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto">
-          <div className="luxury-card-light dark:luxury-card-dark rounded-3xl p-8 sm:p-14 text-center space-y-6 relative overflow-hidden">
+          <div className="luxury-card rounded-3xl p-8 sm:p-14 text-center space-y-6 relative overflow-hidden">
             <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight relative leading-tight text-zinc-950 dark:text-white">
               Ready to launch your store?
             </h2>
