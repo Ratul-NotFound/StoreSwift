@@ -1,5 +1,7 @@
 "use client";
 
+import { StoreFooter } from "@/components/footer";
+
 import { useState } from "react";
 import Link from "next/link";
 import {
@@ -7,6 +9,7 @@ import {
   Store,
   CheckCircle2,
   Truck,
+  Zap,
   ShieldCheck,
   X,
   ArrowRight,
@@ -56,6 +59,8 @@ export interface PantryStorefrontProps {
   onOpenProduct: (prod: any) => void;
   onOpenCart: () => void;
   onOpenSearch: () => void;
+  onOpenCheckout?: () => void;
+  onOpenTrackOrder?: () => void;
   // Demo Studio
   allCategories: string[];
   activeCategoryKey: string;
@@ -112,6 +117,8 @@ export function PantryStorefront({
   onOpenProduct,
   onOpenCart,
   onOpenSearch,
+  onOpenCheckout,
+  onOpenTrackOrder,
   allCategories,
   activeCategoryKey,
   onSelectCategory,
@@ -235,6 +242,30 @@ export function PantryStorefront({
             >
               <Search className="w-4 h-4" />
             </button>
+
+            {onOpenTrackOrder && (
+              <button
+                type="button"
+                onClick={onOpenTrackOrder}
+                className="hidden sm:inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-xl border border-current/20 hover:border-current/40 text-xs font-semibold opacity-80 hover:opacity-100 transition"
+                title="Track Consignment"
+              >
+                <Truck className="w-3.5 h-3.5 text-blue-500" />
+                <span className="hidden md:inline text-[11px]">Track</span>
+              </button>
+            )}
+
+            {onOpenCheckout && cartItems.length > 0 && (
+              <button
+                type="button"
+                onClick={onOpenCheckout}
+                className="hidden sm:inline-flex items-center space-x-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition btn-press shadow-sm"
+                title="1-Page Express Checkout"
+              >
+                <Zap className="w-3 h-3" />
+                <span>Checkout</span>
+              </button>
+            )}
 
             <button
               onClick={onOpenCart}
@@ -935,58 +966,13 @@ export function PantryStorefront({
       </div>
 
       {/* ─── 12. Farmstead Pantry Tailored Store Footer ─────────────────────── */}
-      <footer className="py-12 px-4 sm:px-6 bg-[#0e1611] text-emerald-100/80 border-t border-emerald-950 text-xs">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="space-y-3">
-            <span className="font-black text-sm uppercase tracking-wider text-white">
-              {storeDisplayName}
-            </span>
-            <p className="text-xs text-emerald-200/70 leading-relaxed">
-              Regenerative organic farmstead provisions, micro-lot drum roasted within 48 hours and packaged in zero-landfill compostables.
-            </p>
-            <p className="text-[11px] text-emerald-400/50 font-mono">
-              © 2026 {storeDisplayName}. All rights reserved.
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <span className="font-bold text-xs uppercase tracking-wider text-white block">
-              Pantry Provisions
-            </span>
-            <ul className="space-y-1.5 text-emerald-200/70">
-              <li><a href="#provisions" className="hover:text-white transition">Single-Origin Yirgacheffe Coffee</a></li>
-              <li><a href="#provisions" className="hover:text-white transition">Raw Alpine Wildflower Honey</a></li>
-              <li><a href="#provisions" className="hover:text-white transition">Early-Harvest Koroneiki EVOO</a></li>
-              <li><a href="#ensemble" className="hover:text-white transition">Complete Kitchen Trios</a></li>
-            </ul>
-          </div>
-
-          <div className="space-y-2">
-            <span className="font-bold text-xs uppercase tracking-wider text-white block">
-              Farmgate Services
-            </span>
-            <ul className="space-y-1.5 text-emerald-200/70">
-              <li><span>Doorstep Cash on Delivery</span></li>
-              <li><span>Aroma Degassing Valve Verification</span></li>
-              <li><span>100% Culinary Freshness Guarantee</span></li>
-              <li><span>Compostable Pouch Collection</span></li>
-            </ul>
-          </div>
-
-          <div className="space-y-2">
-            <span className="font-bold text-xs uppercase tracking-wider text-white block">
-              Regenerative Quality
-            </span>
-            <p className="text-emerald-200/70 leading-relaxed">
-              Nationwide cash on delivery. Inspect the roast timestamp and aroma seal prior to tender.
-            </p>
-            <div className="inline-flex items-center space-x-1.5 text-emerald-400 font-mono text-[11px] pt-1">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Doorstep Inspection Protocol</span>
-            </div>
-          </div>
-        </div>
-      </footer>
+      {/* ─── Unified Professional Multi-Column Store Footer ────────────────── */}
+      <StoreFooter
+        storeName={storeDisplayName}
+        storeSlug={tenantSlug}
+        onOpenTrackOrder={onOpenTrackOrder}
+        categoryName="Gourmet Food & Coffee"
+      />
     </div>
   );
 }

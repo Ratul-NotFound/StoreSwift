@@ -1,5 +1,7 @@
 "use client";
 
+import { StoreFooter } from "@/components/footer";
+
 import { useState } from "react";
 import Link from "next/link";
 import {
@@ -7,6 +9,7 @@ import {
   Store,
   CheckCircle2,
   Truck,
+  Zap,
   ShieldCheck,
   X,
   ArrowRight,
@@ -54,6 +57,8 @@ export interface BeautyStorefrontProps {
   onOpenProduct: (prod: any) => void;
   onOpenCart: () => void;
   onOpenSearch: () => void;
+  onOpenCheckout?: () => void;
+  onOpenTrackOrder?: () => void;
   // Demo Studio
   allCategories: string[];
   activeCategoryKey: string;
@@ -114,6 +119,8 @@ export function BeautyStorefront({
   onOpenProduct,
   onOpenCart,
   onOpenSearch,
+  onOpenCheckout,
+  onOpenTrackOrder,
   allCategories,
   activeCategoryKey,
   onSelectCategory,
@@ -237,6 +244,30 @@ export function BeautyStorefront({
             >
               <Search className="w-4 h-4" />
             </button>
+
+            {onOpenTrackOrder && (
+              <button
+                type="button"
+                onClick={onOpenTrackOrder}
+                className="hidden sm:inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-xl border border-current/20 hover:border-current/40 text-xs font-semibold opacity-80 hover:opacity-100 transition"
+                title="Track Consignment"
+              >
+                <Truck className="w-3.5 h-3.5 text-blue-500" />
+                <span className="hidden md:inline text-[11px]">Track</span>
+              </button>
+            )}
+
+            {onOpenCheckout && cartItems.length > 0 && (
+              <button
+                type="button"
+                onClick={onOpenCheckout}
+                className="hidden sm:inline-flex items-center space-x-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition btn-press shadow-sm"
+                title="1-Page Express Checkout"
+              >
+                <Zap className="w-3 h-3" />
+                <span>Checkout</span>
+              </button>
+            )}
 
             <button
               onClick={onOpenCart}
@@ -957,59 +988,13 @@ export function BeautyStorefront({
         )}
       </div>
 
-      {/* ─── 12. Luxe Glow Tailored Store Footer ────────────────────────────── */}
-      <footer className="py-12 px-4 sm:px-6 bg-[#180d11] text-rose-100 border-t border-rose-950 text-xs">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="space-y-3">
-            <span className="font-black text-sm uppercase tracking-wider text-white">
-              {storeDisplayName}
-            </span>
-            <p className="text-xs text-rose-300/80 leading-relaxed">
-              Clinical botanical skincare, cold-chain stabilized and delivered with doorstep tamper foil verification.
-            </p>
-            <p className="text-[11px] text-rose-400/60 font-mono">
-              © 2026 {storeDisplayName}. All rights reserved.
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <span className="font-bold text-xs uppercase tracking-wider text-white block">
-              Formulations
-            </span>
-            <ul className="space-y-1.5 text-rose-300/80">
-              <li><a href="#rituals" className="hover:text-white transition">Hyaluronic Dew Serums</a></li>
-              <li><a href="#rituals" className="hover:text-white transition">Ceramide Barrier Balms</a></li>
-              <li><a href="#rituals" className="hover:text-white transition">Velvet Moisture Lipsticks</a></li>
-              <li><a href="#bundle" className="hover:text-white transition">3-Step Glass Skin System</a></li>
-            </ul>
-          </div>
-
-          <div className="space-y-2">
-            <span className="font-bold text-xs uppercase tracking-wider text-white block">
-              Patron Services
-            </span>
-            <ul className="space-y-1.5 text-rose-300/80">
-              <li><span>Doorstep Cash on Delivery</span></li>
-              <li><span>Tamper Foil Seal Inspection</span></li>
-              <li><span>14-Day Patch Test Glow Guarantee</span></li>
-              <li><span>Ingredient Clinical Trials</span></li>
-            </ul>
-          </div>
-
-          <div className="space-y-2">
-            <span className="font-bold text-xs uppercase tracking-wider text-white block">
-              Quality & Safety
-            </span>
-            <p className="text-rose-300/80 leading-relaxed">
-              Nationwide cash on delivery. Inspect the bottle seal and lot code in person prior to tender.
-            </p>
-            <div className="inline-flex items-center space-x-1.5 text-rose-300 font-mono text-[11px] pt-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-rose-400" />
-              <span>Doorstep Inspection Protocol</span>
-            </div>
-          </div>
-        </div>
-      </footer>
+      {/* ─── Unified Professional Multi-Column Store Footer ────────────────── */}
+      <StoreFooter
+        storeName={storeDisplayName}
+        storeSlug={tenantSlug}
+        onOpenTrackOrder={onOpenTrackOrder}
+        categoryName="Beauty & Skincare"
+      />
     </div>
   );
 }

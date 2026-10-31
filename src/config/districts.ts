@@ -642,3 +642,4 @@ export const CHECKOUT_I18N = {
     continueShopping: "আরও কেনাকাটা করুন"
   }
 };
+

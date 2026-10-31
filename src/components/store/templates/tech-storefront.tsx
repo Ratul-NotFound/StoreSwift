@@ -1,5 +1,7 @@
 "use client";
 
+import { StoreFooter } from "@/components/footer";
+
 import { useState } from "react";
 import Link from "next/link";
 import {
@@ -57,6 +59,8 @@ export interface TechStorefrontProps {
   onOpenProduct: (prod: any) => void;
   onOpenCart: () => void;
   onOpenSearch: () => void;
+  onOpenCheckout?: () => void;
+  onOpenTrackOrder?: () => void;
   // Demo Studio
   allCategories: string[];
   activeCategoryKey: string;
@@ -117,6 +121,8 @@ export function TechStorefront({
   onOpenProduct,
   onOpenCart,
   onOpenSearch,
+  onOpenCheckout,
+  onOpenTrackOrder,
   allCategories,
   activeCategoryKey,
   onSelectCategory,
@@ -240,6 +246,30 @@ export function TechStorefront({
             >
               <Search className="w-4 h-4" />
             </button>
+
+            {onOpenTrackOrder && (
+              <button
+                type="button"
+                onClick={onOpenTrackOrder}
+                className="hidden sm:inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-xl border border-current/20 hover:border-current/40 text-xs font-semibold opacity-80 hover:opacity-100 transition"
+                title="Track Consignment"
+              >
+                <Truck className="w-3.5 h-3.5 text-blue-500" />
+                <span className="hidden md:inline text-[11px]">Track</span>
+              </button>
+            )}
+
+            {onOpenCheckout && cartItems.length > 0 && (
+              <button
+                type="button"
+                onClick={onOpenCheckout}
+                className="hidden sm:inline-flex items-center space-x-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition btn-press shadow-sm"
+                title="1-Page Express Checkout"
+              >
+                <Zap className="w-3 h-3" />
+                <span>Checkout</span>
+              </button>
+            )}
 
             <button
               onClick={onOpenCart}
@@ -943,58 +973,13 @@ export function TechStorefront({
       </div>
 
       {/* ─── 12. Tech Cyber Tailored Store Footer ───────────────────────────── */}
-      <footer className="py-12 px-4 sm:px-6 bg-black text-zinc-400 border-t border-zinc-900 text-xs font-mono">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="space-y-3">
-            <span className="font-black text-sm uppercase tracking-wider text-white">
-              {storeDisplayName}
-            </span>
-            <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-              Precision hardware peripherals, milled from 6063 aerospace aluminum with mil-spec calibrated tolerances.
-            </p>
-            <p className="text-[11px] text-zinc-600">
-              © 2026 {storeDisplayName}. All rights reserved.
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <span className="font-bold text-xs uppercase tracking-wider text-white block">
-              Hardware Series
-            </span>
-            <ul className="space-y-1.5 text-zinc-400">
-              <li><a href="#hardware" className="hover:text-white transition">Acoustic Pro Headphones</a></li>
-              <li><a href="#hardware" className="hover:text-white transition">CNC Gasket Keyboards</a></li>
-              <li><a href="#hardware" className="hover:text-white transition">100W GaN Charging Stations</a></li>
-              <li><a href="#ensemble" className="hover:text-white transition">Workstation Bundles</a></li>
-            </ul>
-          </div>
-
-          <div className="space-y-2">
-            <span className="font-bold text-xs uppercase tracking-wider text-white block">
-              Operator Services
-            </span>
-            <ul className="space-y-1.5 text-zinc-400">
-              <li><span>Doorstep Cash on Delivery</span></li>
-              <li><span>Anti-Static Tape Verification</span></li>
-              <li><span>2-Year Advance Replacement Swap</span></li>
-              <li><span>Firmware Flash Downloads</span></li>
-            </ul>
-          </div>
-
-          <div className="space-y-2">
-            <span className="font-bold text-xs uppercase tracking-wider text-white block">
-              Quality & Warranty
-            </span>
-            <p className="text-zinc-400 leading-relaxed font-sans">
-              Nationwide cash on delivery. Inspect carton tamper seals and match chassis serial numbers prior to tender.
-            </p>
-            <div className="inline-flex items-center space-x-1.5 text-sky-400 text-[11px] pt-1">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Doorstep Inspection Protocol</span>
-            </div>
-          </div>
-        </div>
-      </footer>
+      {/* ─── Unified Professional Multi-Column Store Footer ────────────────── */}
+      <StoreFooter
+        storeName={storeDisplayName}
+        storeSlug={tenantSlug}
+        onOpenTrackOrder={onOpenTrackOrder}
+        categoryName="Consumer Tech & Audio"
+      />
     </div>
   );
 }

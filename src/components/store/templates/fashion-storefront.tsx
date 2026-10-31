@@ -1,5 +1,7 @@
 "use client";
 
+import { StoreFooter } from "@/components/footer";
+
 import { useState } from "react";
 import Link from "next/link";
 import {
@@ -7,6 +9,7 @@ import {
   Store,
   CheckCircle2,
   Truck,
+  Zap,
   ShieldCheck,
   X,
   ArrowRight,
@@ -53,6 +56,8 @@ export interface FashionStorefrontProps {
   onOpenProduct: (prod: any) => void;
   onOpenCart: () => void;
   onOpenSearch: () => void;
+  onOpenCheckout?: () => void;
+  onOpenTrackOrder?: () => void;
   // Demo Studio
   allCategories: string[];
   activeCategoryKey: string;
@@ -164,6 +169,8 @@ export function FashionStorefront({
   onOpenProduct,
   onOpenCart,
   onOpenSearch,
+  onOpenCheckout,
+  onOpenTrackOrder,
   allCategories,
   activeCategoryKey,
   onSelectCategory,
@@ -305,6 +312,30 @@ export function FashionStorefront({
                 </span>
               )}
             </button>
+
+            {onOpenTrackOrder && (
+              <button
+                type="button"
+                onClick={onOpenTrackOrder}
+                className="hidden sm:inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-xl border border-current/20 hover:border-current/40 text-xs font-semibold opacity-80 hover:opacity-100 transition"
+                title="Track Consignment"
+              >
+                <Truck className="w-3.5 h-3.5 text-blue-500" />
+                <span className="hidden md:inline text-[11px]">Track</span>
+              </button>
+            )}
+
+            {onOpenCheckout && cartItems.length > 0 && (
+              <button
+                type="button"
+                onClick={onOpenCheckout}
+                className="hidden sm:inline-flex items-center space-x-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition btn-press shadow-sm"
+                title="1-Page Express Checkout"
+              >
+                <Zap className="w-3 h-3" />
+                <span>Checkout</span>
+              </button>
+            )}
 
             <button
               onClick={onOpenCart}
@@ -1101,49 +1132,13 @@ export function FashionStorefront({
         )}
       </div>
 
-      {/* ─── 13. StoreFooter ────────────────────────────────────────────────── */}
-      <footer className="py-12 px-4 sm:px-6 bg-zinc-950 text-white border-t border-zinc-900 text-xs">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="space-y-3">
-            <span className="font-black text-sm uppercase tracking-wider">{storeDisplayName}</span>
-            <p className="text-xs text-zinc-400 leading-relaxed">
-              Atelier apparel engineered from heavyweight organic combed yarns and shuttle-loomed Kurabo selvedge.
-            </p>
-            <p className="text-[11px] text-zinc-500">© 2026 {storeDisplayName}. All rights reserved.</p>
-          </div>
-
-          <div className="space-y-2">
-            <span className="font-bold text-xs uppercase tracking-wider text-zinc-300 block">Silhouettes</span>
-            <ul className="space-y-1.5 text-zinc-400">
-              <li><a href="#catalog" className="hover:text-white transition">280 GSM Oversized Tees</a></li>
-              <li><a href="#catalog" className="hover:text-white transition">13.5oz Raw Selvedge</a></li>
-              <li><a href="#catalog" className="hover:text-white transition">450 GSM Loopback Terry</a></li>
-              <li><a href="#outfits" className="hover:text-white transition">Curated Ensembles</a></li>
-            </ul>
-          </div>
-
-          <div className="space-y-2">
-            <span className="font-bold text-xs uppercase tracking-wider text-zinc-300 block">Patron Services</span>
-            <ul className="space-y-1.5 text-zinc-400">
-              <li><span>Doorstep Cash on Delivery</span></li>
-              <li><span>Try Before You Pay (Fitting Trial)</span></li>
-              <li><span>48h Complimentary Size Exchange</span></li>
-              <li><span>Wash & Care Guides</span></li>
-            </ul>
-          </div>
-
-          <div className="space-y-2">
-            <span className="font-bold text-xs uppercase tracking-wider text-zinc-300 block">Payment & Logistics</span>
-            <p className="text-zinc-400 leading-relaxed">
-              Nationwide cash on delivery enabled. Inspect your garments in person prior to tender.
-            </p>
-            <div className="inline-flex items-center space-x-1.5 text-emerald-400 font-mono text-[11px] pt-1">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Doorstep Inspection Protocol</span>
-            </div>
-          </div>
-        </div>
-      </footer>
+      {/* ─── Unified Professional Multi-Column Store Footer ────────────────── */}
+      <StoreFooter
+        storeName={storeDisplayName}
+        storeSlug={tenantSlug}
+        onOpenTrackOrder={onOpenTrackOrder}
+        categoryName="Fashion & Apparel"
+      />
     </div>
   );
 }

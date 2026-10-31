@@ -49,6 +49,8 @@ import { SearchModal } from "@/components/store/search-modal";
 import { SpotlightDrop } from "@/components/store/spotlight-drop";
 import { TestimonialsSection } from "@/components/store/testimonials";
 import { ExpressCheckoutModal } from "@/components/store/express-checkout-modal";
+import { DemoStoreBar } from "@/components/store/demo-store-bar";
+import { TrackOrderModal } from "@/components/store/track-order-modal";
 import { FashionStorefront } from "@/components/store/templates/fashion-storefront";
 import { BeautyStorefront } from "@/components/store/templates/beauty-storefront";
 import { FootwearStorefront } from "@/components/store/templates/footwear-storefront";
@@ -184,6 +186,7 @@ export default function TenantStorefrontPage({
 
   // Checkout modal state
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [isTrackOrderOpen, setIsTrackOrderOpen] = useState(false);
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
@@ -326,10 +329,21 @@ export default function TenantStorefrontPage({
 
   return (
     <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${template.classes.pageBg}`}>
+      {/* ─── Top Demo Store Preview Bar ──────────────────────────────────── */}
+      <DemoStoreBar
+        currentSlug={tenantSlug}
+        storeDisplayName={storeDisplayName}
+        categoryName={categoryConfig.name}
+        onOpenCheckout={() => setIsCheckoutOpen(true)}
+        onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
+      />
+
       {isFashionVertical ? (
         <FashionStorefront
           storeDisplayName={storeDisplayName}
           tenantSlug={tenantSlug}
+          onOpenCheckout={() => setIsCheckoutOpen(true)}
+          onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
           products={products}
           cartItems={cartItems}
           wishlist={wishlist}
@@ -357,6 +371,8 @@ export default function TenantStorefrontPage({
         <BeautyStorefront
           storeDisplayName={storeDisplayName}
           tenantSlug={tenantSlug}
+          onOpenCheckout={() => setIsCheckoutOpen(true)}
+          onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
           products={products}
           cartItems={cartItems}
           wishlist={wishlist}
@@ -384,6 +400,8 @@ export default function TenantStorefrontPage({
         <FootwearStorefront
           storeDisplayName={storeDisplayName}
           tenantSlug={tenantSlug}
+          onOpenCheckout={() => setIsCheckoutOpen(true)}
+          onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
           products={products}
           cartItems={cartItems}
           wishlist={wishlist}
@@ -411,6 +429,8 @@ export default function TenantStorefrontPage({
         <TechStorefront
           storeDisplayName={storeDisplayName}
           tenantSlug={tenantSlug}
+          onOpenCheckout={() => setIsCheckoutOpen(true)}
+          onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
           products={products}
           cartItems={cartItems}
           wishlist={wishlist}
@@ -438,6 +458,8 @@ export default function TenantStorefrontPage({
         <JewelryStorefront
           storeDisplayName={storeDisplayName}
           tenantSlug={tenantSlug}
+          onOpenCheckout={() => setIsCheckoutOpen(true)}
+          onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
           products={products}
           cartItems={cartItems}
           wishlist={wishlist}
@@ -465,6 +487,8 @@ export default function TenantStorefrontPage({
         <PantryStorefront
           storeDisplayName={storeDisplayName}
           tenantSlug={tenantSlug}
+          onOpenCheckout={() => setIsCheckoutOpen(true)}
+          onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
           products={products}
           cartItems={cartItems}
           wishlist={wishlist}
@@ -1411,6 +1435,14 @@ export default function TenantStorefrontPage({
         tenantSlug={tenantSlug}
         currency="$"
         onClearCart={() => setCartItems([])}
+      />
+
+      {/* ─── Live Track Order Modal (Steadfast & Pathao) ─────────────── */}
+      <TrackOrderModal
+        isOpen={isTrackOrderOpen}
+        onClose={() => setIsTrackOrderOpen(false)}
+        storeDisplayName={storeDisplayName}
+        tenantSlug={tenantSlug}
       />
 
       {/* ─── 13. Rich Multi-Column Store Footer      {/* ─── 13. Rich Multi-Column Store Footer ────────────────────────────── */}

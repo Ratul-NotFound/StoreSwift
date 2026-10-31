@@ -1,5 +1,7 @@
 "use client";
 
+import { StoreFooter } from "@/components/footer";
+
 import { useState } from "react";
 import Link from "next/link";
 import {
@@ -7,6 +9,7 @@ import {
   Store,
   CheckCircle2,
   Truck,
+  Zap,
   ShieldCheck,
   X,
   ArrowRight,
@@ -55,6 +58,8 @@ export interface FootwearStorefrontProps {
   onOpenProduct: (prod: any) => void;
   onOpenCart: () => void;
   onOpenSearch: () => void;
+  onOpenCheckout?: () => void;
+  onOpenTrackOrder?: () => void;
   // Demo Studio
   allCategories: string[];
   activeCategoryKey: string;
@@ -121,6 +126,8 @@ export function FootwearStorefront({
   onOpenProduct,
   onOpenCart,
   onOpenSearch,
+  onOpenCheckout,
+  onOpenTrackOrder,
   allCategories,
   activeCategoryKey,
   onSelectCategory,
@@ -250,6 +257,30 @@ export function FootwearStorefront({
             >
               <Search className="w-4 h-4" />
             </button>
+
+            {onOpenTrackOrder && (
+              <button
+                type="button"
+                onClick={onOpenTrackOrder}
+                className="hidden sm:inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-xl border border-current/20 hover:border-current/40 text-xs font-semibold opacity-80 hover:opacity-100 transition"
+                title="Track Consignment"
+              >
+                <Truck className="w-3.5 h-3.5 text-blue-500" />
+                <span className="hidden md:inline text-[11px]">Track</span>
+              </button>
+            )}
+
+            {onOpenCheckout && cartItems.length > 0 && (
+              <button
+                type="button"
+                onClick={onOpenCheckout}
+                className="hidden sm:inline-flex items-center space-x-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition btn-press shadow-sm"
+                title="1-Page Express Checkout"
+              >
+                <Zap className="w-3 h-3" />
+                <span>Checkout</span>
+              </button>
+            )}
 
             <button
               onClick={onOpenCart}
@@ -951,58 +982,13 @@ export function FootwearStorefront({
       </div>
 
       {/* ─── 12. Heritage Guild Tailored Store Footer ───────────────────────── */}
-      <footer className="py-12 px-4 sm:px-6 bg-[#151210] text-stone-300 border-t border-stone-900 text-xs">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="space-y-3">
-            <span className="font-black text-sm uppercase tracking-wider text-white font-serif">
-              {storeDisplayName}
-            </span>
-            <p className="text-xs text-stone-400 leading-relaxed">
-              Handcrafted footwear built with 360° Goodyear storm welts, Horween full-grain leathers, and resoleable Vibram outsoles.
-            </p>
-            <p className="text-[11px] text-stone-500 font-mono">
-              © 2026 {storeDisplayName}. All rights reserved.
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <span className="font-bold text-xs uppercase tracking-wider text-white block font-serif">
-              Guild Builds
-            </span>
-            <ul className="space-y-1.5 text-stone-400">
-              <li><a href="#footwear" className="hover:text-white transition">Horween Chromexcel Chelseas</a></li>
-              <li><a href="#footwear" className="hover:text-white transition">Tuscan Suede Penny Loafers</a></li>
-              <li><a href="#footwear" className="hover:text-white transition">Pro-Stride Carbon Runners</a></li>
-              <li><a href="#ensemble" className="hover:text-white transition">Cobbler Care Packages</a></li>
-            </ul>
-          </div>
-
-          <div className="space-y-2">
-            <span className="font-bold text-xs uppercase tracking-wider text-white block font-serif">
-              Patron Services
-            </span>
-            <ul className="space-y-1.5 text-stone-400">
-              <li><span>Doorstep Cash on Delivery</span></li>
-              <li><span>Indoor Carpet Try-On Protocol</span></li>
-              <li><span>48h Free Size Exchange Courier</span></li>
-              <li><span>Lifetime Cobbler Resoling Network</span></li>
-            </ul>
-          </div>
-
-          <div className="space-y-2">
-            <span className="font-bold text-xs uppercase tracking-wider text-white block font-serif">
-              Craft & Sizing
-            </span>
-            <p className="text-stone-400 leading-relaxed">
-              Nationwide cash on delivery. Inspect the stitching, leather grain, and try on carpet prior to payment.
-            </p>
-            <div className="inline-flex items-center space-x-1.5 text-amber-400 font-mono text-[11px] pt-1">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Doorstep Inspection Protocol</span>
-            </div>
-          </div>
-        </div>
-      </footer>
+      {/* ─── Unified Professional Multi-Column Store Footer ────────────────── */}
+      <StoreFooter
+        storeName={storeDisplayName}
+        storeSlug={tenantSlug}
+        onOpenTrackOrder={onOpenTrackOrder}
+        categoryName="Footwear & Leather"
+      />
     </div>
   );
 }
