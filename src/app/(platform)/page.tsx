@@ -145,7 +145,19 @@ export default function PlatformLandingPage() {
   ];
 
   return (
-    <div className="flex flex-col min-h-screen bg-white text-zinc-900 dark:bg-[#09090b] dark:text-zinc-100 font-sans selection:bg-blue-600 selection:text-white antialiased transition-colors duration-150">
+    <div className="relative flex flex-col min-h-screen bg-white text-zinc-900 dark:bg-[#09090b] dark:text-zinc-100 font-sans selection:bg-blue-600 selection:text-white antialiased transition-colors duration-150 overflow-x-hidden">
+      {/* ─── Premium Ambient Background Architecture (Linear/Vercel Aesthetic) ─── */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+        {/* Subtle High-Precision Engineering Grid with Vignette */}
+        <div className="absolute inset-0 enterprise-grid opacity-85 dark:opacity-55" />
+
+        {/* Top Horizon Light Beacon */}
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[1100px] h-[550px] bg-gradient-to-b from-blue-500/18 via-indigo-500/10 to-transparent dark:from-blue-600/30 dark:via-indigo-600/15 dark:to-transparent blur-[120px] rounded-full" />
+
+        {/* Secondary Ambient Accent Glows */}
+        <div className="absolute top-[35%] -right-40 w-[600px] h-[600px] bg-gradient-to-br from-indigo-500/8 via-blue-500/5 to-transparent dark:from-purple-600/12 dark:via-blue-600/6 dark:to-transparent blur-[140px] rounded-full" />
+        <div className="absolute top-[65%] -left-40 w-[600px] h-[600px] bg-gradient-to-tr from-blue-500/8 via-emerald-500/4 to-transparent dark:from-blue-600/12 dark:via-emerald-600/5 dark:to-transparent blur-[140px] rounded-full" />
+      </div>
       {/* ─── 1. Platform Navigation Bar ─────────────────────────────────────── */}
       <header className="border-b border-zinc-200 dark:border-white/[0.08] bg-white/80 dark:bg-[#09090b]/85 backdrop-blur-2xl sticky top-0 z-50 shadow-sm dark:shadow-[0_1px_3px_rgba(0,0,0,0.5)] transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
@@ -280,9 +292,10 @@ export default function PlatformLandingPage() {
           </div>
         )}
       </header>
+      <div className="relative z-40 h-[1px] w-full horizon-laser opacity-90" aria-hidden="true" />
 
       {/* ─── 2. Hero Section: Clean, Breathable, Full Viewport Synced ─────────── */}
-      <section className="relative overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-between items-center py-12 sm:py-16 lg:py-16 border-b border-zinc-200 dark:border-white/[0.08] transition-colors">
+      <section className="relative z-10 overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-between items-center py-12 sm:py-16 lg:py-16 border-b border-zinc-200/80 dark:border-white/[0.08] transition-colors">
         {/* Subtle Ambient Radial Lighting */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1100px] h-[550px] bg-gradient-to-b from-blue-500/10 via-indigo-500/5 to-transparent dark:from-blue-600/12 dark:via-indigo-600/6 blur-[140px] pointer-events-none" />
 
@@ -356,7 +369,7 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 4. Core Platform Capabilities (Pristine 3-Pillar Architecture) ─ */}
-      <section id="features" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-zinc-50/50 dark:bg-[#09090b] border-b border-zinc-200 dark:border-white/[0.08] scroll-mt-16 transition-colors">
+      <section id="features" className="relative z-10 min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-zinc-50/70 dark:bg-zinc-950/60 backdrop-blur-sm border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 transition-colors">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12 w-full my-auto">
           <div className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
@@ -504,7 +517,7 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 5. How It Works (Streamlined Minimalist Workflow) ─────────────── */}
-      <section id="how-it-works" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-white dark:bg-[#09090b] border-b border-zinc-200 dark:border-white/[0.08] scroll-mt-16 overflow-hidden transition-colors">
+      <section id="how-it-works" className="relative z-10 min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-transparent border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 overflow-hidden transition-colors">
         {/* Subtle Ambient Radial Lighting */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[450px] bg-blue-500/5 dark:bg-blue-600/5 blur-[120px] pointer-events-none" />
 
@@ -626,7 +639,7 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 6. Bespoke Turnkey Storefronts (Luxury Studio) ─────────────────── */}
-      <section id="storefronts" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-zinc-50/50 dark:bg-[#09090b] border-b border-zinc-200 dark:border-white/[0.08] scroll-mt-16 transition-colors">
+      <section id="storefronts" className="relative z-10 min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-zinc-50/70 dark:bg-zinc-950/60 backdrop-blur-sm border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 transition-colors">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 w-full my-auto">
           <div className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
@@ -737,7 +750,7 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 7. Transparent Pricing (Clean, Uncluttered 3 Tiers) ─────────────── */}
-      <section id="pricing" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-white dark:bg-zinc-950/70 border-b border-zinc-200 dark:border-white/[0.08] scroll-mt-16 transition-colors">
+      <section id="pricing" className="relative z-10 min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-transparent border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 transition-colors">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 w-full my-auto">
           <div className="text-center max-w-xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
@@ -878,7 +891,7 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 8. Frequently Asked Questions (FAQ) ────────────────────────────── */}
-      <section id="faq" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-zinc-50/50 dark:bg-[#09090b] border-b border-zinc-200 dark:border-white/[0.08] scroll-mt-16 transition-colors">
+      <section id="faq" className="relative z-10 min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 bg-zinc-50/70 dark:bg-zinc-950/60 backdrop-blur-sm border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 transition-colors">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 w-full my-auto">
           <div className="text-center max-w-xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
@@ -923,7 +936,7 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 9. Final Call to Action ────────────────────────────────────────── */}
-      <section className="relative min-h-0 lg:min-h-[75vh] flex flex-col justify-center py-16 sm:py-20 lg:py-20 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-white/[0.08] transition-colors">
+      <section className="relative z-10 min-h-0 lg:min-h-[75vh] flex flex-col justify-center py-16 sm:py-20 lg:py-20 bg-transparent border-b border-zinc-200/80 dark:border-white/[0.08] transition-colors">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto">
           <div className="rounded-3xl bg-gradient-to-b from-zinc-50 to-zinc-100/80 dark:from-zinc-900/90 dark:to-zinc-950 text-zinc-950 dark:text-white p-8 sm:p-12 lg:p-14 text-center space-y-6 border border-zinc-200 dark:border-white/10 shadow-xl dark:shadow-2xl relative overflow-hidden">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-blue-500/10 blur-3xl pointer-events-none" />
