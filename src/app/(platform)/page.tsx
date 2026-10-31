@@ -714,7 +714,7 @@ export default function PlatformLandingPage() {
 
       {/* ─── 6. Bespoke Turnkey Storefronts (Luxury Studio) ─────────────────── */}
       <section id="storefronts" className="py-24 sm:py-28 bg-[#09090b] border-b border-white/[0.08] scroll-mt-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
               Turnkey Storefront Architectures
@@ -723,11 +723,11 @@ export default function PlatformLandingPage() {
               6 Tailored Industry Storefronts
             </h2>
             <p className="text-xs sm:text-base text-zinc-400 leading-relaxed">
-              Every commerce vertical requires tailored customer psychology. Select an industry to preview its pre-configured architecture.
+              Every vertical requires tailored customer psychology. Select an industry to preview its pre-configured store architecture.
             </p>
           </div>
 
-          {/* Industry Category Selector Bar */}
+          {/* Unified Minimalist Category Selector Tabs */}
           <div className="flex items-center justify-center gap-2 overflow-x-auto pb-2">
             {INDUSTRY_STOREFRONTS.map((store) => {
               const isSelected = selectedStoreSlug === store.slug;
@@ -735,64 +735,55 @@ export default function PlatformLandingPage() {
                 <button
                   key={store.slug}
                   onClick={() => setSelectedStoreSlug(store.slug)}
-                  className={`px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all btn-press ${
+                  className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
                     isSelected
-                      ? "bg-white text-zinc-950 shadow-[0_0_20px_rgba(255,255,255,0.25)]"
-                      : "bg-white/[0.05] border border-white/[0.08] text-zinc-400 hover:text-white hover:bg-white/[0.08]"
+                      ? "bg-white text-zinc-950 shadow-md font-bold scale-105"
+                      : "bg-zinc-900/60 border border-white/[0.06] text-zinc-400 hover:text-white hover:bg-zinc-800"
                   }`}
                 >
-                  {store.category.split("&")[0].trim()}
+                  {store.category}
                 </button>
               );
             })}
           </div>
 
-          {/* Featured Store Showcase */}
-          <div className="bg-zinc-900/60 backdrop-blur-xl rounded-3xl border border-white/[0.1] overflow-hidden shadow-2xl grid grid-cols-1 lg:grid-cols-12 items-stretch">
-            {/* Left: Store Visual Preview */}
-            <div className="lg:col-span-7 relative min-h-[340px] lg:min-h-[440px] bg-zinc-950 overflow-hidden group">
+          {/* Featured Store Showcase: Clean Studio Frame */}
+          <div className="bg-zinc-900/30 backdrop-blur-xl rounded-3xl border border-white/[0.08] overflow-hidden shadow-2xl grid grid-cols-1 lg:grid-cols-12 items-stretch">
+            {/* Left: High-Res Visual Preview */}
+            <div className="lg:col-span-7 relative min-h-[320px] lg:min-h-[460px] bg-zinc-950 overflow-hidden group">
               <img
                 src={activeStore.image}
                 alt={activeStore.name}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-transparent to-transparent" />
-              <div className="absolute top-5 left-5 bg-zinc-950/85 backdrop-blur-md text-white text-[11px] font-bold px-3 py-1 rounded-full border border-white/10 shadow-lg">
-                {activeStore.template}
+              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-zinc-950" />
+              <div className="absolute top-5 left-5 bg-zinc-950/85 backdrop-blur-md text-white text-[11px] font-bold px-3.5 py-1.5 rounded-full border border-white/10 shadow-lg">
+                {activeStore.template} • {activeStore.category}
               </div>
-              <div className="absolute bottom-5 left-5 right-5 bg-zinc-900/90 backdrop-blur-xl rounded-2xl p-4 border border-white/10 shadow-2xl flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-bold text-white">{activeStore.name}</p>
-                  <p className="text-[11px] text-zinc-400">{activeStore.category}</p>
-                </div>
-                <Link
-                  href={`/store/${activeStore.slug}`}
-                  className="inline-flex items-center space-x-1 text-xs font-bold text-blue-400 hover:text-blue-300 transition"
-                >
-                  <span>Open Live Demo</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </Link>
+              <div className="absolute bottom-5 left-5 right-5 text-left hidden sm:block">
+                <p className="text-base font-bold text-white drop-shadow-md">{activeStore.name}</p>
+                <p className="text-xs text-zinc-300 drop-shadow line-clamp-1">{activeStore.headline}</p>
               </div>
             </div>
 
             {/* Right: Technical Features & Actions */}
-            <div className="lg:col-span-5 p-8 sm:p-10 flex flex-col justify-between space-y-6">
-              <div className="space-y-5">
+            <div className="lg:col-span-5 p-8 sm:p-10 flex flex-col justify-between space-y-8 bg-zinc-950/80 backdrop-blur-xl">
+              <div className="space-y-6">
                 <div>
                   <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-500">
-                    {activeStore.category}
+                    Pre-Configured Architecture
                   </span>
                   <h3 className="text-2xl font-bold text-white tracking-tight mt-1.5">
-                    {activeStore.headline}
+                    {activeStore.name}
                   </h3>
-                  <p className="text-xs text-zinc-400 leading-relaxed mt-2.5">
+                  <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed mt-2.5">
                     {activeStore.description}
                   </p>
                 </div>
 
-                <div className="space-y-2.5 pt-4 border-t border-white/[0.08]">
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-500 block mb-2">
-                    Pre-Configured Architecture Features:
+                <div className="space-y-3 pt-4 border-t border-white/[0.06]">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-500 block mb-1">
+                    Industry Capabilities Included:
                   </span>
                   {activeStore.highlights.map((feat, idx) => (
                     <div key={idx} className="flex items-center space-x-2.5 text-xs text-zinc-300">
@@ -805,43 +796,29 @@ export default function PlatformLandingPage() {
                 </div>
               </div>
 
-              <div className="pt-6 border-t border-white/[0.08] flex flex-col sm:flex-row gap-3">
-                <Link
-                  href={`/store/${activeStore.slug}`}
-                  className="flex-1 py-3 px-4 bg-zinc-800/80 hover:bg-zinc-700 border border-white/10 text-white font-bold text-xs rounded-xl transition text-center flex items-center justify-center space-x-1.5"
-                >
-                  <span>Explore Live Store</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400" />
-                </Link>
-                <Link
-                  href={`/onboarding?category=${activeStore.categoryParam}`}
-                  className="py-3 px-5 bg-white hover:bg-zinc-200 text-zinc-950 font-bold text-xs rounded-xl transition text-center shadow-[0_0_20px_rgba(255,255,255,0.2)] btn-press"
-                >
-                  <span>Clone Template</span>
-                </Link>
+              <div className="space-y-3 pt-6 border-t border-white/[0.06]">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Link
+                    href={`/store/${activeStore.slug}`}
+                    className="flex-1 py-3 px-4 bg-white hover:bg-zinc-200 text-zinc-950 font-bold text-xs rounded-xl transition text-center flex items-center justify-center space-x-1.5 shadow-[0_0_20px_rgba(255,255,255,0.2)] btn-press"
+                  >
+                    <span>Open Live Storefront</span>
+                    <ArrowUpRight className="w-4 h-4 text-zinc-800" />
+                  </Link>
+                  <Link
+                    href={`/onboarding?category=${activeStore.categoryParam}`}
+                    className="py-3 px-5 bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-zinc-300 hover:text-white font-semibold text-xs rounded-xl transition text-center"
+                  >
+                    <span>Clone Template</span>
+                  </Link>
+                </div>
+                <div className="flex items-center justify-between text-[11px] text-zinc-400 px-1">
+                  <span>Commission: <strong className="text-emerald-400 font-mono">0%</strong></span>
+                  <span>Setup: <strong className="text-white">3 Minutes</strong></span>
+                  <span>Mobile: <strong className="text-blue-400">100% Ready</strong></span>
+                </div>
               </div>
             </div>
-          </div>
-
-          {/* 6 Storefront Thumbnails Quick Gallery */}
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
-            {INDUSTRY_STOREFRONTS.map((s) => {
-              const isSelected = selectedStoreSlug === s.slug;
-              return (
-                <button
-                  key={s.slug}
-                  onClick={() => setSelectedStoreSlug(s.slug)}
-                  className={`p-3.5 rounded-2xl border text-left transition-all ${
-                    isSelected
-                      ? "border-white/40 bg-white/10 shadow-[0_0_20px_rgba(255,255,255,0.1)] ring-1 ring-white/20"
-                      : "border-white/[0.06] bg-zinc-900/40 hover:bg-zinc-900 text-zinc-400"
-                  }`}
-                >
-                  <p className="text-xs font-bold text-white truncate">{s.name.split(" ")[0]}</p>
-                  <p className="text-[10px] text-zinc-500 truncate mt-0.5">{s.category.split("&")[0].trim()}</p>
-                </button>
-              );
-            })}
           </div>
         </div>
       </section>
