@@ -620,64 +620,92 @@ export default function PlatformLandingPage() {
         </div>
       </section>
 
-      {/* ─── 5. How It Works (3 Simple Steps to Scale) ──────────────────────── */}
-      <section id="how-it-works" className="py-24 sm:py-28 bg-zinc-950/70 border-b border-white/[0.08] scroll-mt-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+      {/* ─── 5. How It Works (Streamlined Minimalist Workflow) ─────────────── */}
+      <section id="how-it-works" className="py-24 sm:py-28 bg-[#09090b] border-b border-white/[0.08] scroll-mt-16 relative overflow-hidden">
+        {/* Subtle Ambient Radial Lighting */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[300px] bg-blue-600/5 blur-[120px] pointer-events-none" />
+
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
-              Zero Code • 3 Minutes
+              Onboarding Velocity
             </span>
             <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-              Three Simple Steps to Launch
+              Three Simple Steps to Go Live
             </h2>
             <p className="text-xs sm:text-base text-zinc-400 leading-relaxed">
-              No developer hiring, no complex agency retainers, and no plugin maintenance. Deploy a high-conversion store in minutes.
+              No developer hiring, no complex agency retainers, and zero plugin maintenance. Launch your online store in under 3 minutes.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Step 1 */}
-            <div className="p-8 rounded-3xl bg-zinc-900/40 border border-white/[0.08] backdrop-blur-xl space-y-5 shadow-2xl relative">
-              <span className="text-4xl font-black text-zinc-700 font-mono block">01</span>
-              <div>
-                <h3 className="text-lg font-bold text-white">Choose Your Store Architecture</h3>
-                <p className="text-xs text-zinc-400 mt-2 leading-relaxed">
-                  Select from 6 bespoke category storefronts (Fashion, Cosmetics, Shoes, Tech, Jewelry, Food) configured with domain-tailored features like GSM badges and routine builders.
+          {/* Connected Minimalist Timeline Workflow */}
+          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10">
+            {/* Horizontal Connecting Guide Line (Desktop Only) */}
+            <div className="hidden md:block absolute top-7 left-[15%] right-[15%] h-px bg-gradient-to-r from-blue-500/25 via-emerald-500/25 to-purple-500/25" />
+
+            {/* Step 01 */}
+            <div className="relative space-y-4 text-left group">
+              <div className="relative z-10 w-14 h-14 rounded-2xl bg-zinc-900 border border-blue-500/30 text-blue-400 flex items-center justify-center font-mono font-bold text-sm shadow-[0_0_20px_rgba(59,130,246,0.15)] group-hover:border-blue-500 transition-colors">
+                01
+              </div>
+              <div className="space-y-2">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-blue-400 font-bold block">
+                  Step 01 • Template Setup
+                </span>
+                <h3 className="text-xl font-bold text-white tracking-tight">
+                  Select Your Storefront
+                </h3>
+                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+                  Choose from 6 bespoke category storefronts (Fashion, Cosmetics, Tech, Coffee, Organic, Ceramics) pre-configured with industry features.
                 </p>
               </div>
-              <div className="pt-3 border-t border-white/[0.06] flex items-center space-x-2 text-[11px] text-blue-400 font-medium">
-                <CheckCircle2 className="w-4 h-4 text-blue-400" />
-                <span>Zero agency coding required</span>
+              <div className="pt-2 text-[11px] text-zinc-400 font-mono flex items-center space-x-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                <span>Ready in 60 seconds</span>
               </div>
             </div>
 
-            {/* Step 2 */}
-            <div className="p-8 rounded-3xl bg-zinc-900/40 border border-white/[0.08] backdrop-blur-xl space-y-5 shadow-2xl relative">
-              <span className="text-4xl font-black text-zinc-700 font-mono block">02</span>
-              <div>
-                <h3 className="text-lg font-bold text-white">Connect Courier & MFS in 60s</h3>
-                <p className="text-xs text-zinc-400 mt-2 leading-relaxed">
-                  Link your Steadfast or Pathao API keys and bKash/Nagad merchant accounts. Nationwide 64-district delivery rates (৳60/৳130) are instantly active.
+            {/* Step 02 */}
+            <div className="relative space-y-4 text-left group">
+              <div className="relative z-10 w-14 h-14 rounded-2xl bg-zinc-900 border border-emerald-500/30 text-emerald-400 flex items-center justify-center font-mono font-bold text-sm shadow-[0_0_20px_rgba(16,185,129,0.15)] group-hover:border-emerald-500 transition-colors">
+                02
+              </div>
+              <div className="space-y-2">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-bold block">
+                  Step 02 • Local Integrations
+                </span>
+                <h3 className="text-xl font-bold text-white tracking-tight">
+                  Connect Courier & Payments
+                </h3>
+                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+                  Add your Steadfast or Pathao API keys and bKash/Nagad merchant accounts. 64-district delivery rates (৳60/৳130) activate automatically.
                 </p>
               </div>
-              <div className="pt-3 border-t border-white/[0.06] flex items-center space-x-2 text-[11px] text-emerald-400 font-medium">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span>Automated webhook sync ready</span>
+              <div className="pt-2 text-[11px] text-zinc-400 font-mono flex items-center space-x-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                <span>Automated 1-click sync</span>
               </div>
             </div>
 
-            {/* Step 3 */}
-            <div className="p-8 rounded-3xl bg-zinc-900/40 border border-white/[0.08] backdrop-blur-xl space-y-5 shadow-2xl relative">
-              <span className="text-4xl font-black text-zinc-700 font-mono block">03</span>
-              <div>
-                <h3 className="text-lg font-bold text-white">Start High-Velocity Selling</h3>
-                <p className="text-xs text-zinc-400 mt-2 leading-relaxed">
-                  Capture mobile buyers in &lt;20 seconds with 1-page checkout. Auto-generate 4x6 thermal barcode labels with 1 click and stop fraud before dispatch.
+            {/* Step 03 */}
+            <div className="relative space-y-4 text-left group">
+              <div className="relative z-10 w-14 h-14 rounded-2xl bg-zinc-900 border border-purple-500/30 text-purple-400 flex items-center justify-center font-mono font-bold text-sm shadow-[0_0_20px_rgba(168,85,247,0.15)] group-hover:border-purple-500 transition-colors">
+                03
+              </div>
+              <div className="space-y-2">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-purple-400 font-bold block">
+                  Step 03 • High-Speed Selling
+                </span>
+                <h3 className="text-xl font-bold text-white tracking-tight">
+                  Launch & Collect Orders
+                </h3>
+                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+                  Capture mobile shoppers with 20-second 1-page checkout. Print 4x6 thermal barcode labels with 1 click and keep 100% of your retail sales.
                 </p>
               </div>
-              <div className="pt-3 border-t border-white/[0.06] flex items-center space-x-2 text-[11px] text-purple-400 font-medium">
-                <CheckCircle2 className="w-4 h-4 text-purple-400" />
-                <span>0% physical order commission</span>
+              <div className="pt-2 text-[11px] text-zinc-400 font-mono flex items-center space-x-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
+                <span>0% Order commission</span>
               </div>
             </div>
           </div>
