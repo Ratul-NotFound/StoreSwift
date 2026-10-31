@@ -14,17 +14,17 @@ export const DEMO_STORES_LIST = [
 
 export function PlatformFooter() {
   return (
-    <footer className="bg-zinc-50 dark:bg-black text-zinc-600 dark:text-zinc-400 font-sans border-t border-zinc-200/80 dark:border-white/[0.08] mt-auto transition-colors">
+    <footer className="bg-zinc-50 dark:bg-[#06070a] text-zinc-600 dark:text-zinc-400 font-sans border-t border-zinc-200/80 dark:border-white/[0.08] mt-auto transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Column 1 & 2: Brand & Operating System Overview */}
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="flex items-center space-x-2.5 group w-fit">
-              <div className="w-8 h-8 rounded-lg bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 flex items-center justify-center font-bold shadow-md shadow-black/25 group-hover:scale-105 transition-transform">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 via-indigo-500 to-emerald-400 text-white flex items-center justify-center font-bold shadow-md shadow-indigo-500/25 group-hover:scale-105 transition-transform">
                 <Store className="w-4 h-4" />
               </div>
               <span className="font-extrabold text-zinc-950 dark:text-white tracking-tight text-base">
-                Store<span className="text-zinc-600 dark:text-zinc-400">Swift</span>
+                Store<span className="text-emerald-500 dark:text-emerald-400">Swift</span>
               </span>
             </Link>
 
@@ -96,10 +96,10 @@ export function PlatformFooter() {
               <li>
                 <Link
                   href="/admin?store=apex-fashion"
-                  className="hover:text-zinc-950 dark:hover:text-white transition inline-flex items-center space-x-1.5 text-zinc-950 dark:text-white font-semibold"
+                  className="hover:text-indigo-400 transition inline-flex items-center space-x-1.5 text-indigo-500 dark:text-indigo-400 font-semibold"
                 >
                   <span>Merchant Admin Demo</span>
-                  <ExternalLink className="w-3 h-3 text-zinc-400 dark:text-zinc-500" />
+                  <ExternalLink className="w-3 h-3 text-indigo-400" />
                 </Link>
               </li>
               <li>
