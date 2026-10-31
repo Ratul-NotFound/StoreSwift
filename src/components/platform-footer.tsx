@@ -44,55 +44,10 @@ export function PlatformFooter() {
 
   return (
     <footer className="bg-zinc-950 text-zinc-300 font-sans border-t border-zinc-900 mt-auto">
-      {/* ─── Platform Capabilities Strip ─────────────────────────────────── */}
-      <div className="border-b border-zinc-900 py-8 px-4 sm:px-6 bg-zinc-950/90">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center sm:text-left">
-          <div className="flex items-center justify-center sm:justify-start space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-blue-400 flex-shrink-0">
-              <Zap className="w-5 h-5" />
-            </div>
-            <div>
-              <p className="text-xs font-bold text-white tracking-tight">20-Second Express Checkout</p>
-              <p className="text-[11px] text-zinc-400">1-Page form • bKash, Nagad & COD</p>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-center sm:justify-start space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-emerald-400 flex-shrink-0">
-              <Truck className="w-5 h-5" />
-            </div>
-            <div>
-              <p className="text-xs font-bold text-white tracking-tight">Automated Courier Dispatch</p>
-              <p className="text-[11px] text-zinc-400">Steadfast, Pathao & RedX 1-click sync</p>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-center sm:justify-start space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-amber-400 flex-shrink-0">
-              <ShieldCheck className="w-5 h-5" />
-            </div>
-            <div>
-              <p className="text-xs font-bold text-white tracking-tight">AI Anti-Fraud RTO Shield</p>
-              <p className="text-[11px] text-zinc-400">Flag serial returners before courier fees</p>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-center sm:justify-start space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-purple-400 flex-shrink-0">
-              <Layers className="w-5 h-5" />
-            </div>
-            <div>
-              <p className="text-xs font-bold text-white tracking-tight">6 Category-Tailored Themes</p>
-              <p className="text-[11px] text-zinc-400">Quiet luxury design • Zero agency code</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ─── Main Platform SaaS Footer Content ─────────────────────────────── */}
+      {/* ─── Main Platform SaaS Footer Content (Clean B2B SaaS Directory) ─────── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
-          {/* Column 1: Platform Overview & Headquarters */}
+          {/* Column 1 & 2: Platform Overview & Headquarters */}
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="flex items-center space-x-2.5 group w-fit">
               <div className="w-9 h-9 rounded-xl bg-white text-zinc-950 flex items-center justify-center font-bold shadow-sm group-hover:scale-105 transition-transform">
@@ -188,7 +143,7 @@ export function PlatformFooter() {
               </li>
               <li className="flex items-center space-x-1.5 text-zinc-300">
                 <Sparkles className="w-3.5 h-3.5 text-rose-400" />
-                <span>4x6 Thermal Barcode Label Generator</span>
+                <span>4x6 Thermal Barcode Labels</span>
               </li>
               <li className="flex items-center space-x-1.5 text-zinc-300">
                 <Radio className="w-3.5 h-3.5 text-cyan-400" />

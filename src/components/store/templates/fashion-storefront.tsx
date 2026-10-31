@@ -185,8 +185,6 @@ export function FashionStorefront({
   const [selectedSizes, setSelectedSizes] = useState<Record<string, string>>({});
   
   // Floating Theme Menu Toggle
-  const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
-
   // VIP Newsletter Form
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSuccess, setNewsletterSuccess] = useState(false);
@@ -1069,69 +1067,7 @@ export function FashionStorefront({
         </div>
       </section>
 
-      {/* ─── 12. Floating Merchant Preview Switcher ────────────────────────── */}
-      <div className="fixed bottom-5 right-5 z-40">
-        {isThemeMenuOpen ? (
-          <div className="bg-zinc-950 text-white rounded-2xl p-4 shadow-2xl border border-zinc-800 w-72 space-y-3.5 mb-2 animate-in fade-in slide-in-from-bottom-2 duration-200">
-            <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
-              <span className="text-xs font-bold text-zinc-300 flex items-center space-x-1.5">
-                <Scissors className="w-3.5 h-3.5 text-emerald-400" />
-                <span>StoreSwift Demo Studio</span>
-              </span>
-              <button onClick={() => setIsThemeMenuOpen(false)} className="text-zinc-500 hover:text-white p-1">
-                <X className="w-3.5 h-3.5" />
-              </button>
-            </div>
-            <div>
-              <label className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block mb-1.5">
-                Department Category:
-              </label>
-              <div className="grid grid-cols-2 gap-1.5">
-                {allCategories.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => onSelectCategory(cat)}
-                    className={`px-2.5 py-1.5 rounded-lg text-[10px] font-semibold text-left transition ${
-                      activeCategoryKey === cat ? "bg-white text-black font-bold" : "bg-zinc-900 text-zinc-400 hover:text-white"
-                    }`}
-                  >
-                    {categoriesMap[cat]?.name?.split(" ")[0] || cat}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div>
-              <label className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block mb-1.5">
-                Template Theme:
-              </label>
-              <div className="grid grid-cols-2 gap-1.5">
-                {allTemplates.map((tKey) => (
-                  <button
-                    key={tKey}
-                    onClick={() => onSelectTemplate(tKey)}
-                    className={`px-2.5 py-1.5 rounded-lg text-[10px] font-semibold text-left transition ${
-                      templateKey === tKey ? "bg-white text-black font-bold" : "bg-zinc-900 text-zinc-400 hover:text-white"
-                    }`}
-                  >
-                    {storeTemplatesMap[tKey]?.name?.split(" ")[0] || tKey}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        ) : (
-          <button
-            onClick={() => setIsThemeMenuOpen(true)}
-            className="bg-zinc-950/90 hover:bg-zinc-900 text-white backdrop-blur-md px-4 py-2.5 rounded-full text-xs font-semibold shadow-2xl border border-white/10 flex items-center space-x-2 transition hover:scale-105"
-            title="Switch template style or department"
-          >
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Theme: <strong>{template.name.split(" ")[0]}</strong></span>
-            <ChevronDown className="w-3.5 h-3.5 opacity-60" />
-          </button>
-        )}
-      </div>
-
+      
       {/* ─── Unified Professional Multi-Column Store Footer ────────────────── */}
       <StoreFooter
         storeName={storeDisplayName}

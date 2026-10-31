@@ -32,11 +32,12 @@ import {
   ExternalLink
 } from "lucide-react";
 import { ALL_CATEGORIES, getCategoryConfig } from "@/config/categories";
-import { StoreFooter, DEMO_STORES_LIST } from "@/components/footer";
+import { PlatformFooter, DEMO_STORES_LIST } from "@/components/platform-footer";
 
 export default function PlatformLandingPage() {
   const [selectedDemoCategory, setSelectedDemoCategory] = useState("fashion");
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
+  const [isNavDropdownOpen, setIsNavDropdownOpen] = useState(false);
 
   const activeCategory = getCategoryConfig(selectedDemoCategory);
 
@@ -96,13 +97,46 @@ export default function PlatformLandingPage() {
 
           {/* Desktop Navigation Links (Logically Placed) */}
           <nav className="hidden lg:flex items-center space-x-7 text-xs font-semibold text-zinc-600">
-            <a href="#templates" className="hover:text-zinc-950 transition flex items-center space-x-1">
-              <span>Live Storefronts</span>
-              <span className="text-[9px] bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded font-bold">6</span>
-            </a>
+            <div className="relative">
+              <button
+                onClick={() => setIsNavDropdownOpen(!isNavDropdownOpen)}
+                className="hover:text-zinc-950 transition flex items-center space-x-1 py-1"
+              >
+                <span>Live Storefronts</span>
+                <span className="text-[9px] bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded font-bold">6</span>
+                <ChevronDown className="w-3 h-3 text-zinc-400" />
+              </button>
+
+              {isNavDropdownOpen && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setIsNavDropdownOpen(false)} />
+                  <div className="absolute left-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-zinc-200 z-50 py-2 divide-y divide-zinc-100 text-xs">
+                    <div className="px-3 py-1.5 text-[10px] uppercase font-bold tracking-wider text-zinc-400">
+                      Explore 6 Live Stores
+                    </div>
+                    <div className="py-1">
+                      {DEMO_STORES_LIST.map((s) => (
+                        <Link
+                          key={s.slug}
+                          href={`/store/${s.slug}`}
+                          onClick={() => setIsNavDropdownOpen(false)}
+                          className="flex items-center justify-between px-3 py-2 hover:bg-zinc-50 transition group"
+                        >
+                          <div>
+                            <p className="font-bold text-zinc-900 group-hover:text-blue-600 transition">{s.name}</p>
+                            <p className="text-[10px] text-zinc-400">{s.category}</p>
+                          </div>
+                          <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 text-blue-600 transition" />
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
             <a href="#logistics" className="hover:text-zinc-950 transition">Logistics & Couriers</a>
             <a href="#checkout" className="hover:text-zinc-950 transition">1-Page Checkout</a>
-            <a href="#demo" className="hover:text-zinc-950 transition">Catalog Demo</a>
+            <a href="#demo" className="hover:text-zinc-950 transition">Catalog & Matrix</a>
             <a href="#pricing" className="hover:text-zinc-950 transition">Pricing</a>
             <a href="#faq" className="hover:text-zinc-950 transition">FAQ</a>
           </nav>
@@ -385,15 +419,19 @@ export default function PlatformLandingPage() {
         </div>
       </section>
 
-      {/* ─── 6. Pre-Seeded Product Catalog Demo ─────────────────────────────── */}
+      {/* ─── 6. Pre-Seeded Product Catalog & Variant Matrix ─────────────────── */}
       <section id="demo" className="py-20 bg-white border-b border-zinc-200/80">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-xl mx-auto mb-10">
-            <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 tracking-tight">
-              Pre-Configured Catalogs For Every Niche
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold mb-3 border border-blue-200">
+              <Layers className="w-3.5 h-3.5 text-blue-600" />
+              <span>Zero-Setup Catalog Presets</span>
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-zinc-900 tracking-tight">
+              Pre-Configured Catalogs & Multi-Variant Matrix
             </h2>
-            <p className="mt-2 text-xs sm:text-sm text-zinc-500">
-              Select an industry category to see how products, variants, and price points are pre-loaded for immediate launch.
+            <p className="mt-2 text-xs sm:text-sm text-zinc-500 leading-relaxed">
+              Never launch with an empty database. StoreSwift provisions your storefront with high-resolution photography, localized BDT/USD pricing, and pre-calculated Cartesian variant matrices out of the box.
             </p>
           </div>
 
@@ -467,8 +505,14 @@ export default function PlatformLandingPage() {
                       <p className="text-[11px] text-zinc-500 line-clamp-2 mt-1 leading-relaxed">{p.description}</p>
                     </div>
                     <div className="mt-3 pt-2.5 border-t border-zinc-100 flex items-center justify-between">
-                      <span className="font-black text-xs text-zinc-900">${p.basePrice}</span>
-                      <span className="text-[10px] text-emerald-600 font-semibold">In Stock (COD Ready)</span>
+                      <div>
+                        <span className="font-black text-xs text-zinc-900">৳{(parseFloat(p.basePrice) * 115).toLocaleString()}</span>
+                        <span className="text-[10px] text-zinc-400 ml-1">(${p.basePrice})</span>
+                      </div>
+                      <span className="text-[10px] text-emerald-600 font-semibold flex items-center space-x-1">
+                        <CheckCircle2 className="w-3 h-3 text-emerald-500 inline mr-0.5" />
+                        <span>Pre-Seeded SKUs</span>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -629,7 +673,7 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 10. Rich Multi-Column Modern Footer ───────────────────────────── */}
-      <StoreFooter isPlatform={true} storeName="StoreSwift" />
+      <PlatformFooter />
     </div>
   );
 }

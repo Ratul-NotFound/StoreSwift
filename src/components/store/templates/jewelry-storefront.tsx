@@ -130,9 +130,7 @@ export function JewelryStorefront({
 }: JewelryStorefrontProps) {
   const [selectedCollection, setSelectedCollection] = useState<string>("all");
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
-  const [quickOptionMap, setQuickOptionMap] = useState<Record<string, string>>({});
-  const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
-  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [quickOptionMap, setQuickOptionMap] = useState<Record<string, string>>({});  const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
 
   // Filter products by collection
@@ -887,85 +885,7 @@ export function JewelryStorefront({
         </div>
       </section>
 
-      {/* ─── 11. Floating Demo Studio Pill ──────────────────────────────────── */}
-      <div className="fixed bottom-5 right-5 z-40">
-        {isThemeMenuOpen ? (
-          <div className="bg-[#121317]/95 backdrop-blur-md rounded-2xl shadow-2xl border border-neutral-800 p-4 w-72 text-zinc-100 space-y-3 font-serif">
-            <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
-              <div className="flex items-center space-x-1.5">
-                <span className="w-2 h-2 rounded-full bg-amber-400" />
-                <span className="text-xs font-bold font-mono">Demo Studio</span>
-              </div>
-              <button
-                onClick={() => setIsThemeMenuOpen(false)}
-                className="p-1 text-zinc-400 hover:text-white rounded-lg hover:bg-neutral-800"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            </div>
-
-            <div className="space-y-1.5">
-              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider block">
-                Category Psychology:
-              </span>
-              <div className="grid grid-cols-2 gap-1.5">
-                {allCategories.map((cKey) => (
-                  <button
-                    key={cKey}
-                    onClick={() => {
-                      onSelectCategory(cKey);
-                      setIsThemeMenuOpen(false);
-                    }}
-                    className={`px-2 py-1.5 rounded-lg text-[10px] font-semibold text-left truncate transition ${
-                      activeCategoryKey === cKey
-                        ? "bg-amber-500 text-black font-bold"
-                        : "bg-neutral-900 hover:bg-neutral-800 text-zinc-300"
-                    }`}
-                  >
-                    {categoriesMap[cKey]?.name || cKey}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-1.5 pt-2 border-t border-neutral-800">
-              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider block">
-                Store Template:
-              </span>
-              <div className="grid grid-cols-2 gap-1.5">
-                {allTemplates.map((tKey) => (
-                  <button
-                    key={tKey}
-                    onClick={() => {
-                      onSelectTemplate(tKey);
-                      setIsThemeMenuOpen(false);
-                    }}
-                    className={`px-2 py-1.5 rounded-lg text-[10px] font-semibold text-left truncate transition ${
-                      templateKey === tKey
-                        ? "bg-amber-500 text-black font-bold"
-                        : "bg-neutral-900 hover:bg-neutral-800 text-zinc-300"
-                    }`}
-                  >
-                    {storeTemplatesMap[tKey]?.name.split(" ")[0] || tKey}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        ) : (
-          <button
-            onClick={() => setIsThemeMenuOpen(true)}
-            className="bg-black/90 hover:bg-neutral-950 text-white backdrop-blur-md px-4 py-2.5 rounded-full text-xs font-semibold shadow-2xl border border-neutral-800 flex items-center space-x-2 transition hover:scale-105 font-serif"
-            title="Switch template style or department"
-          >
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-            <span>Theme: <strong>{template.name.split(" ")[0]}</strong></span>
-            <ChevronDown className="w-3.5 h-3.5 opacity-60" />
-          </button>
-        )}
-      </div>
-
-      {/* ─── 12. Maison Fine Jewelry Tailored Store Footer ──────────────────── */}
+      
       {/* ─── Unified Professional Multi-Column Store Footer ────────────────── */}
       <StoreFooter
         storeName={storeDisplayName}
