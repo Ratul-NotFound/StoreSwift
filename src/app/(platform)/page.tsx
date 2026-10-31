@@ -271,14 +271,14 @@ export default function PlatformLandingPage() {
         )}
       </header>
 
-      {/* ─── 2. Hero Section: Clean, Breathable, Magnetic ────────────────────── */}
-      <section className="relative overflow-hidden pt-8 pb-8 sm:pt-12 sm:pb-12 lg:pt-14 lg:pb-12 border-b border-white/[0.08]">
+      {/* ─── 2. Hero Section: Clean, Breathable, Full Viewport Synced ─────────── */}
+      <section className="relative overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-between items-center py-12 sm:py-16 lg:py-16 border-b border-white/[0.08]">
         {/* Subtle Ambient Radial Lighting */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-gradient-to-b from-blue-600/12 via-indigo-600/6 to-transparent blur-[140px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1100px] h-[550px] bg-gradient-to-b from-blue-600/12 via-indigo-600/6 to-transparent blur-[140px] pointer-events-none" />
 
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4 sm:space-y-5 lg:space-y-6">
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 sm:space-y-7 my-auto">
           {/* Status Capsule Badge */}
-          <div className="inline-flex items-center space-x-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.05] border border-white/[0.1] text-zinc-300 text-xs font-medium backdrop-blur-md shadow-sm">
+          <div className="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full bg-white/[0.05] border border-white/[0.1] text-zinc-300 text-xs font-medium backdrop-blur-md shadow-sm">
             <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
             <span className="font-semibold text-white">StoreSwift 2.0</span>
             <span className="text-zinc-600">•</span>
@@ -286,7 +286,7 @@ export default function PlatformLandingPage() {
           </div>
 
           {/* Master Headline */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-[-0.03em] text-white max-w-5xl mx-auto leading-[1.12]">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.035em] text-white max-w-5xl mx-auto leading-[1.1]">
             Build your online store. <br className="hidden sm:inline" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-200 to-white">
               Sell faster with 1-page checkout.
@@ -294,22 +294,22 @@ export default function PlatformLandingPage() {
           </h1>
 
           {/* Subtitle */}
-          <p className="text-sm sm:text-base text-zinc-400 max-w-2xl mx-auto leading-relaxed font-normal">
+          <p className="text-base sm:text-lg text-zinc-400 max-w-2xl mx-auto leading-relaxed font-normal">
             Turnkey category storefronts, 20-second frictionless checkout, automated Steadfast & Pathao courier dispatch, and zero commission on physical orders.
           </p>
 
           {/* Primary Action Row */}
-          <div className="pt-1 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5">
             <Link
               href="/onboarding"
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-bold bg-white hover:bg-zinc-100 text-zinc-950 px-6 py-3 rounded-xl shadow-[0_0_25px_rgba(255,255,255,0.25)] transition btn-press group"
+              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-bold bg-white hover:bg-zinc-100 text-zinc-950 px-7 py-3.5 rounded-xl shadow-[0_0_25px_rgba(255,255,255,0.25)] transition btn-press group"
             >
               <span>Start 14-Day Free Trial</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
               href="/admin?store=apex-fashion"
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-semibold bg-zinc-900/80 hover:bg-zinc-800 text-zinc-200 border border-white/10 px-5 py-3 rounded-xl transition"
+              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-semibold bg-zinc-900/80 hover:bg-zinc-800 text-zinc-200 border border-white/10 px-6 py-3.5 rounded-xl transition"
             >
               <span>Open Merchant Cockpit</span>
               <ExternalLink className="w-4 h-4 text-zinc-500" />
@@ -317,7 +317,7 @@ export default function PlatformLandingPage() {
           </div>
 
           {/* Trust Indicators Strip */}
-          <div className="pt-1 flex flex-wrap items-center justify-center gap-4 sm:gap-7 text-xs text-zinc-400 font-medium">
+          <div className="pt-3 flex flex-wrap items-center justify-center gap-5 sm:gap-8 text-xs text-zinc-400 font-medium">
             <div className="flex items-center space-x-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               <span>0% physical order commission</span>
@@ -331,6 +331,17 @@ export default function PlatformLandingPage() {
               <span>Anti-Fraud RTO Shield included</span>
             </div>
           </div>
+        </div>
+
+        {/* Subtle Scroll Down Prompt synced with viewport bottom */}
+        <div className="relative pt-6 pb-2 flex justify-center">
+          <a
+            href="#features"
+            className="inline-flex items-center space-x-1.5 text-xs font-mono font-medium text-zinc-500 hover:text-zinc-300 transition group"
+          >
+            <span>Explore platform capabilities</span>
+            <ChevronDown className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" />
+          </a>
         </div>
       </section>
 
