@@ -334,41 +334,6 @@ export default function PlatformLandingPage() {
         </div>
       </section>
 
-      {/* ─── 3. Trusted Partners Strip (Clean & Minimal) ────────────────────── */}
-      <section className="py-6 bg-zinc-950 border-b border-white/[0.06] overflow-x-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-6 whitespace-nowrap min-w-max text-xs text-zinc-400">
-          <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500">
-            Integrated With:
-          </span>
-          <div className="flex items-center space-x-6">
-            <span className="flex items-center space-x-2 text-zinc-300">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-              <strong className="text-white font-semibold">Steadfast Courier</strong> Official API
-            </span>
-            <span className="text-zinc-700">•</span>
-            <span className="flex items-center space-x-2 text-zinc-300">
-              <span className="w-1.5 h-1.5 rounded-full bg-rose-400" />
-              <strong className="text-white font-semibold">Pathao Logistics</strong> Sync
-            </span>
-            <span className="text-zinc-700">•</span>
-            <span className="flex items-center space-x-2 text-zinc-300">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#E2136E]" />
-              <strong className="text-white font-semibold">bKash</strong> Merchant Gateway
-            </span>
-            <span className="text-zinc-700">•</span>
-            <span className="flex items-center space-x-2 text-zinc-300">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#F7931E]" />
-              <strong className="text-white font-semibold">Nagad</strong> Direct
-            </span>
-            <span className="text-zinc-700">•</span>
-            <span className="flex items-center space-x-2 text-zinc-300">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-              <strong className="text-white font-semibold">Doorstep COD</strong> Inspection
-            </span>
-          </div>
-        </div>
-      </section>
-
       {/* ─── 4. Core Platform Capabilities (Pristine 3-Pillar Architecture) ─ */}
       <section id="features" className="py-24 sm:py-28 bg-[#09090b] border-b border-white/[0.08] scroll-mt-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
