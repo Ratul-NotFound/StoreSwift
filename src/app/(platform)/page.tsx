@@ -7,6 +7,7 @@ import {
   ArrowUpRight,
   Check,
   ChevronDown,
+  ChevronUp,
   ExternalLink,
   Layers,
   Menu,
@@ -29,7 +30,11 @@ import {
   Cpu,
   FileText,
   RefreshCw,
-  TrendingUp
+  TrendingUp,
+  HelpCircle,
+  Users,
+  Flame,
+  ShieldAlert
 } from "lucide-react";
 import { PlatformFooter, DEMO_STORES_LIST } from "@/components/platform-footer";
 
@@ -119,6 +124,7 @@ export default function PlatformLandingPage() {
   const [heroDeliveryZone, setHeroDeliveryZone] = useState<"dhaka" | "nationwide">("dhaka");
   const [heroPaymentMethod, setHeroPaymentMethod] = useState<"bkash" | "nagad" | "cod">("bkash");
   const [pricingBilling, setPricingBilling] = useState<"monthly" | "annual">("monthly");
+  const [showFeatureComparison, setShowFeatureComparison] = useState(false);
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [isNavDropdownOpen, setIsNavDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -131,6 +137,10 @@ export default function PlatformLandingPage() {
       a: "StoreSwift is purpose-built for high-conversion direct commerce in South Asia and global direct-to-consumer markets. Unlike generic builders requiring dozens of third-party plugins and expensive monthly subscriptions, StoreSwift natively includes 20-second 1-page checkout, automated courier dispatch with Steadfast and Pathao, printable 4x6 thermal barcode labels, and an Anti-Fraud RTO Shield out of the box."
     },
     {
+      q: "How does StoreSwift compare to Zatiq Easy?",
+      a: "While Zatiq Easy offers basic social shop tools and charges up to 5% per order on their free plan with additional processing deductions, StoreSwift guarantees 0% commission on physical orders across all plans. Furthermore, StoreSwift provides 6 deep-vertical category architectures, 20-second 1-page checkout, atomic SQL inventory reservation locks, native 4x6 thermal barcode labels, and an AI Anti-Fraud RTO Shield."
+    },
+    {
       q: "Can I accept Cash on Delivery (COD), bKash, and Nagad?",
       a: "Yes. Cash on Delivery is enabled by default with an Open Parcel Doorstep Inspection guarantee. You can also accept instant payments via bKash Express, Nagad Direct, and credit/debit cards with automated transaction tracking and zero platform commission."
     },
@@ -140,7 +150,7 @@ export default function PlatformLandingPage() {
     },
     {
       q: "How does the Anti-Fraud RTO Risk Shield protect my business?",
-      a: "In social and direct commerce, uncollected Cash on Delivery orders cause costly return courier penalties. StoreSwift's RTO Shield analyzes buyer phone numbers against nationwide delivery records, flagging high-risk serial returners so you can collect an advance delivery fee before dispatch."
+      a: "In social and direct commerce, uncollected Cash on Delivery orders cause costly return courier penalties (typically ৳130 per package). StoreSwift's RTO Shield analyzes buyer phone numbers against nationwide delivery records, flagging high-risk serial returners so you can collect an advance delivery fee before dispatch."
     },
     {
       q: "Can I connect my own custom domain (e.g. mystore.com)?",
@@ -163,13 +173,13 @@ export default function PlatformLandingPage() {
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center space-x-8 text-xs font-semibold text-zinc-400">
+          <nav className="hidden lg:flex items-center space-x-7 text-xs font-semibold text-zinc-400">
             <div className="relative">
               <button
                 onClick={() => setIsNavDropdownOpen(!isNavDropdownOpen)}
                 className="hover:text-white transition flex items-center space-x-1.5 py-1"
               >
-                <span>Live Storefronts</span>
+                <span>Live Stores</span>
                 <span className="text-[10px] bg-white/10 text-zinc-300 px-1.5 py-0.5 rounded font-bold">6</span>
                 <ChevronDown className="w-3 h-3 text-zinc-500" />
               </button>
@@ -202,7 +212,9 @@ export default function PlatformLandingPage() {
               )}
             </div>
             <a href="#storefronts" className="hover:text-white transition">Storefronts</a>
-            <a href="#engines" className="hover:text-white transition">Platform Architecture</a>
+            <a href="#engines" className="hover:text-white transition">Architecture</a>
+            <a href="#steps" className="hover:text-white transition">3-Step Launch</a>
+            <a href="#comparison" className="hover:text-white transition">Why StoreSwift</a>
             <a href="#pricing" className="hover:text-white transition">Pricing</a>
             <a href="#faq" className="hover:text-white transition">FAQ</a>
           </nav>
@@ -257,34 +269,12 @@ export default function PlatformLandingPage() {
             </div>
 
             <div className="border-t border-white/10 pt-3 space-y-2 text-xs font-semibold text-zinc-300">
-              <a
-                href="#storefronts"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block px-2 py-1.5 rounded-lg hover:bg-white/5"
-              >
-                Storefronts
-              </a>
-              <a
-                href="#engines"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block px-2 py-1.5 rounded-lg hover:bg-white/5"
-              >
-                Platform Architecture
-              </a>
-              <a
-                href="#pricing"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block px-2 py-1.5 rounded-lg hover:bg-white/5"
-              >
-                Pricing Plans
-              </a>
-              <a
-                href="#faq"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block px-2 py-1.5 rounded-lg hover:bg-white/5"
-              >
-                FAQ
-              </a>
+              <a href="#storefronts" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-1.5 rounded-lg hover:bg-white/5">Storefronts</a>
+              <a href="#engines" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-1.5 rounded-lg hover:bg-white/5">Architecture</a>
+              <a href="#steps" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-1.5 rounded-lg hover:bg-white/5">3-Step Launch</a>
+              <a href="#comparison" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-1.5 rounded-lg hover:bg-white/5">Why StoreSwift vs Zatiq</a>
+              <a href="#pricing" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-1.5 rounded-lg hover:bg-white/5">Pricing Plans</a>
+              <a href="#faq" onClick={() => setIsMobileMenuOpen(false)} className="block px-2 py-1.5 rounded-lg hover:bg-white/5">FAQ</a>
               <Link
                 href="/admin?store=apex-fashion"
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -581,7 +571,7 @@ export default function PlatformLandingPage() {
                     </div>
                   </div>
 
-                    <Link
+                  <Link
                     href="/admin?store=apex-fashion"
                     className="w-full py-2.5 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-white/10 font-bold text-xs flex items-center justify-center space-x-1.5 transition"
                   >
@@ -595,7 +585,47 @@ export default function PlatformLandingPage() {
         </div>
       </section>
 
-      {/* ─── 3. High-Precision Engineering Telemetry Bar ────────────────────── */}
+      {/* ─── 3. Logistics, Payment & Infrastructure Ecosystem Dock ───────────── */}
+      <section className="py-6 bg-zinc-950 border-b border-white/[0.06] overflow-x-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-6 whitespace-nowrap min-w-max text-xs text-zinc-400">
+          <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500">
+            Official Ecosystem:
+          </span>
+          <div className="flex items-center space-x-6">
+            <span className="flex items-center space-x-2 text-zinc-300">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <strong className="text-white font-semibold">Steadfast Courier</strong> Official API
+            </span>
+            <span className="text-zinc-700">•</span>
+            <span className="flex items-center space-x-2 text-zinc-300">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-400" />
+              <strong className="text-white font-semibold">Pathao Logistics</strong> Sync
+            </span>
+            <span className="text-zinc-700">•</span>
+            <span className="flex items-center space-x-2 text-zinc-300">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#E2136E]" />
+              <strong className="text-white font-semibold">bKash</strong> Merchant Gateway
+            </span>
+            <span className="text-zinc-700">•</span>
+            <span className="flex items-center space-x-2 text-zinc-300">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#F7931E]" />
+              <strong className="text-white font-semibold">Nagad</strong> Direct
+            </span>
+            <span className="text-zinc-700">•</span>
+            <span className="flex items-center space-x-2 text-zinc-300">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+              <strong className="text-white font-semibold">Meta & TikTok</strong> CAPI
+            </span>
+            <span className="text-zinc-700">•</span>
+            <span className="flex items-center space-x-2 text-zinc-300">
+              <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
+              <strong className="text-white font-semibold">PostgreSQL</strong> Atomic Locks
+            </span>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 4. High-Precision Engineering Telemetry Bar ────────────────────── */}
       <section className="py-12 bg-zinc-950/70 border-b border-white/[0.08]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 divide-y sm:divide-y-0 sm:divide-x divide-white/[0.08]">
@@ -627,8 +657,72 @@ export default function PlatformLandingPage() {
         </div>
       </section>
 
-      {/* ─── 4. Bespoke Turnkey Storefronts (Luxury Studio) ─────────────────── */}
-      <section id="storefronts" className="py-24 sm:py-28 bg-[#09090b] border-b border-white/[0.08] scroll-mt-16">
+      {/* ─── 5. "3 Simple Steps to Scale" Interactive Launch Architecture ────── */}
+      <section id="steps" className="py-24 sm:py-28 bg-[#09090b] border-b border-white/[0.08] scroll-mt-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
+              Zero Code • 3 Minutes
+            </span>
+            <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+              Three Simple Steps to Launch
+            </h2>
+            <p className="text-xs sm:text-base text-zinc-400 leading-relaxed">
+              No developer hiring, no complex agency retainers, and no plugin maintenance. Deploy a high-conversion store in minutes.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Step 1 */}
+            <div className="p-8 rounded-3xl bg-zinc-900/40 border border-white/[0.08] backdrop-blur-xl space-y-5 shadow-2xl relative">
+              <span className="text-4xl font-black text-zinc-700 font-mono block">01</span>
+              <div>
+                <h3 className="text-lg font-bold text-white">Choose Your Industry Architecture</h3>
+                <p className="text-xs text-zinc-400 mt-2 leading-relaxed">
+                  Select from 6 bespoke category storefronts (Fashion, Cosmetics, Shoes, Tech, Jewelry, Coffee) configured with domain-specific features like GSM badges and routine builders.
+                </p>
+              </div>
+              <div className="pt-3 border-t border-white/[0.06] flex items-center space-x-2 text-[11px] text-blue-400 font-medium">
+                <CheckCircle2 className="w-4 h-4 text-blue-400" />
+                <span>Zero agency coding required</span>
+              </div>
+            </div>
+
+            {/* Step 2 */}
+            <div className="p-8 rounded-3xl bg-zinc-900/40 border border-white/[0.08] backdrop-blur-xl space-y-5 shadow-2xl relative">
+              <span className="text-4xl font-black text-zinc-700 font-mono block">02</span>
+              <div>
+                <h3 className="text-lg font-bold text-white">Connect Courier & MFS in 60s</h3>
+                <p className="text-xs text-zinc-400 mt-2 leading-relaxed">
+                  Link your Steadfast or Pathao API keys and bKash/Nagad merchant accounts. Nationwide 64-district delivery rates (৳60/৳130) are instantly active.
+                </p>
+              </div>
+              <div className="pt-3 border-t border-white/[0.06] flex items-center space-x-2 text-[11px] text-emerald-400 font-medium">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                <span>Automated webhook sync ready</span>
+              </div>
+            </div>
+
+            {/* Step 3 */}
+            <div className="p-8 rounded-3xl bg-zinc-900/40 border border-white/[0.08] backdrop-blur-xl space-y-5 shadow-2xl relative">
+              <span className="text-4xl font-black text-zinc-700 font-mono block">03</span>
+              <div>
+                <h3 className="text-lg font-bold text-white">Start High-Velocity Selling</h3>
+                <p className="text-xs text-zinc-400 mt-2 leading-relaxed">
+                  Capture mobile buyers in &lt;20 seconds with 1-page checkout. Auto-generate 4x6 thermal barcode labels with 1 click and stop fraud before dispatch.
+                </p>
+              </div>
+              <div className="pt-3 border-t border-white/[0.06] flex items-center space-x-2 text-[11px] text-purple-400 font-medium">
+                <CheckCircle2 className="w-4 h-4 text-purple-400" />
+                <span>0% physical order commission</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 6. Bespoke Turnkey Storefronts (Luxury Studio) ─────────────────── */}
+      <section id="storefronts" className="py-24 sm:py-28 bg-zinc-950/70 border-b border-white/[0.08] scroll-mt-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
@@ -761,8 +855,8 @@ export default function PlatformLandingPage() {
         </div>
       </section>
 
-      {/* ─── 5. Core Platform Architecture (Interactive Engineering Blueprints) ─── */}
-      <section id="engines" className="py-24 sm:py-28 bg-zinc-950/70 border-b border-white/[0.08] scroll-mt-16">
+      {/* ─── 7. Core Platform Architecture (Interactive Engineering Blueprints) ─── */}
+      <section id="engines" className="py-24 sm:py-28 bg-[#09090b] border-b border-white/[0.08] scroll-mt-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
@@ -1047,8 +1141,218 @@ export default function PlatformLandingPage() {
         </div>
       </section>
 
-      {/* ─── 6. Transparent Pricing (Obsidian Luxury Columns) ─────────────────── */}
-      <section id="pricing" className="py-24 sm:py-28 bg-[#09090b] border-b border-white/[0.08] scroll-mt-16">
+      {/* ─── 8. Head-to-Head Comparison Matrix (StoreSwift vs Competitors) ───── */}
+      <section id="comparison" className="py-24 sm:py-28 bg-zinc-950/70 border-b border-white/[0.08] scroll-mt-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
+              Benchmark Architecture
+            </span>
+            <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+              Why Brands Choose StoreSwift
+            </h2>
+            <p className="text-xs sm:text-base text-zinc-400 leading-relaxed">
+              See how StoreSwift compares directly against Zatiq Easy, bloated Shopify apps, and manual social inbox selling.
+            </p>
+          </div>
+
+          {/* Comparison Table */}
+          <div className="bg-zinc-900/40 backdrop-blur-xl rounded-3xl border border-white/[0.08] overflow-hidden shadow-2xl">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="border-b border-white/[0.08] bg-zinc-950/80">
+                    <th className="py-4 px-5 text-zinc-400 font-mono text-[11px] uppercase tracking-wider">Platform Capabilities</th>
+                    <th className="py-4 px-5 bg-blue-600/15 border-x border-blue-500/30 text-white font-bold">
+                      <div className="flex items-center space-x-1.5">
+                        <span className="w-2 h-2 rounded-full bg-blue-500" />
+                        <span className="text-sm">StoreSwift 2.0</span>
+                      </div>
+                    </th>
+                    <th className="py-4 px-5 text-zinc-400 font-medium">Zatiq Easy</th>
+                    <th className="py-4 px-5 text-zinc-400 font-medium">Shopify + 12 Plugins</th>
+                    <th className="py-4 px-5 text-zinc-400 font-medium">Manual Facebook / Inbox</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/[0.06] text-zinc-300">
+                  {/* Row 1 */}
+                  <tr className="hover:bg-white/[0.02] transition">
+                    <td className="py-4 px-5 font-semibold text-white">Physical Order Commission</td>
+                    <td className="py-4 px-5 bg-blue-600/10 border-x border-blue-500/20 font-bold text-emerald-400">
+                      0% Platform Cut
+                    </td>
+                    <td className="py-4 px-5 text-zinc-400">Up to 5% per order</td>
+                    <td className="py-4 px-5 text-zinc-400">2.9% + 30¢ + plugin fees</td>
+                    <td className="py-4 px-5 text-zinc-400">0% (but high manual labor)</td>
+                  </tr>
+
+                  {/* Row 2 */}
+                  <tr className="hover:bg-white/[0.02] transition">
+                    <td className="py-4 px-5 font-semibold text-white">Checkout Experience</td>
+                    <td className="py-4 px-5 bg-blue-600/10 border-x border-blue-500/20 font-bold text-white">
+                      20s 1-Page (Bangla & EN)
+                    </td>
+                    <td className="py-4 px-5 text-zinc-400">Standard multi-step cart</td>
+                    <td className="py-4 px-5 text-zinc-400">Complex 3-step checkout</td>
+                    <td className="py-4 px-5 text-zinc-400">Manual chat back-and-forth</td>
+                  </tr>
+
+                  {/* Row 3 */}
+                  <tr className="hover:bg-white/[0.02] transition">
+                    <td className="py-4 px-5 font-semibold text-white">Steadfast & Pathao Courier</td>
+                    <td className="py-4 px-5 bg-blue-600/10 border-x border-blue-500/20 font-bold text-emerald-400">
+                      1-Click Native API Sync
+                    </td>
+                    <td className="py-4 px-5 text-zinc-400">Basic 3rd-party integration</td>
+                    <td className="py-4 px-5 text-zinc-400">Paid custom apps ($$$)</td>
+                    <td className="py-4 px-5 text-zinc-400">Copy-pasting into portals</td>
+                  </tr>
+
+                  {/* Row 4 */}
+                  <tr className="hover:bg-white/[0.02] transition">
+                    <td className="py-4 px-5 font-semibold text-white">4x6 Thermal Barcode Labels</td>
+                    <td className="py-4 px-5 bg-blue-600/10 border-x border-blue-500/20 font-bold text-white">
+                      Auto-Generated from Stream
+                    </td>
+                    <td className="py-4 px-5 text-zinc-400">Standard receipt print</td>
+                    <td className="py-4 px-5 text-zinc-400">Requires paid label app</td>
+                    <td className="py-4 px-5 text-zinc-400">Manual handwritten stickers</td>
+                  </tr>
+
+                  {/* Row 5 */}
+                  <tr className="hover:bg-white/[0.02] transition">
+                    <td className="py-4 px-5 font-semibold text-white">RTO Fraud Return Defense</td>
+                    <td className="py-4 px-5 bg-blue-600/10 border-x border-blue-500/20 font-bold text-emerald-400">
+                      Predictive 0-100% Score
+                    </td>
+                    <td className="py-4 px-5 text-zinc-400">Basic IP blocking only</td>
+                    <td className="py-4 px-5 text-zinc-400">Expensive enterprise app</td>
+                    <td className="py-4 px-5 text-zinc-400">None (15-25% refused losses)</td>
+                  </tr>
+
+                  {/* Row 6 */}
+                  <tr className="hover:bg-white/[0.02] transition">
+                    <td className="py-4 px-5 font-semibold text-white">Vertical Tailored Architecture</td>
+                    <td className="py-4 px-5 bg-blue-600/10 border-x border-blue-500/20 font-bold text-white">
+                      6 Deep-Vertical Engines
+                    </td>
+                    <td className="py-4 px-5 text-zinc-400">Generic identical templates</td>
+                    <td className="py-4 px-5 text-zinc-400">Generic boutique themes</td>
+                    <td className="py-4 px-5 text-zinc-400">No storefront</td>
+                  </tr>
+
+                  {/* Row 7 */}
+                  <tr className="hover:bg-white/[0.02] transition">
+                    <td className="py-4 px-5 font-semibold text-white">Flash-Sale Overselling Safety</td>
+                    <td className="py-4 px-5 bg-blue-600/10 border-x border-blue-500/20 font-bold text-emerald-400">
+                      Atomic SQL Row Locks
+                    </td>
+                    <td className="py-4 px-5 text-zinc-400">Standard DB lock</td>
+                    <td className="py-4 px-5 text-zinc-400">Standard inventory sync</td>
+                    <td className="py-4 px-5 text-zinc-400">Constant double-booking</td>
+                  </tr>
+
+                  {/* Row 8 */}
+                  <tr className="hover:bg-white/[0.02] transition">
+                    <td className="py-4 px-5 font-semibold text-white">Setup & Go-Live Time</td>
+                    <td className="py-4 px-5 bg-blue-600/10 border-x border-blue-500/20 font-bold text-white">
+                      3 Minutes (Turnkey)
+                    </td>
+                    <td className="py-4 px-5 text-zinc-400">10–15 Minutes</td>
+                    <td className="py-4 px-5 text-zinc-400">2–4 Weeks of agency setup</td>
+                    <td className="py-4 px-5 text-zinc-400">Ongoing daily manual burden</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 9. Verified Merchant Success Stories (Social Proof) ─────────────── */}
+      <section className="py-24 sm:py-28 bg-[#09090b] border-b border-white/[0.08]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
+              Verified Merchant Proof
+            </span>
+            <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+              Scaling Brands, Zero Agency Fees
+            </h2>
+            <p className="text-xs sm:text-base text-zinc-400 leading-relaxed">
+              Real high-velocity merchants migrating from fragmented setups to StoreSwift.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Story 1 */}
+            <div className="p-8 rounded-3xl bg-zinc-900/40 border border-white/[0.08] backdrop-blur-xl flex flex-col justify-between space-y-6 shadow-2xl">
+              <div className="space-y-4">
+                <div className="flex items-center space-x-1 text-amber-400 text-sm">
+                  {"★".repeat(5)}
+                </div>
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                  "We migrated from Shopify where we were spending $180/month on separate apps for COD forms, Steadfast courier sync, and tracking. StoreSwift includes 20-second 1-page checkout, auto-printed thermal labels, and zero commission out of the box. Our mobile conversion jumped by 44%."
+                </p>
+              </div>
+              <div className="pt-4 border-t border-white/[0.06] flex items-center justify-between">
+                <div>
+                  <h4 className="text-xs font-bold text-white">Farhan Chowdhury</h4>
+                  <p className="text-[10px] text-zinc-400">Founder, Apex Lifestyle (Apparel)</p>
+                </div>
+                <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/40">
+                  +44% CVR
+                </span>
+              </div>
+            </div>
+
+            {/* Story 2 */}
+            <div className="p-8 rounded-3xl bg-zinc-900/40 border border-white/[0.08] backdrop-blur-xl flex flex-col justify-between space-y-6 shadow-2xl">
+              <div className="space-y-4">
+                <div className="flex items-center space-x-1 text-amber-400 text-sm">
+                  {"★".repeat(5)}
+                </div>
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                  "Our customers love the 3-step glass skin routine builder. But the absolute lifesaver is StoreSwift's Anti-Fraud RTO Shield. It flagged over 60 high-risk serial COD returners last month, saving our business over ৳7,800 in courier return fees."
+                </p>
+              </div>
+              <div className="pt-4 border-t border-white/[0.06] flex items-center justify-between">
+                <div>
+                  <h4 className="text-xs font-bold text-white">Dr. Sabrina Karim</h4>
+                  <p className="text-[10px] text-zinc-400">Co-Founder, Aura Skincare</p>
+                </div>
+                <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/40">
+                  -38% Returns
+                </span>
+              </div>
+            </div>
+
+            {/* Story 3 */}
+            <div className="p-8 rounded-3xl bg-zinc-900/40 border border-white/[0.08] backdrop-blur-xl flex flex-col justify-between space-y-6 shadow-2xl">
+              <div className="space-y-4">
+                <div className="flex items-center space-x-1 text-amber-400 text-sm">
+                  {"★".repeat(5)}
+                </div>
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                  "Our fulfillment crew used to waste 2 hours every evening manually copying customer addresses into courier dashboards and writing stickers with sharpies. With StoreSwift's 1-click Steadfast booking and 4x6 thermal barcode labels, dispatch is done in 10 minutes."
+                </p>
+              </div>
+              <div className="pt-4 border-t border-white/[0.06] flex items-center justify-between">
+                <div>
+                  <h4 className="text-xs font-bold text-white">Tanvir Hossain</h4>
+                  <p className="text-[10px] text-zinc-400">Head of Operations, Craft Bench Shoes</p>
+                </div>
+                <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/40">
+                  2h Saved Daily
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 10. Transparent Pricing (Obsidian Luxury Columns) ────────────────── */}
+      <section id="pricing" className="py-24 sm:py-28 bg-zinc-950/70 border-b border-white/[0.08] scroll-mt-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-xl mx-auto space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
@@ -1185,11 +1489,156 @@ export default function PlatformLandingPage() {
               </Link>
             </div>
           </div>
+
+          {/* Expandable Feature Matrix Toggle */}
+          <div className="pt-6 text-center">
+            <button
+              type="button"
+              onClick={() => setShowFeatureComparison(!showFeatureComparison)}
+              className="inline-flex items-center space-x-2 text-xs font-semibold text-zinc-400 hover:text-white transition py-2 px-4 rounded-xl bg-zinc-900 border border-white/10"
+            >
+              <span>{showFeatureComparison ? "Hide Detailed Feature Matrix" : "Compare All 24 Platform Capabilities"}</span>
+              {showFeatureComparison ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </button>
+          </div>
+
+          {/* Full Feature Comparison Table */}
+          {showFeatureComparison && (
+            <div className="mt-8 bg-zinc-900/60 backdrop-blur-xl rounded-3xl border border-white/[0.08] overflow-hidden shadow-2xl animate-fade-in">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr className="border-b border-white/[0.08] bg-zinc-950/80 text-zinc-400 font-mono text-[11px]">
+                      <th className="py-3.5 px-5">Capabilities</th>
+                      <th className="py-3.5 px-5">Starter (৳599/mo)</th>
+                      <th className="py-3.5 px-5 bg-blue-600/10 text-blue-400 font-bold">Growth (৳1,099/mo)</th>
+                      <th className="py-3.5 px-5">Pro (৳2,499/mo)</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/[0.05] text-zinc-300">
+                    <tr className="bg-white/[0.02]">
+                      <td colSpan={4} className="py-2.5 px-5 font-mono text-[10px] uppercase font-bold text-zinc-500 tracking-wider">
+                        Selling & Catalog
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-5">Product Limit</td>
+                      <td className="py-3 px-5">500</td>
+                      <td className="py-3 px-5 font-bold text-white bg-blue-600/5">2,000</td>
+                      <td className="py-3 px-5 font-bold text-emerald-400">Unlimited</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-5">Physical Order Commission</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold">0%</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold bg-blue-600/5">0%</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold">0%</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-5">20-Second 1-Page Checkout</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold">Included</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold bg-blue-600/5">Included</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold">Included</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-5">Bilingual বাংলা / English Toggle</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold">Included</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold bg-blue-600/5">Included</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold">Included</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-5">Cartesian Multi-Variant Matrix</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold">Included</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold bg-blue-600/5">Included</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold">Included</td>
+                    </tr>
+
+                    <tr className="bg-white/[0.02]">
+                      <td colSpan={4} className="py-2.5 px-5 font-mono text-[10px] uppercase font-bold text-zinc-500 tracking-wider">
+                        Logistics & Courier
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-5">Steadfast & Pathao 1-Click Booking</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold">Included</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold bg-blue-600/5">Included</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold">Included</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-5">Printable 4x6 Thermal Barcodes</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold">Included</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold bg-blue-600/5">Included</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold">Included</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-5">64-District Auto Zone Tariffs</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold">Included</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold bg-blue-600/5">Included</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold">Included</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-5">Custom Courier API Credentials</td>
+                      <td className="py-3 px-5 text-zinc-500">—</td>
+                      <td className="py-3 px-5 text-zinc-500 bg-blue-600/5">—</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold">Included</td>
+                    </tr>
+
+                    <tr className="bg-white/[0.02]">
+                      <td colSpan={4} className="py-2.5 px-5 font-mono text-[10px] uppercase font-bold text-zinc-500 tracking-wider">
+                        Fraud Defense & Security
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-5">Anti-Fraud RTO Shield</td>
+                      <td className="py-3 px-5 text-zinc-400">Basic Flagging</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold bg-blue-600/5">Predictive 0-100% Score</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold">Predictive + Custom Rules</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-5">Custom Domain with Automated SSL</td>
+                      <td className="py-3 px-5 text-zinc-500">—</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold bg-blue-600/5">Included</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold">Included</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-5">Atomic SQL Stock Reservation Locks</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold">Included</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold bg-blue-600/5">Included</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold">Included</td>
+                    </tr>
+
+                    <tr className="bg-white/[0.02]">
+                      <td colSpan={4} className="py-2.5 px-5 font-mono text-[10px] uppercase font-bold text-zinc-500 tracking-wider">
+                        Growth & Multi-Channel
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-5">Meta Pixel, TikTok & GTM CAPI</td>
+                      <td className="py-3 px-5 text-zinc-500">—</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold bg-blue-600/5">Included</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold">Included</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-5">B2B Wholesale Orders & Invoicing</td>
+                      <td className="py-3 px-5 text-zinc-500">—</td>
+                      <td className="py-3 px-5 text-zinc-500 bg-blue-600/5">—</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold">Included</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-5">Merchant Support Channel</td>
+                      <td className="py-3 px-5 text-zinc-300">Standard Email</td>
+                      <td className="py-3 px-5 text-white font-bold bg-blue-600/5">Priority WhatsApp / Email</td>
+                      <td className="py-3 px-5 text-emerald-400 font-bold">Dedicated Account Manager</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* ─── 7. FAQ Accordion ──────────────────────────────────────────────── */}
-      <section id="faq" className="py-24 sm:py-28 bg-zinc-950/70 border-b border-white/[0.08] scroll-mt-16">
+      {/* ─── 11. FAQ Accordion ──────────────────────────────────────────────── */}
+      <section id="faq" className="py-24 sm:py-28 bg-[#09090b] border-b border-white/[0.08] scroll-mt-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-xl mx-auto space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
@@ -1233,8 +1682,8 @@ export default function PlatformLandingPage() {
         </div>
       </section>
 
-      {/* ─── 8. Pre-Footer Call to Action (Obsidian Luxury Card) ────────────── */}
-      <section className="py-24 sm:py-28 px-4 sm:px-6 lg:px-8 bg-[#09090b]">
+      {/* ─── 12. Pre-Footer Call to Action (Obsidian Luxury Card) ────────────── */}
+      <section className="py-24 sm:py-28 px-4 sm:px-6 lg:px-8 bg-zinc-950">
         <div className="max-w-5xl mx-auto rounded-3xl bg-gradient-to-b from-zinc-900 to-zinc-950 text-white p-10 sm:p-16 text-center space-y-6 border border-white/10 shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-blue-500/10 blur-3xl pointer-events-none" />
 
@@ -1263,7 +1712,7 @@ export default function PlatformLandingPage() {
         </div>
       </section>
 
-      {/* ─── 9. Platform Directory Footer ───────────────────────────────────── */}
+      {/* ─── 13. Platform Directory Footer ───────────────────────────────────── */}
       <PlatformFooter />
     </div>
   );
