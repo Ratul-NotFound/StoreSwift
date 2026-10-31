@@ -121,42 +121,39 @@ body {
 .studio-canvas {
   background-color: #fafafc;
   background-image: 
-    radial-gradient(ellipse 75% 45% at 50% -5%, rgba(59, 130, 246, 0.05), transparent 70%),
+    radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.08) 0%, rgba(243, 244, 246, 0.4) 50%, transparent 80%),
     radial-gradient(circle at 50% 0%, #ffffff 0%, #f4f4f7 100%);
-  background-attachment: fixed;
 }
 
 .dark .studio-canvas {
   background-color: #070709;
   background-image: 
-    radial-gradient(ellipse 75% 45% at 50% -5%, rgba(59, 130, 246, 0.12), transparent 70%),
-    radial-gradient(ellipse 60% 40% at 85% 65%, rgba(139, 92, 246, 0.04), transparent 70%),
-    radial-gradient(circle at 50% 0%, #0c0c11 0%, #050507 100%);
-  background-attachment: fixed;
+    radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.18) 0%, rgba(99, 102, 241, 0.08) 40%, transparent 75%),
+    radial-gradient(circle at 50% 0%, #0d0d14 0%, #050507 100%);
 }
 
-/* Radially-Masked Architectural Dot Matrix (Subtle, Clean & Non-intrusive) */
+/* Radially-Masked Architectural Dot Matrix (Crisp, Premium & Visually Discernible) */
 .commerce-dot-matrix {
-  background-image: radial-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(0, 0, 0, 0.14) 1.5px, transparent 1.5px);
   background-size: 28px 28px;
-  -webkit-mask-image: radial-gradient(ellipse 70% 50% at 50% 25%, #000 20%, transparent 80%);
-  mask-image: radial-gradient(ellipse 70% 50% at 50% 25%, #000 20%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 35%, transparent 85%);
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 35%, transparent 85%);
 }
 
 .dark .commerce-dot-matrix {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.22) 1.5px, transparent 1.5px);
   background-size: 28px 28px;
-  -webkit-mask-image: radial-gradient(ellipse 70% 50% at 50% 25%, #000 20%, transparent 80%);
-  mask-image: radial-gradient(ellipse 70% 50% at 50% 25%, #000 20%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 35%, transparent 85%);
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 35%, transparent 85%);
 }
 
 /* Ethereal Optical Horizon Line & Pulse */
 .commerce-horizon-glow {
-  background: radial-gradient(ellipse at 50% 0%, rgba(59, 130, 246, 0.15), transparent 70%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(59, 130, 246, 0.25), transparent 70%);
 }
 
 .dark .commerce-horizon-glow {
-  background: radial-gradient(ellipse at 50% 0%, rgba(59, 130, 246, 0.22), transparent 70%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(59, 130, 246, 0.45), transparent 70%);
 }
 
 .luxury-card {

@@ -284,42 +284,45 @@ export default function PlatformLandingPage() {
       {/* ─── 2. Hero Section: Studio Depth & Architectural Calm ─────────────── */}
       <section className="relative overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-between items-center py-12 sm:py-16 lg:py-16 border-b border-zinc-200/80 dark:border-white/[0.06] transition-colors">
         {/* Layer 1: Ethereal Optical Horizon Line & Pulse at Top */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 max-w-4xl h-[1px] bg-gradient-to-r from-transparent via-blue-500/50 dark:via-blue-400/40 to-transparent pointer-events-none" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 max-w-2xl h-28 commerce-horizon-glow blur-2xl pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 max-w-4xl h-[1.5px] bg-gradient-to-r from-transparent via-blue-500 dark:via-blue-400 to-transparent pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 max-w-2xl h-24 bg-blue-500/25 dark:bg-blue-400/30 blur-2xl pointer-events-none" />
+
+        {/* Ambient Hero Spotlight Aura (Linear / Stripe Signature Glow) */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] sm:w-[850px] h-[350px] sm:h-[480px] bg-gradient-to-tr from-blue-600/20 via-indigo-500/15 to-purple-600/10 dark:from-blue-500/20 dark:via-indigo-500/15 dark:to-purple-500/10 rounded-full blur-[100px] pointer-events-none" />
 
         {/* Layer 2: Radially-Masked Architectural Dot Matrix */}
         <div className="absolute inset-0 commerce-dot-matrix pointer-events-none" />
 
         {/* Layer 3: Commerce Route Circuit Lines (Subtle Vector Architecture) */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center opacity-40 dark:opacity-25">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center opacity-75 dark:opacity-65">
           <svg className="w-full max-w-6xl h-full" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M100 300 C 300 220, 450 380, 600 300 C 750 220, 900 380, 1100 300" stroke="currentColor" strokeWidth="1" strokeDasharray="4 6" className="text-zinc-300 dark:text-zinc-700/60" />
-            <path d="M200 160 C 400 340, 800 260, 1000 440" stroke="currentColor" strokeWidth="1" strokeDasharray="3 5" className="text-blue-500/20 dark:text-blue-400/20" />
-            <circle cx="300" cy="245" r="3" className="fill-blue-500/40 dark:fill-blue-400/40" />
-            <circle cx="600" cy="300" r="3.5" className="fill-emerald-500/50 dark:fill-emerald-400/50" />
-            <circle cx="900" cy="355" r="3" className="fill-blue-500/40 dark:fill-blue-400/40" />
+            <path d="M100 300 C 300 220, 450 380, 600 300 C 750 220, 900 380, 1100 300" stroke="currentColor" strokeWidth="1.5" strokeDasharray="4 6" className="text-zinc-400/70 dark:text-zinc-600/80" />
+            <path d="M200 160 C 400 340, 800 260, 1000 440" stroke="currentColor" strokeWidth="2" strokeDasharray="4 5" className="text-blue-500/80 dark:text-blue-400/80" />
+            <circle cx="300" cy="245" r="4" className="fill-blue-500 dark:fill-blue-400 shadow-sm" />
+            <circle cx="600" cy="300" r="4.5" className="fill-emerald-500 dark:fill-emerald-400 shadow-sm" />
+            <circle cx="900" cy="355" r="4" className="fill-blue-500 dark:fill-blue-400 shadow-sm" />
           </svg>
         </div>
 
-        {/* Floating Telemetry Micro-Pills (Desktop Flanks - commerce telemetry) */}
-        <div className="hidden xl:flex absolute left-8 top-1/3 -translate-y-1/2 flex-col space-y-3 pointer-events-none">
-          <div className="luxury-card rounded-2xl px-3.5 py-2.5 shadow-sm text-[11px] font-mono flex items-center space-x-2 text-zinc-600 dark:text-zinc-400 backdrop-blur-md">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+        {/* Floating Telemetry Micro-Pills (Visible on Desktop Laptops & Monitors) */}
+        <div className="hidden lg:flex absolute left-4 lg:left-8 top-1/3 -translate-y-1/2 flex-col space-y-3 pointer-events-none z-10">
+          <div className="luxury-card rounded-2xl px-3.5 py-2.5 shadow-sm text-[11px] font-mono flex items-center space-x-2 text-zinc-700 dark:text-zinc-300 backdrop-blur-md">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse" />
             <span>Checkout Speed: <strong className="text-zinc-950 dark:text-white font-bold">18.4s avg</strong></span>
           </div>
-          <div className="luxury-card rounded-2xl px-3.5 py-2.5 shadow-sm text-[11px] font-mono flex items-center space-x-2 text-zinc-600 dark:text-zinc-400 backdrop-blur-md">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+          <div className="luxury-card rounded-2xl px-3.5 py-2.5 shadow-sm text-[11px] font-mono flex items-center space-x-2 text-zinc-700 dark:text-zinc-300 backdrop-blur-md">
+            <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
             <span>Courier Dispatch: <strong className="text-zinc-950 dark:text-white font-bold">Auto 1-Click</strong></span>
           </div>
         </div>
 
-        <div className="hidden xl:flex absolute right-8 top-1/3 -translate-y-1/2 flex-col space-y-3 pointer-events-none">
-          <div className="luxury-card rounded-2xl px-3.5 py-2.5 shadow-sm text-[11px] font-mono flex items-center space-x-2 text-zinc-600 dark:text-zinc-400 backdrop-blur-md">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+        <div className="hidden lg:flex absolute right-4 lg:right-8 top-1/3 -translate-y-1/2 flex-col space-y-3 pointer-events-none z-10">
+          <div className="luxury-card rounded-2xl px-3.5 py-2.5 shadow-sm text-[11px] font-mono flex items-center space-x-2 text-zinc-700 dark:text-zinc-300 backdrop-blur-md">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
             <span>Fraud Risk Shield: <strong className="text-zinc-950 dark:text-white font-bold">99.4% Acc.</strong></span>
           </div>
-          <div className="luxury-card rounded-2xl px-3.5 py-2.5 shadow-sm text-[11px] font-mono flex items-center space-x-2 text-zinc-600 dark:text-zinc-400 backdrop-blur-md">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+          <div className="luxury-card rounded-2xl px-3.5 py-2.5 shadow-sm text-[11px] font-mono flex items-center space-x-2 text-zinc-700 dark:text-zinc-300 backdrop-blur-md">
+            <span className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
             <span>District Tariffs: <strong className="text-zinc-950 dark:text-white font-bold">64 Active</strong></span>
           </div>
         </div>
