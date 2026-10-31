@@ -182,7 +182,7 @@ export default function PlatformLandingPage() {
       <header className="border-b border-zinc-200/80 dark:border-white/[0.08] bg-white/85 dark:bg-[#06070a]/85 backdrop-blur-2xl sticky top-0 z-50 transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center space-x-2.5 group flex-shrink-0">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 via-indigo-500 to-emerald-400 text-white flex items-center justify-center font-bold shadow-md shadow-indigo-500/25 group-hover:scale-105 transition-transform">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500 text-zinc-950 flex items-center justify-center font-bold shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform">
               <Store className="w-4 h-4" />
             </div>
             <span className="text-base font-bold tracking-tight text-zinc-950 dark:text-white">
@@ -319,17 +319,17 @@ export default function PlatformLandingPage() {
         <div className="absolute inset-0 bg-grid-mesh pointer-events-none" />
 
         {/* Precision Architectural Top Horizon Seam */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[1px] bg-gradient-to-r from-transparent via-indigo-400/40 to-transparent pointer-events-none" />
-        <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-2/3 max-w-2xl h-12 bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent blur-2xl pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[1px] bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent pointer-events-none" />
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-2/3 max-w-2xl h-12 bg-gradient-to-r from-transparent via-emerald-500/15 to-transparent blur-2xl pointer-events-none" />
 
         {/* Subtle Ambient Aurora Horizon Fade */}
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] lg:w-[1200px] h-[480px] bg-gradient-to-b from-indigo-600/[0.12] via-emerald-500/[0.05] to-transparent rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] lg:w-[1200px] h-[480px] bg-gradient-to-b from-emerald-500/[0.08] to-transparent rounded-full blur-[100px] pointer-events-none" />
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 sm:space-y-7 my-auto">
           {/* Status Capsule Badge */}
           <div className="inline-flex items-center space-x-2.5 px-3.5 py-1.5 rounded-full bg-zinc-100/90 dark:bg-white/[0.04] border border-zinc-200/90 dark:border-white/[0.08] text-xs font-medium shadow-sm">
             <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
-            <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-400 to-emerald-400 dark:from-indigo-400 dark:via-violet-300 dark:to-emerald-400">StoreSwift 2.0</span>
+            <span className="font-bold text-emerald-600 dark:text-emerald-400">StoreSwift 2.0</span>
             <span className="text-zinc-300 dark:text-zinc-700">•</span>
             <span className="text-zinc-600 dark:text-zinc-400">Commerce Operating System for Direct Brands</span>
           </div>
@@ -337,9 +337,8 @@ export default function PlatformLandingPage() {
           {/* Master Headline */}
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.035em] max-w-5xl mx-auto leading-[1.08] text-zinc-950 dark:text-white">
             Build your online store. <br className="hidden sm:inline" />
-            <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-emerald-500 dark:from-indigo-400 dark:via-purple-300 dark:to-emerald-400 bg-clip-text text-transparent">
-              Sell faster with 1-page checkout.
-            </span>
+            <span>Sell faster with </span>
+            <span className="text-emerald-500 dark:text-emerald-400">1-page checkout.</span>
           </h1>
 
           {/* Subtitle */}
@@ -372,11 +371,11 @@ export default function PlatformLandingPage() {
               <span>0% physical order commission</span>
             </div>
             <div className="flex items-center space-x-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-sky-500 shadow-[0_0_6px_rgba(14,165,233,0.7)]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)]" />
               <span>Steadfast & Pathao 1-click sync</span>
             </div>
             <div className="flex items-center space-x-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-violet-500 shadow-[0_0_6px_rgba(139,92,246,0.7)]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)]" />
               <span>Anti-Fraud RTO Shield included</span>
             </div>
           </div>
@@ -397,10 +396,10 @@ export default function PlatformLandingPage() {
       {/* ─── 4. Core Platform Capabilities (Precision Hardware Cards) ────────── */}
       <section id="features" className="relative overflow-hidden min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 transition-colors">
         {/* Subtle Ambient Monochrome & Emerald Aurora Backlight */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] lg:w-[1150px] h-[440px] bg-gradient-to-b from-indigo-600/[0.10] via-emerald-500/[0.06] to-transparent rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] lg:w-[1150px] h-[440px] bg-gradient-to-b from-emerald-500/[0.06] to-transparent rounded-full blur-[100px] pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12 w-full my-auto">
           <div className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-indigo-500 dark:text-indigo-400">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-500 dark:text-emerald-400">
               Core Capabilities
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight leading-tight bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400/80 bg-clip-text text-transparent">
@@ -416,10 +415,10 @@ export default function PlatformLandingPage() {
             <div className="luxury-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 transition-transform duration-200 hover:-translate-y-1">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-500 dark:text-amber-400 border border-amber-500/20 flex items-center justify-center shadow-sm">
+                  <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm">
                     <Zap className="w-5 h-5" />
                   </div>
-                  <span className="text-[10px] font-mono font-bold bg-amber-500/10 text-amber-600 dark:text-amber-300 px-2.5 py-1 rounded-full border border-amber-500/20">
+                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20">
                     &lt; 20s Flow
                   </span>
                 </div>
@@ -451,7 +450,7 @@ export default function PlatformLandingPage() {
 
               <div className="pt-4 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
                 <span>Speed Benchmark:</span>
-                <span className="text-amber-500 dark:text-amber-400 font-mono font-bold">+42.8% Conversion Lift</span>
+                <span className="text-emerald-500 dark:text-emerald-400 font-mono font-bold">+42.8% Conversion Lift</span>
               </div>
             </div>
 
@@ -459,10 +458,10 @@ export default function PlatformLandingPage() {
             <div className="luxury-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 transition-transform duration-200 hover:-translate-y-1">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-2xl bg-sky-500/10 text-sky-500 dark:text-sky-400 border border-sky-500/20 flex items-center justify-center shadow-sm">
+                  <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm">
                     <Truck className="w-5 h-5" />
                   </div>
-                  <span className="text-[10px] font-mono font-bold bg-sky-500/10 text-sky-600 dark:text-sky-300 px-2.5 py-1 rounded-full border border-sky-500/20">
+                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20">
                     Steadfast & Pathao
                   </span>
                 </div>
@@ -494,7 +493,7 @@ export default function PlatformLandingPage() {
 
               <div className="pt-4 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
                 <span>Logistics Partners:</span>
-                <span className="text-sky-500 dark:text-sky-400 font-mono font-bold">1-Click Dispatch Active</span>
+                <span className="text-emerald-500 dark:text-emerald-400 font-mono font-bold">1-Click Dispatch Active</span>
               </div>
             </div>
 
@@ -546,11 +545,11 @@ export default function PlatformLandingPage() {
 
       {/* ─── 5. How It Works (Minimalist Schematic Workflow) ───────────────── */}
       <section id="how-it-works" className="relative overflow-hidden min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 transition-colors">
-        {/* Subtle Ambient Violet & Indigo Backlight */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] lg:w-[1000px] h-[360px] bg-gradient-to-b from-violet-600/[0.08] via-indigo-500/[0.04] to-transparent rounded-full blur-[100px] pointer-events-none" />
+        {/* Subtle Ambient Emerald Backlight */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] lg:w-[1000px] h-[360px] bg-gradient-to-b from-emerald-500/[0.05] to-transparent rounded-full blur-[100px] pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-14 w-full my-auto">
           <div className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-violet-500 dark:text-violet-400">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-500 dark:text-emerald-400">
               Onboarding Velocity
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight leading-tight bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400/80 bg-clip-text text-transparent">
@@ -563,18 +562,18 @@ export default function PlatformLandingPage() {
 
           <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-8 lg:gap-12">
             {/* Architectural Connecting Guide Line */}
-            <div className="hidden md:block absolute top-8 left-[16.6%] right-[16.6%] h-[1px] border-t border-dashed border-violet-400/30 dark:border-violet-500/30 pointer-events-none" />
+            <div className="hidden md:block absolute top-8 left-[16.6%] right-[16.6%] h-[1px] border-t border-dashed border-emerald-500/20 dark:border-emerald-500/20 pointer-events-none" />
 
             {/* Step 01 */}
             <div className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group">
-              <div className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-violet-500/25 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform flex-shrink-0">
-                <Store className="w-6 h-6 md:w-7 md:h-7 text-violet-500 dark:text-violet-400" />
-                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md shadow-violet-500/30">
+              <div className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-emerald-500/20 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform flex-shrink-0">
+                <Store className="w-6 h-6 md:w-7 md:h-7 text-emerald-500 dark:text-emerald-400" />
+                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500 text-zinc-950 shadow-md shadow-emerald-500/25">
                   01
                 </span>
               </div>
               <div className="space-y-1.5 md:space-y-2">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-violet-500 dark:text-violet-400 font-bold block">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-500 dark:text-emerald-400 font-bold block">
                   Step 01 • Template Setup
                 </span>
                 <h3 className="text-lg md:text-xl font-bold text-zinc-950 dark:text-white tracking-tight">
@@ -598,14 +597,14 @@ export default function PlatformLandingPage() {
 
             {/* Step 02 */}
             <div className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group">
-              <div className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-sky-500/25 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform flex-shrink-0">
-                <Truck className="w-6 h-6 md:w-7 md:h-7 text-sky-500 dark:text-sky-400" />
-                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-gradient-to-r from-sky-600 to-indigo-600 text-white shadow-md shadow-sky-500/30">
+              <div className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-emerald-500/20 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform flex-shrink-0">
+                <Truck className="w-6 h-6 md:w-7 md:h-7 text-emerald-500 dark:text-emerald-400" />
+                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500 text-zinc-950 shadow-md shadow-emerald-500/25">
                   02
                 </span>
               </div>
               <div className="space-y-1.5 md:space-y-2">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-sky-500 dark:text-sky-400 font-bold block">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-500 dark:text-emerald-400 font-bold block">
                   Step 02 • Local Integrations
                 </span>
                 <h3 className="text-lg md:text-xl font-bold text-zinc-950 dark:text-white tracking-tight">
@@ -631,7 +630,7 @@ export default function PlatformLandingPage() {
             <div className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group">
               <div className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-emerald-500/25 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform flex-shrink-0">
                 <Rocket className="w-6 h-6 md:w-7 md:h-7 text-emerald-500 dark:text-emerald-400" />
-                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-gradient-to-r from-emerald-600 to-teal-500 text-white shadow-md shadow-emerald-500/30">
+                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500 text-zinc-950 font-bold shadow-md shadow-emerald-500/25">
                   03
                 </span>
               </div>
@@ -664,7 +663,7 @@ export default function PlatformLandingPage() {
       {/* ─── 6. Bespoke Turnkey Storefronts (Studio Frame) ───────────────────── */}
       <section id="storefronts" className="relative overflow-hidden min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 transition-colors">
         {/* Subtle Ambient Emerald Backdrop behind Store Showcase */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[950px] lg:w-[1200px] h-[480px] bg-gradient-to-b from-emerald-600/[0.08] via-teal-500/[0.04] to-transparent rounded-full blur-[110px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[950px] lg:w-[1200px] h-[480px] bg-gradient-to-b from-emerald-500/[0.06] to-transparent rounded-full blur-[110px] pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 w-full my-auto">
           <div className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-500 dark:text-emerald-400">
@@ -688,7 +687,7 @@ export default function PlatformLandingPage() {
                   onClick={() => setSelectedStoreSlug(store.slug)}
                   className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
                     isSelected
-                      ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-500/25 font-bold scale-105"
+                      ? "bg-emerald-500 text-zinc-950 font-bold shadow-lg shadow-emerald-500/20 scale-105"
                       : "bg-white dark:bg-zinc-900/60 border border-zinc-200/90 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800"
                   }`}
                 >
@@ -751,7 +750,7 @@ export default function PlatformLandingPage() {
                 <div className="flex flex-col sm:flex-row gap-2.5">
                   <Link
                     href={`/store/${activeStore.slug}`}
-                    className="flex-1 py-3 px-4 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-400 hover:to-teal-500 text-zinc-950 font-bold text-xs rounded-xl transition text-center flex items-center justify-center space-x-1.5 shadow-md shadow-emerald-500/20 btn-press"
+                    className="flex-1 py-3 px-4 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-xs rounded-xl transition text-center flex items-center justify-center space-x-1.5 shadow-md shadow-emerald-500/20 btn-press"
                   >
                     <span>Open Live Storefront</span>
                     <ArrowUpRight className="w-4 h-4" />
@@ -776,11 +775,11 @@ export default function PlatformLandingPage() {
 
       {/* ─── 7. Transparent Pricing (Hardware Tier Insets) ──────────────────── */}
       <section id="pricing" className="relative overflow-hidden min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 transition-colors">
-        {/* Subtle Ambient Indigo & Violet Bloom behind Popular Tier */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] lg:w-[950px] h-[400px] bg-gradient-to-b from-indigo-600/[0.12] via-violet-600/[0.06] to-transparent rounded-full blur-[90px] pointer-events-none" />
+        {/* Subtle Ambient Emerald Bloom behind Popular Tier */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] lg:w-[950px] h-[400px] bg-gradient-to-b from-emerald-500/[0.06] to-transparent rounded-full blur-[90px] pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 w-full my-auto">
           <div className="text-center max-w-xl mx-auto space-y-2.5 sm:space-y-3">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-indigo-500 dark:text-indigo-400">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-500 dark:text-emerald-400">
               Transparent Pricing Plans
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight leading-tight bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400/80 bg-clip-text text-transparent">
@@ -798,7 +797,7 @@ export default function PlatformLandingPage() {
                   onClick={() => setPricingBilling("monthly")}
                   className={`px-4 py-1.5 rounded-full transition font-semibold ${
                     pricingBilling === "monthly"
-                      ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-sm font-bold"
+                      ? "bg-emerald-500 text-zinc-950 shadow-sm font-bold"
                       : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white"
                   }`}
                 >
@@ -809,7 +808,7 @@ export default function PlatformLandingPage() {
                   onClick={() => setPricingBilling("annual")}
                   className={`px-4 py-1.5 rounded-full transition font-semibold flex items-center space-x-1.5 ${
                     pricingBilling === "annual"
-                      ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-sm font-bold"
+                      ? "bg-emerald-500 text-zinc-950 shadow-sm font-bold"
                       : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white"
                   }`}
                 >
@@ -852,9 +851,9 @@ export default function PlatformLandingPage() {
               </Link>
             </div>
 
-            {/* Growth Plan (Popular - Radiant Indigo Ring Elevation) */}
-            <div className="luxury-card ring-2 ring-indigo-500 dark:ring-indigo-500/80 rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative shadow-2xl shadow-indigo-500/20">
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 text-white text-[10px] font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-lg shadow-indigo-500/30">
+            {/* Growth Plan (Popular - Emerald Ring Elevation) */}
+            <div className="luxury-card ring-1 ring-emerald-500/60 dark:ring-emerald-500/50 rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative shadow-2xl shadow-emerald-500/10">
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-emerald-500 text-zinc-950 text-[10px] font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-md shadow-emerald-500/20">
                 Most Popular
               </div>
               <div className="space-y-4">
@@ -921,7 +920,7 @@ export default function PlatformLandingPage() {
       <section id="faq" className="relative overflow-hidden min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 transition-colors">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 w-full my-auto">
           <div className="text-center max-w-xl mx-auto space-y-2.5 sm:space-y-3">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-indigo-500 dark:text-indigo-400">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-500 dark:text-emerald-400">
               Questions & Answers
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight leading-tight bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400/80 bg-clip-text text-transparent">
@@ -941,12 +940,12 @@ export default function PlatformLandingPage() {
                     onClick={() => setActiveFaq(isOpen ? null : index)}
                     className="w-full flex items-center justify-between text-left focus:outline-none group"
                   >
-                    <span className="font-bold text-sm text-zinc-900 dark:text-white group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition">
+                    <span className="font-bold text-sm text-zinc-900 dark:text-white group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition">
                       {faq.q}
                     </span>
                     <ChevronDown
                       className={`w-4 h-4 text-zinc-400 dark:text-zinc-500 transition-transform duration-200 ${
-                        isOpen ? "transform rotate-180 text-indigo-500 dark:text-indigo-400" : ""
+                        isOpen ? "transform rotate-180 text-emerald-500 dark:text-emerald-400" : ""
                       }`}
                     />
                   </button>
@@ -967,10 +966,10 @@ export default function PlatformLandingPage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto">
           <div className="luxury-card rounded-3xl p-8 sm:p-14 text-center space-y-6 relative overflow-hidden">
             {/* Top Interior Ambient Dual-Tone Aurora Bloom */}
-            <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[750px] h-[280px] bg-gradient-to-b from-indigo-600/[0.22] via-violet-600/[0.12] to-emerald-500/[0.08] rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[750px] h-[280px] bg-gradient-to-b from-emerald-500/[0.10] to-transparent rounded-full blur-3xl pointer-events-none" />
             <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight relative leading-tight text-zinc-950 dark:text-white">
               Ready to{" "}
-              <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-emerald-500 dark:from-indigo-400 dark:via-purple-300 dark:to-emerald-400 bg-clip-text text-transparent">
+              <span className="text-emerald-500 dark:text-emerald-400">
                 launch your store?
               </span>
             </h2>

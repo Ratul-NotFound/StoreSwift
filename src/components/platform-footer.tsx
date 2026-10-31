@@ -20,7 +20,7 @@ export function PlatformFooter() {
           {/* Column 1 & 2: Brand & Operating System Overview */}
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="flex items-center space-x-2.5 group w-fit">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 via-indigo-500 to-emerald-400 text-white flex items-center justify-center font-bold shadow-md shadow-indigo-500/25 group-hover:scale-105 transition-transform">
+              <div className="w-8 h-8 rounded-lg bg-emerald-500 text-zinc-950 flex items-center justify-center font-bold shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform">
                 <Store className="w-4 h-4" />
               </div>
               <span className="font-extrabold text-zinc-950 dark:text-white tracking-tight text-base">
@@ -96,10 +96,10 @@ export function PlatformFooter() {
               <li>
                 <Link
                   href="/admin?store=apex-fashion"
-                  className="hover:text-indigo-400 transition inline-flex items-center space-x-1.5 text-indigo-500 dark:text-indigo-400 font-semibold"
+                  className="hover:text-emerald-400 transition inline-flex items-center space-x-1.5 text-emerald-500 dark:text-emerald-400 font-semibold"
                 >
                   <span>Merchant Admin Demo</span>
-                  <ExternalLink className="w-3 h-3 text-indigo-400" />
+                  <ExternalLink className="w-3 h-3 text-emerald-400" />
                 </Link>
               </li>
               <li>

@@ -19,18 +19,18 @@
 }
 
 .dark {
-  --background: #06070a;
+  --background: #08090d;
   --foreground: #f4f4f5;
-  --card: #0c0e14;
+  --card: #0e1017;
   --card-foreground: #f4f4f5;
-  --muted: #131620;
+  --muted: #141722;
   --muted-foreground: #94a3b8;
   --border: rgba(255, 255, 255, 0.08);
-  --primary: #6366f1;
-  --primary-foreground: #ffffff;
+  --primary: #10b981;
+  --primary-foreground: #022c22;
   --accent: #10b981;
   --accent-foreground: #ffffff;
-  --ring: #6366f1;
+  --ring: #10b981;
 }
 
 * {
@@ -128,12 +128,11 @@ body {
 }
 
 .dark .studio-canvas {
-  background-color: #06070a;
+  background-color: #07080b;
   background-image: 
-    radial-gradient(ellipse 90% 45% at 50% -5%, rgba(99, 102, 241, 0.12) 0%, rgba(16, 185, 129, 0.04) 40%, transparent 70%),
-    radial-gradient(ellipse 70% 35% at 85% 20%, rgba(139, 92, 246, 0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 65% 35% at 15% 45%, rgba(16, 185, 129, 0.05) 0%, transparent 55%),
-    linear-gradient(180deg, #08090e 0%, #050608 50%, #030304 100%);
+    radial-gradient(ellipse 85% 45% at 50% -5%, rgba(16, 185, 129, 0.06) 0%, transparent 65%),
+    radial-gradient(ellipse 70% 35% at 50% 30%, rgba(255, 255, 255, 0.02) 0%, transparent 55%),
+    linear-gradient(180deg, #090a0f 0%, #06070a 50%, #030406 100%);
   background-attachment: fixed;
 }
 
@@ -147,20 +146,18 @@ body {
   transition: background 0.05s ease-out;
   background: radial-gradient(
     650px circle at var(--mouse-x, 50vw) var(--mouse-y, 35vh),
-    rgba(99, 102, 241, 0.08) 0%,
-    rgba(16, 185, 129, 0.03) 40%,
+    rgba(16, 185, 129, 0.04) 0%,
     transparent 70%
   );
   will-change: background;
 }
 
 .dark .interactive-cursor-glow {
-  opacity: 0.85;
+  opacity: 0.80;
   background: radial-gradient(
     650px circle at var(--mouse-x, 50vw) var(--mouse-y, 35vh),
-    rgba(99, 102, 241, 0.10) 0%,
-    rgba(16, 185, 129, 0.04) 40%,
-    transparent 70%
+    rgba(16, 185, 129, 0.08) 0%,
+    transparent 65%
   );
 }
 
@@ -190,10 +187,10 @@ body {
 }
 
 .dark .interactive-grid-spotlight {
-  opacity: 0.75;
+  opacity: 0.70;
   background-image: 
-    linear-gradient(to right, rgba(99, 102, 241, 0.12) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(99, 102, 241, 0.12) 1px, transparent 1px);
+    linear-gradient(to right, rgba(16, 185, 129, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(16, 185, 129, 0.08) 1px, transparent 1px);
 }
 
 /* Precision Micro-Grid Engineering Matrix (Linear / Raycast Style) */
@@ -239,16 +236,16 @@ body {
 }
 
 .luxury-card:hover {
-  border-color: rgba(99, 102, 241, 0.3);
+  border-color: rgba(16, 185, 129, 0.3);
   box-shadow: 
     0 2px 4px rgba(15, 23, 42, 0.04),
-    0 16px 36px -6px rgba(99, 102, 241, 0.08),
+    0 16px 36px -6px rgba(16, 185, 129, 0.08),
     0 32px 64px -12px rgba(15, 23, 42, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
 .dark .luxury-card {
-  background-color: rgba(13, 16, 23, 0.78);
+  background-color: rgba(14, 16, 23, 0.78);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.09);
@@ -262,9 +259,9 @@ body {
 }
 
 .dark .luxury-card:hover {
-  border-color: rgba(99, 102, 241, 0.35);
+  border-color: rgba(16, 185, 129, 0.35);
   box-shadow: 
-    0 0 30px -5px rgba(99, 102, 241, 0.18),
+    0 0 25px -5px rgba(16, 185, 129, 0.15),
     0 16px 36px -6px rgba(0, 0, 0, 0.9),
     0 36px 72px -16px rgba(0, 0, 0, 0.98),
     inset 0 1px 0 rgba(255, 255, 255, 0.20),
@@ -272,25 +269,26 @@ body {
   transform: translateY(-2px);
 }
 
-/* High-Intent Radiant Conversion Buttons (Stripe / Linear Luxury) */
+/* High-Converting Production Commerce Buttons (Shopify / Wise / Stripe Style) */
 .btn-glass-primary {
-  background: linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #7c3aed 100%);
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: #10b981;
+  color: #022c22 !important;
+  border: 1px solid rgba(255, 255, 255, 0.35);
   font-weight: 700;
   box-shadow: 
     0 1px 2px rgba(0, 0, 0, 0.2),
-    0 8px 24px -4px rgba(99, 102, 241, 0.40),
+    0 8px 20px -4px rgba(16, 185, 129, 0.35),
     inset 0 1px 0 rgba(255, 255, 255, 0.40);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.15s ease-out;
 }
 
 .btn-glass-primary:hover {
-  background: linear-gradient(135deg, #4338ca 0%, #4f46e5 50%, #6d28d9 100%) !important;
+  background: #34d399 !important;
+  color: #022c22 !important;
   box-shadow: 
     0 2px 4px rgba(0, 0, 0, 0.25),
-    0 14px 32px -4px rgba(99, 102, 241, 0.60),
-    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    0 12px 28px -4px rgba(16, 185, 129, 0.50),
+    inset 0 1px 0 rgba(255, 255, 255, 0.50);
   transform: translateY(-1px);
 }
 
