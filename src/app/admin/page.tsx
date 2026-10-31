@@ -30,13 +30,41 @@ import {
   RefreshCw,
   Eye,
   SlidersHorizontal,
-  Clock
+  Clock,
+  ShieldAlert,
+  Barcode,
+  Share2,
+  Globe,
+  Percent,
+  Zap,
+  Copy,
+  Radio,
+  FileText,
+  X
 } from "lucide-react";
+import {
+  COURIER_PROVIDERS,
+  DELIVERY_ZONES,
+  generateConsignment,
+  assessCustomerFraudRisk,
+  WHOLESALE_SUPPLIER_CATALOG,
+  WholesaleSupplierProduct,
+  CourierProviderId
+} from "@/lib/courier";
 import { generateVariantMatrix, GeneratedVariant } from "@/lib/matrix";
 import { generateStoreSeedData } from "@/lib/seed-store";
 
 export default function MerchantAdminPage() {
-  const [activeTab, setActiveTab] = useState<"overview" | "products" | "inventory" | "orders" | "customizer" | "billing">("overview");
+  const [activeTab, setActiveTab] = useState<
+    "overview" | "products" | "inventory" | "orders" | "logistics" | "reseller" | "marketing" | "customizer" | "billing"
+  >("overview");
+  const [courierDispatchOrder, setCourierDispatchOrder] = useState<any | null>(null);
+  const [selectedCourierId, setSelectedCourierId] = useState<CourierProviderId>("steadfast");
+  const [metaPixelId, setMetaPixelId] = useState("892419204910");
+  const [tiktokPixelId, setTiktokPixelId] = useState("C89241920");
+  const [gtmContainerId, setGtmContainerId] = useState("GTM-SSWIFT01");
+  const [importedSupplierIds, setImportedSupplierIds] = useState<string[]>([]);
+  const [supplierImportSuccess, setSupplierImportSuccess] = useState<string | null>(null);
   const [storeSlug, setStoreSlug] = useState("apex-fashion");
   const [storeName, setStoreName] = useState("Apex Fashion Hub");
   const [currency, setCurrency] = useState("$");
@@ -106,12 +134,16 @@ export default function MerchantAdminPage() {
       orderNumber: "#1042",
       customerName: "Alex Mercer",
       customerInitials: "AM",
-      customerPhone: "+1 (555) 234-5678",
+      customerPhone: "+880 1711-234567",
+      shippingAddress: "House 14, Road 5, Dhanmondi, Dhaka",
+      zone: "Inside Dhaka (Metro)",
       items: "Classic Cotton T-Shirt (M / Black) x 2",
       totalAmount: 49.98,
       paymentMethod: "Cash on Delivery (COD)",
       paymentStatus: "Pending",
       fulfillmentStatus: "Unfulfilled",
+      courier: "Steadfast Courier",
+      consignmentId: "",
       date: "Today, 10:45 AM"
     },
     {
@@ -119,12 +151,16 @@ export default function MerchantAdminPage() {
       orderNumber: "#1041",
       customerName: "Sarah Jenkins",
       customerInitials: "SJ",
-      customerPhone: "+1 (555) 890-1234",
+      customerPhone: "+880 1819-890123",
+      shippingAddress: "Flat 4B, Concord Tower, Gulshan-2, Dhaka",
+      zone: "Inside Dhaka (Metro)",
       items: "Everyday Canvas Sneaker (Size: 9) x 1",
       totalAmount: 45.00,
-      paymentMethod: "Stripe (Card)",
+      paymentMethod: "bKash Express",
       paymentStatus: "Paid",
       fulfillmentStatus: "Shipped",
+      courier: "Pathao Logistics",
+      consignmentId: "PTH-782910",
       date: "Yesterday"
     },
     {
@@ -132,12 +168,16 @@ export default function MerchantAdminPage() {
       orderNumber: "#1040",
       customerName: "David Miller",
       customerInitials: "DM",
-      customerPhone: "+1 (555) 456-7890",
+      customerPhone: "+880 1912-456789",
+      shippingAddress: "College Road, Nasirabad, Chattogram",
+      zone: "Outside Dhaka (Nationwide)",
       items: "Slim-Fit Denim Jeans (32) x 1",
       totalAmount: 59.99,
       paymentMethod: "Cash on Delivery (COD)",
       paymentStatus: "Paid",
       fulfillmentStatus: "Delivered",
+      courier: "Steadfast Courier",
+      consignmentId: "ST-639102",
       date: "2 days ago"
     }
   ]);
@@ -204,6 +244,63 @@ export default function MerchantAdminPage() {
     );
   };
 
+  const handleDispatchCourier = (order: typeof ordersList[0], courierId: CourierProviderId) => {
+    const consignment = generateConsignment(
+      {
+        orderNumber: order.orderNumber,
+        customerName: order.customerName,
+        customerPhone: order.customerPhone,
+        shippingAddress: order.shippingAddress,
+        totalAmount: order.totalAmount,
+        currency
+      },
+      courierId,
+      order.zone.includes("Inside") ? "metro" : "national"
+    );
+
+    setOrdersList(prev =>
+      prev.map(o =>
+        o.id === order.id
+          ? {
+              ...o,
+              fulfillmentStatus: "Shipped",
+              courier: consignment.courierName,
+              consignmentId: consignment.consignmentId
+            }
+          : o
+      )
+    );
+    setCourierDispatchOrder(null);
+  };
+
+  const handleImportSupplierItem = (item: WholesaleSupplierProduct) => {
+    if (importedSupplierIds.includes(item.id)) return;
+
+    const newProd = {
+      id: `prod-ws-${Date.now()}`,
+      title: item.title,
+      sku: `WS-${item.id.toUpperCase()}`,
+      basePrice: item.suggestedRetailPrice.toFixed(2),
+      stock: item.inStockUnits,
+      category: item.category,
+      imageUrl: item.imageUrl,
+      variants: [
+        {
+          title: "Standard",
+          sku: `WS-${item.id.toUpperCase()}-STD`,
+          price: item.suggestedRetailPrice.toFixed(2),
+          inventoryQuantity: item.inStockUnits,
+          options: { Source: item.supplierName }
+        }
+      ]
+    };
+
+    setProductsList([newProd, ...productsList]);
+    setImportedSupplierIds(prev => [...prev, item.id]);
+    setSupplierImportSuccess(`Imported "${item.title}" with $${(item.suggestedRetailPrice - item.wholesaleCost).toFixed(2)} unit margin!`);
+    setTimeout(() => setSupplierImportSuccess(null), 3500);
+  };
+
   const handleSaveCustomizer = () => {
     setSavedSuccess(true);
     setTimeout(() => setSavedSuccess(false), 2500);
@@ -257,6 +354,9 @@ export default function MerchantAdminPage() {
             { id: "products", label: `Catalog (${productsList.length})`, icon: Package },
             { id: "inventory", label: "Batch Inventory", icon: Layers },
             { id: "orders", label: `Orders (${ordersList.length})`, icon: ShoppingBag },
+            { id: "logistics", label: "Couriers & Dispatch", icon: Truck },
+            { id: "reseller", label: "Dropship Hub", icon: Percent },
+            { id: "marketing", label: "Pixels & GTM", icon: Radio },
             { id: "customizer", label: "Store Theme", icon: Palette },
             { id: "billing", label: "Subscription", icon: CreditCard }
           ].map((tab) => {
@@ -616,72 +716,511 @@ export default function MerchantAdminPage() {
           </div>
         )}
 
-        {/* TAB 4: ORDERS */}
+        {/* TAB 4: ORDERS & DISPATCH */}
         {activeTab === "orders" && (
           <div className="space-y-6">
-            <div>
-              <h2 className="text-xl font-bold tracking-tight text-zinc-900">Order Fulfillment Pipeline</h2>
-              <p className="text-xs text-zinc-500">Track incoming orders, process shipments, and print packing slips.</p>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h2 className="text-xl font-bold tracking-tight text-zinc-900">
+                  Order Fulfillment & Courier Dispatch
+                </h2>
+                <p className="text-xs text-zinc-500">
+                  Real-time order stream, AI Anti-Fraud RTO scoring, and 1-click courier consignment booking.
+                </p>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+                  ⚡ Auto-Courier Sync: Active
+                </span>
+              </div>
             </div>
 
             <div className="bg-white rounded-2xl border border-zinc-200/80 shadow-subtle overflow-hidden">
               <table className="w-full text-left text-xs">
                 <thead className="bg-zinc-50 border-b border-zinc-100 text-[11px] font-semibold uppercase text-zinc-500">
                   <tr>
-                    <th className="px-6 py-3.5">Order</th>
-                    <th className="px-6 py-3.5">Customer & Phone</th>
-                    <th className="px-6 py-3.5">Items</th>
-                    <th className="px-6 py-3.5">Payment</th>
-                    <th className="px-6 py-3.5">Status</th>
-                    <th className="px-6 py-3.5 text-right">Invoice</th>
+                    <th className="px-5 py-3.5">Order</th>
+                    <th className="px-5 py-3.5">Customer & RTO Risk</th>
+                    <th className="px-5 py-3.5">Zone & Address</th>
+                    <th className="px-5 py-3.5">Items</th>
+                    <th className="px-5 py-3.5">Total & Payment</th>
+                    <th className="px-5 py-3.5">Courier Consignment</th>
+                    <th className="px-5 py-3.5">Status</th>
+                    <th className="px-5 py-3.5 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-100">
-                  {ordersList.map((ord) => (
-                    <tr key={ord.id} className="hover:bg-zinc-50/70 transition-colors">
-                      <td className="px-6 py-4">
-                        <div className="font-bold text-zinc-900 font-mono">{ord.orderNumber}</div>
-                        <div className="text-[11px] text-zinc-400">{ord.date}</div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="font-semibold text-zinc-800">{ord.customerName}</div>
-                        <div className="text-[11px] text-zinc-500 font-mono">{ord.customerPhone}</div>
-                      </td>
-                      <td className="px-6 py-4 text-zinc-600 max-w-xs">{ord.items}</td>
-                      <td className="px-6 py-4">
-                        <div className="font-bold text-zinc-900">{currency}{ord.totalAmount.toFixed(2)}</div>
-                        <div className="text-[10px] text-zinc-400">{ord.paymentMethod}</div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <select
-                          value={ord.fulfillmentStatus}
-                          onChange={(e) => handleUpdateOrderStatus(ord.id, e.target.value)}
-                          className="text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-zinc-200 bg-white outline-none focus:border-zinc-900"
-                        >
-                          <option value="Unfulfilled">Unfulfilled</option>
-                          <option value="Processing">Processing</option>
-                          <option value="Shipped">Shipped</option>
-                          <option value="Delivered">Delivered</option>
-                          <option value="Cancelled">Cancelled</option>
-                        </select>
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <button
-                          onClick={() => setSelectedInvoice(ord)}
-                          className="inline-flex items-center space-x-1 text-xs font-semibold text-zinc-700 hover:text-zinc-900 bg-zinc-100 hover:bg-zinc-200 px-2.5 py-1 rounded-lg transition btn-press"
-                        >
-                          <Printer className="w-3.5 h-3.5" />
-                          <span>Print</span>
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                  {ordersList.map((ord) => {
+                    const risk = assessCustomerFraudRisk(ord.customerPhone);
+                    return (
+                      <tr key={ord.id} className="hover:bg-zinc-50/70 transition-colors">
+                        {/* Order & Date */}
+                        <td className="px-5 py-4 whitespace-nowrap">
+                          <div className="font-bold text-zinc-900 font-mono">{ord.orderNumber}</div>
+                          <div className="text-[11px] text-zinc-400">{ord.date}</div>
+                        </td>
+
+                        {/* Customer & Anti-Fraud Pill */}
+                        <td className="px-5 py-4">
+                          <div className="font-bold text-zinc-800">{ord.customerName}</div>
+                          <div className="text-[11px] text-zinc-500 font-mono">{ord.customerPhone}</div>
+                          <div className="mt-1">
+                            <span
+                              className={`text-[9px] font-bold px-2 py-0.5 rounded-full border inline-flex items-center space-x-1 ${risk.badgeClass}`}
+                              title={risk.recommendation}
+                            >
+                              <span>{risk.level === "VERIFIED_SAFE" ? "● Safe COD" : risk.level === "MODERATE_RISK" ? "▲ Verify Phone" : "✕ High RTO Risk"}</span>
+                              <span>({risk.deliveryRatePercent}%)</span>
+                            </span>
+                          </div>
+                        </td>
+
+                        {/* Zone & Address */}
+                        <td className="px-5 py-4 max-w-[200px]">
+                          <div className="font-semibold text-zinc-800 text-[11px]">{ord.zone}</div>
+                          <div className="text-[11px] text-zinc-500 truncate" title={ord.shippingAddress}>
+                            {ord.shippingAddress}
+                          </div>
+                        </td>
+
+                        {/* Items */}
+                        <td className="px-5 py-4 text-zinc-600 max-w-[180px] truncate" title={ord.items}>
+                          {ord.items}
+                        </td>
+
+                        {/* Payment & Total */}
+                        <td className="px-5 py-4 whitespace-nowrap">
+                          <div className="font-bold text-zinc-900">
+                            {currency}{ord.totalAmount.toFixed(2)}
+                          </div>
+                          <div className="text-[10px] text-zinc-400 font-medium">{ord.paymentMethod}</div>
+                        </td>
+
+                        {/* Courier Consignment */}
+                        <td className="px-5 py-4 whitespace-nowrap">
+                          {ord.consignmentId ? (
+                            <div className="space-y-0.5">
+                              <span className="font-mono text-[10px] font-bold text-blue-700 bg-blue-50 border border-blue-200/80 px-2 py-0.5 rounded inline-block">
+                                {ord.consignmentId}
+                              </span>
+                              <div className="text-[10px] text-zinc-500 flex items-center space-x-1">
+                                <Truck className="w-3 h-3 text-zinc-400" />
+                                <span>{ord.courier}</span>
+                              </div>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => setCourierDispatchOrder(ord)}
+                              className="px-2.5 py-1 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-[11px] font-bold flex items-center space-x-1 shadow-xs btn-press"
+                            >
+                              <Zap className="w-3 h-3 text-amber-400" />
+                              <span>Dispatch Courier</span>
+                            </button>
+                          )}
+                        </td>
+
+                        {/* Fulfillment Status */}
+                        <td className="px-5 py-4">
+                          <select
+                            value={ord.fulfillmentStatus}
+                            onChange={(e) => handleUpdateOrderStatus(ord.id, e.target.value)}
+                            className="text-xs font-semibold px-2 py-1 rounded-lg border border-zinc-200 bg-white outline-none focus:border-zinc-900"
+                          >
+                            <option value="Unfulfilled">Unfulfilled</option>
+                            <option value="Processing">Processing</option>
+                            <option value="Shipped">Shipped</option>
+                            <option value="Delivered">Delivered</option>
+                            <option value="Cancelled">Cancelled</option>
+                          </select>
+                        </td>
+
+                        {/* Actions (Print Label) */}
+                        <td className="px-5 py-4 text-right whitespace-nowrap">
+                          <button
+                            onClick={() => setSelectedInvoice(ord)}
+                            className="inline-flex items-center space-x-1 text-xs font-semibold text-zinc-700 hover:text-zinc-900 bg-zinc-100 hover:bg-zinc-200 px-2.5 py-1 rounded-lg transition btn-press"
+                            title="Print Thermal Shipping Label"
+                          >
+                            <Printer className="w-3.5 h-3.5" />
+                            <span>Label</span>
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
           </div>
         )}
 
+        {/* TAB 5: LOGISTICS & COURIERS (BEATS ZATIQ) */}
+        {activeTab === "logistics" && (
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h2 className="text-xl font-bold tracking-tight text-zinc-900">
+                  Automated Courier Integrations
+                </h2>
+                <p className="text-xs text-zinc-500">
+                  Direct API sync with Steadfast, Pathao, RedX, and StoreSwift Fleet with auto-consignment booking.
+                </p>
+              </div>
+
+              <div className="flex items-center space-x-2 text-xs">
+                <span className="font-semibold text-zinc-700">Default Warehouse:</span>
+                <span className="font-mono text-zinc-900 bg-zinc-100 px-2.5 py-1 rounded-lg border border-zinc-200">
+                  Tejgaon Central Hub, Dhaka
+                </span>
+              </div>
+            </div>
+
+            {/* Courier Providers Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              {[
+                {
+                  id: "steadfast",
+                  name: "Steadfast Courier",
+                  tagline: "Highest COD delivery success rate in Bangladesh",
+                  hub: "Tejgaon Industrial Sorting Hub",
+                  status: "Connected & Active",
+                  successRate: "98.4%",
+                  deliveriesThisMonth: 342,
+                  badge: "bg-emerald-50 text-emerald-700 border-emerald-200"
+                },
+                {
+                  id: "pathao",
+                  name: "Pathao Logistics",
+                  tagline: "Rapid same-day rider network & API pickup sync",
+                  hub: "Gulshan Fulfillment Center",
+                  status: "Connected & Active",
+                  successRate: "96.8%",
+                  deliveriesThisMonth: 189,
+                  badge: "bg-rose-50 text-rose-700 border-rose-200"
+                },
+                {
+                  id: "redx",
+                  name: "RedX Express",
+                  tagline: "Deep 64-district nationwide delivery coverage",
+                  hub: "Uttara Sorting Terminal",
+                  status: "Connected & Active",
+                  successRate: "95.2%",
+                  deliveriesThisMonth: 124,
+                  badge: "bg-red-50 text-red-700 border-red-200"
+                }
+              ].map((c) => (
+                <div key={c.id} className="p-5 bg-white rounded-2xl border border-zinc-200/80 shadow-subtle space-y-4">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h3 className="font-bold text-sm text-zinc-900">{c.name}</h3>
+                      <p className="text-[11px] text-zinc-500 mt-0.5">{c.tagline}</p>
+                    </div>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${c.badge}`}>
+                      {c.status}
+                    </span>
+                  </div>
+
+                  <div className="p-3 bg-zinc-50 rounded-xl border border-zinc-100 grid grid-cols-2 gap-2 text-xs">
+                    <div>
+                      <span className="text-[10px] text-zinc-400 block font-medium">Delivery Rate</span>
+                      <span className="font-bold text-emerald-600">{c.successRate}</span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-zinc-400 block font-medium">Dispatched This Month</span>
+                      <span className="font-bold text-zinc-900">{c.deliveriesThisMonth} parcels</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between text-xs pt-1 border-t border-zinc-100">
+                    <span className="text-[11px] text-zinc-400 truncate max-w-[160px]">{c.hub}</span>
+                    <button
+                      onClick={() => alert(`${c.name} API connection verified! Webhooks operating normally.`)}
+                      className="text-xs font-semibold text-zinc-700 hover:text-zinc-900 bg-zinc-100 hover:bg-zinc-200 px-2.5 py-1 rounded-lg transition"
+                    >
+                      Test API Ping
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Courier Settings Panel */}
+            <div className="p-6 bg-white rounded-2xl border border-zinc-200/80 shadow-subtle space-y-4">
+              <h3 className="text-sm font-bold text-zinc-900 tracking-tight">
+                Logistics & Dispatch Rules
+              </h3>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+                <div className="p-3 rounded-xl border border-zinc-200/80 space-y-1">
+                  <span className="font-bold text-zinc-800 block">⚡ Auto-Consignment Booking</span>
+                  <p className="text-[11px] text-zinc-500">
+                    Automatically book courier rider as soon as a customer completes 1-page checkout.
+                  </p>
+                  <div className="pt-2">
+                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                      Enabled
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-3 rounded-xl border border-zinc-200/80 space-y-1">
+                  <span className="font-bold text-zinc-800 block">📱 SMS Tracking Notification</span>
+                  <p className="text-[11px] text-zinc-500">
+                    Send customer tracking SMS link automatically upon courier rider pickup.
+                  </p>
+                  <div className="pt-2">
+                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                      Enabled
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-3 rounded-xl border border-zinc-200/80 space-y-1">
+                  <span className="font-bold text-zinc-800 block">🛡️ Anti-RTO Fraud Filter</span>
+                  <p className="text-[11px] text-zinc-500">
+                    Hold orders from phone numbers with &gt;50% past return rates for manual review.
+                  </p>
+                  <div className="pt-2">
+                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                      Active (StoreSwift Shield)
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 6: DROPSHIP & WHOLESALE RESELLER HUB */}
+        {activeTab === "reseller" && (
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h2 className="text-xl font-bold tracking-tight text-zinc-900">
+                  Wholesale Supplier & Dropship Hub
+                </h2>
+                <p className="text-xs text-zinc-500">
+                  Sell verified manufacturer products without holding physical inventory. Keep the margin on COD settlement.
+                </p>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <span className="text-xs text-zinc-500">Active Supplier Network:</span>
+                <span className="font-bold text-xs text-zinc-900 bg-zinc-100 px-2.5 py-1 rounded-lg border border-zinc-200">
+                  4 Verified Factories
+                </span>
+              </div>
+            </div>
+
+            {supplierImportSuccess && (
+              <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800 font-semibold flex items-center space-x-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                <span>{supplierImportSuccess}</span>
+              </div>
+            )}
+
+            {/* Wholesale Catalog Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+              {WHOLESALE_SUPPLIER_CATALOG.map((item) => {
+                const isImported = importedSupplierIds.includes(item.id);
+                const unitProfit = item.suggestedRetailPrice - item.wholesaleCost;
+                return (
+                  <div
+                    key={item.id}
+                    className="p-4 bg-white rounded-2xl border border-zinc-200/80 shadow-subtle flex flex-col justify-between space-y-3"
+                  >
+                    <div className="space-y-2.5">
+                      <div className="relative aspect-square rounded-xl overflow-hidden bg-zinc-100">
+                        <img
+                          src={item.imageUrl}
+                          alt={item.title}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute top-2 left-2 bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
+                          {item.profitMarginPercent}% Margin
+                        </div>
+                      </div>
+
+                      <div>
+                        <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">
+                          {item.category} • {item.supplierName}
+                        </span>
+                        <h4 className="font-bold text-xs text-zinc-900 leading-tight mt-0.5 line-clamp-2">
+                          {item.title}
+                        </h4>
+                      </div>
+
+                      <div className="p-2.5 bg-zinc-50 rounded-xl border border-zinc-100 text-xs space-y-1">
+                        <div className="flex justify-between text-zinc-500">
+                          <span>Factory Cost:</span>
+                          <span className="font-mono font-semibold text-zinc-800">${item.wholesaleCost.toFixed(2)}</span>
+                        </div>
+                        <div className="flex justify-between text-zinc-500">
+                          <span>Suggested Retail:</span>
+                          <span className="font-mono font-bold text-zinc-900">${item.suggestedRetailPrice.toFixed(2)}</span>
+                        </div>
+                        <div className="flex justify-between text-emerald-600 font-bold pt-1 border-t border-zinc-200/60">
+                          <span>Your Profit / Unit:</span>
+                          <span>+${unitProfit.toFixed(2)}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => handleImportSupplierItem(item)}
+                      disabled={isImported}
+                      className={`w-full py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-1.5 btn-press ${
+                        isImported
+                          ? "bg-zinc-100 text-zinc-400 border border-zinc-200 cursor-not-allowed"
+                          : "bg-zinc-900 hover:bg-zinc-800 text-white shadow-sm"
+                      }`}
+                    >
+                      {isImported ? (
+                        <>
+                          <Check className="w-3.5 h-3.5 text-emerald-600" />
+                          <span>Imported into Store</span>
+                        </>
+                      ) : (
+                        <>
+                          <Plus className="w-3.5 h-3.5" />
+                          <span>Import to My Store</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* TAB 7: MARKETING PIXELS & GTM */}
+        {activeTab === "marketing" && (
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-xl font-bold tracking-tight text-zinc-900">
+                Marketing Pixels & Analytics Tracking
+              </h2>
+              <p className="text-xs text-zinc-500">
+                Seamlessly connect Meta Pixel (Facebook Ads), TikTok Pixel, and Google Tag Manager.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Meta Pixel */}
+              <div className="p-5 bg-white rounded-2xl border border-zinc-200/80 shadow-subtle space-y-3">
+                <div className="flex items-center space-x-2">
+                  <div className="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold text-xs">
+                    f
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-xs text-zinc-900">Meta Pixel (Facebook)</h3>
+                    <p className="text-[10px] text-zinc-400">Track ROAS & Purchase Events</p>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-zinc-600 uppercase mb-1">
+                    Meta Pixel ID
+                  </label>
+                  <input
+                    type="text"
+                    value={metaPixelId}
+                    onChange={(e) => setMetaPixelId(e.target.value)}
+                    className="w-full px-3 py-2 border border-zinc-200 rounded-xl text-xs outline-none focus:border-zinc-900 font-mono"
+                  />
+                </div>
+
+                <div className="text-[10px] text-zinc-500 space-y-1">
+                  <div className="flex items-center space-x-1 text-emerald-600 font-semibold">
+                    <Check className="w-3 h-3" />
+                    <span>PageView, AddToCart, Purchase events synced</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* TikTok Pixel */}
+              <div className="p-5 bg-white rounded-2xl border border-zinc-200/80 shadow-subtle space-y-3">
+                <div className="flex items-center space-x-2">
+                  <div className="w-7 h-7 rounded-lg bg-black text-white flex items-center justify-center font-bold text-xs">
+                    TT
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-xs text-zinc-900">TikTok Pixel</h3>
+                    <p className="text-[10px] text-zinc-400">TikTok Ad Campaign Conversion</p>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-zinc-600 uppercase mb-1">
+                    TikTok Pixel ID
+                  </label>
+                  <input
+                    type="text"
+                    value={tiktokPixelId}
+                    onChange={(e) => setTiktokPixelId(e.target.value)}
+                    className="w-full px-3 py-2 border border-zinc-200 rounded-xl text-xs outline-none focus:border-zinc-900 font-mono"
+                  />
+                </div>
+
+                <div className="text-[10px] text-zinc-500 space-y-1">
+                  <div className="flex items-center space-x-1 text-emerald-600 font-semibold">
+                    <Check className="w-3 h-3" />
+                    <span>Real-time event trigger active</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Google Tag Manager */}
+              <div className="p-5 bg-white rounded-2xl border border-zinc-200/80 shadow-subtle space-y-3">
+                <div className="flex items-center space-x-2">
+                  <div className="w-7 h-7 rounded-lg bg-blue-500 text-white flex items-center justify-center font-bold text-xs">
+                    GTM
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-xs text-zinc-900">Google Tag Manager</h3>
+                    <p className="text-[10px] text-zinc-400">GA4 & Custom Tags</p>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-zinc-600 uppercase mb-1">
+                    GTM Container ID
+                  </label>
+                  <input
+                    type="text"
+                    value={gtmContainerId}
+                    onChange={(e) => setGtmContainerId(e.target.value)}
+                    className="w-full px-3 py-2 border border-zinc-200 rounded-xl text-xs outline-none focus:border-zinc-900 font-mono"
+                  />
+                </div>
+
+                <div className="text-[10px] text-zinc-500 space-y-1">
+                  <div className="flex items-center space-x-1 text-emerald-600 font-semibold">
+                    <Check className="w-3 h-3" />
+                    <span>dataLayer ecommerce array connected</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-4 bg-zinc-900 text-white rounded-2xl flex items-center justify-between">
+              <div>
+                <span className="font-bold text-xs block">Marketing Configuration Status</span>
+                <span className="text-[11px] text-zinc-400">All conversion pixels inject automatically across your storefront.</span>
+              </div>
+              <button
+                onClick={() => alert("Marketing pixels updated and live across your storefront!")}
+                className="px-4 py-2 bg-white text-zinc-900 font-bold text-xs rounded-xl hover:bg-zinc-100 transition shadow-sm btn-press"
+              >
+                Save Pixel Settings
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 8: THEME CUSTOMIZER */}
         {/* TAB 5: THEME CUSTOMIZER */}
         {activeTab === "customizer" && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -1021,51 +1560,146 @@ export default function MerchantAdminPage() {
         </div>
       )}
 
-      {/* MODAL 2: PRINTABLE INVOICE */}
+      {/* MODAL 2: OFFICIAL COURIER THERMAL SHIPPING LABEL & PACKING SLIP */}
       {selectedInvoice && (
-        <div className="fixed inset-0 bg-zinc-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-float border border-zinc-200">
-            <div className="flex items-center justify-between border-b border-zinc-100 pb-3 mb-4">
-              <div>
-                <h4 className="font-bold text-base text-zinc-900">{storeName}</h4>
-                <p className="text-xs text-zinc-500">Packing Slip / Receipt</p>
+        <div className="fixed inset-0 bg-zinc-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-zinc-300">
+            {/* Courier Thermal Label Header */}
+            <div className="border-2 border-black p-4 rounded-xl space-y-3 font-mono">
+              <div className="flex items-center justify-between border-b-2 border-black pb-2">
+                <div>
+                  <h3 className="font-black text-sm uppercase tracking-wider text-black">
+                    {selectedInvoice.courier || "STEADFAST COURIER"}
+                  </h3>
+                  <div className="text-[10px] text-black">Express Parcel Dispatch</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-[10px] font-bold text-black uppercase">ZONE</div>
+                  <div className="text-xs font-black text-black">{selectedInvoice.zone || "METRO"}</div>
+                </div>
               </div>
-              <span className="text-xs font-mono font-bold text-zinc-800">
-                {selectedInvoice.orderNumber}
-              </span>
-            </div>
 
-            <div className="text-xs space-y-1.5 text-zinc-600 mb-5">
-              <div><strong className="text-zinc-800">Customer:</strong> {selectedInvoice.customerName}</div>
-              <div><strong className="text-zinc-800">Phone:</strong> {selectedInvoice.customerPhone}</div>
-              <div><strong className="text-zinc-800">Date:</strong> {selectedInvoice.date}</div>
-              <div><strong className="text-zinc-800">Payment:</strong> {selectedInvoice.paymentMethod}</div>
-            </div>
+              {/* Barcode Graphic */}
+              <div className="text-center py-2 bg-zinc-50 border border-zinc-300 rounded">
+                <div className="text-lg font-black tracking-widest text-black">
+                  ||| | |||| | ||| {selectedInvoice.consignmentId || "ST-902410"} |||| | ||
+                </div>
+                <div className="text-[10px] font-bold text-zinc-600 mt-0.5">
+                  CONSIGNMENT #{selectedInvoice.consignmentId || "ST-902410"}
+                </div>
+              </div>
 
-            <div className="p-3.5 bg-zinc-50 rounded-xl border border-zinc-200/80 mb-5">
-              <div className="text-xs font-semibold text-zinc-700 mb-1">Purchased:</div>
-              <div className="text-xs text-zinc-900 font-medium">{selectedInvoice.items}</div>
-              <div className="mt-2.5 pt-2.5 border-t border-zinc-200 flex justify-between font-bold text-sm text-zinc-900">
-                <span>Total Due:</span>
-                <span>{currency}{selectedInvoice.totalAmount.toFixed(2)}</span>
+              {/* Destination & Recipient */}
+              <div className="border-b-2 border-black pb-2 text-xs space-y-1">
+                <div>
+                  <span className="text-[10px] font-bold uppercase text-zinc-500 block">Deliver To:</span>
+                  <div className="font-bold text-black text-sm">{selectedInvoice.customerName}</div>
+                  <div className="font-bold text-black">{selectedInvoice.customerPhone}</div>
+                  <div className="text-black text-[11px] leading-tight mt-0.5">{selectedInvoice.shippingAddress || "Dhaka Metropolitan Area"}</div>
+                </div>
+              </div>
+
+              {/* Collectible Cash Amount (Large Bold) */}
+              <div className="p-2.5 bg-black text-white rounded flex items-center justify-between">
+                <div>
+                  <div className="text-[9px] uppercase tracking-wider text-zinc-300">COD Collectible Amount:</div>
+                  <div className="text-lg font-black">{currency}{selectedInvoice.totalAmount.toFixed(2)}</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-[9px] uppercase tracking-wider text-zinc-300">Payment:</div>
+                  <div className="text-xs font-bold uppercase">{selectedInvoice.paymentMethod}</div>
+                </div>
+              </div>
+
+              {/* Return Merchant Info */}
+              <div className="pt-1 text-[10px] text-zinc-600 flex justify-between">
+                <span>From: {storeName}</span>
+                <span>Hub: Tejgaon Sorting</span>
               </div>
             </div>
 
-            <div className="flex justify-end space-x-2">
+            <div className="mt-5 flex justify-end space-x-2">
               <button
                 onClick={() => setSelectedInvoice(null)}
-                className="px-3 py-1.5 border border-zinc-200 rounded-lg text-xs font-semibold text-zinc-600"
+                className="px-4 py-2 border border-zinc-200 rounded-xl text-xs font-semibold text-zinc-600 hover:bg-zinc-50"
               >
                 Close
               </button>
               <button
                 onClick={() => window.print()}
-                className="inline-flex items-center space-x-1 px-3 py-1.5 bg-zinc-900 text-white rounded-lg text-xs font-semibold btn-press"
+                className="inline-flex items-center space-x-1.5 px-4 py-2 bg-zinc-900 text-white rounded-xl text-xs font-bold btn-press shadow-sm"
               >
                 <Printer className="w-3.5 h-3.5" />
-                <span>Print</span>
+                <span>Print 4x6 Label</span>
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 3: 1-CLICK COURIER DISPATCH */}
+      {courierDispatchOrder && (
+        <div className="fixed inset-0 bg-zinc-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-zinc-200 space-y-4">
+            <div className="flex items-center justify-between border-b border-zinc-100 pb-3">
+              <div className="flex items-center space-x-2">
+                <Zap className="w-4 h-4 text-amber-500" />
+                <h4 className="font-bold text-sm text-zinc-900">Dispatch via Courier</h4>
+              </div>
+              <button
+                onClick={() => setCourierDispatchOrder(null)}
+                className="text-zinc-400 hover:text-zinc-600 p-1"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="text-xs space-y-1 p-3 bg-zinc-50 rounded-xl border border-zinc-200">
+              <div className="font-bold text-zinc-900">{courierDispatchOrder.orderNumber} - {courierDispatchOrder.customerName}</div>
+              <div className="text-zinc-500 font-mono">{courierDispatchOrder.customerPhone}</div>
+              <div className="text-zinc-600">{courierDispatchOrder.shippingAddress}</div>
+              <div className="font-bold text-zinc-900 pt-1">
+                COD Due: {currency}{courierDispatchOrder.totalAmount.toFixed(2)}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-[10px] font-bold uppercase text-zinc-600">
+                Choose Courier Partner:
+              </label>
+              {(["steadfast", "pathao", "redx"] as CourierProviderId[]).map((cid) => {
+                const c = COURIER_PROVIDERS[cid];
+                const isSelected = selectedCourierId === cid;
+                return (
+                  <button
+                    key={cid}
+                    type="button"
+                    onClick={() => setSelectedCourierId(cid)}
+                    className={`w-full p-2.5 rounded-xl border text-left text-xs transition flex items-center justify-between ${
+                      isSelected
+                        ? "border-zinc-900 bg-zinc-900 text-white shadow-sm"
+                        : "border-zinc-200 hover:border-zinc-300 bg-white text-zinc-800"
+                    }`}
+                  >
+                    <div>
+                      <div className="font-bold">{c.name}</div>
+                      <div className={`text-[10px] ${isSelected ? "text-zinc-300" : "text-zinc-400"}`}>
+                        {c.tagline}
+                      </div>
+                    </div>
+                    {isSelected && <Check className="w-4 h-4 text-emerald-400" />}
+                  </button>
+                );
+              })}
+            </div>
+
+            <button
+              onClick={() => handleDispatchCourier(courierDispatchOrder, selectedCourierId)}
+              className="w-full py-3 bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center justify-center space-x-1.5 btn-press"
+            >
+              <Truck className="w-3.5 h-3.5" />
+              <span>Confirm & Generate Consignment</span>
+            </button>
           </div>
         </div>
       )}

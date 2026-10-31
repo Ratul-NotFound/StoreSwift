@@ -48,6 +48,7 @@ import { StoreFooter } from "@/components/footer";
 import { SearchModal } from "@/components/store/search-modal";
 import { SpotlightDrop } from "@/components/store/spotlight-drop";
 import { TestimonialsSection } from "@/components/store/testimonials";
+import { ExpressCheckoutModal } from "@/components/store/express-checkout-modal";
 import { FashionStorefront } from "@/components/store/templates/fashion-storefront";
 import { BeautyStorefront } from "@/components/store/templates/beauty-storefront";
 import { FootwearStorefront } from "@/components/store/templates/footwear-storefront";
@@ -1361,95 +1362,58 @@ export default function TenantStorefrontPage({
             )}
             <div className="mt-6 pt-4 border-t border-zinc-100 flex gap-2">
               <button onClick={() => { handleAddToCart(selectedProduct, selectedVariant); setSelectedProduct(null); }}
-                className="flex-1 py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center justify-center space-x-1.5 btn-press">
+                className="flex-1 py-2.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-bold text-xs rounded-xl transition flex items-center justify-center space-x-1.5 btn-press">
                 <ShoppingBag className="w-3.5 h-3.5" />
                 <span>Add to Bag</span>
               </button>
-              <Link href={`/store/${tenantSlug}/products/${selectedProduct.slug}`} className="py-2.5 px-4 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-semibold text-xs rounded-xl transition">
-                View Full Page
+              <button onClick={() => { handleAddToCart(selectedProduct, selectedVariant); setSelectedProduct(null); setIsCheckoutOpen(true); }}
+                className="flex-1 py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center justify-center space-x-1.5 btn-press">
+                <span>⚡ Buy Now</span>
+              </button>
+              <Link href={`/store/${tenantSlug}/products/${selectedProduct.slug}`} className="py-2.5 px-3 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-semibold text-xs rounded-xl transition">
+                Details
               </Link>
             </div>
           </div>
         </div>
       )}
 
-      {/* ─── Instant Cash on Delivery Checkout Modal ─────────────────────── */}
-      {isCheckoutOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm overflow-y-auto">
-          <div className="bg-white text-zinc-900 rounded-2xl max-w-md w-full p-6 border border-zinc-200 shadow-2xl relative my-8">
-            <button onClick={() => setIsCheckoutOpen(false)} className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-600 p-1.5 rounded-lg hover:bg-zinc-100"><X className="w-4 h-4" /></button>
-            {orderSuccess ? (
-              <div className="text-center py-6 space-y-4">
-                <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto"><CheckCircle2 className="w-6 h-6" /></div>
-                <h3 className="text-xl font-bold text-zinc-900 tracking-tight">Order Confirmed!</h3>
-                <p className="text-xs text-zinc-500 max-w-xs mx-auto">Thank you for shopping with <span className="font-semibold text-zinc-800">{storeDisplayName}</span>.</p>
-                <div className="p-3.5 bg-zinc-50 border border-zinc-200 rounded-xl text-xs space-y-1 font-mono">
-                  <div className="text-zinc-500">Order ID: <span className="text-zinc-900 font-bold">{orderSuccess.orderNumber}</span></div>
-                  <div className="text-zinc-500">Total: <span className="text-zinc-900 font-bold">${orderSuccess.total}</span></div>
-                  <div className="text-zinc-500">Payment: <span className="text-zinc-900 font-bold uppercase">{orderSuccess.paymentMethod}</span></div>
-                  <div className="text-emerald-600 text-[11px] pt-1">Estimated Delivery: 2-3 Business Days</div>
-                </div>
-                <button onClick={() => { setOrderSuccess(null); setIsCheckoutOpen(false); }} className="w-full py-2.5 bg-zinc-900 text-white font-bold text-xs rounded-xl hover:bg-zinc-800 transition">
-                  Continue Shopping
-                </button>
-              </div>
-            ) : (
-              <div>
-                <h3 className="text-lg font-bold text-zinc-900 tracking-tight">Instant Cash on Delivery Checkout</h3>
-                <p className="text-xs text-zinc-500 mt-0.5 mb-5">Pay cash upon home delivery. Zero advance payment required.</p>
-                <form onSubmit={handleCheckoutSubmit} className="space-y-3.5">
-                  {[
-                    { label: "Full Name", type: "text", placeholder: "Jane Doe", value: customerName, onChange: setCustomerName, required: true },
-                    { label: "Phone Number (Driver Contact)", type: "tel", placeholder: "+1 (555) 234-5678", value: customerPhone, onChange: setCustomerPhone, required: true },
-                    { label: "Email (Order Confirmation)", type: "email", placeholder: "jane@example.com", value: customerEmail, onChange: setCustomerEmail, required: false }
-                  ].map(({ label, type, placeholder, value, onChange, required }) => (
-                    <div key={label}>
-                      <label className="block text-[11px] font-semibold text-zinc-700 uppercase tracking-wider mb-1">{label}</label>
-                      <input type={type} placeholder={placeholder} value={value} onChange={(e) => onChange(e.target.value)}
-                        className="w-full px-3 py-2 border border-zinc-200 rounded-xl text-xs outline-none focus:border-zinc-900 transition" required={required} />
-                    </div>
-                  ))}
-                  <div>
-                    <label className="block text-[11px] font-semibold text-zinc-700 uppercase tracking-wider mb-1">Delivery Address & Apartment</label>
-                    <textarea placeholder="Apartment, Street address, City" value={shippingAddress} onChange={(e) => setShippingAddress(e.target.value)}
-                      className="w-full px-3 py-2 border border-zinc-200 rounded-xl text-xs outline-none focus:border-zinc-900 transition h-16 resize-none" required />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] font-semibold text-zinc-700 uppercase tracking-wider mb-1">Payment Method</label>
-                    <label className="flex items-center justify-between p-2.5 border rounded-xl cursor-pointer text-xs border-zinc-900 bg-zinc-50">
-                      <div className="flex items-center space-x-2">
-                        <input type="radio" checked={paymentMethod === "cod"} onChange={() => setPaymentMethod("cod")} />
-                        <div>
-                          <span className="font-bold text-zinc-900">Cash on Delivery (COD)</span>
-                          <span className="text-[10px] text-zinc-500 block">Inspect parcel before payment</span>
-                        </div>
-                      </div>
-                      <Banknote className="w-4 h-4 text-emerald-600" />
-                    </label>
-                  </div>
-                  <div className="p-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-[11px] text-zinc-500 space-y-1">
-                    <div className="flex items-center justify-between"><span>Dispatch:</span><span className="font-semibold text-zinc-800">Within 24-48 Hours</span></div>
-                    <div className="flex items-center justify-between"><span>Inspection:</span><span className="font-semibold text-emerald-700">Open parcel before paying</span></div>
-                  </div>
-                  <div className="pt-3 border-t border-zinc-100 flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold block">Total</span>
-                      <span className="text-xl font-black text-zinc-900">${finalTotal.toFixed(2)}</span>
-                    </div>
-                    <button type="submit" disabled={isSubmittingOrder}
-                      className="py-2.5 px-6 bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center space-x-1.5 btn-press disabled:opacity-60">
-                      <span>{isSubmittingOrder ? "Confirming..." : "Place COD Order"}</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                </form>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      {/* ─── 1-Page Express Checkout Modal (Beats Zatiq) ─────────────── */}
+      <ExpressCheckoutModal
+        isOpen={isCheckoutOpen}
+        onClose={() => setIsCheckoutOpen(false)}
+        items={
+          cartItems.length > 0
+            ? cartItems.map((it) => ({
+                id: it.id,
+                variantId: it.variantId,
+                title: it.title,
+                variantTitle: it.variantTitle,
+                price: it.price,
+                quantity: it.quantity,
+                imageUrl: it.imageUrl
+              }))
+            : selectedProduct
+            ? [
+                {
+                  id: selectedProduct.id,
+                  variantId: selectedVariant?.sku || "default-var",
+                  title: selectedProduct.title,
+                  variantTitle: selectedVariant?.title,
+                  price: selectedProduct.price,
+                  quantity: 1,
+                  imageUrl: selectedProduct.imageUrl
+                }
+              ]
+            : []
+        }
+        storeDisplayName={storeDisplayName}
+        tenantSlug={tenantSlug}
+        currency="$"
+        onClearCart={() => setCartItems([])}
+      />
 
-      {/* ─── 13. Rich Multi-Column Store Footer ────────────────────────────── */}
+      {/* ─── 13. Rich Multi-Column Store Footer      {/* ─── 13. Rich Multi-Column Store Footer ────────────────────────────── */}
       {!isFashionVertical && !isBeautyVertical && !isFootwearVertical && !isTechVertical && !isJewelryVertical && !isPantryVertical && (
         <StoreFooter storeName={storeDisplayName} storeSlug={tenantSlug} categoryName={categoryConfig.name} />
       )}

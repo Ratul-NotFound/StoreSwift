@@ -4,6 +4,7 @@ import { db, orders, orderItems, productVariants, stores } from "@/db";
 import { eq, desc, sql } from "drizzle-orm";
 import { getSessionFromRequest } from "@/lib/api-auth";
 import { verifyAndDeductStock } from "@/lib/stock";
+import { generateConsignment } from "@/lib/courier";
 
 const orderCreateSchema = z.object({
   storeSlug: z.string().optional(),
@@ -24,7 +25,9 @@ const orderCreateSchema = z.object({
       quantity: z.number().min(1)
     })
   ).min(1, "At least one item is required"),
-  paymentMethod: z.enum(["cod", "stripe", "manual"]).default("cod"),
+  paymentMethod: z.enum(["cod", "bkash", "nagad", "stripe", "manual"]).default("cod"),
+  deliveryZone: z.enum(["metro", "suburbs", "national"]).optional().default("metro"),
+  trxId: z.string().optional(),
   shippingFee: z.number().optional().default(0)
 });
 
@@ -159,11 +162,24 @@ export async function POST(request: Request) {
         }
       }
 
+      const consignment = generateConsignment({
+        orderNumber: newOrder.orderNumber,
+        customerName: data.customerName,
+        customerPhone: data.customerPhone,
+        shippingAddress: data.shippingAddress.address,
+        totalAmount: parseFloat(newOrder.totalAmount),
+        currency: "$"
+      }, "steadfast", data.deliveryZone);
+
       return NextResponse.json({
         ok: true,
         orderId: newOrder.id,
         orderNumber: newOrder.orderNumber,
-        totalAmount: newOrder.totalAmount
+        totalAmount: newOrder.totalAmount,
+        consignmentId: consignment.consignmentId,
+        courierName: consignment.courierName,
+        trackingUrl: consignment.trackingUrl,
+        estimatedDelivery: consignment.zone.eta
       });
     } catch (dbErr) {
       console.error("[Order Checkout Fallback]", dbErr);
@@ -182,12 +198,26 @@ export async function POST(request: Request) {
         (sum, it) => sum + parseFloat(String(it.price)) * it.quantity,
         0
       );
+      const totalAmount = subtotal + (data.shippingFee || 0);
+
+      const consignment = generateConsignment({
+        orderNumber,
+        customerName: data.customerName,
+        customerPhone: data.customerPhone,
+        shippingAddress: data.shippingAddress.address,
+        totalAmount,
+        currency: "$"
+      }, "steadfast", data.deliveryZone);
 
       return NextResponse.json({
         ok: true,
         orderId: `ord-${Date.now()}`,
         orderNumber,
-        totalAmount: (subtotal + (data.shippingFee || 0)).toFixed(2)
+        totalAmount: totalAmount.toFixed(2),
+        consignmentId: consignment.consignmentId,
+        courierName: consignment.courierName,
+        trackingUrl: consignment.trackingUrl,
+        estimatedDelivery: consignment.zone.eta
       });
     }
   } catch (err) {
