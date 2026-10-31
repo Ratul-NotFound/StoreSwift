@@ -166,31 +166,15 @@ export function StorefrontFooter({
               Official authenticated storefront for {storeName}. Curated {categoryName.toLowerCase()}, nationwide automated courier delivery across all 64 districts, and open parcel doorstep inspection.
             </p>
 
-            {/* Support Hotline, WhatsApp & Hub */}
+            {/* Support Hotline & Customer Care */}
             <div className="space-y-1.5 text-xs text-zinc-400 pt-1">
               <div className="flex items-center space-x-2 text-zinc-300">
-                <PhoneCall className="w-3.5 h-3.5 text-emerald-400" />
-                <span className="font-mono font-semibold">+880 1711-234567</span>
-                <span className="text-zinc-500">• 10 AM - 10 PM Everyday</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <MessageCircle className="w-3.5 h-3.5 text-emerald-500" />
-                <a
-                  href="https://wa.me/8801711234567"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:text-emerald-400 transition underline underline-offset-2"
-                >
-                  WhatsApp Ordering & Instant Inquiries
-                </a>
-              </div>
-              <div className="flex items-center space-x-2">
                 <Mail className="w-3.5 h-3.5 text-blue-400" />
                 <span>care@{storeSlug || "store"}.storeswift.app</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <MapPin className="w-3.5 h-3.5 text-rose-400" />
-                <span>Central Logistics Hub: Tejgaon Industrial Area, Dhaka</span>
+              <div className="flex items-center space-x-2 text-zinc-400">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Customer Care: 10:00 AM – 10:00 PM Everyday</span>
               </div>
             </div>
 

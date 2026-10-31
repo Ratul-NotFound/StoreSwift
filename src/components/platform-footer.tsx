@@ -59,23 +59,18 @@ export function PlatformFooter() {
             </Link>
 
             <p className="text-xs text-zinc-400 leading-relaxed max-w-sm">
-              The high-conversion eCommerce operating system for South Asia & global direct-to-consumer brands. Built on Next.js 15 App Router with instant 1-page checkout, automated courier dispatch, and AI Anti-Fraud RTO protection.
+              The high-conversion commerce platform for modern brands. Designed for frictionless 1-page checkouts, automated courier logistics, and multi-channel scale.
             </p>
 
-            {/* Platform Headquarters & Merchant Hotline */}
+            {/* Platform Support & Hours */}
             <div className="space-y-1.5 text-xs text-zinc-400 pt-1">
               <div className="flex items-center space-x-2 text-zinc-300">
-                <PhoneCall className="w-3.5 h-3.5 text-emerald-400" />
-                <span className="font-mono font-semibold">+880 1711-234567</span>
-                <span className="text-zinc-500">• Merchant Care (10 AM - 10 PM)</span>
-              </div>
-              <div className="flex items-center space-x-2">
                 <Mail className="w-3.5 h-3.5 text-blue-400" />
-                <span>support@storeswift.app</span>
+                <span className="font-medium text-white">support@storeswift.app</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <MapPin className="w-3.5 h-3.5 text-rose-400" />
-                <span>Central Logistics Hub: Tejgaon Industrial Area, Dhaka</span>
+              <div className="flex items-center space-x-2 text-zinc-400">
+                <Clock className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Merchant Support: Mon – Sat, 9:00 AM – 9:00 PM</span>
               </div>
             </div>
 
@@ -193,12 +188,14 @@ export function PlatformFooter() {
 
         {/* ─── Bottom Badges & Legal ────────────────────────────────────────── */}
         <div className="mt-12 pt-8 border-t border-zinc-900 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
-          <div className="flex flex-wrap items-center gap-2 text-center sm:text-left">
+          <div className="flex flex-wrap items-center gap-3 text-center sm:text-left">
             <span>© {new Date().getFullYear()} StoreSwift Technologies Ltd. All rights reserved.</span>
-            <span>•</span>
-            <span className="text-zinc-400">
-              Next.js 15 App Router • Edge Runtime • PostgreSQL & Prisma
-            </span>
+            <span className="hidden sm:inline text-zinc-700">•</span>
+            <span className="hover:text-zinc-400 transition cursor-pointer">Privacy Policy</span>
+            <span className="text-zinc-700">•</span>
+            <span className="hover:text-zinc-400 transition cursor-pointer">Terms of Service</span>
+            <span className="text-zinc-700">•</span>
+            <span className="hover:text-zinc-400 transition cursor-pointer">Security</span>
           </div>
 
           {/* Partner & Logistics Badges */}

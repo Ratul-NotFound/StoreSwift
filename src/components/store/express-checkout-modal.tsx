@@ -239,18 +239,16 @@ export function ExpressCheckoutModal({
               <button
                 type="button"
                 onClick={() => setLang("en")}
-                className={`px-2 py-0.5 rounded transition ${
-                  lang === "en" ? "bg-white text-zinc-900 shadow-xs" : "text-zinc-600 hover:text-zinc-900"
-                }`}
+                className={`px-2 py-0.5 rounded transition ${lang === "en" ? "bg-white text-zinc-900 shadow-xs" : "text-zinc-600 hover:text-zinc-900"
+                  }`}
               >
                 EN
               </button>
               <button
                 type="button"
                 onClick={() => setLang("bn")}
-                className={`px-2 py-0.5 rounded transition ${
-                  lang === "bn" ? "bg-white text-zinc-900 shadow-xs" : "text-zinc-600 hover:text-zinc-900"
-                }`}
+                className={`px-2 py-0.5 rounded transition ${lang === "bn" ? "bg-white text-zinc-900 shadow-xs" : "text-zinc-600 hover:text-zinc-900"
+                  }`}
               >
                 বাংলা
               </button>
@@ -484,7 +482,7 @@ export function ExpressCheckoutModal({
                   const z = DELIVERY_ZONES[zoneKey];
                   const isSelected = deliveryZone === zoneKey;
                   const fee = isBDT ? z.rateBDT : z.rateUSD;
-                  const zoneLabel = lang === "bn" 
+                  const zoneLabel = lang === "bn"
                     ? (zoneKey === "metro" ? "ঢাকার ভিতরে" : zoneKey === "suburbs" ? "গ্রেটার ঢাকা" : "সারাদেশ")
                     : z.shortName;
                   return (
@@ -492,24 +490,21 @@ export function ExpressCheckoutModal({
                       key={zoneKey}
                       type="button"
                       onClick={() => setDeliveryZone(zoneKey)}
-                      className={`p-2.5 rounded-xl border text-left transition-all relative ${
-                        isSelected
+                      className={`p-2.5 rounded-xl border text-left transition-all relative ${isSelected
                           ? "border-zinc-900 bg-zinc-900 text-white shadow-sm"
                           : "border-zinc-200 hover:border-zinc-300 bg-white text-zinc-800"
-                      }`}
+                        }`}
                     >
                       <div className="font-bold text-xs truncate">{zoneLabel}</div>
                       <div
-                        className={`text-[11px] font-mono mt-0.5 font-bold ${
-                          isSelected ? "text-emerald-400" : "text-emerald-600"
-                        }`}
+                        className={`text-[11px] font-mono mt-0.5 font-bold ${isSelected ? "text-emerald-400" : "text-emerald-600"
+                          }`}
                       >
                         {currency}{fee.toFixed(isBDT ? 0 : 2)}
                       </div>
                       <div
-                        className={`text-[9px] mt-1 ${
-                          isSelected ? "text-zinc-300" : "text-zinc-400"
-                        }`}
+                        className={`text-[9px] mt-1 ${isSelected ? "text-zinc-300" : "text-zinc-400"
+                          }`}
                       >
                         {z.eta}
                       </div>
@@ -530,16 +525,14 @@ export function ExpressCheckoutModal({
                 <button
                   type="button"
                   onClick={() => setPaymentMethod("cod")}
-                  className={`p-3 rounded-xl border text-left transition flex items-start space-x-2.5 ${
-                    paymentMethod === "cod"
+                  className={`p-3 rounded-xl border text-left transition flex items-start space-x-2.5 ${paymentMethod === "cod"
                       ? "border-emerald-600 bg-emerald-50/60 ring-1 ring-emerald-600"
                       : "border-zinc-200 hover:border-zinc-300 bg-white"
-                  }`}
+                    }`}
                 >
                   <Banknote
-                    className={`w-4 h-4 mt-0.5 ${
-                      paymentMethod === "cod" ? "text-emerald-600" : "text-zinc-400"
-                    }`}
+                    className={`w-4 h-4 mt-0.5 ${paymentMethod === "cod" ? "text-emerald-600" : "text-zinc-400"
+                      }`}
                   />
                   <div>
                     <div className="font-bold text-xs text-zinc-900">{t.cod}</div>
@@ -551,11 +544,10 @@ export function ExpressCheckoutModal({
                 <button
                   type="button"
                   onClick={() => setPaymentMethod("bkash")}
-                  className={`p-3 rounded-xl border text-left transition flex items-start space-x-2.5 ${
-                    paymentMethod === "bkash"
+                  className={`p-3 rounded-xl border text-left transition flex items-start space-x-2.5 ${paymentMethod === "bkash"
                       ? "border-[#E2136E] bg-pink-50/60 ring-1 ring-[#E2136E]"
                       : "border-zinc-200 hover:border-zinc-300 bg-white"
-                  }`}
+                    }`}
                 >
                   <div className="w-4 h-4 mt-0.5 rounded-full bg-[#E2136E] text-white flex items-center justify-center font-bold text-[9px]">
                     ৳
@@ -570,11 +562,10 @@ export function ExpressCheckoutModal({
                 <button
                   type="button"
                   onClick={() => setPaymentMethod("nagad")}
-                  className={`p-3 rounded-xl border text-left transition flex items-start space-x-2.5 ${
-                    paymentMethod === "nagad"
+                  className={`p-3 rounded-xl border text-left transition flex items-start space-x-2.5 ${paymentMethod === "nagad"
                       ? "border-[#F7931E] bg-amber-50/60 ring-1 ring-[#F7931E]"
                       : "border-zinc-200 hover:border-zinc-300 bg-white"
-                  }`}
+                    }`}
                 >
                   <div className="w-4 h-4 mt-0.5 rounded-full bg-[#F7931E] text-white flex items-center justify-center font-bold text-[9px]">
                     N
@@ -589,16 +580,14 @@ export function ExpressCheckoutModal({
                 <button
                   type="button"
                   onClick={() => setPaymentMethod("card")}
-                  className={`p-3 rounded-xl border text-left transition flex items-start space-x-2.5 ${
-                    paymentMethod === "card"
+                  className={`p-3 rounded-xl border text-left transition flex items-start space-x-2.5 ${paymentMethod === "card"
                       ? "border-blue-600 bg-blue-50/60 ring-1 ring-blue-600"
                       : "border-zinc-200 hover:border-zinc-300 bg-white"
-                  }`}
+                    }`}
                 >
                   <ShieldCheck
-                    className={`w-4 h-4 mt-0.5 ${
-                      paymentMethod === "card" ? "text-blue-600" : "text-zinc-400"
-                    }`}
+                    className={`w-4 h-4 mt-0.5 ${paymentMethod === "card" ? "text-blue-600" : "text-zinc-400"
+                      }`}
                   />
                   <div>
                     <div className="font-bold text-xs text-zinc-900">{t.card}</div>
@@ -610,11 +599,10 @@ export function ExpressCheckoutModal({
               {/* MFS Instructions Box */}
               {(paymentMethod === "bkash" || paymentMethod === "nagad") && (
                 <div
-                  className={`p-3 rounded-xl border text-xs space-y-2 ${
-                    paymentMethod === "bkash"
+                  className={`p-3 rounded-xl border text-xs space-y-2 ${paymentMethod === "bkash"
                       ? "bg-pink-50/70 border-pink-200 text-pink-950"
                       : "bg-amber-50/70 border-amber-200 text-amber-950"
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-[11px]">
@@ -710,8 +698,8 @@ export function ExpressCheckoutModal({
                   {isSubmitting
                     ? t.processing
                     : paymentMethod === "cod"
-                    ? `${t.confirmCod} (${currency}${finalTotal.toFixed(2)})`
-                    : `${t.completeOrder} (${currency}${finalTotal.toFixed(2)})`}
+                      ? `${t.confirmCod} (${currency}${finalTotal.toFixed(2)})`
+                      : `${t.completeOrder} (${currency}${finalTotal.toFixed(2)})`}
                 </span>
                 <ArrowRight className="w-4 h-4" />
               </button>
