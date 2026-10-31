@@ -145,9 +145,11 @@ export default function PlatformLandingPage() {
   ];
 
   return (
-    <div className="flex flex-col min-h-screen studio-canvas text-zinc-900 dark:text-zinc-100 font-sans selection:bg-indigo-500 selection:text-white antialiased transition-colors duration-150">
+    <div className="relative flex flex-col min-h-screen studio-canvas text-zinc-900 dark:text-zinc-100 font-sans selection:bg-indigo-500 selection:text-white antialiased transition-colors duration-150 overflow-x-hidden">
+      {/* Global Micro-Matte Grain Texture Overlay */}
+      <div className="fixed inset-0 bg-noise-grain pointer-events-none z-30" />
       {/* ─── 1. Platform Navigation Bar ─────────────────────────────────────── */}
-      <header className="border-b border-slate-200/80 dark:border-indigo-500/10 bg-white/85 dark:bg-[#08090d]/85 backdrop-blur-2xl sticky top-0 z-50 transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
+      <header className="border-b border-slate-200/80 dark:border-indigo-500/10 bg-white/85 dark:bg-[#07080c]/85 backdrop-blur-2xl sticky top-0 z-50 transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center space-x-2.5 group flex-shrink-0">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white flex items-center justify-center font-bold shadow-md shadow-indigo-500/25 group-hover:scale-105 transition-transform">
@@ -283,14 +285,18 @@ export default function PlatformLandingPage() {
 
       {/* ─── 2. Hero Section: Studio Depth & Architectural Calm ─────────────── */}
       <section className="relative overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-between items-center py-12 sm:py-16 lg:py-16 border-b border-zinc-200/80 dark:border-indigo-500/10 transition-colors">
-        {/* Precision Architectural Top Horizon Seam */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[1px] bg-gradient-to-r from-transparent via-indigo-300/60 dark:via-indigo-500/30 to-transparent pointer-events-none" />
+        {/* Precision Architectural Grid Layer */}
+        <div className="absolute inset-0 bg-grid-mesh pointer-events-none" />
 
-        {/* Clean Monochromatic Studio Optical Light Cone */}
-        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[700px] lg:w-[1000px] h-[400px] bg-gradient-to-b from-indigo-500/[0.12] dark:from-indigo-500/[0.18] via-purple-500/[0.04] to-transparent rounded-full blur-3xl pointer-events-none" />
+        {/* Precision Architectural Top Horizon Seam with Ethereal Core Beam */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[1px] bg-gradient-to-r from-transparent via-indigo-500/40 dark:via-indigo-500/60 to-transparent pointer-events-none" />
+        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-3/4 max-w-2xl h-10 bg-indigo-500/15 dark:bg-indigo-500/25 blur-xl pointer-events-none" />
 
-        {/* Soft Radiant Center Ambient Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] lg:w-[850px] h-[320px] bg-gradient-to-b from-indigo-500/[0.06] dark:from-indigo-500/[0.08] to-transparent rounded-full blur-3xl pointer-events-none" />
+        {/* Clean Cosmic Iris Primary Light Cone */}
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[850px] lg:w-[1150px] h-[460px] bg-gradient-to-b from-indigo-500/[0.16] dark:from-indigo-500/[0.22] via-purple-500/[0.08] to-transparent rounded-full blur-3xl pointer-events-none" />
+
+        {/* Soft Radiant Center Ambient Secondary Glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] lg:w-[850px] h-[340px] bg-gradient-to-b from-indigo-500/[0.06] dark:from-indigo-500/[0.10] to-transparent rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 sm:space-y-7 my-auto">
           {/* Status Capsule Badge */}
@@ -362,7 +368,9 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 4. Core Platform Capabilities (Precision Hardware Cards) ────────── */}
-      <section id="features" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-indigo-500/10 scroll-mt-16 transition-colors">
+      <section id="features" className="relative overflow-hidden min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-indigo-500/10 scroll-mt-16 transition-colors">
+        {/* Ambient Chromatic Backlight behind Feature Cards */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] lg:w-[1050px] h-[380px] bg-indigo-500/[0.04] dark:bg-indigo-500/[0.07] rounded-full blur-[110px] pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12 w-full my-auto">
           <div className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
@@ -510,7 +518,9 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 5. How It Works (Minimalist Schematic Workflow) ───────────────── */}
-      <section id="how-it-works" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-indigo-500/10 scroll-mt-16 transition-colors">
+      <section id="how-it-works" className="relative overflow-hidden min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-indigo-500/10 scroll-mt-16 transition-colors">
+        {/* Subtle Ambient Violet Backlight */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] lg:w-[900px] h-[320px] bg-purple-500/[0.03] dark:bg-purple-500/[0.06] rounded-full blur-[100px] pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-14 w-full my-auto">
           <div className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
@@ -625,7 +635,9 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 6. Bespoke Turnkey Storefronts (Studio Frame) ───────────────────── */}
-      <section id="storefronts" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-indigo-500/10 scroll-mt-16 transition-colors">
+      <section id="storefronts" className="relative overflow-hidden min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-indigo-500/10 scroll-mt-16 transition-colors">
+        {/* Ambient Radiant Backdrop behind Store Showcase */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] lg:w-[1100px] h-[440px] bg-indigo-500/[0.04] dark:bg-indigo-500/[0.08] rounded-full blur-[120px] pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 w-full my-auto">
           <div className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
@@ -736,7 +748,9 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 7. Transparent Pricing (Hardware Tier Insets) ──────────────────── */}
-      <section id="pricing" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-indigo-500/10 scroll-mt-16 transition-colors">
+      <section id="pricing" className="relative overflow-hidden min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-indigo-500/10 scroll-mt-16 transition-colors">
+        {/* High-Intent Radiant Bloom behind Popular Tier */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] lg:w-[850px] h-[360px] bg-indigo-500/[0.07] dark:bg-indigo-500/[0.12] rounded-full blur-[100px] pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 w-full my-auto">
           <div className="text-center max-w-xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
@@ -877,7 +891,7 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 8. Frequently Asked Questions (FAQ) ────────────────────────────── */}
-      <section id="faq" className="relative min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-indigo-500/10 scroll-mt-16 transition-colors">
+      <section id="faq" className="relative overflow-hidden min-h-0 lg:min-h-[calc(100vh-4rem)] flex flex-col justify-center py-16 sm:py-20 lg:py-16 border-b border-zinc-200/80 dark:border-indigo-500/10 scroll-mt-16 transition-colors">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 w-full my-auto">
           <div className="text-center max-w-xl mx-auto space-y-2.5 sm:space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
@@ -922,9 +936,11 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 9. Final Call to Action ────────────────────────────────────────── */}
-      <section className="relative min-h-0 lg:min-h-[75vh] flex flex-col justify-center py-16 sm:py-20 lg:py-20 border-b border-zinc-200/80 dark:border-indigo-500/10 transition-colors">
+      <section className="relative overflow-hidden min-h-0 lg:min-h-[75vh] flex flex-col justify-center py-16 sm:py-20 lg:py-20 border-b border-zinc-200/80 dark:border-indigo-500/10 transition-colors">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto">
           <div className="luxury-card rounded-3xl p-8 sm:p-14 text-center space-y-6 relative overflow-hidden">
+            {/* Top Interior Ambient Bloom */}
+            <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[600px] h-[220px] bg-gradient-to-b from-indigo-500/[0.14] to-transparent rounded-full blur-3xl pointer-events-none" />
             <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight relative leading-tight bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400/80 bg-clip-text text-transparent">
               Ready to launch your store?
             </h2>
