@@ -40,7 +40,7 @@ export function ThemeToggle({ className = "", showLabel = false }: ThemeTogglePr
         {isDark ? (
           <Sun className="w-4 h-4 text-amber-400 transition-transform duration-200 rotate-0 scale-100 hover:rotate-45" />
         ) : (
-          <Moon className="w-4 h-4 text-blue-600 transition-transform duration-200 rotate-0 scale-100 hover:-rotate-12" />
+          <Moon className="w-4 h-4 text-indigo-600 transition-transform duration-200 rotate-0 scale-100 hover:-rotate-12" />
         )}
       </div>
 

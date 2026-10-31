@@ -86,7 +86,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.variable} min-h-screen antialiased font-sans selection:bg-blue-500 selection:text-white`}>
+      <body className={`${inter.variable} min-h-screen antialiased font-sans selection:bg-indigo-500 selection:text-white`}>
         <ThemeProvider>
           <ToastProvider>{children}</ToastProvider>
         </ThemeProvider>

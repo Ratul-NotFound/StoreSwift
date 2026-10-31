@@ -10,27 +10,27 @@
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
   --border: #e2e8f0;
-  --primary: #2563eb;
+  --primary: #6366f1;
   --primary-foreground: #ffffff;
-  --accent: #2563eb;
+  --accent: #6366f1;
   --accent-foreground: #ffffff;
-  --ring: #3b82f6;
+  --ring: #6366f1;
   --radius: 0.75rem;
 }
 
 .dark {
-  --background: #080c14;
+  --background: #08090d;
   --foreground: #f8fafc;
-  --card: #0f172a;
+  --card: #0e1017;
   --card-foreground: #f8fafc;
-  --muted: #1e293b;
+  --muted: #12141e;
   --muted-foreground: #94a3b8;
-  --border: rgba(148, 163, 184, 0.12);
-  --primary: #3b82f6;
+  --border: rgba(99, 102, 241, 0.12);
+  --primary: #6366f1;
   --primary-foreground: #ffffff;
-  --accent: #3b82f6;
+  --accent: #6366f1;
   --accent-foreground: #ffffff;
-  --ring: #3b82f6;
+  --ring: #6366f1;
 }
 
 * {
@@ -122,80 +122,81 @@ body {
 .studio-canvas {
   background-color: #f8fafc;
   background-image: 
-    radial-gradient(ellipse 85% 55% at 50% -10%, rgba(37, 99, 235, 0.06), transparent 70%),
+    radial-gradient(ellipse 85% 55% at 50% -8%, rgba(99, 102, 241, 0.08), transparent 70%),
+    radial-gradient(ellipse 70% 45% at 90% 60%, rgba(139, 92, 246, 0.04), transparent 70%),
     radial-gradient(circle at 50% 0%, #ffffff 0%, #f1f5f9 100%);
 }
 
 .dark .studio-canvas {
-  background-color: #080c14;
+  background-color: #08090d;
   background-image: 
-    radial-gradient(ellipse 85% 55% at 50% -10%, rgba(37, 99, 235, 0.14), transparent 70%),
-    radial-gradient(ellipse 65% 45% at 85% 65%, rgba(99, 102, 241, 0.05), transparent 70%),
-    radial-gradient(circle at 50% 0%, #0d1527 0%, #06090f 100%);
+    radial-gradient(ellipse 85% 55% at 50% -8%, rgba(99, 102, 241, 0.20), transparent 70%),
+    radial-gradient(ellipse 65% 45% at 85% 65%, rgba(139, 92, 246, 0.08), transparent 70%),
+    radial-gradient(circle at 50% 0%, #0e1018 0%, #06070a 100%);
 }
 
 .luxury-card {
   background-color: #ffffff;
-  border: 1px solid rgba(226, 232, 240, 0.85);
+  border: 1px solid rgba(226, 232, 240, 0.9);
   box-shadow: 
-    0 1px 2px rgba(15, 23, 42, 0.04),
-    0 8px 24px -4px rgba(15, 23, 42, 0.06),
-    0 24px 48px -12px rgba(15, 23, 42, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    0 1px 2px rgba(15, 23, 42, 0.03),
+    0 8px 24px -4px rgba(99, 102, 241, 0.04),
+    0 24px 48px -12px rgba(15, 23, 42, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
 }
 
 .luxury-card:hover {
-  border-color: rgba(148, 163, 184, 0.4);
+  border-color: rgba(99, 102, 241, 0.3);
   box-shadow: 
     0 2px 4px rgba(15, 23, 42, 0.04),
-    0 16px 36px -6px rgba(15, 23, 42, 0.08),
-    0 32px 64px -12px rgba(15, 23, 42, 0.06),
+    0 16px 36px -6px rgba(99, 102, 241, 0.08),
+    0 32px 64px -12px rgba(15, 23, 42, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
 .dark .luxury-card {
-  background-color: rgba(13, 20, 36, 0.75);
+  background-color: rgba(14, 16, 24, 0.78);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(148, 163, 184, 0.14);
+  border: 1px solid rgba(99, 102, 241, 0.14);
   box-shadow: 
     0 1px 2px rgba(0, 0, 0, 0.4),
-    0 12px 32px -8px rgba(0, 0, 0, 0.6),
-    0 32px 64px -16px rgba(2, 6, 23, 0.8),
+    0 12px 32px -8px rgba(0, 0, 0, 0.65),
+    0 32px 64px -16px rgba(4, 5, 10, 0.8),
     inset 0 1px 0 rgba(255, 255, 255, 0.12),
     inset 0 -1px 0 rgba(0, 0, 0, 0.4);
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
 }
 
 .dark .luxury-card:hover {
-  border-color: rgba(96, 165, 250, 0.35);
+  border-color: rgba(129, 140, 248, 0.38);
   box-shadow: 
     0 2px 4px rgba(0, 0, 0, 0.5),
-    0 20px 44px -8px rgba(2, 6, 23, 0.75),
-    0 40px 80px -16px rgba(2, 6, 23, 0.9),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 20px 44px -8px rgba(99, 102, 241, 0.2),
+    0 40px 80px -16px rgba(4, 5, 10, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
     inset 0 -1px 0 rgba(0, 0, 0, 0.5);
 }
 
-/* High-Intent Royal Indigo Conversion Buttons (Stripe / Linear Psychology) */
+/* High-Intent Cosmic Iris Conversion Buttons (Linear / Stripe Luxury) */
 .btn-glass-primary {
-  background-color: #2563eb;
+  background: linear-gradient(180deg, #6366f1 0%, #4f46e5 100%);
   color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 
     0 1px 2px rgba(0, 0, 0, 0.1),
-    0 6px 18px -2px rgba(37, 99, 235, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    0 8px 24px -4px rgba(99, 102, 241, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
   transition: all 0.15s ease-out;
 }
 
 .btn-glass-primary:hover {
-  background-color: #1d4ed8 !important;
+  background: linear-gradient(180deg, #6d70f7 0%, #5548ed 100%) !important;
   box-shadow: 
     0 2px 4px rgba(0, 0, 0, 0.15),
-    0 10px 24px -2px rgba(37, 99, 235, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    0 12px 30px -4px rgba(99, 102, 241, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
   transform: translateY(-1px);
 }
 
