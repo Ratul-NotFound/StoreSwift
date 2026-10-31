@@ -147,7 +147,7 @@ export default function PlatformLandingPage() {
   return (
     <div className="flex flex-col min-h-screen studio-canvas text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-900 selection:text-white dark:selection:bg-white dark:selection:text-zinc-950 antialiased transition-colors duration-150">
       {/* ─── 1. Platform Navigation Bar ─────────────────────────────────────── */}
-      <header className="border-b border-zinc-200/80 dark:border-white/[0.06] bg-white/80 dark:bg-[#070709]/80 backdrop-blur-2xl sticky top-0 z-50 transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
+      <header className="border-b border-zinc-200/80 dark:border-white/[0.06] bg-white/80 dark:bg-[#08080c]/80 backdrop-blur-2xl sticky top-0 z-50 transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center space-x-2.5 group flex-shrink-0">
             <div className="w-8 h-8 rounded-lg bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 flex items-center justify-center font-bold shadow-sm group-hover:scale-105 transition-transform">
@@ -283,49 +283,11 @@ export default function PlatformLandingPage() {
 
       {/* ─── 2. Hero Section: Studio Depth & Architectural Calm ─────────────── */}
       <section className="relative overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-between items-center py-12 sm:py-16 lg:py-16 border-b border-zinc-200/80 dark:border-white/[0.06] transition-colors">
-        {/* Layer 1: Ethereal Optical Horizon Line & Pulse at Top */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 max-w-4xl h-[1.5px] bg-gradient-to-r from-transparent via-blue-500 dark:via-blue-400 to-transparent pointer-events-none" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 max-w-2xl h-24 bg-blue-500/25 dark:bg-blue-400/30 blur-2xl pointer-events-none" />
+        {/* Precision Architectural Top Horizon Seam */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[1px] bg-gradient-to-r from-transparent via-zinc-300/80 dark:via-zinc-700/60 to-transparent pointer-events-none" />
 
-        {/* Ambient Hero Spotlight Aura (Linear / Stripe Signature Glow) */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] sm:w-[850px] h-[350px] sm:h-[480px] bg-gradient-to-tr from-blue-600/20 via-indigo-500/15 to-purple-600/10 dark:from-blue-500/20 dark:via-indigo-500/15 dark:to-purple-500/10 rounded-full blur-[100px] pointer-events-none" />
-
-        {/* Layer 2: Radially-Masked Architectural Dot Matrix */}
-        <div className="absolute inset-0 commerce-dot-matrix pointer-events-none" />
-
-        {/* Layer 3: Commerce Route Circuit Lines (Subtle Vector Architecture) */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center opacity-75 dark:opacity-65">
-          <svg className="w-full max-w-6xl h-full" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M100 300 C 300 220, 450 380, 600 300 C 750 220, 900 380, 1100 300" stroke="currentColor" strokeWidth="1.5" strokeDasharray="4 6" className="text-zinc-400/70 dark:text-zinc-600/80" />
-            <path d="M200 160 C 400 340, 800 260, 1000 440" stroke="currentColor" strokeWidth="2" strokeDasharray="4 5" className="text-blue-500/80 dark:text-blue-400/80" />
-            <circle cx="300" cy="245" r="4" className="fill-blue-500 dark:fill-blue-400 shadow-sm" />
-            <circle cx="600" cy="300" r="4.5" className="fill-emerald-500 dark:fill-emerald-400 shadow-sm" />
-            <circle cx="900" cy="355" r="4" className="fill-blue-500 dark:fill-blue-400 shadow-sm" />
-          </svg>
-        </div>
-
-        {/* Floating Telemetry Micro-Pills (Visible on Desktop Laptops & Monitors) */}
-        <div className="hidden lg:flex absolute left-4 lg:left-8 top-1/3 -translate-y-1/2 flex-col space-y-3 pointer-events-none z-10">
-          <div className="luxury-card rounded-2xl px-3.5 py-2.5 shadow-sm text-[11px] font-mono flex items-center space-x-2 text-zinc-700 dark:text-zinc-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse" />
-            <span>Checkout Speed: <strong className="text-zinc-950 dark:text-white font-bold">18.4s avg</strong></span>
-          </div>
-          <div className="luxury-card rounded-2xl px-3.5 py-2.5 shadow-sm text-[11px] font-mono flex items-center space-x-2 text-zinc-700 dark:text-zinc-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
-            <span>Courier Dispatch: <strong className="text-zinc-950 dark:text-white font-bold">Auto 1-Click</strong></span>
-          </div>
-        </div>
-
-        <div className="hidden lg:flex absolute right-4 lg:right-8 top-1/3 -translate-y-1/2 flex-col space-y-3 pointer-events-none z-10">
-          <div className="luxury-card rounded-2xl px-3.5 py-2.5 shadow-sm text-[11px] font-mono flex items-center space-x-2 text-zinc-700 dark:text-zinc-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
-            <span>Fraud Risk Shield: <strong className="text-zinc-950 dark:text-white font-bold">99.4% Acc.</strong></span>
-          </div>
-          <div className="luxury-card rounded-2xl px-3.5 py-2.5 shadow-sm text-[11px] font-mono flex items-center space-x-2 text-zinc-700 dark:text-zinc-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
-            <span>District Tariffs: <strong className="text-zinc-950 dark:text-white font-bold">64 Active</strong></span>
-          </div>
-        </div>
+        {/* Clean Monochromatic Studio Optical Light Cone */}
+        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[700px] lg:w-[1000px] h-[400px] bg-gradient-to-b from-blue-500/[0.06] dark:from-blue-500/[0.08] via-indigo-500/[0.02] to-transparent rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 sm:space-y-7 my-auto">
           {/* Status Capsule Badge */}
