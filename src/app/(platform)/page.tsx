@@ -20,7 +20,16 @@ import {
   Barcode,
   Sparkles,
   CreditCard,
-  CheckCircle2
+  CheckCircle2,
+  Package,
+  BarChart3,
+  Clock,
+  Radio,
+  Sliders,
+  Cpu,
+  FileText,
+  RefreshCw,
+  TrendingUp
 } from "lucide-react";
 import { PlatformFooter, DEMO_STORES_LIST } from "@/components/platform-footer";
 
@@ -107,6 +116,9 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
 
 export default function PlatformLandingPage() {
   const [selectedStoreSlug, setSelectedStoreSlug] = useState("apex-fashion");
+  const [heroDeliveryZone, setHeroDeliveryZone] = useState<"dhaka" | "nationwide">("dhaka");
+  const [heroPaymentMethod, setHeroPaymentMethod] = useState<"bkash" | "nagad" | "cod">("bkash");
+  const [pricingBilling, setPricingBilling] = useState<"monthly" | "annual">("monthly");
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [isNavDropdownOpen, setIsNavDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -139,7 +151,7 @@ export default function PlatformLandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-[#09090b] text-zinc-100 font-sans selection:bg-white selection:text-zinc-950 antialiased">
       {/* ─── 1. Platform Navigation Bar ─────────────────────────────────────── */}
-      <header className="border-b border-white/[0.08] bg-[#09090b]/80 backdrop-blur-2xl sticky top-0 z-50 shadow-[0_1px_3px_rgba(0,0,0,0.5)]">
+      <header className="border-b border-white/[0.08] bg-[#09090b]/85 backdrop-blur-2xl sticky top-0 z-50 shadow-[0_1px_3px_rgba(0,0,0,0.5)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center space-x-2.5 group flex-shrink-0">
             <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-zinc-950 font-bold shadow-[0_0_15px_rgba(255,255,255,0.2)] group-hover:scale-105 transition-transform">
@@ -286,12 +298,12 @@ export default function PlatformLandingPage() {
         )}
       </header>
 
-      {/* ─── 2. Hero Section: Obsidian Luxury Standard (Linear Benchmark) ─────── */}
-      <section className="relative overflow-hidden pt-20 pb-20 lg:pt-28 lg:pb-36 border-b border-white/[0.08]">
-        {/* Subtle Ambient Radial Lighting Spotlight */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-gradient-to-b from-blue-600/15 via-indigo-600/8 to-transparent blur-[120px] pointer-events-none" />
+      {/* ─── 2. Hero Section: Obsidian Luxury Cockpit ───────────────────────── */}
+      <section className="relative overflow-hidden pt-16 pb-20 lg:pt-24 lg:pb-32 border-b border-white/[0.08]">
+        {/* Subtle Ambient Radial Spotlight */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[520px] bg-gradient-to-b from-blue-600/15 via-indigo-600/8 to-transparent blur-[140px] pointer-events-none" />
 
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-7">
           {/* Status Capsule Badge */}
           <div className="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full bg-white/[0.05] border border-white/[0.1] text-zinc-300 text-xs font-medium backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]">
             <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
@@ -301,38 +313,38 @@ export default function PlatformLandingPage() {
           </div>
 
           {/* Master Headline */}
-          <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-[-0.035em] leading-[1.04] text-white max-w-4xl mx-auto">
-            The commerce engine <br />
-            <span className="bg-gradient-to-r from-zinc-200 via-zinc-400 to-zinc-600 bg-clip-text text-transparent font-normal">
-              built for scale.
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.035em] text-white max-w-4xl mx-auto leading-[1.08]">
+            The commerce operating system <br className="hidden sm:inline" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-zinc-200 to-zinc-400">
+              engineered for high-velocity brands.
             </span>
           </h1>
 
           {/* Subtitle */}
-          <p className="text-base sm:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed font-normal">
-            Turnkey category storefronts, 20-second 1-page checkout, automated Steadfast & Pathao courier dispatch, and zero physical transaction fees.
+          <p className="text-base sm:text-lg text-zinc-400 max-w-2xl mx-auto leading-relaxed font-normal">
+            Turnkey category storefronts, 20-second 1-page checkout, automated Steadfast & Pathao courier dispatch, and predictive fraud defense — zero transaction fees.
           </p>
 
           {/* Primary Action Row */}
-          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5">
+          <div className="pt-1 flex flex-col sm:flex-row items-center justify-center gap-3.5">
             <Link
               href="/onboarding"
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-bold bg-white hover:bg-zinc-100 text-zinc-950 px-7 py-4 rounded-xl shadow-[0_0_25px_rgba(255,255,255,0.25)] transition btn-press group"
+              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-bold bg-white hover:bg-zinc-100 text-zinc-950 px-7 py-3.5 rounded-xl shadow-[0_0_25px_rgba(255,255,255,0.25)] transition btn-press group"
             >
               <span>Start 14-Day Free Trial</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
-            <a
-              href="#storefronts"
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-semibold bg-zinc-900/80 hover:bg-zinc-800 text-zinc-200 border border-white/10 px-6 py-4 rounded-xl transition"
+            <Link
+              href="/admin?store=apex-fashion"
+              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-semibold bg-zinc-900/80 hover:bg-zinc-800 text-zinc-200 border border-white/10 px-6 py-3.5 rounded-xl transition"
             >
-              <span>Explore 6 Live Stores</span>
-              <ChevronDown className="w-4 h-4 text-zinc-500" />
-            </a>
+              <span>Open Merchant Cockpit</span>
+              <ExternalLink className="w-4 h-4 text-zinc-500" />
+            </Link>
           </div>
 
           {/* Trust Indicators Strip */}
-          <div className="pt-4 flex flex-wrap items-center justify-center gap-8 text-xs text-zinc-400 font-medium">
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-6 sm:gap-8 text-xs text-zinc-400 font-medium">
             <div className="flex items-center space-x-2">
               <Check className="w-4 h-4 text-emerald-400" />
               <span>0% physical order commission</span>
@@ -347,61 +359,234 @@ export default function PlatformLandingPage() {
             </div>
           </div>
 
-          {/* ─── Hero Centerpiece: Edge-Lit Titanium Viewport Canvas ───────── */}
-          <div className="pt-10 max-w-4xl mx-auto">
-            <div className="rounded-3xl border border-white/[0.12] bg-zinc-900/60 backdrop-blur-xl shadow-[0_20px_80px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.15)] overflow-hidden">
-              {/* Window Chrome Header */}
-              <div className="bg-zinc-950/80 border-b border-white/[0.08] px-4 py-3 flex items-center justify-between text-xs">
+          {/* ─── Hero Centerpiece: Software Operating Cockpit ───────── */}
+          <div className="pt-8 max-w-5xl mx-auto">
+            <div className="rounded-3xl border border-white/[0.12] bg-[#0c0d11]/90 backdrop-blur-2xl shadow-[0_25px_90px_rgba(0,0,0,0.85),inset_0_1px_0_rgba(255,255,255,0.12)] overflow-hidden">
+              {/* Browser Chrome Header */}
+              <div className="bg-zinc-950/90 border-b border-white/[0.08] px-4 py-3 flex items-center justify-between text-xs">
                 <div className="flex items-center space-x-2">
-                  <span className="w-3 h-3 rounded-full bg-[#ff5f56] inline-block opacity-80" />
-                  <span className="w-3 h-3 rounded-full bg-[#ffbd2e] inline-block opacity-80" />
-                  <span className="w-3 h-3 rounded-full bg-[#27c93f] inline-block opacity-80" />
+                  <span className="w-3 h-3 rounded-full bg-[#ff5f56]/80 inline-block" />
+                  <span className="w-3 h-3 rounded-full bg-[#ffbd2e]/80 inline-block" />
+                  <span className="w-3 h-3 rounded-full bg-[#27c93f]/80 inline-block" />
                 </div>
 
-                <div className="flex items-center space-x-2 bg-zinc-900/90 px-4 py-1 rounded-full border border-white/10 text-zinc-300 font-mono text-[11px] shadow-inner">
+                <div className="flex items-center space-x-2 bg-zinc-900/90 px-4 py-1.5 rounded-full border border-white/10 text-zinc-300 font-mono text-[11px] shadow-inner">
                   <Lock className="w-3 h-3 text-emerald-400" />
                   <span>storeswift.app/store/{activeStore.slug}</span>
-                  <span className="text-[9px] bg-emerald-950/80 text-emerald-400 font-bold px-1.5 py-0.2 rounded border border-emerald-800/60">LIVE</span>
+                  <span className="text-[9px] bg-emerald-950/90 text-emerald-400 font-bold px-1.5 py-0.5 rounded border border-emerald-800/60">LIVE ENGINE</span>
                 </div>
 
-                <div className="hidden sm:flex items-center space-x-1.5 text-zinc-400 text-[11px] font-medium">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-                  <span>Edge Online</span>
+                <div className="flex items-center space-x-2 text-zinc-400 text-[11px] font-medium">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)] animate-pulse" />
+                  <span className="hidden sm:inline">Edge Sub-100ms</span>
                 </div>
               </div>
 
-              {/* Viewport Interior: Cinematic Store Canvas */}
-              <div className="relative h-72 sm:h-96 w-full overflow-hidden group">
-                <img
-                  src={activeStore.image}
-                  alt={activeStore.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/40 to-transparent" />
-
-                {/* Top Category Badge */}
-                <div className="absolute top-4 left-4 bg-zinc-950/85 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full border border-white/10 shadow-lg">
-                  {activeStore.template}
-                </div>
-
-                {/* Bottom Overlay Info */}
-                <div className="absolute bottom-6 left-6 right-6 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 text-white">
-                  <div>
-                    <span className="text-[11px] uppercase font-mono font-bold tracking-wider text-zinc-400 block">
-                      {activeStore.category}
+              {/* Cockpit Interior: Dual-Pane Live Engine */}
+              <div className="p-4 sm:p-6 lg:p-7 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                {/* Pane 1: Live 1-Page Express Checkout Simulator */}
+                <div className="lg:col-span-7 bg-zinc-950/80 rounded-2xl border border-white/[0.08] p-5 sm:p-6 space-y-4 text-left relative overflow-hidden shadow-xl">
+                  <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
+                    <div className="flex items-center space-x-2">
+                      <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_6px_rgba(59,130,246,0.8)]" />
+                      <span className="text-xs font-bold text-white tracking-tight">1-Page Express Checkout Engine</span>
+                    </div>
+                    <span className="text-[10px] font-mono text-zinc-400 bg-white/[0.05] px-2 py-0.5 rounded border border-white/10">
+                      20s Flow
                     </span>
-                    <h3 className="text-xl sm:text-2xl font-bold tracking-tight mt-0.5">{activeStore.name}</h3>
-                    <p className="text-xs text-zinc-300 max-w-lg mt-1 leading-relaxed hidden sm:block">
-                      {activeStore.headline}
-                    </p>
                   </div>
 
-                  <Link
-                    href={`/store/${activeStore.slug}`}
-                    className="py-2.5 px-4 bg-white hover:bg-zinc-100 text-zinc-950 font-bold text-xs rounded-xl transition flex items-center space-x-1.5 shadow-[0_0_20px_rgba(255,255,255,0.2)] flex-shrink-0"
+                  {/* Product Snapshot */}
+                  <div className="flex items-center space-x-3.5 bg-white/[0.02] p-3 rounded-xl border border-white/[0.05]">
+                    <div className="w-12 h-12 rounded-lg bg-zinc-800 overflow-hidden flex-shrink-0 relative">
+                      <img
+                        src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=200&auto=format&fit=crop&q=80"
+                        alt="Merino Wool Tailored Blazer"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-xs font-bold text-white truncate">Apex Tailored Merino Blazer</h4>
+                        <span className="text-xs font-bold font-mono text-white">৳3,450</span>
+                      </div>
+                      <div className="flex items-center space-x-2 text-[10px] text-zinc-400 mt-0.5">
+                        <span>Size: 40R / Charcoal</span>
+                        <span>•</span>
+                        <span className="text-emerald-400 font-medium">14 in stock (Dhaka Hub)</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Interactive Delivery Zone Selector */}
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-400 flex items-center justify-between">
+                      <span>Delivery Zone (64 Districts)</span>
+                      <span className="text-blue-400 lowercase font-normal">tap to test rates</span>
+                    </label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setHeroDeliveryZone("dhaka")}
+                        className={`p-2.5 rounded-xl border text-left transition-all ${
+                          heroDeliveryZone === "dhaka"
+                            ? "bg-blue-600/15 border-blue-500 text-white shadow-[0_0_15px_rgba(59,130,246,0.2)]"
+                            : "bg-white/[0.02] border-white/[0.06] text-zinc-400 hover:border-white/10"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-bold">Inside Dhaka</span>
+                          <span className="text-xs font-mono font-bold text-emerald-400">৳60</span>
+                        </div>
+                        <p className="text-[10px] text-zinc-400 mt-0.5">Next-Day Doorstep Courier</p>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setHeroDeliveryZone("nationwide")}
+                        className={`p-2.5 rounded-xl border text-left transition-all ${
+                          heroDeliveryZone === "nationwide"
+                            ? "bg-blue-600/15 border-blue-500 text-white shadow-[0_0_15px_rgba(59,130,246,0.2)]"
+                            : "bg-white/[0.02] border-white/[0.06] text-zinc-400 hover:border-white/10"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-bold">All Bangladesh</span>
+                          <span className="text-xs font-mono font-bold text-emerald-400">৳130</span>
+                        </div>
+                        <p className="text-[10px] text-zinc-400 mt-0.5">48–72h Steadfast / Pathao</p>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Payment Selector */}
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-400">
+                      Payment & Verification
+                    </label>
+                    <div className="grid grid-cols-3 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setHeroPaymentMethod("bkash")}
+                        className={`py-2 px-1.5 rounded-xl border text-center transition-all ${
+                          heroPaymentMethod === "bkash"
+                            ? "bg-pink-950/40 border-[#E2136E] text-white shadow-[0_0_12px_rgba(226,19,110,0.2)]"
+                            : "bg-white/[0.02] border-white/[0.06] text-zinc-400 hover:border-white/10"
+                        }`}
+                      >
+                        <span className="text-xs font-bold text-[#E2136E] block">bKash</span>
+                        <span className="text-[9px] text-zinc-400">1-Tap Direct</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setHeroPaymentMethod("nagad")}
+                        className={`py-2 px-1.5 rounded-xl border text-center transition-all ${
+                          heroPaymentMethod === "nagad"
+                            ? "bg-amber-950/40 border-[#F7931E] text-white shadow-[0_0_12px_rgba(247,147,30,0.2)]"
+                            : "bg-white/[0.02] border-white/[0.06] text-zinc-400 hover:border-white/10"
+                        }`}
+                      >
+                        <span className="text-xs font-bold text-[#F7931E] block">Nagad</span>
+                        <span className="text-[9px] text-zinc-400">Instant Pay</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setHeroPaymentMethod("cod")}
+                        className={`py-2 px-1.5 rounded-xl border text-center transition-all ${
+                          heroPaymentMethod === "cod"
+                            ? "bg-emerald-950/40 border-emerald-500 text-white shadow-[0_0_12px_rgba(16,185,129,0.2)]"
+                            : "bg-white/[0.02] border-white/[0.06] text-zinc-400 hover:border-white/10"
+                        }`}
+                      >
+                        <span className="text-xs font-bold text-emerald-400 block">Cash on Delivery</span>
+                        <span className="text-[9px] text-zinc-400">Doorstep Check</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Live Total & CTA */}
+                  <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between">
+                    <div>
+                      <p className="text-[10px] text-zinc-400">Subtotal ({heroDeliveryZone === "dhaka" ? "৳60" : "৳130"} courier)</p>
+                      <p className="text-base font-black text-white font-mono">
+                        ৳{(3450 + (heroDeliveryZone === "dhaka" ? 60 : 130)).toLocaleString()}
+                      </p>
+                    </div>
+                    <Link
+                      href={`/store/${activeStore.slug}`}
+                      className="py-2.5 px-4 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 font-bold text-xs shadow-[0_0_20px_rgba(255,255,255,0.25)] flex items-center space-x-1.5 transition btn-press"
+                    >
+                      <span>Test Live Store</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Pane 2: Autonomous Merchant Mission Control */}
+                <div className="lg:col-span-5 bg-zinc-950/80 rounded-2xl border border-white/[0.08] p-5 sm:p-6 space-y-4 text-left flex flex-col justify-between shadow-xl">
+                  <div className="space-y-3.5">
+                    <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
+                      <div className="flex items-center space-x-2">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
+                        <span className="text-xs font-bold text-white tracking-tight">Merchant Telemetry</span>
+                      </div>
+                      <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/40">
+                        Steadfast API Live
+                      </span>
+                    </div>
+
+                    {/* Revenue Telemetry Snapshot */}
+                    <div className="bg-white/[0.02] p-3 rounded-xl border border-white/[0.05] space-y-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-mono uppercase text-zinc-400">Today's Settled Revenue</span>
+                        <span className="text-[10px] font-bold text-emerald-400">+28.4% vs avg</span>
+                      </div>
+                      <div className="flex items-baseline space-x-2">
+                        <span className="text-2xl font-black text-white font-mono">৳148,200</span>
+                        <span className="text-[11px] text-zinc-400">46 orders • 4.8% CVR</span>
+                      </div>
+                    </div>
+
+                    {/* Live Order Card with Barcode */}
+                    <div className="bg-white/[0.02] p-3.5 rounded-xl border border-white/[0.05] space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <span className="text-[10px] font-mono text-zinc-400 block">LATEST DISPATCH // #SW-8942</span>
+                          <p className="text-xs font-bold text-white">Tanvir Ahmed • Dhanmondi, Dhaka</p>
+                        </div>
+                        <span className="text-[9px] bg-emerald-500/10 text-emerald-400 font-bold px-2 py-0.5 rounded-full border border-emerald-500/20">
+                          98.6% Safe Buyer
+                        </span>
+                      </div>
+
+                      {/* Courier Label Preview */}
+                      <div className="bg-zinc-900/90 p-2.5 rounded-lg border border-white/[0.08] flex items-center justify-between text-[11px]">
+                        <div>
+                          <p className="text-[10px] font-mono text-zinc-400">Steadfast Consignment</p>
+                          <p className="font-mono font-bold text-white">#SF-948201-DH</p>
+                        </div>
+                        <div className="flex flex-col items-end">
+                          <span className="font-mono text-[9px] tracking-widest text-zinc-400">|||| | ||||| |||</span>
+                          <span className="text-[9px] text-emerald-400 font-medium">4x6 Thermal Ready</span>
+                        </div>
+                      </div>
+
+                      {/* Profit Margin Telemetry */}
+                      <div className="flex items-center justify-between text-[10px] pt-1 text-zinc-400 border-t border-white/[0.04]">
+                        <span>Platform Fee: <strong className="text-emerald-400">৳0 (0%)</strong></span>
+                        <span>Merchant Net: <strong className="text-white">৳1,290 (37%)</strong></span>
+                      </div>
+                    </div>
+                  </div>
+
+                    <Link
+                    href="/admin?store=apex-fashion"
+                    className="w-full py-2.5 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-white/10 font-bold text-xs flex items-center justify-center space-x-1.5 transition"
                   >
-                    <span>Open Live Storefront</span>
-                    <ArrowUpRight className="w-3.5 h-3.5 text-zinc-600" />
+                    <span>Open Full Merchant Admin</span>
+                    <ExternalLink className="w-3.5 h-3.5 text-zinc-400" />
                   </Link>
                 </div>
               </div>
@@ -410,42 +595,50 @@ export default function PlatformLandingPage() {
         </div>
       </section>
 
-      {/* ─── 3. High-Impact Performance Metrics Strip ────────────────────────── */}
-      <section className="py-14 bg-zinc-950/70 border-b border-white/[0.08]">
+      {/* ─── 3. High-Precision Engineering Telemetry Bar ────────────────────── */}
+      <section className="py-12 bg-zinc-950/70 border-b border-white/[0.08]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div className="space-y-1">
-              <span className="text-4xl sm:text-5xl font-black text-white font-mono tracking-tight">&lt; 20s</span>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 divide-y sm:divide-y-0 sm:divide-x divide-white/[0.08]">
+            <div className="pt-4 sm:pt-0 sm:px-4 text-center sm:text-left space-y-1">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 block">TELEMETRY // 01</span>
+              <span className="text-3xl sm:text-4xl font-black text-white font-mono tracking-tight">&lt; 20s</span>
               <p className="text-xs text-zinc-400 font-medium">1-Page Checkout Speed</p>
+              <p className="text-[11px] text-zinc-500">Eliminates multi-step cart drop-offs</p>
             </div>
-            <div className="space-y-1">
-              <span className="text-4xl sm:text-5xl font-black text-white font-mono tracking-tight">+42%</span>
+            <div className="pt-4 sm:pt-0 sm:px-4 text-center sm:text-left space-y-1">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 block">TELEMETRY // 02</span>
+              <span className="text-3xl sm:text-4xl font-black text-white font-mono tracking-tight">+42.8%</span>
               <p className="text-xs text-zinc-400 font-medium">Conversion Rate Lift</p>
+              <p className="text-[11px] text-zinc-500">Optimized for social & direct traffic</p>
             </div>
-            <div className="space-y-1">
-              <span className="text-4xl sm:text-5xl font-black text-white font-mono tracking-tight">64</span>
+            <div className="pt-4 sm:pt-0 sm:px-4 text-center sm:text-left space-y-1">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 block">TELEMETRY // 03</span>
+              <span className="text-3xl sm:text-4xl font-black text-white font-mono tracking-tight">64</span>
               <p className="text-xs text-zinc-400 font-medium">Districts Automated Delivery</p>
+              <p className="text-[11px] text-zinc-500">Steadfast & Pathao 1-click booking</p>
             </div>
-            <div className="space-y-1">
-              <span className="text-4xl sm:text-5xl font-black text-white font-mono tracking-tight">0%</span>
+            <div className="pt-4 sm:pt-0 sm:px-4 text-center sm:text-left space-y-1">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 block">TELEMETRY // 04</span>
+              <span className="text-3xl sm:text-4xl font-black text-white font-mono tracking-tight">0%</span>
               <p className="text-xs text-zinc-400 font-medium">Physical Order Commission</p>
+              <p className="text-[11px] text-zinc-500">Keep 100% of your retail margin</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ─── 4. Bespoke Turnkey Storefronts (Luxury Gallery) ─────────────────── */}
-      <section id="storefronts" className="py-28 bg-[#09090b] border-b border-white/[0.08] scroll-mt-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+      {/* ─── 4. Bespoke Turnkey Storefronts (Luxury Studio) ─────────────────── */}
+      <section id="storefronts" className="py-24 sm:py-28 bg-[#09090b] border-b border-white/[0.08] scroll-mt-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
-              Turnkey Storefronts
+              Turnkey Storefront Architectures
             </span>
             <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-              6 Bespoke Storefront Architectures
+              6 Tailored Industry Storefronts
             </h2>
             <p className="text-xs sm:text-base text-zinc-400 leading-relaxed">
-              Every vertical requires tailored customer psychology. Select an industry to preview its architecture.
+              Every commerce vertical requires tailored customer psychology. Select an industry to preview its pre-configured architecture.
             </p>
           </div>
 
@@ -568,24 +761,24 @@ export default function PlatformLandingPage() {
         </div>
       </section>
 
-      {/* ─── 5. Core Platform Architecture (Editorial Engineering Grid) ──────── */}
-      <section id="engines" className="py-28 bg-zinc-950/70 border-b border-white/[0.08] scroll-mt-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
+      {/* ─── 5. Core Platform Architecture (Interactive Engineering Blueprints) ─── */}
+      <section id="engines" className="py-24 sm:py-28 bg-zinc-950/70 border-b border-white/[0.08] scroll-mt-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
-              Platform Architecture
+              Platform Engineering Architecture
             </span>
             <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
               Four High-Performance Commerce Engines
             </h2>
             <p className="text-xs sm:text-base text-zinc-400 leading-relaxed">
-              StoreSwift replaces fragmented plugins with an integrated, high-conversion operating layer.
+              StoreSwift replaces disconnected, fragile plugins with an integrated, high-conversion operating layer.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Engine 01: 1-Page Express Checkout */}
-            <div className="p-8 sm:p-10 bg-zinc-900/50 backdrop-blur-xl rounded-3xl border border-white/[0.08] shadow-2xl space-y-6 flex flex-col justify-between">
+            <div className="p-8 sm:p-9 bg-zinc-900/50 backdrop-blur-xl rounded-3xl border border-white/[0.08] shadow-2xl space-y-6 flex flex-col justify-between">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="font-mono text-xs font-bold text-zinc-500 tracking-wider">01 / CHECKOUT ENGINE</span>
@@ -599,22 +792,47 @@ export default function PlatformLandingPage() {
                 </h3>
 
                 <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-                  Traditional multi-step checkout carts abandon over 65% of mobile customers. StoreSwift compresses the entire checkout into a single streamlined screen with automated 64-district delivery zone calculation, bilingual English & Bengali interface, and instant bKash, Nagad, and Cash on Delivery.
+                  Traditional multi-step checkout carts abandon over 65% of mobile customers. StoreSwift compresses the checkout into a single high-conversion screen with automated 64-district delivery rates and 1-tap bKash/Nagad/COD.
                 </p>
 
-                {/* Architecture Highlights */}
-                <div className="pt-2 space-y-2.5 text-xs text-zinc-300">
+                {/* Embedded Architecture Visual Widget */}
+                <div className="bg-zinc-950/90 rounded-2xl border border-white/[0.08] p-4 space-y-3 font-mono text-[11px]">
+                  <div className="flex items-center justify-between text-zinc-400 pb-2 border-b border-white/[0.06]">
+                    <span className="flex items-center space-x-1.5 text-zinc-300">
+                      <Zap className="w-3.5 h-3.5 text-blue-400" />
+                      <span>Pipeline: Order Stream</span>
+                    </span>
+                    <span className="text-emerald-400">3-Field Auto-Capture</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 text-center text-[10px]">
+                    <div className="bg-white/[0.03] p-2 rounded-lg border border-white/5">
+                      <p className="text-zinc-500">Dhaka Zone</p>
+                      <p className="text-white font-bold">৳60 Tariff</p>
+                    </div>
+                    <div className="bg-white/[0.03] p-2 rounded-lg border border-white/5">
+                      <p className="text-zinc-500">Nationwide</p>
+                      <p className="text-white font-bold">৳130 Tariff</p>
+                    </div>
+                    <div className="bg-white/[0.03] p-2 rounded-lg border border-white/5">
+                      <p className="text-zinc-500">Payment</p>
+                      <p className="text-emerald-400 font-bold">bKash/COD</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between pt-1 text-[10px] text-zinc-400">
+                    <span>Doorstep Open Parcel Inspection: <strong className="text-white">Guaranteed</strong></span>
+                    <span className="text-blue-400 font-bold">Zero Plugins</span>
+                  </div>
+                </div>
+
+                {/* Highlights */}
+                <div className="space-y-2 text-xs text-zinc-300">
                   <div className="flex items-center space-x-2">
                     <Check className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Automatic Inside Dhaka (৳60) / Nationwide (৳130) delivery rates</span>
+                    <span>Automatic Inside Dhaka (৳60) / Nationwide (৳130) rates</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Check className="w-3.5 h-3.5 text-emerald-400" />
                     <span>English & Bengali (বাংলা) 1-tap customer interface toggle</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Check className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Doorstep Open Parcel inspection guarantee included</span>
                   </div>
                 </div>
               </div>
@@ -627,7 +845,7 @@ export default function PlatformLandingPage() {
             </div>
 
             {/* Engine 02: Automated Courier Dispatch */}
-            <div className="p-8 sm:p-10 bg-zinc-900/50 backdrop-blur-xl rounded-3xl border border-white/[0.08] shadow-2xl space-y-6 flex flex-col justify-between">
+            <div className="p-8 sm:p-9 bg-zinc-900/50 backdrop-blur-xl rounded-3xl border border-white/[0.08] shadow-2xl space-y-6 flex flex-col justify-between">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="font-mono text-xs font-bold text-zinc-500 tracking-wider">02 / LOGISTICS ENGINE</span>
@@ -641,11 +859,37 @@ export default function PlatformLandingPage() {
                 </h3>
 
                 <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-                  Never copy-paste customer orders into courier portals again. When an order arrives, generate live consignment tracking IDs with a single click, print industry-standard 4x6 thermal barcode stickers, and sync live delivery webhooks back to your merchant dashboard.
+                  Never copy-paste customer orders into courier portals again. When an order arrives, generate live consignment tracking IDs with a single click, print industry-standard 4x6 thermal barcode stickers, and sync live delivery webhooks.
                 </p>
 
-                {/* Architecture Highlights */}
-                <div className="pt-2 space-y-2.5 text-xs text-zinc-300">
+                {/* Embedded Architecture Visual Widget: 4x6 Label Mock */}
+                <div className="bg-zinc-950/90 rounded-2xl border border-white/[0.08] p-4 space-y-3 font-mono text-[11px]">
+                  <div className="flex items-center justify-between text-zinc-400 pb-2 border-b border-white/[0.06]">
+                    <span className="flex items-center space-x-1.5 text-zinc-300">
+                      <Truck className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>Steadfast API Webhook</span>
+                    </span>
+                    <span className="text-emerald-400">#SF-948201-DH</span>
+                  </div>
+                  <div className="bg-white/[0.03] p-2.5 rounded-lg border border-white/5 flex items-center justify-between">
+                    <div>
+                      <p className="text-[10px] text-zinc-500">4x6 Thermal Barcode Label</p>
+                      <p className="text-white font-bold text-xs">Tanvir A. • Dhaka Hub</p>
+                      <p className="text-[10px] text-zinc-400">COD Collection: ৳3,510</p>
+                    </div>
+                    <div className="text-right">
+                      <span className="font-mono text-xs tracking-widest text-zinc-300 block">|||| | ||||| |||</span>
+                      <span className="text-[9px] bg-emerald-500/10 text-emerald-400 px-1.5 py-0.5 rounded border border-emerald-500/20 font-bold">READY</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between pt-1 text-[10px] text-zinc-400">
+                    <span>1-Click Consignment Booking: <strong className="text-white">Active</strong></span>
+                    <span className="text-emerald-400 font-bold">Live Tracking</span>
+                  </div>
+                </div>
+
+                {/* Highlights */}
+                <div className="space-y-2 text-xs text-zinc-300">
                   <div className="flex items-center space-x-2">
                     <Check className="w-3.5 h-3.5 text-emerald-400" />
                     <span>1-Click consignment creation directly from order admin</span>
@@ -653,10 +897,6 @@ export default function PlatformLandingPage() {
                   <div className="flex items-center space-x-2">
                     <Check className="w-3.5 h-3.5 text-emerald-400" />
                     <span>Printable 4x6 thermal barcode shipping labels ready for pickup</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Check className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Real-time webhook parcel delivery updates</span>
                   </div>
                 </div>
               </div>
@@ -669,7 +909,7 @@ export default function PlatformLandingPage() {
             </div>
 
             {/* Engine 03: Anti-Fraud RTO Shield */}
-            <div className="p-8 sm:p-10 bg-zinc-900/50 backdrop-blur-xl rounded-3xl border border-white/[0.08] shadow-2xl space-y-6 flex flex-col justify-between">
+            <div className="p-8 sm:p-9 bg-zinc-900/50 backdrop-blur-xl rounded-3xl border border-white/[0.08] shadow-2xl space-y-6 flex flex-col justify-between">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="font-mono text-xs font-bold text-zinc-500 tracking-wider">03 / MARGIN ENGINE</span>
@@ -683,22 +923,46 @@ export default function PlatformLandingPage() {
                 </h3>
 
                 <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-                  In social commerce, 15–25% of Cash on Delivery parcels are refused at the customer door, costing merchants steep return shipping penalties. StoreSwift screens buyer phone numbers against nationwide delivery records, flagging serial returners before courier fees are incurred.
+                  In social commerce, 15–25% of Cash on Delivery parcels are refused at the customer door, costing merchants steep return courier penalties. StoreSwift screens buyer numbers against nationwide delivery records, flagging serial returners before dispatch.
                 </p>
 
-                {/* Architecture Highlights */}
-                <div className="pt-2 space-y-2.5 text-xs text-zinc-300">
+                {/* Embedded Architecture Visual Widget: Fraud Meter */}
+                <div className="bg-zinc-950/90 rounded-2xl border border-white/[0.08] p-4 space-y-3 font-mono text-[11px]">
+                  <div className="flex items-center justify-between text-zinc-400 pb-2 border-b border-white/[0.06]">
+                    <span className="flex items-center space-x-1.5 text-zinc-300">
+                      <ShieldCheck className="w-3.5 h-3.5 text-rose-400" />
+                      <span>RTO Delivery Telemetry</span>
+                    </span>
+                    <span className="text-emerald-400">Low Risk (98.6%)</span>
+                  </div>
+                  <div className="bg-white/[0.03] p-2.5 rounded-lg border border-white/5 space-y-2">
+                    <div className="flex items-center justify-between text-[10px]">
+                      <span className="text-zinc-400">Buyer Delivery Confidence</span>
+                      <span className="text-emerald-400 font-bold">98.6% Safe</span>
+                    </div>
+                    <div className="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+                      <div className="bg-emerald-400 h-full rounded-full w-[98.6%]" />
+                    </div>
+                    <div className="flex items-center justify-between text-[10px] text-zinc-500">
+                      <span>24 Delivered</span>
+                      <span>0 Returns</span>
+                      <span className="text-emerald-400 font-medium">Auto-Approved</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between pt-1 text-[10px] text-zinc-400">
+                    <span>Return Courier Penalty Avoided: <strong className="text-white">৳130 / parcel</strong></span>
+                  </div>
+                </div>
+
+                {/* Highlights */}
+                <div className="space-y-2 text-xs text-zinc-300">
                   <div className="flex items-center space-x-2">
                     <Check className="w-3.5 h-3.5 text-emerald-400" />
                     <span>Machine-scored delivery success rating (0–100%) per customer</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Check className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Automatic alerts for high-risk serial COD returners</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Check className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Prompts advance delivery fee collection on risky orders</span>
+                    <span>Automatic alerts to collect advance delivery fee on risky buyers</span>
                   </div>
                 </div>
               </div>
@@ -711,7 +975,7 @@ export default function PlatformLandingPage() {
             </div>
 
             {/* Engine 04: Multi-Variant Inventory Matrix */}
-            <div className="p-8 sm:p-10 bg-zinc-900/50 backdrop-blur-xl rounded-3xl border border-white/[0.08] shadow-2xl space-y-6 flex flex-col justify-between">
+            <div className="p-8 sm:p-9 bg-zinc-900/50 backdrop-blur-xl rounded-3xl border border-white/[0.08] shadow-2xl space-y-6 flex flex-col justify-between">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="font-mono text-xs font-bold text-zinc-500 tracking-wider">04 / INVENTORY ENGINE</span>
@@ -725,22 +989,50 @@ export default function PlatformLandingPage() {
                 </h3>
 
                 <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-                  Generate multi-attribute product matrices (Size × Color × Material) with instant SKU generation. Backed by atomic SQL row-level inventory locks, completely eliminating overselling during high-traffic social media flash sales and influencer drops.
+                  Generate multi-attribute product matrices (Size × Color × Material) with instant SKU generation. Backed by atomic SQL row-level inventory locks, completely eliminating overselling during high-traffic social media flash sales.
                 </p>
 
-                {/* Architecture Highlights */}
-                <div className="pt-2 space-y-2.5 text-xs text-zinc-300">
-                  <div className="flex items-center space-x-2">
-                    <Check className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Automatic Cartesian matrix generation with unique SKUs</span>
+                {/* Embedded Architecture Visual Widget: Cartesian Table */}
+                <div className="bg-zinc-950/90 rounded-2xl border border-white/[0.08] p-4 space-y-2.5 font-mono text-[11px]">
+                  <div className="flex items-center justify-between text-zinc-400 pb-2 border-b border-white/[0.06]">
+                    <span className="flex items-center space-x-1.5 text-zinc-300">
+                      <Layers className="w-3.5 h-3.5 text-purple-400" />
+                      <span>Matrix: Size × Color</span>
+                    </span>
+                    <span className="text-purple-400">Atomic SQL Locks</span>
                   </div>
+                  <div className="space-y-1 text-[10px]">
+                    <div className="flex items-center justify-between p-1.5 rounded bg-white/[0.03]">
+                      <span>APX-CH-M (Charcoal / M)</span>
+                      <span className="text-white font-bold">28 units</span>
+                      <span className="text-emerald-400">Locked</span>
+                    </div>
+                    <div className="flex items-center justify-between p-1.5 rounded bg-white/[0.03]">
+                      <span>APX-CH-L (Charcoal / L)</span>
+                      <span className="text-white font-bold">14 units</span>
+                      <span className="text-amber-400">Low Stock</span>
+                    </div>
+                    <div className="flex items-center justify-between p-1.5 rounded bg-white/[0.03]">
+                      <span>APX-NV-XL (Navy / XL)</span>
+                      <span className="text-white font-bold">8 units</span>
+                      <span className="text-emerald-400">Locked</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between pt-1 text-[10px] text-zinc-400">
+                    <span>Overselling Risk: <strong className="text-emerald-400">0.00%</strong></span>
+                    <span className="text-zinc-500">Instant SKU Generation</span>
+                  </div>
+                </div>
+
+                {/* Highlights */}
+                <div className="space-y-2 text-xs text-zinc-300">
                   <div className="flex items-center space-x-2">
                     <Check className="w-3.5 h-3.5 text-emerald-400" />
                     <span>Row-level SQL atomic stock reservation prevents overselling</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Check className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Real-time per-variant inventory tracking across all channels</span>
+                    <span>Automatic SKU code generation across multi-dimensional variations</span>
                   </div>
                 </div>
               </div>
@@ -756,21 +1048,52 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 6. Transparent Pricing (Obsidian Luxury Columns) ─────────────────── */}
-      <section id="pricing" className="py-28 bg-[#09090b] border-b border-white/[0.08] scroll-mt-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+      <section id="pricing" className="py-24 sm:py-28 bg-[#09090b] border-b border-white/[0.08] scroll-mt-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-xl mx-auto space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
-              Pricing Plans
+              Transparent Pricing Plans
             </span>
             <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
               Simple, Predictable Pricing
             </h2>
             <p className="text-xs sm:text-base text-zinc-400">
-              Zero commission fees on physical orders. Keep 100% of your product revenue.
+              Zero commission on physical orders. Keep 100% of your product revenue.
             </p>
+
+            {/* Billing Cadence Toggle */}
+            <div className="pt-4 flex items-center justify-center">
+              <div className="p-1 rounded-full bg-zinc-900 border border-white/10 flex items-center space-x-1 text-xs">
+                <button
+                  type="button"
+                  onClick={() => setPricingBilling("monthly")}
+                  className={`px-4 py-1.5 rounded-full transition font-semibold ${
+                    pricingBilling === "monthly"
+                      ? "bg-white text-zinc-950 shadow-md"
+                      : "text-zinc-400 hover:text-white"
+                  }`}
+                >
+                  Monthly Billing
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPricingBilling("annual")}
+                  className={`px-4 py-1.5 rounded-full transition font-semibold flex items-center space-x-1.5 ${
+                    pricingBilling === "annual"
+                      ? "bg-white text-zinc-950 shadow-md"
+                      : "text-zinc-400 hover:text-white"
+                  }`}
+                >
+                  <span>Annual Billing</span>
+                  <span className="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-1.5 py-0.2 rounded-full border border-emerald-500/30">
+                    Save 20%
+                  </span>
+                </button>
+              </div>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch pt-4">
             {/* Starter Plan */}
             <div className="bg-zinc-900/40 backdrop-blur-xl rounded-3xl border border-white/[0.08] p-8 sm:p-9 flex flex-col justify-between shadow-2xl">
               <div className="space-y-5">
@@ -779,8 +1102,13 @@ export default function PlatformLandingPage() {
                   <p className="text-xs text-zinc-400 mt-1">For new brands launching online</p>
                 </div>
                 <div className="flex items-baseline space-x-1.5">
-                  <span className="text-4xl font-extrabold text-white">৳599</span>
-                  <span className="text-xs text-zinc-400 font-medium">/month ($9 USD)</span>
+                  <span className="text-4xl font-extrabold text-white">
+                    {pricingBilling === "monthly" ? "৳599" : "৳479"}
+                  </span>
+                  <span className="text-xs text-zinc-400 font-medium">/month</span>
+                  {pricingBilling === "annual" && (
+                    <span className="text-[10px] text-emerald-400 font-mono ml-1">billed annually</span>
+                  )}
                 </div>
                 <ul className="space-y-3 text-xs text-zinc-300 pt-4 border-t border-white/[0.08]">
                   <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-400 flex-shrink-0" /><span>Up to 500 products</span></li>
@@ -806,8 +1134,13 @@ export default function PlatformLandingPage() {
                   <p className="text-xs text-zinc-300 mt-1">For scaling direct & social commerce brands</p>
                 </div>
                 <div className="flex items-baseline space-x-1.5">
-                  <span className="text-4xl font-extrabold text-white">৳1,099</span>
-                  <span className="text-xs text-zinc-300 font-medium">/month ($19 USD)</span>
+                  <span className="text-4xl font-extrabold text-white">
+                    {pricingBilling === "monthly" ? "৳1,099" : "৳879"}
+                  </span>
+                  <span className="text-xs text-zinc-300 font-medium">/month</span>
+                  {pricingBilling === "annual" && (
+                    <span className="text-[10px] text-emerald-400 font-mono ml-1">billed annually</span>
+                  )}
                 </div>
                 <ul className="space-y-3 text-xs text-zinc-200 pt-4 border-t border-white/10">
                   <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-400 flex-shrink-0" /><span>Up to 2,000 products</span></li>
@@ -831,8 +1164,13 @@ export default function PlatformLandingPage() {
                   <p className="text-xs text-zinc-400 mt-1">For high-volume multi-channel stores</p>
                 </div>
                 <div className="flex items-baseline space-x-1.5">
-                  <span className="text-4xl font-extrabold text-white">৳2,499</span>
-                  <span className="text-xs text-zinc-400 font-medium">/month ($49 USD)</span>
+                  <span className="text-4xl font-extrabold text-white">
+                    {pricingBilling === "monthly" ? "৳2,499" : "৳1,999"}
+                  </span>
+                  <span className="text-xs text-zinc-400 font-medium">/month</span>
+                  {pricingBilling === "annual" && (
+                    <span className="text-[10px] text-emerald-400 font-mono ml-1">billed annually</span>
+                  )}
                 </div>
                 <ul className="space-y-3 text-xs text-zinc-300 pt-4 border-t border-white/[0.08]">
                   <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-400 flex-shrink-0" /><span>Unlimited products & orders</span></li>
@@ -851,7 +1189,7 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 7. FAQ Accordion ──────────────────────────────────────────────── */}
-      <section id="faq" className="py-28 bg-zinc-950/70 border-b border-white/[0.08] scroll-mt-16">
+      <section id="faq" className="py-24 sm:py-28 bg-zinc-950/70 border-b border-white/[0.08] scroll-mt-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-xl mx-auto space-y-3">
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
@@ -896,7 +1234,7 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 8. Pre-Footer Call to Action (Obsidian Luxury Card) ────────────── */}
-      <section className="py-28 px-4 sm:px-6 lg:px-8 bg-[#09090b]">
+      <section className="py-24 sm:py-28 px-4 sm:px-6 lg:px-8 bg-[#09090b]">
         <div className="max-w-5xl mx-auto rounded-3xl bg-gradient-to-b from-zinc-900 to-zinc-950 text-white p-10 sm:p-16 text-center space-y-6 border border-white/10 shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-blue-500/10 blur-3xl pointer-events-none" />
 

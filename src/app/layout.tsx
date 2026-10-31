@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { ToastProvider } from "@/components/ui/toast";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap"
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://storeswift.app"),
@@ -54,7 +61,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-[#fafafa] text-zinc-900 antialiased font-sans">
+      <body className={`${inter.variable} min-h-screen bg-[#fafafa] text-zinc-900 antialiased font-sans`}>
         <ToastProvider>{children}</ToastProvider>
       </body>
     </html>
