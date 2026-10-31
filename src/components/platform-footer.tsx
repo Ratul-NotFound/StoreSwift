@@ -1,25 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {
-  Store,
-  ShieldCheck,
-  Zap,
-  ArrowRight,
-  Mail,
-  PhoneCall,
-  MapPin,
-  ExternalLink,
-  Layers,
-  Truck,
-  CheckCircle2,
-  Globe,
-  Radio,
-  Clock,
-  Sparkles
-} from "lucide-react";
-import { useState } from "react";
-import { useToast } from "./ui/toast";
+import { Store, ExternalLink } from "lucide-react";
 
 export const DEMO_STORES_LIST = [
   { slug: "apex-fashion", name: "Apex Fashion Hub", category: "Fashion & Apparel", tag: "Minimal Atelier", color: "from-zinc-900 to-zinc-700" },
@@ -31,76 +13,69 @@ export const DEMO_STORES_LIST = [
 ];
 
 export function PlatformFooter() {
-  const [email, setEmail] = useState("");
-  const { success } = useToast();
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email) {
-      success("Subscribed to Platform Updates!", "We've sent the eCommerce Growth Blueprint to your inbox.");
-      setEmail("");
-    }
-  };
-
   return (
-    <footer className="bg-zinc-950 text-zinc-300 font-sans border-t border-zinc-900 mt-auto">
-      {/* ─── Main Platform SaaS Footer Content (Clean B2B SaaS Directory) ─────── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14 lg:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
-          {/* Column 1 & 2: Platform Overview & Headquarters */}
+    <footer className="bg-zinc-950 text-zinc-400 font-sans border-t border-white/[0.08] mt-auto">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
+          {/* Column 1 & 2: Brand & Operating System Overview */}
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="flex items-center space-x-2.5 group w-fit">
-              <div className="w-9 h-9 rounded-xl bg-white text-zinc-950 flex items-center justify-center font-bold shadow-sm group-hover:scale-105 transition-transform">
-                <Store className="w-4.5 h-4.5" />
+              <div className="w-8 h-8 rounded-lg bg-white text-zinc-950 flex items-center justify-center font-bold shadow-sm group-hover:scale-105 transition-transform">
+                <Store className="w-4 h-4" />
               </div>
-              <span className="font-extrabold text-white tracking-tight text-lg">
+              <span className="font-extrabold text-white tracking-tight text-base">
                 Store<span className="text-blue-500">Swift</span>
               </span>
             </Link>
 
             <p className="text-xs text-zinc-400 leading-relaxed max-w-sm">
-              The high-conversion commerce platform for modern brands. Designed for frictionless 1-page checkouts, automated courier logistics, and multi-channel scale.
+              The high-velocity commerce operating system for direct-to-consumer brands. Turnkey category storefronts, 20-second 1-page checkouts, and automated courier fulfillment.
             </p>
 
-            {/* Platform Support & Hours */}
-            <div className="space-y-1.5 text-xs text-zinc-400 pt-1">
-              <div className="flex items-center space-x-2 text-zinc-300">
-                <Mail className="w-3.5 h-3.5 text-blue-400" />
-                <span className="font-medium text-white">support@storeswift.app</span>
-              </div>
-              <div className="flex items-center space-x-2 text-zinc-400">
-                <Clock className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Merchant Support: Mon – Sat, 9:00 AM – 9:00 PM</span>
-              </div>
-            </div>
-
-            {/* Newsletter */}
-            <div className="pt-2">
-              <p className="text-xs font-semibold text-white mb-2">Subscribe to eCommerce Growth Blueprint</p>
-              <form onSubmit={handleSubscribe} className="flex max-w-sm space-x-2">
-                <input
-                  type="email"
-                  placeholder="merchant@yourbrand.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="flex-1 bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2 text-xs text-white placeholder:text-zinc-500 outline-none focus:border-zinc-500 transition font-medium"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="bg-white hover:bg-zinc-200 text-zinc-950 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-1 btn-press"
-                >
-                  <span>Subscribe</span>
-                  <ArrowRight className="w-3 h-3" />
-                </button>
-              </form>
+            <div className="flex items-center space-x-2 text-xs text-zinc-500 pt-1">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+              <span className="font-medium text-zinc-400">All systems operational</span>
+              <span className="text-zinc-600">•</span>
+              <span>Direct Courier APIs Live</span>
             </div>
           </div>
 
-          {/* Column 2: Live Storefront Templates */}
+          {/* Column 3: Platform Architecture */}
           <div className="space-y-3">
-            <p className="text-xs font-bold uppercase tracking-wider text-white">Live Storefronts</p>
-            <ul className="space-y-2 text-xs text-zinc-400">
+            <p className="text-xs font-mono font-bold uppercase tracking-wider text-white">Platform</p>
+            <ul className="space-y-2.5 text-xs text-zinc-400">
+              <li>
+                <a href="#features" className="hover:text-white transition">
+                  1-Page Express Checkout
+                </a>
+              </li>
+              <li>
+                <a href="#features" className="hover:text-white transition">
+                  Automated Courier Dispatch
+                </a>
+              </li>
+              <li>
+                <a href="#features" className="hover:text-white transition">
+                  Anti-Fraud RTO Shield
+                </a>
+              </li>
+              <li>
+                <a href="#how-it-works" className="hover:text-white transition">
+                  How It Works
+                </a>
+              </li>
+              <li>
+                <a href="#pricing" className="hover:text-white transition">
+                  Pricing Plans
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 4: Live Storefronts */}
+          <div className="space-y-3">
+            <p className="text-xs font-mono font-bold uppercase tracking-wider text-white">Live Storefronts</p>
+            <ul className="space-y-2.5 text-xs text-zinc-400">
               {DEMO_STORES_LIST.map((s) => (
                 <li key={s.slug}>
                   <Link
@@ -108,118 +83,53 @@ export function PlatformFooter() {
                     className="hover:text-white transition flex items-center justify-between group"
                   >
                     <span>{s.name}</span>
-                    <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity text-blue-400" />
                   </Link>
-                  <span className="text-[10px] text-zinc-500 block">{s.category}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Column 3: Platform Features & Couriers */}
+          {/* Column 5: Merchant & Cockpit */}
           <div className="space-y-3">
-            <p className="text-xs font-bold uppercase tracking-wider text-white">Platform Features</p>
-            <ul className="space-y-2 text-xs text-zinc-400">
-              <li className="flex items-center space-x-1.5 text-zinc-300">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                <span>20s 1-Page Express Checkout</span>
-              </li>
-              <li className="flex items-center space-x-1.5 text-zinc-300">
-                <Truck className="w-3.5 h-3.5 text-blue-400" />
-                <span>Steadfast & Pathao Auto Booking</span>
-              </li>
-              <li className="flex items-center space-x-1.5 text-zinc-300">
-                <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
-                <span>AI Anti-Fraud RTO Risk Shield</span>
-              </li>
-              <li className="flex items-center space-x-1.5 text-zinc-300">
-                <Layers className="w-3.5 h-3.5 text-purple-400" />
-                <span>64-District Auto Zone Tariffs</span>
-              </li>
-              <li className="flex items-center space-x-1.5 text-zinc-300">
-                <Sparkles className="w-3.5 h-3.5 text-rose-400" />
-                <span>4x6 Thermal Barcode Labels</span>
-              </li>
-              <li className="flex items-center space-x-1.5 text-zinc-300">
-                <Radio className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Server-Side Meta CAPI Sync</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 4: Merchant & Developers */}
-          <div className="space-y-3">
-            <p className="text-xs font-bold uppercase tracking-wider text-white">Merchant & Devs</p>
-            <ul className="space-y-2 text-xs text-zinc-400">
+            <p className="text-xs font-mono font-bold uppercase tracking-wider text-white">Merchant</p>
+            <ul className="space-y-2.5 text-xs text-zinc-400">
               <li>
-                <Link href="/admin?store=apex-fashion" className="hover:text-white transition flex items-center space-x-1 text-zinc-300 font-medium">
-                  <span>Merchant Admin Dashboard</span>
-                  <ExternalLink className="w-3 h-3 text-zinc-500" />
+                <Link
+                  href="/admin?store=apex-fashion"
+                  className="hover:text-white transition inline-flex items-center space-x-1.5 text-blue-400 font-semibold"
+                >
+                  <span>Merchant Admin Demo</span>
+                  <ExternalLink className="w-3 h-3 text-blue-400" />
                 </Link>
               </li>
               <li>
                 <Link href="/onboarding" className="hover:text-white transition">
-                  Launch Free Store (3 Mins)
+                  Start 14-Day Free Trial
                 </Link>
-              </li>
-              <li>
-                <a href="#pricing" className="hover:text-white transition">
-                  Pricing Plans & Tariffs
-                </a>
-              </li>
-              <li>
-                <a href="#faq" className="hover:text-white transition">
-                  Merchant FAQ
-                </a>
-              </li>
-              <li>
-                <a href="#logistics" className="hover:text-white transition">
-                  Courier Webhook Specs
-                </a>
               </li>
               <li>
                 <Link href="/login" className="hover:text-white transition">
                   Merchant Sign In
                 </Link>
               </li>
+              <li>
+                <a href="#faq" className="hover:text-white transition">
+                  Frequently Asked Questions
+                </a>
+              </li>
             </ul>
           </div>
         </div>
 
-        {/* ─── Bottom Badges & Legal ────────────────────────────────────────── */}
-        <div className="mt-12 pt-8 border-t border-zinc-900 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
-          <div className="flex flex-wrap items-center gap-3 text-center sm:text-left">
-            <span>© {new Date().getFullYear()} StoreSwift Technologies Ltd. All rights reserved.</span>
-            <span className="hidden sm:inline text-zinc-700">•</span>
-            <span className="hover:text-zinc-400 transition cursor-pointer">Privacy Policy</span>
-            <span className="text-zinc-700">•</span>
-            <span className="hover:text-zinc-400 transition cursor-pointer">Terms of Service</span>
-            <span className="text-zinc-700">•</span>
-            <span className="hover:text-zinc-400 transition cursor-pointer">Security</span>
-          </div>
+        {/* ─── Clean Bottom Bar & Legal ────────────────────────────────────────── */}
+        <div className="mt-12 pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
+          <p>© {new Date().getFullYear()} StoreSwift Technologies Ltd. All rights reserved.</p>
 
-          {/* Partner & Logistics Badges */}
-          <div className="flex flex-wrap items-center justify-center gap-2 text-[10px]">
-            <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 bg-zinc-900 rounded-lg border border-zinc-800 font-semibold text-emerald-400">
-              <Truck className="w-3 h-3 text-emerald-400" />
-              <span>Steadfast Official API</span>
-            </span>
-            <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 bg-zinc-900 rounded-lg border border-zinc-800 font-semibold text-rose-400">
-              <Zap className="w-3 h-3 text-rose-400" />
-              <span>Pathao Logistics Sync</span>
-            </span>
-            <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 bg-zinc-900 rounded-lg border border-zinc-800 font-semibold text-[#E2136E]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#E2136E]" />
-              <span>bKash Merchant API</span>
-            </span>
-            <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 bg-zinc-900 rounded-lg border border-zinc-800 font-semibold text-[#F7931E]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#F7931E]" />
-              <span>Nagad Direct MFS</span>
-            </span>
-            <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 bg-zinc-900 rounded-lg border border-zinc-800 font-semibold text-zinc-300">
-              <ShieldCheck className="w-3 h-3 text-zinc-400" />
-              <span>256-Bit SSL Certified</span>
-            </span>
+          <div className="flex items-center space-x-6 text-zinc-500">
+            <span className="hover:text-zinc-300 transition cursor-pointer">Privacy Policy</span>
+            <span className="hover:text-zinc-300 transition cursor-pointer">Terms of Service</span>
+            <span className="hover:text-zinc-300 transition cursor-pointer">Security</span>
+            <span className="hover:text-zinc-300 transition cursor-pointer">Status</span>
           </div>
         </div>
       </div>
