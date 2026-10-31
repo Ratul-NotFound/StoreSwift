@@ -289,6 +289,9 @@ export default function PlatformLandingPage() {
         {/* Clean Monochromatic Studio Optical Light Cone */}
         <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[700px] lg:w-[1000px] h-[400px] bg-gradient-to-b from-blue-500/[0.06] dark:from-blue-500/[0.08] via-indigo-500/[0.02] to-transparent rounded-full blur-3xl pointer-events-none" />
 
+        {/* Soft Radiant Center Ambient Glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] lg:w-[850px] h-[320px] bg-gradient-to-b from-blue-500/[0.04] dark:from-blue-500/[0.06] to-transparent rounded-full blur-3xl pointer-events-none" />
+
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 sm:space-y-7 my-auto">
           {/* Status Capsule Badge */}
           <div className="inline-flex items-center space-x-2.5 px-3.5 py-1.5 rounded-full bg-white dark:bg-zinc-900/80 border border-zinc-200/90 dark:border-white/[0.08] text-zinc-600 dark:text-zinc-300 text-xs font-medium shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
@@ -299,9 +302,9 @@ export default function PlatformLandingPage() {
           </div>
 
           {/* Master Headline */}
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.035em] text-zinc-950 dark:text-white max-w-5xl mx-auto leading-[1.08]">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.035em] max-w-5xl mx-auto leading-[1.08] bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400/80 bg-clip-text text-transparent">
             Build your online store. <br className="hidden sm:inline" />
-            <span className="text-zinc-950 dark:text-white">
+            <span>
               Sell faster with 1-page checkout.
             </span>
           </h1>
@@ -315,7 +318,7 @@ export default function PlatformLandingPage() {
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5">
             <Link
               href="/onboarding"
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-bold bg-zinc-950 hover:bg-black text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-zinc-950 px-7 py-3.5 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_12px_rgba(255,255,255,0.15)] transition btn-press group"
+              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-bold bg-zinc-950 hover:bg-black text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-zinc-950 px-7 py-3.5 rounded-xl btn-glass-primary transition btn-press group"
             >
               <span>Start 14-Day Free Trial</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -365,7 +368,7 @@ export default function PlatformLandingPage() {
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
               Core Capabilities
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-zinc-950 dark:text-white tracking-tight leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight leading-tight bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400/80 bg-clip-text text-transparent">
               Engineered for High-Velocity Commerce
             </h2>
             <p className="text-xs sm:text-sm lg:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
@@ -513,7 +516,7 @@ export default function PlatformLandingPage() {
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
               Onboarding Velocity
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-zinc-950 dark:text-white tracking-tight leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight leading-tight bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400/80 bg-clip-text text-transparent">
               Three Simple Steps to Go Live
             </h2>
             <p className="text-xs sm:text-sm lg:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
@@ -628,7 +631,7 @@ export default function PlatformLandingPage() {
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
               Turnkey Storefront Architectures
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-zinc-950 dark:text-white tracking-tight leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight leading-tight bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400/80 bg-clip-text text-transparent">
               6 Tailored Industry Storefronts
             </h2>
             <p className="text-xs sm:text-sm lg:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
@@ -739,7 +742,7 @@ export default function PlatformLandingPage() {
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
               Transparent Pricing Plans
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-zinc-950 dark:text-white tracking-tight leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight leading-tight bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400/80 bg-clip-text text-transparent">
               Simple, Predictable Pricing
             </h2>
             <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
@@ -836,7 +839,7 @@ export default function PlatformLandingPage() {
                   <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" /><span>Priority customer support</span></li>
                 </ul>
               </div>
-              <Link href="/onboarding?plan=growth" className="mt-6 w-full py-3 bg-zinc-950 hover:bg-black text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-zinc-950 font-bold text-xs rounded-xl transition text-center shadow-[0_1px_3px_rgba(0,0,0,0.1)] btn-press">
+              <Link href="/onboarding?plan=growth" className="mt-6 w-full py-3 bg-zinc-950 hover:bg-black text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-zinc-950 font-bold text-xs rounded-xl btn-glass-primary transition text-center btn-press">
                 Start 14-Day Free Trial
               </Link>
             </div>
@@ -880,7 +883,7 @@ export default function PlatformLandingPage() {
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-500">
               Questions & Answers
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-zinc-950 dark:text-white tracking-tight leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight leading-tight bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400/80 bg-clip-text text-transparent">
               Frequently Asked Questions
             </h2>
             <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
@@ -922,7 +925,7 @@ export default function PlatformLandingPage() {
       <section className="relative min-h-0 lg:min-h-[75vh] flex flex-col justify-center py-16 sm:py-20 lg:py-20 border-b border-zinc-200/80 dark:border-white/[0.06] transition-colors">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto">
           <div className="luxury-card rounded-3xl p-8 sm:p-14 text-center space-y-6 relative overflow-hidden">
-            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight relative leading-tight text-zinc-950 dark:text-white">
+            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight relative leading-tight bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400/80 bg-clip-text text-transparent">
               Ready to launch your store?
             </h2>
             <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto leading-relaxed relative">
@@ -931,7 +934,7 @@ export default function PlatformLandingPage() {
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5 relative">
               <Link
                 href="/onboarding"
-                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-xs font-bold bg-zinc-950 hover:bg-black text-white dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100 px-7 py-3.5 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_12px_rgba(255,255,255,0.15)] transition btn-press"
+                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-xs font-bold bg-zinc-950 hover:bg-black text-white dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100 px-7 py-3.5 rounded-xl btn-glass-primary transition btn-press"
               >
                 <span>Start 14-Day Free Trial</span>
                 <ArrowRight className="w-4 h-4" />
