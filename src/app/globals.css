@@ -120,23 +120,92 @@ body {
 
 /* Unified Apple / Ramp Precision Studio Tokens (100% Synchronized with .dark on <html>) */
 .studio-canvas {
-  background-color: #f6f8fe;
+  background-color: #f7f9ff;
   background-image: 
-    radial-gradient(ellipse 90% 65% at 50% -8%, rgba(99, 102, 241, 0.16), transparent 70%),
-    radial-gradient(ellipse 75% 50% at 85% 25%, rgba(168, 85, 247, 0.10), transparent 65%),
-    radial-gradient(ellipse 70% 45% at 15% 55%, rgba(56, 189, 248, 0.08), transparent 65%),
-    radial-gradient(ellipse 85% 55% at 50% 85%, rgba(99, 102, 241, 0.10), transparent 70%),
-    linear-gradient(180deg, #f8faff 0%, #f1f4fb 50%, #edf1f9 100%);
+    radial-gradient(ellipse 95% 65% at 50% -8%, rgba(99, 102, 241, 0.20), transparent 70%),
+    radial-gradient(ellipse 80% 55% at 85% 20%, rgba(168, 85, 247, 0.14), transparent 65%),
+    radial-gradient(ellipse 75% 50% at 15% 45%, rgba(6, 182, 212, 0.10), transparent 65%),
+    radial-gradient(ellipse 85% 60% at 50% 85%, rgba(99, 102, 241, 0.12), transparent 70%),
+    linear-gradient(180deg, #fbfcfe 0%, #f2f5fd 50%, #edf1fa 100%);
 }
 
 .dark .studio-canvas {
-  background-color: #090b14;
+  background-color: #080913;
   background-image: 
-    radial-gradient(ellipse 100% 70% at 50% -10%, rgba(99, 102, 241, 0.35), transparent 70%),
-    radial-gradient(ellipse 80% 60% at 85% 20%, rgba(168, 85, 247, 0.22), transparent 65%),
-    radial-gradient(ellipse 75% 55% at 15% 50%, rgba(56, 189, 248, 0.16), transparent 65%),
-    radial-gradient(ellipse 90% 60% at 50% 85%, rgba(99, 102, 241, 0.22), transparent 70%),
-    radial-gradient(circle at 50% 30%, #10142b 0%, #070913 100%);
+    radial-gradient(ellipse 100% 70% at 50% -10%, rgba(99, 102, 241, 0.38), transparent 70%),
+    radial-gradient(ellipse 85% 60% at 85% 18%, rgba(168, 85, 247, 0.26), transparent 65%),
+    radial-gradient(ellipse 75% 55% at 12% 45%, rgba(6, 182, 212, 0.18), transparent 65%),
+    radial-gradient(ellipse 80% 55% at 88% 75%, rgba(244, 63, 94, 0.12), transparent 70%),
+    radial-gradient(ellipse 90% 65% at 50% 90%, rgba(99, 102, 241, 0.26), transparent 70%),
+    radial-gradient(circle at 50% 30%, #10142e 0%, #060710 100%);
+}
+
+/* Lightweight Interactive Cursor Halo & Reactive Grid Spotlight (Zero Dependencies, GPU-Accelerated) */
+.interactive-cursor-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  background: radial-gradient(
+    700px circle at var(--mouse-x, 50vw) var(--mouse-y, 30vh),
+    rgba(99, 102, 241, 0.18),
+    rgba(168, 85, 247, 0.10) 35%,
+    rgba(6, 182, 212, 0.05) 55%,
+    transparent 75%
+  );
+  will-change: background;
+}
+
+.has-mouse .interactive-cursor-glow {
+  opacity: 1;
+}
+
+.dark .interactive-cursor-glow {
+  background: radial-gradient(
+    800px circle at var(--mouse-x, 50vw) var(--mouse-y, 30vh),
+    rgba(99, 102, 241, 0.28),
+    rgba(168, 85, 247, 0.18) 35%,
+    rgba(6, 182, 212, 0.10) 55%,
+    rgba(244, 63, 94, 0.04) 70%,
+    transparent 80%
+  );
+}
+
+.interactive-grid-spotlight {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  background-image: 
+    linear-gradient(to right, rgba(99, 102, 241, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(99, 102, 241, 0.12) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: radial-gradient(
+    520px circle at var(--mouse-x, 50vw) var(--mouse-y, 30vh),
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(0, 0, 0, 0.35) 45%,
+    transparent 80%
+  );
+  -webkit-mask-image: radial-gradient(
+    520px circle at var(--mouse-x, 50vw) var(--mouse-y, 30vh),
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(0, 0, 0, 0.35) 45%,
+    transparent 80%
+  );
+}
+
+.has-mouse .interactive-grid-spotlight {
+  opacity: 1;
+}
+
+.dark .interactive-grid-spotlight {
+  background-image: 
+    linear-gradient(to right, rgba(168, 85, 247, 0.18) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(168, 85, 247, 0.18) 1px, transparent 1px);
 }
 
 /* Precision Micro-Grid Engineering Matrix (Linear / Raycast Style) */

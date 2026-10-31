@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -114,6 +114,29 @@ export default function PlatformLandingPage() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [isNavDropdownOpen, setIsNavDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [hasMouseMoved, setHasMouseMoved] = useState(false);
+  const canvasRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = canvasRef.current;
+    if (!el) return;
+
+    let rafId: number;
+    const handleMouseMove = (e: MouseEvent) => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        el.style.setProperty("--mouse-x", `${e.clientX}px`);
+        el.style.setProperty("--mouse-y", `${e.clientY}px`);
+        if (!hasMouseMoved) setHasMouseMoved(true);
+      });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      cancelAnimationFrame(rafId);
+    };
+  }, [hasMouseMoved]);
 
   const activeStore = INDUSTRY_STOREFRONTS.find((s) => s.slug === selectedStoreSlug) || INDUSTRY_STOREFRONTS[0];
 
@@ -145,7 +168,14 @@ export default function PlatformLandingPage() {
   ];
 
   return (
-    <div className="relative flex flex-col min-h-screen studio-canvas text-zinc-900 dark:text-zinc-100 font-sans selection:bg-indigo-500 selection:text-white antialiased transition-colors duration-150 overflow-x-hidden">
+    <div
+      ref={canvasRef}
+      className={`relative flex flex-col min-h-screen studio-canvas text-zinc-900 dark:text-zinc-100 font-sans selection:bg-indigo-500 selection:text-white antialiased transition-colors duration-150 overflow-x-hidden ${hasMouseMoved ? "has-mouse" : ""}`}
+    >
+      {/* ─── Lightweight Interactive Cursor Halo & Grid Spotlight ─────────── */}
+      <div className="interactive-cursor-glow" aria-hidden="true" />
+      <div className="interactive-grid-spotlight" aria-hidden="true" />
+
       {/* Global Micro-Matte Grain Texture Overlay */}
       <div className="fixed inset-0 bg-noise-grain pointer-events-none z-30" />
       {/* ─── 1. Platform Navigation Bar ─────────────────────────────────────── */}
@@ -288,9 +318,9 @@ export default function PlatformLandingPage() {
         {/* Precision Architectural Grid Layer */}
         <div className="absolute inset-0 bg-grid-mesh pointer-events-none" />
 
-        {/* Precision Architectural Top Horizon Seam with Ethereal Core Beam */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-[2px] bg-gradient-to-r from-transparent via-indigo-500/50 dark:via-indigo-500/80 to-transparent pointer-events-none" />
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-3/4 max-w-3xl h-14 bg-indigo-500/20 dark:bg-indigo-500/35 blur-2xl pointer-events-none" />
+        {/* Precision Architectural Top Horizon Seam with Ethereal Chromatic Beam */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-[2px] bg-gradient-to-r from-transparent via-cyan-400/40 via-indigo-500/80 via-purple-500/70 via-pink-500/40 to-transparent pointer-events-none" />
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-3/4 max-w-3xl h-14 bg-gradient-to-r from-cyan-500/20 via-indigo-500/35 to-purple-500/25 blur-2xl pointer-events-none" />
 
         {/* Clean Cosmic Iris Primary Light Cone */}
         <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] lg:w-[1250px] h-[520px] bg-gradient-to-b from-indigo-500/[0.22] dark:from-indigo-500/[0.30] via-purple-600/[0.12] to-transparent rounded-full blur-[90px] pointer-events-none" />
