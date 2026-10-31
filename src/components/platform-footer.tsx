@@ -14,13 +14,13 @@ export const DEMO_STORES_LIST = [
 
 export function PlatformFooter() {
   return (
-    <footer className="bg-zinc-50 dark:bg-[#08080c] text-zinc-600 dark:text-zinc-400 font-sans border-t border-zinc-200/80 dark:border-white/[0.06] mt-auto transition-colors">
+    <footer className="bg-slate-50 dark:bg-[#080c14] text-slate-600 dark:text-slate-400 font-sans border-t border-slate-200/80 dark:border-slate-800/80 mt-auto transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Column 1 & 2: Brand & Operating System Overview */}
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="flex items-center space-x-2.5 group w-fit">
-              <div className="w-8 h-8 rounded-lg bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 flex items-center justify-center font-bold shadow-sm group-hover:scale-105 transition-transform">
+              <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
                 <Store className="w-4 h-4" />
               </div>
               <span className="font-extrabold text-zinc-950 dark:text-white tracking-tight text-base">
