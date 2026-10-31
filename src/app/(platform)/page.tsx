@@ -286,11 +286,11 @@ export default function PlatformLandingPage() {
         {/* Precision Architectural Top Horizon Seam */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[1px] bg-gradient-to-r from-transparent via-zinc-300/80 dark:via-zinc-700/60 to-transparent pointer-events-none" />
 
-        {/* Clean Monochromatic Studio Optical Light Cone */}
-        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[700px] lg:w-[1000px] h-[400px] bg-gradient-to-b from-blue-500/[0.06] dark:from-blue-500/[0.08] via-indigo-500/[0.02] to-transparent rounded-full blur-3xl pointer-events-none" />
+        {/* Vivid Optical Studio Light Cone (Bold Linear / Stripe Atmosphere) */}
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[850px] lg:w-[1200px] h-[550px] bg-gradient-to-b from-blue-600/15 via-indigo-600/10 dark:from-blue-500/25 dark:via-indigo-500/15 to-transparent rounded-full blur-[100px] pointer-events-none" />
 
         {/* Soft Radiant Center Ambient Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] lg:w-[850px] h-[320px] bg-gradient-to-b from-blue-500/[0.04] dark:from-blue-500/[0.06] to-transparent rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] lg:w-[950px] h-[380px] bg-gradient-to-b from-blue-500/[0.08] dark:from-blue-500/[0.12] to-transparent rounded-full blur-[90px] pointer-events-none" />
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 sm:space-y-7 my-auto">
           {/* Status Capsule Badge */}
@@ -345,6 +345,76 @@ export default function PlatformLandingPage() {
             <div className="flex items-center space-x-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
               <span>Anti-Fraud RTO Shield included</span>
+            </div>
+          </div>
+
+          {/* ─── Hero Product Centerpiece Mockup (Sculptural Depth & Halo Glow) ── */}
+          <div className="relative pt-6 sm:pt-8 w-full max-w-4xl mx-auto">
+            {/* Ambient Backlight Halo behind the card */}
+            <div className="absolute inset-0 ambient-halo-glow rounded-3xl blur-2xl -z-10" />
+
+            <div className="luxury-card rounded-2xl sm:rounded-3xl p-5 sm:p-7 text-left space-y-4">
+              {/* Terminal Window Header */}
+              <div className="flex items-center justify-between border-b border-zinc-200/80 dark:border-white/[0.08] pb-3 text-xs">
+                <div className="flex items-center space-x-2">
+                  <div className="flex space-x-1.5">
+                    <div className="w-2.5 h-2.5 rounded-full bg-red-400/80" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-amber-400/80" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-400/80" />
+                  </div>
+                  <span className="font-mono font-bold text-zinc-900 dark:text-white pl-2">
+                    Apex Fashion Hub • 20s Express Checkout Terminal
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2 text-[11px] font-mono text-emerald-600 dark:text-emerald-400">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span>Steadfast API Live</span>
+                </div>
+              </div>
+
+              {/* Two Column Simulated 20s Checkout Flow */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                {/* Left: Product & Cart */}
+                <div className="space-y-2.5 p-3.5 rounded-xl bg-zinc-50 dark:bg-white/[0.03] border border-zinc-200/60 dark:border-white/[0.06]">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="font-bold text-zinc-950 dark:text-white">Minimalist Raw Linen Kimono</p>
+                      <p className="text-[11px] text-zinc-500">Size: M • Sand Beige • In Stock</p>
+                    </div>
+                    <span className="font-mono font-bold text-zinc-950 dark:text-white">৳2,450</span>
+                  </div>
+                  <div className="pt-2 border-t border-zinc-200/60 dark:border-white/[0.06] flex justify-between text-[11px] text-zinc-600 dark:text-zinc-400">
+                    <span>Inside Dhaka Delivery (Automated 64-District Tariff)</span>
+                    <span className="font-mono font-semibold text-zinc-900 dark:text-zinc-200">+৳60</span>
+                  </div>
+                  <div className="flex justify-between font-bold text-zinc-950 dark:text-white pt-1">
+                    <span>Total Order Amount</span>
+                    <span className="text-blue-600 dark:text-blue-400 font-mono text-sm">৳2,510</span>
+                  </div>
+                </div>
+
+                {/* Right: Instant Courier Dispatch State */}
+                <div className="space-y-2.5 p-3.5 rounded-xl bg-zinc-50 dark:bg-white/[0.03] border border-zinc-200/60 dark:border-white/[0.06] flex flex-col justify-between">
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500">Courier Status</span>
+                      <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full">
+                        Auto Dispatched in 0.8s
+                      </span>
+                    </div>
+                    <p className="font-mono text-zinc-900 dark:text-white font-semibold">
+                      Consignment #SF-849204-DH
+                    </p>
+                    <p className="text-[11px] text-zinc-500 leading-relaxed">
+                      Rider assigned: Pathao Logistics Hub 04. 4x6 Thermal barcode printed with zero manual copy-paste.
+                    </p>
+                  </div>
+                  <div className="flex items-center space-x-2 text-[11px] text-zinc-500 dark:text-zinc-400 font-mono pt-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                    <span>0% Physical Order Commission Deducted</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
