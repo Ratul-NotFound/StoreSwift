@@ -639,161 +639,91 @@ export default function PlatformLandingPage() {
             </p>
           </div>
 
-          {/* Connected Minimalist Stepper with Visual Wow (Line Workflow) */}
-          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
+          {/* Connected Minimalist Timeline Workflow (100% Clean, Zero Clutter) */}
+          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
             {/* Horizontal Connecting Guide Line (Desktop Only) */}
-            <div className="hidden md:block absolute top-7 left-[12%] right-[12%] h-[2px] bg-gradient-to-r from-blue-500/40 via-emerald-500/40 to-purple-500/40 pointer-events-none" />
+            <div className="hidden md:block absolute top-7 left-[15%] right-[15%] h-[2px] bg-gradient-to-r from-blue-500/30 via-emerald-500/30 to-purple-500/30 pointer-events-none" />
 
             {/* Step 01 */}
-            <div className="relative space-y-5 text-left group">
-              {/* Luminous Step Node */}
-              <div className="relative z-10 w-14 h-14 rounded-2xl bg-zinc-950 border border-blue-500/40 text-blue-400 flex items-center justify-center font-mono font-bold text-base shadow-[0_0_25px_rgba(59,130,246,0.25)] group-hover:border-blue-400 group-hover:scale-105 transition-all">
+            <div className="relative space-y-4 text-left group">
+              <div className="relative z-10 w-14 h-14 rounded-2xl bg-zinc-900 border border-blue-500/30 text-blue-400 flex items-center justify-center font-mono font-bold text-base shadow-[0_0_20px_rgba(59,130,246,0.15)] group-hover:border-blue-500 transition-colors">
                 01
               </div>
-
-              {/* Step Copy */}
-              <div className="space-y-1.5">
+              <div className="space-y-2">
                 <span className="text-[10px] font-mono uppercase tracking-wider text-blue-400 font-bold block">
-                  Step 01 • Architecture
+                  Step 01 • Template Setup
                 </span>
                 <h3 className="text-xl font-bold text-white tracking-tight">
-                  Choose Your Storefront
+                  Select Your Storefront
                 </h3>
                 <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-                  Select from 6 bespoke category storefronts pre-loaded with industry conversion flows and editorial lookbooks.
+                  Choose from 6 bespoke category storefronts (Fashion, Cosmetics, Tech, Food, Jewelry, Shoes) pre-configured with industry conversion features.
                 </p>
               </div>
-
-              {/* Visual Capsule 01 */}
-              <div className="rounded-2xl border border-white/[0.08] bg-zinc-900/60 backdrop-blur-xl p-4 shadow-xl transition-all duration-300 group-hover:border-blue-500/30 group-hover:shadow-[0_10px_30px_rgba(59,130,246,0.1)] space-y-3">
-                <div className="relative h-28 rounded-xl overflow-hidden">
-                  <img
-                    src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&auto=format&fit=crop&q=80"
-                    alt="Minimal Atelier Storefront"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/20 to-transparent" />
-                  <div className="absolute top-2.5 left-2.5 bg-zinc-950/80 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10 text-[10px] font-bold text-white">
-                    Minimal Atelier
-                  </div>
-                  <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-[10px] text-zinc-300">
-                    <span className="font-semibold text-white">Fashion & Apparel</span>
-                    <span className="text-blue-400 font-bold">60s Ready</span>
-                  </div>
+              <div className="pt-2 space-y-2">
+                <div className="flex items-center space-x-2 text-xs text-zinc-300">
+                  <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                  <span>6 Pre-configured commerce verticals</span>
                 </div>
-                <div className="flex items-center justify-between text-[11px] text-zinc-400 font-mono pt-1 border-t border-white/[0.06]">
-                  <span>6 Verticals Included</span>
-                  <span className="text-emerald-400 font-bold">Zero Code</span>
+                <div className="flex items-center space-x-2 text-xs text-zinc-300">
+                  <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                  <span>Ready to deploy in &lt; 60 seconds</span>
                 </div>
               </div>
             </div>
 
             {/* Step 02 */}
-            <div className="relative space-y-5 text-left group">
-              {/* Luminous Step Node */}
-              <div className="relative z-10 w-14 h-14 rounded-2xl bg-zinc-950 border border-emerald-500/40 text-emerald-400 flex items-center justify-center font-mono font-bold text-base shadow-[0_0_25px_rgba(16,185,129,0.25)] group-hover:border-emerald-400 group-hover:scale-105 transition-all">
+            <div className="relative space-y-4 text-left group">
+              <div className="relative z-10 w-14 h-14 rounded-2xl bg-zinc-900 border border-emerald-500/30 text-emerald-400 flex items-center justify-center font-mono font-bold text-base shadow-[0_0_20px_rgba(16,185,129,0.15)] group-hover:border-emerald-500 transition-colors">
                 02
               </div>
-
-              {/* Step Copy */}
-              <div className="space-y-1.5">
+              <div className="space-y-2">
                 <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-bold block">
-                  Step 02 • Local Logistics
+                  Step 02 • Local Integrations
                 </span>
                 <h3 className="text-xl font-bold text-white tracking-tight">
                   Connect Courier & Payments
                 </h3>
                 <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-                  Link Steadfast or Pathao API keys alongside bKash & Nagad. 64-district delivery rates activate automatically.
+                  Link Steadfast or Pathao API keys alongside bKash & Nagad merchant accounts. 64-district delivery rates activate automatically.
                 </p>
               </div>
-
-              {/* Visual Capsule 02 */}
-              <div className="rounded-2xl border border-white/[0.08] bg-zinc-900/60 backdrop-blur-xl p-4 shadow-xl space-y-2.5 transition-all duration-300 group-hover:border-emerald-500/30 group-hover:shadow-[0_10px_30px_rgba(16,185,129,0.1)]">
-                {/* Courier Rail */}
-                <div className="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-                  <div className="flex items-center space-x-2.5">
-                    <div className="w-8 h-8 rounded-lg bg-emerald-500/15 text-emerald-400 flex items-center justify-center">
-                      <Truck className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold text-white">Steadfast Courier</p>
-                      <p className="text-[10px] text-zinc-400 font-mono">64 Districts: ৳60 / ৳130</p>
-                    </div>
-                  </div>
-                  <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-                    Live Sync
-                  </span>
+              <div className="pt-2 space-y-2">
+                <div className="flex items-center space-x-2 text-xs text-zinc-300">
+                  <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                  <span>Steadfast & Pathao 1-click sync</span>
                 </div>
-
-                {/* MFS Rail */}
-                <div className="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-                  <div className="flex items-center space-x-2.5">
-                    <div className="w-8 h-8 rounded-lg bg-pink-500/15 text-pink-400 flex items-center justify-center">
-                      <CreditCard className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold text-white">bKash & Nagad Direct</p>
-                      <p className="text-[10px] text-zinc-400 font-mono">Instant Merchant Payout</p>
-                    </div>
-                  </div>
-                  <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-                    Active
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between text-[11px] text-zinc-400 font-mono pt-1 border-t border-white/[0.06]">
-                  <span>Courier & MFS Setup</span>
-                  <span className="text-emerald-400 font-bold">1-Click Sync</span>
+                <div className="flex items-center space-x-2 text-xs text-zinc-300">
+                  <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                  <span>Automated ৳60 / ৳130 district rates</span>
                 </div>
               </div>
             </div>
 
             {/* Step 03 */}
-            <div className="relative space-y-5 text-left group">
-              {/* Luminous Step Node */}
-              <div className="relative z-10 w-14 h-14 rounded-2xl bg-zinc-950 border border-purple-500/40 text-purple-400 flex items-center justify-center font-mono font-bold text-base shadow-[0_0_25px_rgba(168,85,247,0.25)] group-hover:border-purple-400 group-hover:scale-105 transition-all">
+            <div className="relative space-y-4 text-left group">
+              <div className="relative z-10 w-14 h-14 rounded-2xl bg-zinc-900 border border-purple-500/30 text-purple-400 flex items-center justify-center font-mono font-bold text-base shadow-[0_0_20px_rgba(168,85,247,0.15)] group-hover:border-purple-500 transition-colors">
                 03
               </div>
-
-              {/* Step Copy */}
-              <div className="space-y-1.5">
+              <div className="space-y-2">
                 <span className="text-[10px] font-mono uppercase tracking-wider text-purple-400 font-bold block">
-                  Step 03 • Fast Selling
+                  Step 03 • High-Speed Selling
                 </span>
                 <h3 className="text-xl font-bold text-white tracking-tight">
                   Launch & Collect Orders
                 </h3>
                 <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-                  Capture mobile shoppers with 20-second 1-page checkout. Auto-print 4x6 thermal barcode labels and keep 100% profits.
+                  Capture mobile shoppers with 20-second 1-page checkout. Print 4x6 thermal barcode labels with 1 click and keep 100% of sales.
                 </p>
               </div>
-
-              {/* Visual Capsule 03 */}
-              <div className="rounded-2xl border border-white/[0.08] bg-zinc-900/60 backdrop-blur-xl p-4 shadow-xl space-y-2.5 transition-all duration-300 group-hover:border-purple-500/30 group-hover:shadow-[0_10px_30px_rgba(168,85,247,0.1)]">
-                {/* Order Summary */}
-                <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] space-y-1.5">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="font-bold text-white">#SW-9842 • Tanvir A.</span>
-                    <span className="text-emerald-400 font-mono font-bold">৳3,450 Settled</span>
-                  </div>
-                  <p className="text-[10px] text-zinc-400 font-mono">Apex Tailored Blazer • Dhaka Hub</p>
+              <div className="pt-2 space-y-2">
+                <div className="flex items-center space-x-2 text-xs text-zinc-300">
+                  <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                  <span>20-Second friction-free checkout</span>
                 </div>
-
-                {/* Shipping Label Export */}
-                <div className="flex items-center justify-between p-2.5 rounded-xl bg-purple-500/10 border border-purple-500/20">
-                  <div className="flex items-center space-x-2">
-                    <Package className="w-4 h-4 text-purple-400" />
-                    <span className="text-xs font-bold text-purple-300">4x6 Thermal Barcode</span>
-                  </div>
-                  <span className="text-[10px] font-bold text-zinc-950 bg-white px-2 py-0.5 rounded-md">
-                    Print Ready
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between text-[11px] text-zinc-400 font-mono pt-1 border-t border-white/[0.06]">
-                  <span>Physical Platform Fee</span>
-                  <span className="text-emerald-400 font-bold font-mono">0% Commission</span>
+                <div className="flex items-center space-x-2 text-xs text-zinc-300">
+                  <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                  <span>0% physical order commission</span>
                 </div>
               </div>
             </div>
