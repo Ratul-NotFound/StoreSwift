@@ -21,7 +21,8 @@ import {
   CreditCard,
   Package,
   Globe,
-  TrendingUp
+  TrendingUp,
+  Rocket
 } from "lucide-react";
 import { PlatformFooter, DEMO_STORES_LIST } from "@/components/platform-footer";
 
@@ -639,15 +640,18 @@ export default function PlatformLandingPage() {
             </p>
           </div>
 
-          {/* Connected Minimalist Timeline Workflow (100% Clean, Zero Clutter) */}
+          {/* Connected Minimalist Timeline Workflow (Luminous Relevant Nodes) */}
           <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
             {/* Horizontal Connecting Guide Line (Desktop Only) */}
-            <div className="hidden md:block absolute top-7 left-[15%] right-[15%] h-[2px] bg-gradient-to-r from-blue-500/30 via-emerald-500/30 to-purple-500/30 pointer-events-none" />
+            <div className="hidden md:block absolute top-8 left-[12%] right-[12%] h-[2px] bg-gradient-to-r from-blue-500/40 via-emerald-500/40 to-purple-500/40 pointer-events-none" />
 
             {/* Step 01 */}
-            <div className="relative space-y-4 text-left group">
-              <div className="relative z-10 w-14 h-14 rounded-2xl bg-zinc-900 border border-blue-500/30 text-blue-400 flex items-center justify-center font-mono font-bold text-base shadow-[0_0_20px_rgba(59,130,246,0.15)] group-hover:border-blue-500 transition-colors">
-                01
+            <div className="relative space-y-5 text-left group">
+              <div className="relative z-10 w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/15 via-zinc-900 to-zinc-950 border border-blue-500/40 text-blue-400 flex items-center justify-center shadow-[0_0_25px_rgba(59,130,246,0.25)] group-hover:border-blue-400 group-hover:shadow-[0_0_35px_rgba(59,130,246,0.4)] transition-all">
+                <Store className="w-7 h-7 text-blue-400 group-hover:scale-110 transition-transform" />
+                <span className="absolute -top-2.5 -right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-blue-500/20 text-blue-300 border border-blue-500/40 shadow-sm">
+                  01
+                </span>
               </div>
               <div className="space-y-2">
                 <span className="text-[10px] font-mono uppercase tracking-wider text-blue-400 font-bold block">
@@ -673,9 +677,12 @@ export default function PlatformLandingPage() {
             </div>
 
             {/* Step 02 */}
-            <div className="relative space-y-4 text-left group">
-              <div className="relative z-10 w-14 h-14 rounded-2xl bg-zinc-900 border border-emerald-500/30 text-emerald-400 flex items-center justify-center font-mono font-bold text-base shadow-[0_0_20px_rgba(16,185,129,0.15)] group-hover:border-emerald-500 transition-colors">
-                02
+            <div className="relative space-y-5 text-left group">
+              <div className="relative z-10 w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500/15 via-zinc-900 to-zinc-950 border border-emerald-500/40 text-emerald-400 flex items-center justify-center shadow-[0_0_25px_rgba(16,185,129,0.25)] group-hover:border-emerald-400 group-hover:shadow-[0_0_35px_rgba(16,185,129,0.4)] transition-all">
+                <Truck className="w-7 h-7 text-emerald-400 group-hover:scale-110 transition-transform" />
+                <span className="absolute -top-2.5 -right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm">
+                  02
+                </span>
               </div>
               <div className="space-y-2">
                 <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-bold block">
@@ -701,9 +708,12 @@ export default function PlatformLandingPage() {
             </div>
 
             {/* Step 03 */}
-            <div className="relative space-y-4 text-left group">
-              <div className="relative z-10 w-14 h-14 rounded-2xl bg-zinc-900 border border-purple-500/30 text-purple-400 flex items-center justify-center font-mono font-bold text-base shadow-[0_0_20px_rgba(168,85,247,0.15)] group-hover:border-purple-500 transition-colors">
-                03
+            <div className="relative space-y-5 text-left group">
+              <div className="relative z-10 w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/15 via-zinc-900 to-zinc-950 border border-purple-500/40 text-purple-400 flex items-center justify-center shadow-[0_0_25px_rgba(168,85,247,0.25)] group-hover:border-purple-400 group-hover:shadow-[0_0_35px_rgba(168,85,247,0.4)] transition-all">
+                <Rocket className="w-7 h-7 text-purple-400 group-hover:scale-110 transition-transform" />
+                <span className="absolute -top-2.5 -right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40 shadow-sm">
+                  03
+                </span>
               </div>
               <div className="space-y-2">
                 <span className="text-[10px] font-mono uppercase tracking-wider text-purple-400 font-bold block">
