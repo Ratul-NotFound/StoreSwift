@@ -50,7 +50,7 @@ export function DemoStoreBar({
   }
 
   return (
-    <div className="bg-zinc-950 text-white border-b border-zinc-800 text-xs py-2 px-3 sm:px-6 sticky top-0 z-50 font-sans shadow-md">
+    <div className="bg-zinc-950 text-white border-b border-zinc-800/80 text-xs py-2 px-3 sm:px-6 relative z-30 font-sans shadow-xs">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
         {/* Left: Platform Logo + Current Store Name + Dropdown Switcher */}
         <div className="flex items-center space-x-2.5 min-w-0">
@@ -59,20 +59,20 @@ export function DemoStoreBar({
             className="flex items-center space-x-1.5 text-zinc-300 hover:text-white transition flex-shrink-0 group"
             title="Back to StoreSwift Platform"
           >
-            <div className="w-5 h-5 rounded bg-blue-600 flex items-center justify-center text-white">
+            <div className="w-5 h-5 rounded bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-200 group-hover:bg-zinc-700 transition">
               <Store className="w-3 h-3" />
             </div>
-            <span className="font-bold text-white text-[11px] hidden sm:inline">
-              Store<span className="text-blue-400">Swift</span>
+            <span className="font-bold text-white text-[11px] hidden sm:inline tracking-tight">
+              Store<span className="text-zinc-400">Swift</span>
             </span>
           </Link>
 
-          <span className="text-zinc-600 text-[10px] hidden sm:inline">•</span>
+          <span className="text-zinc-700 text-[10px] hidden sm:inline">•</span>
 
           <div className="relative">
             <button
               onClick={() => setIsSwitcherOpen(!isSwitcherOpen)}
-              className="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-700/80 text-zinc-200 text-[11px] font-medium transition max-w-[200px] sm:max-w-none truncate"
+              className="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-200 text-[11px] font-medium transition max-w-[200px] sm:max-w-none truncate"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0" />
               <span className="truncate">
@@ -124,26 +124,26 @@ export function DemoStoreBar({
           {onOpenCheckout && (
             <button
               onClick={onOpenCheckout}
-              className="hidden md:inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-[11px] shadow-sm transition btn-press"
+              className="hidden md:inline-flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-zinc-100 hover:bg-white text-zinc-950 font-semibold text-[11px] shadow-xs transition btn-press"
             >
-              <Zap className="w-3 h-3" />
-              <span>1-Page Checkout</span>
+              <Zap className="w-3 h-3 text-emerald-600" />
+              <span>1-Page Express Checkout</span>
             </button>
           )}
 
           {onOpenTrackOrder && (
             <button
               onClick={onOpenTrackOrder}
-              className="hidden lg:inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-200 text-[11px] font-medium transition"
+              className="hidden lg:inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-white text-[11px] font-medium transition"
             >
-              <Truck className="w-3 h-3 text-emerald-400" />
+              <Truck className="w-3 h-3 text-zinc-400" />
               <span>Track Parcel</span>
             </button>
           )}
 
           <Link
             href={`/admin?store=${currentSlug}`}
-            className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-200 text-[11px] font-semibold transition"
+            className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-white text-[11px] font-medium transition"
           >
             <span>Admin</span>
             <ExternalLink className="w-2.5 h-2.5 text-zinc-400" />
@@ -151,7 +151,7 @@ export function DemoStoreBar({
 
           <Link
             href="/"
-            className="hidden sm:inline-flex items-center space-x-1 text-zinc-400 hover:text-white text-[11px] transition pl-1"
+            className="hidden sm:inline-flex items-center space-x-1 text-zinc-400 hover:text-zinc-200 text-[11px] transition pl-1"
           >
             <ArrowLeft className="w-3 h-3" />
             <span>Platform</span>

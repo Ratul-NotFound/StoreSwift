@@ -25,15 +25,16 @@ export interface StorefrontFooterProps {
   storeSlug?: string;
   categoryName?: string;
   onOpenTrackOrder?: () => void;
+  hideNewsletter?: boolean;
 }
 
 // Category-specific verified section anchors
 const STORE_CATALOG_LINKS: Record<string, Array<{ label: string; href: string }>> = {
   fashion: [
     { label: "Archival Silhouettes", href: "#catalog" },
-    { label: "Editorial Lookbook", href: "#outfits" },
-    { label: "Textile & GSM Guide", href: "#fabric-guide" },
-    { label: "Doorstep Inspection", href: "#catalog" }
+    { label: "Editorial Lookbook", href: "#editorial" },
+    { label: "Standards of Craft", href: "#standards" },
+    { label: "Doorstep Inspection Guarantee", href: "#standards" }
   ],
   beauty_cosmetics: [
     { label: "Daily Rituals", href: "#rituals" },
@@ -76,7 +77,8 @@ export function StorefrontFooter({
   storeName = "Apex Fashion Hub",
   storeSlug = "apex-fashion",
   categoryName = "Fashion & Apparel",
-  onOpenTrackOrder
+  onOpenTrackOrder,
+  hideNewsletter = false
 }: StorefrontFooterProps) {
   const [email, setEmail] = useState("");
   const { success } = useToast();
@@ -104,45 +106,45 @@ export function StorefrontFooter({
   return (
     <footer className="bg-zinc-950 text-zinc-300 font-sans border-t border-zinc-900 mt-auto">
       {/* ─── Upper Consumer Logistics & Trust Bar ──────────────────────────── */}
-      <div className="border-b border-zinc-800/80 py-8 px-4 sm:px-6 bg-zinc-950/90">
+      <div className="border-b border-zinc-900 py-8 px-4 sm:px-6 bg-zinc-950">
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center sm:text-left">
           <div className="flex items-center justify-center sm:justify-start space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-blue-400 flex-shrink-0">
-              <Truck className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-300 flex-shrink-0">
+              <Truck className="w-4 h-4 text-zinc-300" />
             </div>
             <div>
-              <p className="text-xs font-bold text-white tracking-tight">Nationwide Express Delivery</p>
-              <p className="text-[11px] text-zinc-400">Steadfast & Pathao 24-48h dispatch</p>
+              <p className="text-xs font-semibold text-white tracking-wide">Worldwide Express Delivery</p>
+              <p className="text-[11px] text-zinc-500">Inspected 24-48h dispatch</p>
             </div>
           </div>
 
           <div className="flex items-center justify-center sm:justify-start space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-emerald-400 flex-shrink-0">
-              <ShieldCheck className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-300 flex-shrink-0">
+              <ShieldCheck className="w-4 h-4 text-zinc-300" />
             </div>
             <div>
-              <p className="text-xs font-bold text-white tracking-tight">Doorstep Inspection Guaranteed</p>
-              <p className="text-[11px] text-zinc-400">Open parcel check before paying COD</p>
+              <p className="text-xs font-semibold text-white tracking-wide">Doorstep Fitting Inspection</p>
+              <p className="text-[11px] text-zinc-500">Open parcel check before payment</p>
             </div>
           </div>
 
           <div className="flex items-center justify-center sm:justify-start space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-amber-400 flex-shrink-0">
-              <RotateCcw className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-300 flex-shrink-0">
+              <RotateCcw className="w-4 h-4 text-zinc-300" />
             </div>
             <div>
-              <p className="text-xs font-bold text-white tracking-tight">7-Day Hassle-Free Returns</p>
-              <p className="text-[11px] text-zinc-400">Doorstep size & variant exchange</p>
+              <p className="text-xs font-semibold text-white tracking-wide">Complimentary Size Exchange</p>
+              <p className="text-[11px] text-zinc-500">48-hour doorstep pickup</p>
             </div>
           </div>
 
           <div className="flex items-center justify-center sm:justify-start space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-purple-400 flex-shrink-0">
-              <Lock className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-300 flex-shrink-0">
+              <Lock className="w-4 h-4 text-zinc-300" />
             </div>
             <div>
-              <p className="text-xs font-bold text-white tracking-tight">256-Bit Bank Security</p>
-              <p className="text-[11px] text-zinc-400">bKash, Nagad & Anti-Fraud Shield</p>
+              <p className="text-xs font-semibold text-white tracking-wide">Encrypted Checkout Shield</p>
+              <p className="text-[11px] text-zinc-500">256-bit bank grade security</p>
             </div>
           </div>
         </div>
@@ -154,121 +156,116 @@ export function StorefrontFooter({
           {/* Column 1 & 2: Store Identity & Support */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center space-x-2.5">
-              <div className="w-8 h-8 rounded-lg bg-white text-zinc-950 flex items-center justify-center font-bold shadow-sm">
-                <Store className="w-4 h-4" />
+              <div className="w-7 h-7 rounded-md bg-white text-zinc-950 flex items-center justify-center font-bold shadow-xs">
+                <Store className="w-3.5 h-3.5" />
               </div>
-              <span className="font-bold text-white tracking-tight text-base">
+              <span className="font-semibold text-white tracking-wider uppercase text-sm font-serif">
                 {storeName}
               </span>
             </div>
 
             <p className="text-xs text-zinc-400 leading-relaxed max-w-sm">
-              Official authenticated storefront for {storeName}. Curated {categoryName.toLowerCase()}, nationwide automated courier delivery across all 64 districts, and open parcel doorstep inspection.
+              Official authenticated atelier for {storeName}. Curated {categoryName.toLowerCase()}, nationwide automated courier dispatch, and doorstep fit verification before tender.
             </p>
 
             {/* Support Hotline & Customer Care */}
             <div className="space-y-1.5 text-xs text-zinc-400 pt-1">
               <div className="flex items-center space-x-2 text-zinc-300">
-                <Mail className="w-3.5 h-3.5 text-blue-400" />
-                <span>care@{storeSlug || "store"}.storeswift.app</span>
+                <Mail className="w-3.5 h-3.5 text-zinc-400" />
+                <span>concierge@{storeSlug || "store"}.storeswift.app</span>
               </div>
               <div className="flex items-center space-x-2 text-zinc-400">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Customer Care: 10:00 AM – 10:00 PM Everyday</span>
+                <CheckCircle2 className="w-3.5 h-3.5 text-zinc-500" />
+                <span>Atelier Concierge: 10:00 AM – 10:00 PM Everyday</span>
               </div>
             </div>
 
-            {/* Newsletter Form */}
-            <div className="pt-2">
-              <p className="text-xs font-semibold text-white mb-2">Join VIP List: Get 10% off your first order</p>
-              <form onSubmit={handleSubscribe} className="flex max-w-sm space-x-2">
-                <input
-                  type="email"
-                  placeholder="Enter your email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="flex-1 bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2 text-xs text-white placeholder:text-zinc-500 outline-none focus:border-zinc-500 transition font-medium"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="bg-white hover:bg-zinc-200 text-zinc-950 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-1 btn-press"
-                >
-                  <span>Subscribe</span>
-                  <ArrowRight className="w-3 h-3" />
-                </button>
-              </form>
-            </div>
+            {/* Optional Newsletter Form (Hidden if page already has an atelier newsletter) */}
+            {!hideNewsletter ? (
+              <div className="pt-2">
+                <p className="text-xs font-semibold text-white mb-2">Join VIP List: Get 10% off your first order</p>
+                <form onSubmit={handleSubscribe} className="flex max-w-sm space-x-2">
+                  <input
+                    type="email"
+                    placeholder="Enter your email address"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="flex-1 bg-zinc-900 border border-zinc-800 rounded-lg px-3.5 py-2 text-xs text-white placeholder:text-zinc-500 outline-none focus:border-zinc-500 transition font-medium"
+                    required
+                  />
+                  <button
+                    type="submit"
+                    className="bg-white hover:bg-zinc-200 text-zinc-950 px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition flex items-center space-x-1"
+                  >
+                    <span>Join</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </form>
+              </div>
+            ) : (
+              <div className="pt-2 text-[11px] text-zinc-500 font-mono tracking-wide">
+                Direct client support: priority dispatch, sizing consults, and order tracking.
+              </div>
+            )}
           </div>
 
           {/* Column 3: Verified Store Catalog Links (Dynamic per Category) */}
           <div className="space-y-3">
-            <p className="text-xs font-bold uppercase tracking-wider text-white">Store Catalog</p>
-            <ul className="space-y-2 text-xs text-zinc-400">
+            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-white">Store Catalog</p>
+            <ul className="space-y-2.5 text-xs text-zinc-400">
               {catalogLinks.map((item, idx) => (
                 <li key={idx}>
                   <a href={item.href} className="hover:text-white transition flex items-center justify-between group">
                     <span>{item.label}</span>
-                    <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity text-blue-400" />
+                    <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity text-zinc-400" />
                   </a>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Column 4: Logistics & Delivery Tariffs */}
+          {/* Column 4: Logistics & Delivery Standards */}
           <div className="space-y-3">
-            <p className="text-xs font-bold uppercase tracking-wider text-white">Logistics & Couriers</p>
-            <ul className="space-y-2 text-xs text-zinc-400">
-              <li className="flex items-center space-x-1.5 text-zinc-300">
-                <Truck className="w-3.5 h-3.5 text-emerald-400" />
-                <span className="font-semibold">Steadfast Courier API Sync</span>
+            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-white">Logistics & Shipping</p>
+            <ul className="space-y-2.5 text-xs text-zinc-400">
+              <li className="flex items-center space-x-2 text-zinc-300">
+                <Truck className="w-3.5 h-3.5 text-zinc-400" />
+                <span className="font-medium">Direct Express Courier</span>
               </li>
-              <li className="flex items-center space-x-1.5 text-zinc-300">
-                <Truck className="w-3.5 h-3.5 text-rose-400" />
-                <span className="font-semibold">Pathao Logistics Integration</span>
-              </li>
-              <li className="pt-1 text-[11px] text-zinc-400">
-                <span>Inside Dhaka: Flat ৳60 / $2.50 (24h)</span>
+              <li className="pt-0.5 text-[11px] text-zinc-400">
+                <span>Metropolitan: 24h Express Dispatch</span>
               </li>
               <li className="text-[11px] text-zinc-400">
-                <span>Greater Dhaka: Flat ৳100 / $4.00 (48h)</span>
+                <span>Nationwide: 48–72h Insured Transit</span>
               </li>
-              <li className="text-[11px] text-zinc-400">
-                <span>Outside Dhaka: Flat ৳130 / $5.00 (72h)</span>
-              </li>
-              <li className="pt-1 text-[11px] text-emerald-400 font-semibold flex items-center space-x-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
-                <span>Open Parcel Inspection Guaranteed</span>
+              <li className="pt-1 text-[11px] text-zinc-300 font-medium flex items-center space-x-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-zinc-400 flex-shrink-0" />
+                <span>Doorstep Fit Inspection Verified</span>
               </li>
             </ul>
           </div>
 
           {/* Column 5: Customer Care & Order Tracking */}
           <div className="space-y-3">
-            <p className="text-xs font-bold uppercase tracking-wider text-white">Customer Care</p>
-            <ul className="space-y-2 text-xs text-zinc-400">
+            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-white">Client Concierge</p>
+            <ul className="space-y-2.5 text-xs text-zinc-400">
               <li>
                 <button
                   type="button"
                   onClick={onOpenTrackOrder}
-                  className="w-full text-left flex items-center space-x-2 px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 hover:text-white text-zinc-200 transition font-medium"
+                  className="w-full text-left flex items-center space-x-2 px-3 py-2 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-zinc-700 hover:text-white text-zinc-200 transition font-medium"
                 >
-                  <Package className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />
+                  <Package className="w-3.5 h-3.5 text-zinc-400 flex-shrink-0" />
                   <span className="text-xs">Track Consignment</span>
                 </button>
               </li>
-              <li className="flex items-center space-x-1.5 pt-1">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Cash on Delivery Verified</span>
+              <li className="flex items-center space-x-2 pt-1 text-zinc-400">
+                <CheckCircle2 className="w-3.5 h-3.5 text-zinc-500" />
+                <span>Cash on Delivery (COD)</span>
               </li>
-              <li className="flex items-center space-x-1.5">
-                <span className="w-3.5 h-3.5 rounded-full bg-[#E2136E] text-white flex items-center justify-center font-bold text-[8px]">৳</span>
-                <span>bKash Express Instant Pay</span>
-              </li>
-              <li className="flex items-center space-x-1.5">
-                <span className="w-3.5 h-3.5 rounded-full bg-[#F7931E] text-white flex items-center justify-center font-bold text-[8px]">N</span>
-                <span>Nagad Direct Wallet</span>
+              <li className="flex items-center space-x-2 text-zinc-400">
+                <CreditCard className="w-3.5 h-3.5 text-zinc-500" />
+                <span>Encrypted Card & Mobile Pay</span>
               </li>
               <li className="pt-2 border-t border-zinc-900">
                 <Link
@@ -276,7 +273,7 @@ export function StorefrontFooter({
                   className="text-zinc-400 hover:text-white transition flex items-center space-x-1 text-xs"
                 >
                   <span>Merchant Admin Portal</span>
-                  <ExternalLink className="w-3 h-3 text-zinc-500" />
+                  <ExternalLink className="w-3 h-3 text-zinc-600" />
                 </Link>
               </li>
             </ul>
@@ -289,29 +286,26 @@ export function StorefrontFooter({
             <span>© {new Date().getFullYear()} {storeName}. All rights reserved.</span>
             <span>•</span>
             <Link href="/" className="hover:text-zinc-300 transition text-[11px]">
-              Powered by <span className="font-semibold text-white">StoreSwift</span>
+              Powered by <span className="font-medium text-white">StoreSwift</span>
             </Link>
           </div>
 
-          {/* Payment & Courier Badges */}
-          <div className="flex flex-wrap items-center justify-center gap-2 text-[10px]">
-            <span className="px-2.5 py-1 bg-zinc-900 rounded-lg border border-zinc-800 font-medium text-zinc-300">
-              Cash on Delivery (COD)
+          {/* Clean Monochromatic Payment & Courier Badges */}
+          <div className="flex flex-wrap items-center justify-center gap-2 text-[10px] font-mono">
+            <span className="px-2.5 py-1 bg-zinc-900 rounded-md border border-zinc-800 text-zinc-400">
+              Cash on Delivery
             </span>
-            <span className="px-2.5 py-1 bg-zinc-900 rounded-lg border border-zinc-800 font-medium text-[#E2136E]">
-              bKash Express
+            <span className="px-2.5 py-1 bg-zinc-900 rounded-md border border-zinc-800 text-zinc-400">
+              bKash • Nagad
             </span>
-            <span className="px-2.5 py-1 bg-zinc-900 rounded-lg border border-zinc-800 font-medium text-[#F7931E]">
-              Nagad Direct
-            </span>
-            <span className="px-2.5 py-1 bg-zinc-900 rounded-lg border border-zinc-800 font-medium text-zinc-300">
+            <span className="px-2.5 py-1 bg-zinc-900 rounded-md border border-zinc-800 text-zinc-400">
               Visa • Mastercard
             </span>
-            <span className="px-2.5 py-1 bg-zinc-900 rounded-lg border border-zinc-800 font-medium text-emerald-400">
-              Steadfast Logistics
+            <span className="px-2.5 py-1 bg-zinc-900 rounded-md border border-zinc-800 text-zinc-400">
+              Steadfast • Pathao
             </span>
-            <span className="px-2.5 py-1 bg-zinc-900 rounded-lg border border-zinc-800 font-medium text-rose-400">
-              Pathao Courier
+            <span className="px-2.5 py-1 bg-zinc-900 rounded-md border border-zinc-800 text-zinc-400">
+              256-Bit SSL
             </span>
           </div>
         </div>

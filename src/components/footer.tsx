@@ -14,7 +14,8 @@ export function StoreFooter({
   storeName,
   storeSlug,
   categoryName,
-  onOpenTrackOrder
+  onOpenTrackOrder,
+  hideNewsletter
 }: StoreFooterProps) {
   if (isPlatform) {
     return <PlatformFooter />;
@@ -26,6 +27,7 @@ export function StoreFooter({
       storeSlug={storeSlug}
       categoryName={categoryName}
       onOpenTrackOrder={onOpenTrackOrder}
+      hideNewsletter={hideNewsletter}
     />
   );
 }

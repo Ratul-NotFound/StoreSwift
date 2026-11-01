@@ -11,7 +11,10 @@ import {
   SlidersHorizontal,
   Truck,
   Zap,
-  ArrowRight
+  ArrowRight,
+  Menu,
+  X,
+  ChevronRight
 } from "lucide-react";
 import { IStoreTemplate } from "@/templates/types";
 import { CartItem } from "@/lib/cart";
@@ -78,6 +81,7 @@ export function FashionStorefront({
   const [sortBy, setSortBy] = useState<string>("featured");
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSuccess, setNewsletterSuccess] = useState(false);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   const handleColorSelect = (productId: string, color: string) => {
     setSelectedColors((prev) => ({ ...prev, [productId]: color }));
@@ -133,8 +137,28 @@ export function FashionStorefront({
       {/* ─── 2. Pristine Architectural Header ─────────────────────────────────── */}
       <header className="sticky top-0 z-40 bg-[#fcfbf9]/95 backdrop-blur-md border-b border-zinc-200/50 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          {/* Left: Minimalist Navigation Links */}
-          <nav className="hidden lg:flex items-center space-x-9 text-xs font-medium uppercase tracking-[0.2em] text-zinc-600">
+          {/* Mobile: Hamburger Menu Toggle (< lg) */}
+          <div className="flex items-center space-x-2 lg:hidden">
+            <button
+              type="button"
+              onClick={() => setIsMobileNavOpen(true)}
+              className="p-2 -ml-2 text-zinc-900 hover:text-black transition"
+              aria-label="Open navigation menu"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+            <button
+              type="button"
+              onClick={onOpenSearch}
+              className="p-2 text-zinc-700 hover:text-black transition sm:hidden"
+              aria-label="Search"
+            >
+              <Search className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Left: Minimalist Navigation Links (Desktop) */}
+          <nav className="hidden lg:flex items-center space-x-8 text-xs font-medium uppercase tracking-[0.2em] text-zinc-600">
             <button
               onClick={() => setActiveFilter("all")}
               className={`hover:text-black transition pb-0.5 ${
@@ -167,8 +191,11 @@ export function FashionStorefront({
             >
               Knitwear
             </button>
-            <a href="#editorial" className="hover:text-black transition pb-0.5 text-zinc-400">
+            <a href="#editorial" className="hover:text-black transition pb-0.5 text-zinc-500">
               Editorial
+            </a>
+            <a href="#standards" className="hover:text-black transition pb-0.5 text-zinc-500">
+              Craft
             </a>
           </nav>
 
@@ -183,14 +210,14 @@ export function FashionStorefront({
           </Link>
 
           {/* Right: Minimalist Utility Actions */}
-          <div className="flex items-center space-x-6 text-zinc-700">
+          <div className="flex items-center space-x-4 sm:space-x-6 text-zinc-700">
             <button
               onClick={onOpenSearch}
-              className="hover:text-black transition flex items-center space-x-1.5 p-1"
+              className="hidden sm:flex hover:text-black transition items-center space-x-1.5 p-1"
               title="Search collection"
             >
               <Search className="w-4 h-4" />
-              <span className="hidden sm:inline text-xs font-medium uppercase tracking-[0.15em]">Search</span>
+              <span className="text-xs font-medium uppercase tracking-[0.15em]">Search</span>
             </button>
 
             <button
@@ -231,7 +258,7 @@ export function FashionStorefront({
 
             <button
               onClick={onOpenCart}
-              className="px-4 py-2 bg-zinc-950 hover:bg-black text-white rounded text-xs font-semibold uppercase tracking-[0.15em] transition flex items-center space-x-2"
+              className="px-3.5 sm:px-4 py-2 bg-zinc-950 hover:bg-black text-white rounded text-xs font-semibold uppercase tracking-[0.15em] transition flex items-center space-x-2"
             >
               <ShoppingBag className="w-3.5 h-3.5" />
               <span>Bag ({cartItems.reduce((s, i) => s + i.quantity, 0)})</span>
@@ -244,6 +271,154 @@ export function FashionStorefront({
           </div>
         </div>
       </header>
+
+      {/* ─── Mobile Navigation Slide-Out Drawer ───────────────────────────── */}
+      {isMobileNavOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden animate-fade-in">
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
+            onClick={() => setIsMobileNavOpen(false)}
+          />
+
+          {/* Drawer Sheet */}
+          <div className="fixed inset-y-0 left-0 w-full max-w-xs bg-[#fcfbf9] shadow-2xl p-6 flex flex-col justify-between overflow-y-auto border-r border-zinc-200">
+            <div>
+              {/* Header */}
+              <div className="flex items-center justify-between pb-6 border-b border-zinc-200">
+                <div>
+                  <span className="font-serif text-base tracking-[0.25em] uppercase font-light text-zinc-950 block">
+                    {storeDisplayName}
+                  </span>
+                  <span className="text-[9px] font-mono tracking-[0.3em] uppercase text-zinc-400">
+                    Atelier Archive
+                  </span>
+                </div>
+                <button
+                  onClick={() => setIsMobileNavOpen(false)}
+                  className="p-2 text-zinc-500 hover:text-black rounded-lg transition"
+                  aria-label="Close menu"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Collections Filter Navigation */}
+              <div className="py-6 space-y-4">
+                <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-zinc-400 font-medium">
+                  Curated Catalog
+                </p>
+                <nav className="flex flex-col space-y-3 text-xs uppercase tracking-[0.15em] font-medium text-zinc-800">
+                  <button
+                    onClick={() => {
+                      setActiveFilter("all");
+                      setIsMobileNavOpen(false);
+                    }}
+                    className={`text-left py-2 flex items-center justify-between transition ${
+                      activeFilter === "all" ? "text-black font-bold pl-2 border-l-2 border-black" : "hover:text-black"
+                    }`}
+                  >
+                    <span>All Pieces ({products.length})</span>
+                    <ChevronRight className="w-3.5 h-3.5 text-zinc-400" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setActiveFilter("tees");
+                      setIsMobileNavOpen(false);
+                    }}
+                    className={`text-left py-2 flex items-center justify-between transition ${
+                      activeFilter === "tees" ? "text-black font-bold pl-2 border-l-2 border-black" : "hover:text-black"
+                    }`}
+                  >
+                    <span>280 GSM Heavyweight Tees</span>
+                    <ChevronRight className="w-3.5 h-3.5 text-zinc-400" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setActiveFilter("denim");
+                      setIsMobileNavOpen(false);
+                    }}
+                    className={`text-left py-2 flex items-center justify-between transition ${
+                      activeFilter === "denim" ? "text-black font-bold pl-2 border-l-2 border-black" : "hover:text-black"
+                    }`}
+                  >
+                    <span>Kurabo Selvedge Denim</span>
+                    <ChevronRight className="w-3.5 h-3.5 text-zinc-400" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setActiveFilter("hoodies");
+                      setIsMobileNavOpen(false);
+                    }}
+                    className={`text-left py-2 flex items-center justify-between transition ${
+                      activeFilter === "hoodies" ? "text-black font-bold pl-2 border-l-2 border-black" : "hover:text-black"
+                    }`}
+                  >
+                    <span>French Terry Knitwear</span>
+                    <ChevronRight className="w-3.5 h-3.5 text-zinc-400" />
+                  </button>
+                </nav>
+              </div>
+
+              {/* Editorial & Standards */}
+              <div className="py-4 border-t border-zinc-200/60 space-y-3">
+                <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-zinc-400 font-medium">
+                  Editorial & Standards
+                </p>
+                <div className="flex flex-col space-y-2.5 text-xs uppercase tracking-[0.15em] font-medium text-zinc-600">
+                  <a
+                    href="#editorial"
+                    onClick={() => setIsMobileNavOpen(false)}
+                    className="hover:text-black transition py-1"
+                  >
+                    Editorial Lookbook
+                  </a>
+                  <a
+                    href="#standards"
+                    onClick={() => setIsMobileNavOpen(false)}
+                    className="hover:text-black transition py-1"
+                  >
+                    Standards of Craft
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Actions */}
+            <div className="pt-6 border-t border-zinc-200 space-y-3">
+              {onOpenTrackOrder && (
+                <button
+                  onClick={() => {
+                    setIsMobileNavOpen(false);
+                    onOpenTrackOrder();
+                  }}
+                  className="w-full py-2.5 px-3 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-xs uppercase tracking-wider font-medium flex items-center justify-center space-x-2 transition"
+                >
+                  <Truck className="w-3.5 h-3.5 text-zinc-500" />
+                  <span>Track Consignment</span>
+                </button>
+              )}
+
+              {onOpenCheckout && cartItems.length > 0 && (
+                <button
+                  onClick={() => {
+                    setIsMobileNavOpen(false);
+                    onOpenCheckout();
+                  }}
+                  className="w-full py-2.5 px-3 rounded-lg bg-zinc-950 text-white text-xs uppercase tracking-wider font-semibold flex items-center justify-center space-x-2 hover:bg-black transition"
+                >
+                  <Zap className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>1-Page Express Checkout</span>
+                </button>
+              )}
+
+              <p className="text-[10px] font-mono text-zinc-400 text-center tracking-wide pt-2">
+                Doorstep Fit Inspection • Free Exchanges
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ─── 3. Editorial Campaign Hero (The Row / Saint Laurent Style) ──────── */}
       <section className="relative border-b border-zinc-200/50 bg-[#fcfbf9] overflow-hidden">
@@ -366,10 +541,23 @@ export function FashionStorefront({
         </div>
 
         {/* ─── 5. Borderless Luxury Product Grid ──────────────────────────────── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 lg:gap-x-10 gap-y-12 sm:gap-y-16">
           {displayedProducts.map((p) => {
             const isWishlisted = wishlist.includes(p.id);
             const currentColor = selectedColors[p.id] || "Standard";
+
+            // Fabric pedigree
+            const fabricBadge = p.slug.includes("tee")
+              ? "280 GSM Cotton"
+              : p.slug.includes("denim")
+              ? "13.5oz Selvedge"
+              : "450 GSM Terry";
+
+            const fabricSub = p.slug.includes("tee")
+              ? "Combed Organic Ring-Spun"
+              : p.slug.includes("denim")
+              ? "Kurabo Japanese Shuttle Loom"
+              : "Loopback French Terry";
 
             // Sizing options
             const sizes = p.slug.includes("denim") ? ["30", "32", "34", "36"] : ["S", "M", "L", "XL"];
@@ -394,29 +582,37 @@ export function FashionStorefront({
                   <img
                     src={p.imageUrl}
                     alt={p.title}
-                    className="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <img
-                    src={p.secondaryImage || p.imageUrl}
-                    alt={`${p.title} - Lookbook`}
-                    className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                  />
+                  {p.secondaryImage && (
+                    <img
+                      src={p.secondaryImage}
+                      alt={`${p.title} - Lookbook`}
+                      className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-hover:scale-105"
+                    />
+                  )}
 
-                  {/* Subtle Wishlist Heart */}
+                  {/* Fabric Weight Badge */}
+                  <div className="absolute top-3 left-3 text-[9px] font-mono tracking-[0.2em] uppercase bg-black/80 backdrop-blur-xs text-white px-2 py-0.5 rounded-xs pointer-events-none">
+                    {fabricBadge}
+                  </div>
+
+                  {/* Accessible Wishlist Heart */}
                   <button
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       onToggleWishlist(p.id);
                     }}
-                    className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-zinc-800 hover:text-black opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-xs flex items-center justify-center text-zinc-800 hover:text-black opacity-85 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shadow-xs"
                     title="Save to wishlist"
+                    aria-label="Save to wishlist"
                   >
                     <Heart className={`w-4 h-4 ${isWishlisted ? "text-black fill-current" : ""}`} />
                   </button>
 
-                  {/* Frosted Floating Quick Size Selector Bar */}
-                  <div className="absolute inset-x-4 bottom-4 p-2 bg-white/95 backdrop-blur-md border border-white/60 shadow-lg translate-y-6 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 ease-out z-10 flex items-center justify-between text-zinc-900 rounded-md">
+                  {/* Desktop Frosted Quick Size Selector Bar (Hover on desktop) */}
+                  <div className="hidden sm:flex absolute inset-x-4 bottom-4 p-2 bg-white/95 backdrop-blur-md border border-white/60 shadow-lg translate-y-6 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 ease-out z-10 items-center justify-between text-zinc-900 rounded-md">
                     <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 pl-1">
                       Quick Add
                     </span>
@@ -440,36 +636,50 @@ export function FashionStorefront({
                 </div>
 
                 {/* Minimalist Information Below Image */}
-                <div className="pt-4 space-y-1.5">
-                  {/* Color Swatch Dots */}
-                  <div className="flex items-center space-x-1.5 pb-0.5">
-                    {colors.map((c) => {
-                      const isSel = currentColor === c.name;
-                      return (
-                        <button
-                          key={c.name}
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleColorSelect(p.id, c.name);
-                          }}
-                          className={`w-2.5 h-2.5 rounded-full border transition-all ${
-                            isSel ? "ring-1 ring-black ring-offset-2 scale-110" : "opacity-75 hover:opacity-100 border-zinc-300"
-                          }`}
-                          style={{ backgroundColor: c.hex }}
-                          title={c.name}
-                        />
-                      );
-                    })}
+                <div className="pt-4 space-y-2">
+                  {/* Color Swatch Dots with Touch Target & Color Label */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-1.5">
+                      {colors.map((c) => {
+                        const isSel = currentColor === c.name;
+                        return (
+                          <button
+                            key={c.name}
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleColorSelect(p.id, c.name);
+                            }}
+                            className={`w-4 h-4 rounded-full flex items-center justify-center transition-all ${
+                              isSel ? "ring-1 ring-black ring-offset-2 scale-110" : "opacity-75 hover:opacity-100"
+                            }`}
+                            title={c.name}
+                          >
+                            <span
+                              className="w-3 h-3 rounded-full border border-black/15"
+                              style={{ backgroundColor: c.hex }}
+                            />
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">
+                      {currentColor}
+                    </span>
                   </div>
 
                   {/* Title */}
                   <h3
                     onClick={() => onOpenProduct(p)}
-                    className="text-xs sm:text-sm font-medium uppercase tracking-[0.1em] text-zinc-950 hover:opacity-70 transition cursor-pointer line-clamp-1"
+                    className="text-xs sm:text-sm font-medium uppercase tracking-[0.12em] text-zinc-950 hover:text-zinc-600 transition cursor-pointer line-clamp-1"
                   >
                     {p.title}
                   </h3>
+
+                  {/* Fabric Subline */}
+                  <p className="text-[11px] text-zinc-400 font-mono tracking-tight">
+                    {fabricSub}
+                  </p>
 
                   {/* Price */}
                   <div className="flex items-baseline space-x-2 pt-0.5">
@@ -481,6 +691,29 @@ export function FashionStorefront({
                         ${p.comparePrice.toFixed(2)}
                       </span>
                     )}
+                  </div>
+
+                  {/* Mobile Quick-Add Size Strip (< sm) */}
+                  <div className="sm:hidden pt-2 border-t border-zinc-200/60 flex items-center justify-between gap-1">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400">
+                      Add Size:
+                    </span>
+                    <div className="flex items-center gap-1">
+                      {sizes.map((sz) => (
+                        <button
+                          key={sz}
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleQuickSizeAdd(p, sz);
+                          }}
+                          className="px-2 py-1 rounded bg-zinc-100 hover:bg-black hover:text-white text-[10px] font-mono font-medium text-zinc-800 transition active:scale-95"
+                          title={`Add Size ${sz}`}
+                        >
+                          {sz}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -580,7 +813,7 @@ export function FashionStorefront({
       </section>
 
       {/* ─── 7. Standards of Craft (Minimalist Luxury Pillars) ───────────────── */}
-      <section className="py-20 border-t border-zinc-200/60 bg-[#fcfbf9]">
+      <section id="standards" className="py-20 border-t border-zinc-200/60 bg-[#fcfbf9]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-16">
             <div className="space-y-3">
@@ -666,6 +899,7 @@ export function FashionStorefront({
         storeSlug={tenantSlug}
         onOpenTrackOrder={onOpenTrackOrder}
         categoryName="Fashion & Apparel"
+        hideNewsletter={true}
       />
     </div>
   );
