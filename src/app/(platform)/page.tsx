@@ -170,7 +170,7 @@ export default function PlatformLandingPage() {
   return (
     <div
       ref={canvasRef}
-      className={`relative flex flex-col min-h-screen studio-canvas text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-800 selection:text-white dark:selection:bg-white dark:selection:text-zinc-950 antialiased transition-colors duration-150 overflow-x-hidden ${hasMouseMoved ? "has-mouse" : ""}`}
+      className={`relative flex flex-col min-h-screen studio-canvas text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-800 selection:text-white dark:selection:bg-white dark:selection:text-zinc-950 antialiased transition-colors duration-150 overflow-x-clip ${hasMouseMoved ? "has-mouse" : ""}`}
     >
       {/* ─── Lightweight Interactive Cursor Halo & Grid Spotlight ─────────── */}
       <div className="interactive-cursor-glow" aria-hidden="true" />
