@@ -47,7 +47,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
     template: "Minimal Atelier",
     headline: "Textile-focused apparel architecture with editorial lookbooks",
     description: "Designed for fashion labels with fabric weight badges (GSM), studio and on-model angle switchers, and lookbook ensemble bundles.",
-    image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1200&auto=format&fit=crop&q=85",
+    image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&auto=format&fit=crop&q=85",
     highlights: ["Textile GSM weight badges", "Studio angle switcher", "Curated outfits lookbook", "Doorstep fit inspection guarantee"],
     categoryParam: "fashion"
   },

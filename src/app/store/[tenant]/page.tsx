@@ -650,63 +650,134 @@ export default function TenantStorefrontPage({
 
       {/* ─── Product Quick-View Modal ─────────────────────────────────────── */}
       {selectedProduct && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white text-zinc-900 rounded-2xl max-w-lg w-full p-6 border border-zinc-200 shadow-2xl relative">
-            <button onClick={() => setSelectedProduct(null)} className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-600 p-1.5 rounded-lg hover:bg-zinc-100"><X className="w-4 h-4" /></button>
-            <div className="flex space-x-4 items-start">
-              <div className="space-y-1.5 flex-shrink-0">
-                <div className="w-28 h-28 rounded-xl overflow-hidden border border-zinc-200 bg-zinc-50 shadow-inner">
-                  <img src={modalImageAngle === "primary" ? selectedProduct.imageUrl : (selectedProduct.secondaryImage || selectedProduct.imageUrl)} alt={selectedProduct.title} className="w-full h-full object-cover" />
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
+          <div className="bg-[#fcfbf9] text-zinc-950 rounded-xl max-w-2xl w-full p-6 sm:p-8 border border-zinc-200 shadow-2xl relative overflow-hidden font-sans">
+            <button
+              onClick={() => setSelectedProduct(null)}
+              className="absolute top-4 right-4 text-zinc-400 hover:text-black p-1.5 rounded-lg transition"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-start">
+              {/* Product Visual Stage (3:4 Editorial Portrait) */}
+              <div className="sm:col-span-5 space-y-3">
+                <div className="relative aspect-[3/4] bg-[#f4f2ee] overflow-hidden border border-zinc-200">
+                  <img
+                    src={modalImageAngle === "primary" ? selectedProduct.imageUrl : (selectedProduct.secondaryImage || selectedProduct.imageUrl)}
+                    alt={selectedProduct.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute top-2.5 left-2.5 text-[9px] font-mono uppercase tracking-[0.2em] bg-black/80 text-white px-2 py-0.5">
+                    {selectedProduct.badge || "Archive Piece"}
+                  </div>
                 </div>
+
                 {selectedProduct.secondaryImage && (
-                  <div className="flex gap-1 justify-center">
+                  <div className="flex gap-2 justify-center">
                     {(["primary", "secondary"] as const).map((angle) => (
-                      <button key={angle} type="button" onClick={() => setModalImageAngle(angle)}
-                        className={`text-[9px] font-mono px-2 py-0.5 rounded border transition ${modalImageAngle === angle ? "bg-zinc-900 text-white border-zinc-900" : "bg-zinc-100 text-zinc-600 border-zinc-200"}`}>
-                        {angle === "primary" ? "Studio" : "Alt View"}
+                      <button
+                        key={angle}
+                        type="button"
+                        onClick={() => setModalImageAngle(angle)}
+                        className={`text-[10px] font-mono uppercase tracking-wider px-3 py-1 rounded transition ${
+                          modalImageAngle === angle
+                            ? "bg-black text-white"
+                            : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+                        }`}
+                      >
+                        {angle === "primary" ? "Studio Still" : "On-Model"}
                       </button>
                     ))}
                   </div>
                 )}
               </div>
-              <div>
-                <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">{categoryConfig.name}</span>
-                <h3 className="text-base font-bold text-zinc-900 tracking-tight">{selectedProduct.title}</h3>
-                <div className="text-lg font-black text-zinc-900 mt-1">${selectedProduct.price.toFixed(2)}</div>
-                <div className="text-[11px] text-emerald-600 font-semibold mt-1">Available for Cash on Delivery</div>
-              </div>
-            </div>
-            <p className="text-xs text-zinc-600 mt-4 leading-relaxed">{selectedProduct.description}</p>
-            {selectedProduct.variants.length > 0 && (
-              <div className="mt-4 space-y-2">
-                <span className="text-[11px] font-semibold text-zinc-700 uppercase">Select Variant:</span>
-                <div className="grid grid-cols-2 gap-2">
-                  {selectedProduct.variants.map((v, i) => {
-                    const isSel = selectedVariant?.sku === v.sku;
-                    return (
-                      <button key={i} type="button" onClick={() => setSelectedVariant(v)}
-                        className={`p-2 rounded-xl border text-xs font-semibold text-left transition ${isSel ? "border-zinc-900 bg-zinc-900 text-white" : "border-zinc-200 hover:border-zinc-300 text-zinc-800"}`}>
-                        <div>{v.title}</div>
-                        <div className={`text-[10px] ${isSel ? "text-zinc-300" : "text-zinc-400"}`}>${v.price}</div>
-                      </button>
-                    );
-                  })}
+
+              {/* Product Information & Controls */}
+              <div className="sm:col-span-7 space-y-4">
+                <div>
+                  <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-zinc-400 block font-medium">
+                    {categoryConfig.name} // Atelier Drop
+                  </span>
+                  <h3 className="text-lg sm:text-xl font-light uppercase tracking-tight text-zinc-950 font-serif mt-1">
+                    {selectedProduct.title}
+                  </h3>
+                  <div className="flex items-baseline space-x-3 mt-1.5">
+                    <span className="text-base sm:text-lg font-semibold font-mono text-zinc-950">
+                      ${selectedProduct.price.toFixed(2)}
+                    </span>
+                    {selectedProduct.comparePrice > selectedProduct.price && (
+                      <span className="text-xs text-zinc-400 font-mono line-through">
+                        ${selectedProduct.comparePrice.toFixed(2)}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <p className="text-xs text-zinc-600 leading-relaxed font-normal">
+                  {selectedProduct.description}
+                </p>
+
+                {/* Sizing / Variant Selection */}
+                {selectedProduct.variants.length > 0 && (
+                  <div className="space-y-2 pt-1 border-t border-zinc-200/60">
+                    <div className="flex items-center justify-between text-[11px] font-mono uppercase tracking-wider">
+                      <span className="text-zinc-600 font-medium">Select Size:</span>
+                      <span className="text-zinc-400">Complimentary 48h Exchanges</span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedProduct.variants.map((v, i) => {
+                        const isSel = selectedVariant?.sku === v.sku;
+                        return (
+                          <button
+                            key={i}
+                            type="button"
+                            onClick={() => setSelectedVariant(v)}
+                            className={`px-3 py-1.5 rounded text-xs font-mono transition ${
+                              isSel
+                                ? "bg-black text-white font-medium"
+                                : "bg-zinc-100 text-zinc-800 hover:bg-zinc-200 border border-zinc-200"
+                            }`}
+                          >
+                            {v.title}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Doorstep Trust Note */}
+                <div className="p-3 bg-zinc-100/70 rounded-lg text-[11px] text-zinc-600 font-mono flex items-center space-x-2">
+                  <ShieldCheck className="w-4 h-4 text-zinc-700 flex-shrink-0" />
+                  <span>Doorstep fit inspection: try on before tender (COD verified).</span>
+                </div>
+
+                {/* Actions */}
+                <div className="pt-2 flex gap-2">
+                  <button
+                    onClick={() => {
+                      handleAddToCart(selectedProduct, selectedVariant);
+                      setSelectedProduct(null);
+                    }}
+                    className="flex-1 py-3 bg-zinc-950 hover:bg-black text-white text-xs font-medium uppercase tracking-[0.2em] transition flex items-center justify-center space-x-2"
+                  >
+                    <ShoppingBag className="w-3.5 h-3.5" />
+                    <span>Add to Bag</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleAddToCart(selectedProduct, selectedVariant);
+                      setSelectedProduct(null);
+                      setIsCheckoutOpen(true);
+                    }}
+                    className="px-5 py-3 bg-zinc-200 hover:bg-zinc-300 text-zinc-950 text-xs font-medium uppercase tracking-[0.15em] transition"
+                  >
+                    Instant Checkout
+                  </button>
                 </div>
               </div>
-            )}
-            <div className="mt-6 pt-4 border-t border-zinc-100 flex gap-2">
-              <button onClick={() => { handleAddToCart(selectedProduct, selectedVariant); setSelectedProduct(null); }}
-                className="flex-1 py-2.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-bold text-xs rounded-xl transition flex items-center justify-center space-x-1.5 btn-press">
-                <ShoppingBag className="w-3.5 h-3.5" />
-                <span>Add to Bag</span>
-              </button>
-              <button onClick={() => { handleAddToCart(selectedProduct, selectedVariant); setSelectedProduct(null); setIsCheckoutOpen(true); }}
-                className="flex-1 py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center justify-center space-x-1.5 btn-press">
-                <span>Buy with COD</span>
-              </button>
-              <Link href={`/store/${tenantSlug}/products/${selectedProduct.slug}`} className="py-2.5 px-3 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-semibold text-xs rounded-xl transition">
-                Details
-              </Link>
             </div>
           </div>
         </div>

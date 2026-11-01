@@ -486,6 +486,98 @@ export function FashionStorefront({
         </div>
       </section>
 
+      {/* ─── 3.5. Curated Capsule Departments (Visual Capsule Grid) ────────── */}
+      <section className="py-14 sm:py-20 border-b border-zinc-200/60 bg-[#faf9f6]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 pb-4 border-b border-zinc-200/60 gap-4">
+            <div>
+              <span className="text-[10px] font-mono tracking-[0.3em] uppercase text-zinc-400 block font-medium">
+                Core Archives // 04 Pillars
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-light uppercase tracking-tight text-zinc-950 font-serif mt-1">
+                Curated Departments
+              </h2>
+            </div>
+            <p className="text-xs text-zinc-500 font-mono tracking-wider">
+              Engineered textile weights & artisanal weaves
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {[
+              {
+                id: "tees",
+                number: "01",
+                name: "Archival Ts",
+                badge: "280 GSM Cotton",
+                desc: "Drop-shoulder organic jersey",
+                image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=85"
+              },
+              {
+                id: "denim",
+                number: "02",
+                name: "Kurabo Denim",
+                badge: "13.5oz Selvedge",
+                desc: "Toyoda shuttle loom woven",
+                image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&auto=format&fit=crop&q=85"
+              },
+              {
+                id: "hoodies",
+                number: "03",
+                name: "French Terry",
+                badge: "450 GSM Loopback",
+                desc: "Structural raglan cut",
+                image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=800&auto=format&fit=crop&q=85"
+              },
+              {
+                id: "all",
+                number: "04",
+                name: "Atelier Coats",
+                badge: "Bonded Wool",
+                desc: "Architectural volume tailoring",
+                image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&auto=format&fit=crop&q=85"
+              }
+            ].map((cap) => (
+              <div
+                key={cap.id}
+                onClick={() => {
+                  setActiveFilter(cap.id);
+                  const el = document.getElementById("catalog");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="group relative aspect-[3/4] overflow-hidden bg-zinc-200 cursor-pointer"
+              >
+                <img
+                  src={cap.image}
+                  alt={cap.name}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-300" />
+                
+                {/* Top Badge */}
+                <div className="absolute top-3 left-3 text-[9px] font-mono tracking-[0.2em] uppercase text-zinc-300 bg-black/60 backdrop-blur-xs px-2 py-0.5">
+                  {cap.number} // {cap.badge}
+                </div>
+
+                {/* Bottom Title & Link */}
+                <div className="absolute inset-x-3 bottom-3 text-white space-y-0.5">
+                  <h3 className="text-sm font-medium uppercase tracking-[0.15em] font-serif group-hover:text-zinc-200 transition">
+                    {cap.name}
+                  </h3>
+                  <p className="text-[10px] text-zinc-300 font-mono tracking-tight line-clamp-1">
+                    {cap.desc}
+                  </p>
+                  <div className="pt-1.5 flex items-center space-x-1 text-[10px] font-mono uppercase tracking-[0.2em] text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span>Explore Department</span>
+                    <ArrowRight className="w-2.5 h-2.5" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ─── 4. Borderless Catalog Navigation Bar ────────────────────────────── */}
       <main id="catalog" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-12 border-b border-zinc-200/60 gap-4">
@@ -850,6 +942,38 @@ export function FashionStorefront({
               <p className="text-xs text-zinc-600 leading-relaxed font-normal">
                 {psych.reassurancePledge || "Try on every piece in your home before tender. 48-hour complimentary courier size exchanges."}
               </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 7.5. Editorial Press & Acclaim Strip ───────────────────────────── */}
+      <section className="py-14 border-t border-zinc-200/60 bg-[#faf9f6]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-zinc-200">
+            <div className="px-4 py-3">
+              <p className="text-xs sm:text-sm font-serif italic text-zinc-800 leading-relaxed">
+                "The definitive benchmark in heavyweight architectural silhouettes."
+              </p>
+              <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-zinc-400 block mt-2.5">
+                — ATELIER JOURNAL
+              </span>
+            </div>
+            <div className="px-4 py-3">
+              <p className="text-xs sm:text-sm font-serif italic text-zinc-800 leading-relaxed">
+                "Dense 280 GSM to 450 GSM weaves with permanent shoulder geometry."
+              </p>
+              <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-zinc-400 block mt-2.5">
+                — VOGUE ARCHIVE REVIEW
+              </span>
+            </div>
+            <div className="px-4 py-3">
+              <p className="text-xs sm:text-sm font-serif italic text-zinc-800 leading-relaxed">
+                "Vintage Kurabo shuttle loom selvedge constructed without compromise."
+              </p>
+              <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-zinc-400 block mt-2.5">
+                — HIGHSNOBIETY
+              </span>
             </div>
           </div>
         </div>
