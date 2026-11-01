@@ -3,34 +3,34 @@
 @tailwind utilities;
 
 :root {
-  --background: #f8fafc;
-  --foreground: #090d16;
+  --background: #fafaf9;
+  --foreground: #1c1917;
   --card: #ffffff;
-  --card-foreground: #090d16;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  --border: #e2e8f0;
-  --primary: #090d16;
-  --primary-foreground: #ffffff;
-  --accent: #2563eb;
-  --accent-foreground: #ffffff;
-  --ring: #090d16;
+  --card-foreground: #1c1917;
+  --muted: #f5f5f4;
+  --muted-foreground: #78716c;
+  --border: #e7e5e4;
+  --primary: #d4af37;
+  --primary-foreground: #0c0a09;
+  --accent: #d4af37;
+  --accent-foreground: #0c0a09;
+  --ring: #d4af37;
   --radius: 0.75rem;
 }
 
 .dark {
-  --background: #08090d;
+  --background: #08080a;
   --foreground: #f4f4f5;
-  --card: #0e1017;
+  --card: #101014;
   --card-foreground: #f4f4f5;
-  --muted: #141722;
-  --muted-foreground: #94a3b8;
+  --muted: #16161a;
+  --muted-foreground: #a1a1aa;
   --border: rgba(255, 255, 255, 0.08);
-  --primary: #10b981;
-  --primary-foreground: #022c22;
-  --accent: #10b981;
-  --accent-foreground: #ffffff;
-  --ring: #10b981;
+  --primary: #e5b869;
+  --primary-foreground: #08080a;
+  --accent: #e5b869;
+  --accent-foreground: #08080a;
+  --ring: #e5b869;
 }
 
 * {
@@ -120,19 +120,19 @@ body {
 
 /* Unified Enterprise Blackish Obsidian & Titanium Tokens (100% Synchronized with .dark on <html>) */
 .studio-canvas {
-  background-color: #fafafa;
+  background-color: #fafaf9;
   background-image: 
-    radial-gradient(ellipse 90% 60% at 50% -8%, rgba(0, 0, 0, 0.04), transparent 70%),
-    linear-gradient(180deg, #ffffff 0%, #fafafa 50%, #f4f4f5 100%);
+    radial-gradient(ellipse 90% 60% at 50% -8%, rgba(212, 175, 55, 0.04), transparent 70%),
+    linear-gradient(180deg, #ffffff 0%, #fafaf9 50%, #f5f5f4 100%);
   background-attachment: fixed;
 }
 
 .dark .studio-canvas {
-  background-color: #07080b;
+  background-color: #08080a;
   background-image: 
-    radial-gradient(ellipse 85% 45% at 50% -5%, rgba(16, 185, 129, 0.06) 0%, transparent 65%),
+    radial-gradient(ellipse 85% 45% at 50% -5%, rgba(229, 184, 105, 0.07) 0%, transparent 65%),
     radial-gradient(ellipse 70% 35% at 50% 30%, rgba(255, 255, 255, 0.02) 0%, transparent 55%),
-    linear-gradient(180deg, #090a0f 0%, #06070a 50%, #030406 100%);
+    linear-gradient(180deg, #0a0a0d 0%, #08080a 50%, #050506 100%);
   background-attachment: fixed;
 }
 
@@ -146,7 +146,7 @@ body {
   transition: background 0.05s ease-out;
   background: radial-gradient(
     650px circle at var(--mouse-x, 50vw) var(--mouse-y, 35vh),
-    rgba(16, 185, 129, 0.04) 0%,
+    rgba(212, 175, 55, 0.04) 0%,
     transparent 70%
   );
   will-change: background;
@@ -156,7 +156,7 @@ body {
   opacity: 0.80;
   background: radial-gradient(
     650px circle at var(--mouse-x, 50vw) var(--mouse-y, 35vh),
-    rgba(16, 185, 129, 0.08) 0%,
+    rgba(229, 184, 105, 0.08) 0%,
     transparent 65%
   );
 }
@@ -189,8 +189,8 @@ body {
 .dark .interactive-grid-spotlight {
   opacity: 0.70;
   background-image: 
-    linear-gradient(to right, rgba(16, 185, 129, 0.08) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(16, 185, 129, 0.08) 1px, transparent 1px);
+    linear-gradient(to right, rgba(229, 184, 105, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(229, 184, 105, 0.07) 1px, transparent 1px);
 }
 
 /* Precision Micro-Grid Engineering Matrix (Linear / Raycast Style) */
@@ -236,16 +236,16 @@ body {
 }
 
 .luxury-card:hover {
-  border-color: rgba(16, 185, 129, 0.3);
+  border-color: rgba(212, 175, 55, 0.3);
   box-shadow: 
     0 2px 4px rgba(15, 23, 42, 0.04),
-    0 16px 36px -6px rgba(16, 185, 129, 0.08),
+    0 16px 36px -6px rgba(212, 175, 55, 0.08),
     0 32px 64px -12px rgba(15, 23, 42, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
 .dark .luxury-card {
-  background-color: rgba(14, 16, 23, 0.78);
+  background-color: rgba(16, 16, 20, 0.82);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.09);
@@ -259,9 +259,9 @@ body {
 }
 
 .dark .luxury-card:hover {
-  border-color: rgba(16, 185, 129, 0.35);
+  border-color: rgba(229, 184, 105, 0.35);
   box-shadow: 
-    0 0 25px -5px rgba(16, 185, 129, 0.15),
+    0 0 25px -5px rgba(229, 184, 105, 0.15),
     0 16px 36px -6px rgba(0, 0, 0, 0.9),
     0 36px 72px -16px rgba(0, 0, 0, 0.98),
     inset 0 1px 0 rgba(255, 255, 255, 0.20),
@@ -269,26 +269,26 @@ body {
   transform: translateY(-2px);
 }
 
-/* High-Converting Production Commerce Buttons (Shopify / Wise / Stripe Style) */
+/* High-Converting Production Commerce Buttons (Apple Pro / Champagne Gold Luxury Style) */
 .btn-glass-primary {
-  background: #10b981;
-  color: #022c22 !important;
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: linear-gradient(135deg, #f3c68f 0%, #e5b869 50%, #d4af37 100%);
+  color: #08080a !important;
+  border: 1px solid rgba(255, 255, 255, 0.40);
   font-weight: 700;
   box-shadow: 
     0 1px 2px rgba(0, 0, 0, 0.2),
-    0 8px 20px -4px rgba(16, 185, 129, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.40);
+    0 8px 20px -4px rgba(229, 184, 105, 0.40),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
   transition: all 0.15s ease-out;
 }
 
 .btn-glass-primary:hover {
-  background: #34d399 !important;
-  color: #022c22 !important;
+  background: linear-gradient(135deg, #fae0b8 0%, #f3c68f 50%, #e5b869 100%) !important;
+  color: #08080a !important;
   box-shadow: 
     0 2px 4px rgba(0, 0, 0, 0.25),
-    0 12px 28px -4px rgba(16, 185, 129, 0.50),
-    inset 0 1px 0 rgba(255, 255, 255, 0.50);
+    0 12px 28px -4px rgba(229, 184, 105, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
   transform: translateY(-1px);
 }
 
