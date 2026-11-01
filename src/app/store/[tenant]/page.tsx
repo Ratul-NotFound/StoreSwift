@@ -136,8 +136,8 @@ export default function TenantStorefrontPage({
       description: p.description,
       price: parseFloat(p.basePrice),
       comparePrice: parseFloat(p.basePrice) * 1.35,
-      imageUrl: p.imageUrl || "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=80",
-      secondaryImage: p.secondaryImage || p.imageUrl || "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&auto=format&fit=crop&q=80",
+      imageUrl: p.imageUrl || "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=1000&auto=format&fit=crop&q=85",
+      secondaryImage: p.secondaryImage || p.imageUrl || "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=1000&auto=format&fit=crop&q=85",
       badge: p.badge || (idx === 0 ? "Best Seller" : idx === 1 ? "Trending" : "New"),
       rating: p.rating || 4.9,
       variants: seed.variants.filter((v) => v.productSlug === p.slug)
@@ -153,8 +153,8 @@ export default function TenantStorefrontPage({
         description: p.description,
         price: parseFloat(p.basePrice),
         comparePrice: parseFloat(p.basePrice) * 1.35,
-        imageUrl: p.imageUrl || "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=80",
-        secondaryImage: p.secondaryImage || p.imageUrl || "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&auto=format&fit=crop&q=80",
+        imageUrl: p.imageUrl || "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=1000&auto=format&fit=crop&q=85",
+        secondaryImage: p.secondaryImage || p.imageUrl || "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=1000&auto=format&fit=crop&q=85",
         badge: p.badge || (idx === 0 ? "Best Seller" : idx === 1 ? "Trending" : "New"),
         rating: p.rating || 4.9,
         variants: seed.variants.filter((v) => v.productSlug === p.slug)

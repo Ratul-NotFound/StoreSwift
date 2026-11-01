@@ -30,7 +30,7 @@ export const CATEGORIES_MAP: Record<string, CategoryConfig> = {
     editorialSubtitle: "STUDIO ARCHIVE 2026 • COMPILED WITH CERTIFIED ORGANIC YARNS",
     iconName: "Shirt",
     recommendedTemplate: "minimal",
-    heroImage: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1600&auto=format&fit=crop&q=85",
+    heroImage: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1600&auto=format&fit=crop&q=85",
     defaultOptions: ["Size", "Color"],
     sampleProducts: [
       {
@@ -38,8 +38,8 @@ export const CATEGORIES_MAP: Record<string, CategoryConfig> = {
         slug: "heavyweight-cotton-oversized-tee",
         description: "280 GSM combed organic cotton with relaxed drop-shoulder cut, blind-stitched hem, and durable ribbed collar.",
         basePrice: "34.00",
-        imageUrl: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=1000&auto=format&fit=crop&q=85",
-        secondaryImage: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1000&auto=format&fit=crop&q=85",
+        imageUrl: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=1000&auto=format&fit=crop&q=85",
+        secondaryImage: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=1000&auto=format&fit=crop&q=85",
         badge: "Essential Drop",
         rating: 4.9,
         options: { Size: ["S", "M", "L", "XL"], Color: ["Pitch Black", "Washed Slate", "Bone White"] }
@@ -49,7 +49,7 @@ export const CATEGORIES_MAP: Record<string, CategoryConfig> = {
         slug: "relaxed-taper-denim-jeans",
         description: "13.5oz Kurabo raw indigo selvedge denim with tailored modern taper and hand-hammered antique copper rivets.",
         basePrice: "98.00",
-        imageUrl: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=1000&auto=format&fit=crop&q=85",
+        imageUrl: "https://images.unsplash.com/photo-1542272604-780c96856592?w=1000&auto=format&fit=crop&q=85",
         secondaryImage: "https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=1000&auto=format&fit=crop&q=85",
         badge: "Selvedge Denim",
         rating: 5.0,
@@ -60,8 +60,8 @@ export const CATEGORIES_MAP: Record<string, CategoryConfig> = {
         slug: "french-terry-raglan-hoodie",
         description: "Ultra-dense custom loopback French terry hoodie with double-walled hood and seamless zero-chafing kangaroo pocket.",
         basePrice: "85.00",
-        imageUrl: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=1000&auto=format&fit=crop&q=85",
-        secondaryImage: "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=1000&auto=format&fit=crop&q=85",
+        imageUrl: "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=1000&auto=format&fit=crop&q=85",
+        secondaryImage: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1000&auto=format&fit=crop&q=85",
         badge: "Winter Heavyweight",
         rating: 4.9,
         options: { Size: ["M", "L", "XL"], Color: ["Heather Grey", "Onyx Black"] }
