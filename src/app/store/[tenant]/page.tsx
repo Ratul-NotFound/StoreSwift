@@ -60,10 +60,10 @@ import { trackEvent } from "@/lib/analytics";
 // Visual Category Collections per Department
 const CATEGORY_COLLECTIONS: Record<string, Array<{ title: string; subtitle: string; image: string; tag: string }>> = {
   fashion: [
-    { title: "Heavyweight Ts", subtitle: "280 GSM Combed Organic", image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=700&auto=format&fit=crop&q=80", tag: "Heavy Cotton" },
-    { title: "Kurabo Selvedge", subtitle: "13.5oz Raw Indigo", image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=700&auto=format&fit=crop&q=80", tag: "Japanese Mill" },
-    { title: "Loopback Terry", subtitle: "450 GSM Raglan Cut", image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=700&auto=format&fit=crop&q=80", tag: "French Terry" },
-    { title: "Archival Tailoring", subtitle: "Bonded Twill Overcoats", image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=700&auto=format&fit=crop&q=80", tag: "Atelier Outerwear" }
+    { title: "Heavyweight Tees", subtitle: "280 GSM Combed Organic", image: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=700&auto=format&fit=crop&q=85", tag: "Heavy Cotton" },
+    { title: "Kurabo Selvedge", subtitle: "13.5oz Raw Indigo", image: "https://images.unsplash.com/photo-1542272604-780c96856592?w=700&auto=format&fit=crop&q=85", tag: "Japanese Mill" },
+    { title: "Loopback Terry", subtitle: "450 GSM Raglan Cut", image: "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=700&auto=format&fit=crop&q=85", tag: "French Terry" },
+    { title: "Archival Tailoring", subtitle: "Bonded Twill Overcoats", image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=700&auto=format&fit=crop&q=85", tag: "Atelier Outerwear" }
   ],
   shoes: [
     { title: "Propulsion Runners", subtitle: "Carbon Torsion Plate", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=700&auto=format&fit=crop&q=80", tag: "Nitrogen Foam" },
