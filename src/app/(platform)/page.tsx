@@ -665,107 +665,190 @@ export default function PlatformLandingPage() {
         {/* Subtle Ambient Emerald Backdrop behind Store Showcase */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[950px] lg:w-[1200px] h-[480px] bg-gradient-to-b from-emerald-500/[0.06] to-transparent rounded-full blur-[110px] pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 w-full my-auto">
-          <div className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-500 dark:text-emerald-400">
-              Turnkey Storefront Architectures
-            </span>
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-zinc-100/90 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-white/[0.08] text-xs shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
+              <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-700 dark:text-zinc-300 font-medium">
+                Turnkey Vertical Architectures
+              </span>
+            </div>
             <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight leading-tight bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400/80 bg-clip-text text-transparent">
               6 Tailored Industry Storefronts
             </h2>
-            <p className="text-xs sm:text-sm lg:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            <p className="text-xs sm:text-sm lg:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-xl mx-auto">
               Every vertical requires tailored customer psychology. Select an industry to preview its pre-configured store architecture.
             </p>
           </div>
 
-          {/* Unified Minimalist Category Selector Tabs */}
-          <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {INDUSTRY_STOREFRONTS.map((store) => {
-              const isSelected = selectedStoreSlug === store.slug;
-              return (
-                <button
-                  key={store.slug}
-                  onClick={() => setSelectedStoreSlug(store.slug)}
-                  className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
-                    isSelected
-                      ? "bg-emerald-500 text-zinc-950 font-bold shadow-lg shadow-emerald-500/20 scale-105"
-                      : "bg-white dark:bg-zinc-900/60 border border-zinc-200/90 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800"
-                  }`}
-                >
-                  {store.category}
-                </button>
-              );
-            })}
+          {/* Unified Minimalist Category Selector Track */}
+          <div className="flex justify-center">
+            <div className="inline-flex items-center p-1.5 rounded-2xl sm:rounded-full bg-zinc-100/90 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-white/[0.08] backdrop-blur-xl shadow-inner gap-1 max-w-full overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {INDUSTRY_STOREFRONTS.map((store) => {
+                const isSelected = selectedStoreSlug === store.slug;
+                return (
+                  <button
+                    key={store.slug}
+                    onClick={() => setSelectedStoreSlug(store.slug)}
+                    className={`px-4 py-2 rounded-xl sm:rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center space-x-2 ${
+                      isSelected
+                        ? "bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white shadow-sm border border-zinc-200/90 dark:border-white/10"
+                        : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-200/60 dark:hover:bg-white/[0.04] border border-transparent"
+                    }`}
+                  >
+                    {isSelected && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)] flex-shrink-0" />
+                    )}
+                    <span>{store.category}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Featured Store Showcase: Clean Studio Frame */}
-          <div className="luxury-card rounded-3xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 items-stretch">
-            {/* Left: High-Res Visual Preview */}
-            <div className="lg:col-span-7 relative min-h-[260px] sm:min-h-[340px] lg:min-h-[440px] bg-zinc-950 overflow-hidden group">
-              <img
-                src={activeStore.image}
-                alt={activeStore.name}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/85 via-zinc-950/20 to-transparent pointer-events-none" />
-              <div className="absolute top-4 sm:top-5 left-4 sm:left-5 bg-zinc-950/85 backdrop-blur-md text-white text-[11px] font-bold px-3.5 py-1.5 rounded-full border border-white/10 shadow-lg">
-                {activeStore.template} • {activeStore.category}
+          {/* Featured Store Showcase: Studio Frame & Blueprint Cockpit */}
+          <div className="luxury-card rounded-3xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 items-stretch border border-zinc-200/80 dark:border-white/[0.08] shadow-2xl">
+            {/* Left Column: High-Fidelity Browser Window Frame */}
+            <div className="lg:col-span-7 flex flex-col bg-zinc-950 border-b lg:border-b-0 lg:border-r border-zinc-200/80 dark:border-white/[0.08] overflow-hidden group">
+              {/* Sleek Browser Navigation Header */}
+              <div className="h-10 px-4 flex items-center justify-between border-b border-white/[0.08] bg-zinc-900/90 backdrop-blur-md flex-shrink-0">
+                {/* Traffic Light Dots */}
+                <div className="flex items-center space-x-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                </div>
+
+                {/* Centered URL Capsule */}
+                <div className="flex items-center space-x-1.5 px-3 py-1 rounded-md bg-zinc-950/80 border border-white/[0.06] text-[11px] font-mono text-zinc-400">
+                  <Lock className="w-2.5 h-2.5 text-emerald-400" />
+                  <span className="text-zinc-300 font-medium">{activeStore.slug}.storeswift.io</span>
+                </div>
+
+                {/* Status Indicator */}
+                <div className="flex items-center space-x-1.5 text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="hidden sm:inline font-bold">200 OK</span>
+                </div>
               </div>
-              <div className="absolute bottom-4 sm:bottom-5 left-4 sm:left-5 right-4 sm:right-5 text-left hidden sm:block">
-                <p className="text-base font-bold text-white drop-shadow-md">{activeStore.name}</p>
-                <p className="text-xs text-zinc-300 drop-shadow line-clamp-1">{activeStore.headline}</p>
+
+              {/* Viewport Preview Stage */}
+              <div className="relative flex-1 min-h-[280px] sm:min-h-[360px] lg:min-h-[420px] overflow-hidden">
+                <img
+                  src={activeStore.image}
+                  alt={activeStore.name}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/20 to-transparent pointer-events-none" />
+
+                {/* Floating Category Persona Pill */}
+                <div className="absolute top-4 left-4 backdrop-blur-md bg-zinc-950/80 text-white text-[11px] font-medium px-3.5 py-1.5 rounded-full border border-white/10 shadow-lg flex items-center space-x-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  <span>{activeStore.template} • {activeStore.category}</span>
+                </div>
+
+                {/* Editorial Subtitle Strip */}
+                <div className="absolute bottom-4 left-4 right-4 text-left">
+                  <div className="backdrop-blur-md bg-zinc-950/75 border border-white/10 rounded-xl p-3 sm:p-3.5 shadow-xl flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 block font-semibold">
+                        Core Industry Value Prop
+                      </span>
+                      <p className="text-xs sm:text-sm text-zinc-200 line-clamp-1 font-medium mt-0.5">
+                        {activeStore.headline}
+                      </p>
+                    </div>
+                    <span className="hidden sm:inline-block text-[10px] font-mono text-zinc-400 bg-white/[0.06] px-2 py-1 rounded border border-white/[0.08] flex-shrink-0 ml-3">
+                      App Router
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Right: Technical Features & Actions */}
-            <div className="lg:col-span-5 p-6 sm:p-7 lg:p-8 flex flex-col justify-between space-y-6 bg-zinc-50/40 dark:bg-zinc-950/60 border-t lg:border-t-0 lg:border-l border-zinc-200/80 dark:border-white/[0.08]">
-              <div className="space-y-4 sm:space-y-5">
+            {/* Right Column: Architecture Cockpit & Capabilities */}
+            <div className="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between space-y-6 bg-zinc-50/50 dark:bg-zinc-950/60">
+              <div className="space-y-5">
+                {/* Meta Header */}
                 <div>
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-500 dark:text-emerald-400">
-                    Pre-Configured Architecture
-                  </span>
-                  <h3 className="text-xl sm:text-2xl font-bold text-zinc-950 dark:text-white tracking-tight mt-1">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                      Pre-Configured Architecture
+                    </span>
+                    <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                      {activeStore.category}
+                    </span>
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white tracking-tight">
                     {activeStore.name}
                   </h3>
-                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
+                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2.5">
                     {activeStore.description}
                   </p>
                 </div>
 
-                <div className="space-y-2 pt-3 border-t border-zinc-200/80 dark:border-white/[0.08]">
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-500 dark:text-emerald-400 block mb-1">
-                    Industry Capabilities Included:
+                {/* Capabilities Feature Rows */}
+                <div className="space-y-2 pt-4 border-t border-zinc-200/80 dark:border-white/[0.08]">
+                  <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block mb-2">
+                    Engineered Vertical Capabilities
                   </span>
-                  {activeStore.highlights.map((feat, idx) => (
-                    <div key={idx} className="flex items-center space-x-2.5 text-xs text-zinc-700 dark:text-zinc-300">
-                      <div className="w-4 h-4 rounded-full bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 border border-emerald-500/20">
-                        <Check className="w-3 h-3 text-emerald-500 dark:text-emerald-400" />
+                  <div className="space-y-2">
+                    {activeStore.highlights.map((feat, idx) => (
+                      <div key={idx} className="flex items-center space-x-2.5 text-xs text-zinc-700 dark:text-zinc-300">
+                        <div className="w-5 h-5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 border border-emerald-500/20">
+                          <Check className="w-3 h-3" />
+                        </div>
+                        <span className="font-medium text-zinc-800 dark:text-zinc-200">{feat}</span>
                       </div>
-                      <span className="font-medium">{feat}</span>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              <div className="space-y-3 pt-4 border-t border-zinc-200/80 dark:border-white/[0.08]">
+              {/* Bottom Specs & Action Footer */}
+              <div className="space-y-4 pt-4 border-t border-zinc-200/80 dark:border-white/[0.08]">
+                {/* Segmented Specs Matrix */}
+                <div className="grid grid-cols-3 gap-2 p-3 rounded-xl bg-zinc-100 dark:bg-zinc-900/70 border border-zinc-200/80 dark:border-white/[0.08] text-center">
+                  <div>
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block">
+                      Commission
+                    </span>
+                    <span className="text-xs sm:text-sm font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                      0% Direct
+                    </span>
+                  </div>
+                  <div className="border-x border-zinc-200/80 dark:border-white/[0.08]">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block">
+                      Setup Time
+                    </span>
+                    <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white">
+                      3 Minutes
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block">
+                      Checkout
+                    </span>
+                    <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white">
+                      20s Express
+                    </span>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row gap-2.5">
                   <Link
                     href={`/store/${activeStore.slug}`}
-                    className="flex-1 py-3 px-4 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-xs rounded-xl transition text-center flex items-center justify-center space-x-1.5 shadow-md shadow-emerald-500/20 btn-press"
+                    className="flex-1 py-3 px-4 btn-glass-primary text-xs font-bold rounded-xl transition text-center flex items-center justify-center space-x-2 shadow-lg shadow-emerald-500/20 btn-press group"
                   >
                     <span>Open Live Storefront</span>
-                    <ArrowUpRight className="w-4 h-4" />
+                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </Link>
                   <Link
                     href={`/onboarding?category=${activeStore.categoryParam}`}
-                    className="py-3 px-5 bg-white hover:bg-zinc-50 border border-zinc-200/90 text-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 dark:text-zinc-300 dark:hover:text-white font-semibold text-xs rounded-xl transition text-center shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
+                    className="py-3 px-5 bg-white hover:bg-zinc-50 border border-zinc-200/90 text-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 dark:text-zinc-200 dark:hover:text-white font-semibold text-xs rounded-xl transition text-center shadow-[0_1px_2px_rgba(0,0,0,0.02)] btn-press"
                   >
                     <span>Clone Template</span>
                   </Link>
-                </div>
-                <div className="flex items-center justify-between text-[11px] text-zinc-500 dark:text-zinc-400 px-1">
-                  <span>Commission: <strong className="text-emerald-500 dark:text-emerald-400 font-mono">0%</strong></span>
-                  <span>Setup: <strong className="text-zinc-950 dark:text-white">3 Minutes</strong></span>
-                  <span>Mobile: <strong className="text-zinc-950 dark:text-white">100% Ready</strong></span>
                 </div>
               </div>
             </div>
