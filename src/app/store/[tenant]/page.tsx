@@ -332,6 +332,7 @@ export default function TenantStorefrontPage({
         categoryName={categoryConfig.name}
         onOpenCheckout={() => setIsCheckoutOpen(true)}
         onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
+        defaultDismissed={isFashionVertical}
       />
 
       {isFashionVertical ? (

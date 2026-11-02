@@ -22,6 +22,7 @@ export interface DemoStoreBarProps {
   categoryName: string;
   onOpenCheckout?: () => void;
   onOpenTrackOrder?: () => void;
+  defaultDismissed?: boolean;
 }
 
 export function DemoStoreBar({
@@ -29,10 +30,11 @@ export function DemoStoreBar({
   storeDisplayName,
   categoryName,
   onOpenCheckout,
-  onOpenTrackOrder
+  onOpenTrackOrder,
+  defaultDismissed = false
 }: DemoStoreBarProps) {
   const [isSwitcherOpen, setIsSwitcherOpen] = useState(false);
-  const [isDismissed, setIsDismissed] = useState(false);
+  const [isDismissed, setIsDismissed] = useState(defaultDismissed);
 
   if (isDismissed) {
     return (

@@ -15,14 +15,11 @@ import {
   ShieldCheck,
   CreditCard,
   Lock,
-  ExternalLink,
   Flame,
   Plus,
   Minus,
   Ruler,
-  Info,
-  Sparkles,
-  Layers
+  Info
 } from "lucide-react";
 import { IStoreTemplate } from "@/templates/types";
 import { CartItem } from "@/lib/cart";
@@ -68,7 +65,7 @@ export interface FashionStorefrontProps {
   storeTemplatesMap: Record<string, any>;
 }
 
-// Rich Curated Catalog for Universal Visual Density across all 3 Templates
+// Curated items for catalog
 const CURATED_CATALOG_EXPANSION = [
   {
     id: "cat-exp-4",
@@ -130,8 +127,8 @@ const CURATED_CATALOG_EXPANSION = [
     description: "14oz raw Japanese indigo denim cut in a modern relaxed straight silhouette with classic redline selvedge ID.",
     price: 110.0,
     comparePrice: 155.0,
-    imageUrl: "https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=1000&auto=format&fit=crop&q=85",
-    secondaryImage: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=1000&auto=format&fit=crop&q=85",
+    imageUrl: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=1000&auto=format&fit=crop&q=85",
+    secondaryImage: "https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=1000&auto=format&fit=crop&q=85",
     badge: "Japanese Mill",
     rating: 4.9,
     reviewCount: 42,
@@ -200,34 +197,6 @@ const CURATED_CATALOG_EXPANSION = [
   }
 ];
 
-// Verified Social Proof Live Stream
-const RECENT_SALES = [
-  {
-    name: "Marcus V.",
-    city: "Stockholm, Sweden",
-    item: "Heavyweight Organic Oversized Tee",
-    price: 34.0,
-    time: "2 mins ago",
-    image: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=160&auto=format&fit=crop&q=80"
-  },
-  {
-    name: "Elena R.",
-    city: "New York, USA",
-    item: "Japanese Selvedge Taper Denim",
-    price: 98.0,
-    time: "7 mins ago",
-    image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=160&auto=format&fit=crop&q=80"
-  },
-  {
-    name: "Tariq H.",
-    city: "London, UK",
-    item: "Bonded Wool Tailored Overcoat",
-    price: 185.0,
-    time: "14 mins ago",
-    image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=160&auto=format&fit=crop&q=80"
-  }
-];
-
 export function FashionStorefront({
   storeDisplayName,
   tenantSlug,
@@ -244,13 +213,30 @@ export function FashionStorefront({
   onOpenCheckout,
   onOpenTrackOrder
 }: FashionStorefrontProps) {
-  const { success: toastSuccess } = useToast();
-
-  // 3 Selectable Archetypes Matching User's Given Reference Pictures:
+  // 3 Archetypes Matching User's Given Reference Pictures:
   // "boutique" = Reference Picture 1 (Clothing. / 50% OFF Summer Super Sale / 3-split Women-Men-Accessories)
   // "milano" = Reference Picture 2 (M MILANO / GET YOURSELF INTO THE RIGHT GEAR / Staggered Vertical Strips)
   // "trend" = Reference Picture 3 (FASHION / LET'S EXPLORE UNIQUE CLOTHES / Yellow Highlighter / 3 Pastel Cards)
   const [selectedFashionStyle, setSelectedFashionStyle] = useState<"boutique" | "milano" | "trend">("boutique");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const style = params.get("style");
+      if (style === "milano" || style === "trend" || style === "boutique") {
+        setSelectedFashionStyle(style);
+      }
+    }
+  }, []);
+
+  const handleSelectFashionStyle = (style: "boutique" | "milano" | "trend") => {
+    setSelectedFashionStyle(style);
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      url.searchParams.set("style", style);
+      window.history.replaceState(null, "", url.toString());
+    }
+  };
 
   const [selectedColors, setSelectedColors] = useState<Record<string, string>>({});
   const [, setSelectedSizes] = useState<Record<string, string>>({});
@@ -269,17 +255,6 @@ export function FashionStorefront({
   const [quickViewSelectedSize, setQuickViewSelectedSize] = useState("");
   const [quickViewSelectedColor, setQuickViewSelectedColor] = useState("");
   const [quickViewImageAngle, setQuickViewImageAngle] = useState<"primary" | "secondary">("primary");
-  const [salesToastIndex, setSalesToastIndex] = useState(0);
-  const [isSalesToastDismissed, setIsSalesToastDismissed] = useState(false);
-
-  // Auto-rotate verified sales toast
-  useEffect(() => {
-    if (isSalesToastDismissed) return;
-    const interval = setInterval(() => {
-      setSalesToastIndex((prev) => (prev + 1) % RECENT_SALES.length);
-    }, 9000);
-    return () => clearInterval(interval);
-  }, [isSalesToastDismissed]);
 
   // Dynamic Multi-Currency Converter
   const formatPrice = (usdAmount: number) => {
@@ -415,62 +390,56 @@ export function FashionStorefront({
     onOpenCheckout,
     onOpenTrackOrder,
     setIsSizeGuideOpen,
-    onSelectFashionStyle: setSelectedFashionStyle
+    onSelectFashionStyle: handleSelectFashionStyle
   };
 
   return (
-    <div className="min-h-screen flex flex-col font-sans antialiased">
-      {/* ─── Fashion Reference Template Selector Bar (Ref 1, Ref 2, Ref 3) ─── */}
-      <div className="sticky top-0 z-50 bg-[#121214] text-white border-b border-neutral-800 shadow-xl py-2 px-4 font-sans text-xs">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center space-x-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-300">
-              Template Archetype:
-            </span>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-            <button
-              onClick={() => setSelectedFashionStyle("boutique")}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition flex items-center space-x-1.5 ${
-                selectedFashionStyle === "boutique"
-                  ? "bg-[#422216] text-[#f5eae3] border border-[#a45d3e] shadow-md font-bold scale-105"
-                  : "bg-neutral-800 text-neutral-300 hover:bg-neutral-700 hover:text-white"
-              }`}
-            >
-              <span>Template 1: The Boutique (Ref 1)</span>
-            </button>
-
-            <button
-              onClick={() => setSelectedFashionStyle("milano")}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition flex items-center space-x-1.5 ${
-                selectedFashionStyle === "milano"
-                  ? "bg-white text-black shadow-md font-bold scale-105"
-                  : "bg-neutral-800 text-neutral-300 hover:bg-neutral-700 hover:text-white"
-              }`}
-            >
-              <span>Template 2: Milano Streetwear (Ref 2)</span>
-            </button>
-
-            <button
-              onClick={() => setSelectedFashionStyle("trend")}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition flex items-center space-x-1.5 ${
-                selectedFashionStyle === "trend"
-                  ? "bg-[#ffd630] text-black shadow-md font-bold scale-105"
-                  : "bg-neutral-800 text-neutral-300 hover:bg-neutral-700 hover:text-white"
-              }`}
-            >
-              <span>Template 3: High-Street Trend (Ref 3)</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* ─── Render Active Sub-Template ──────────────────────────────────────── */}
+    <div className="min-h-screen flex flex-col font-sans antialiased relative">
+      {/* ─── Render Active Sub-Template (100% Full-Bleed Matching User References) ─── */}
       {selectedFashionStyle === "boutique" && <BoutiqueStyle {...sharedProps} />}
       {selectedFashionStyle === "milano" && <MilanoStyle {...sharedProps} />}
       {selectedFashionStyle === "trend" && <TrendStyle {...sharedProps} />}
+
+      {/* ─── Sleek Floating Bottom Switcher Dock (Clean, Minimal, Non-Intrusive) ─── */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-black/90 text-white backdrop-blur-md px-3 sm:px-4 py-2 rounded-full shadow-2xl border border-white/20 flex items-center space-x-1.5 sm:space-x-2 text-xs font-sans">
+        <span className="hidden sm:inline-flex items-center space-x-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-400 mr-1">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <span>Switch Template:</span>
+        </span>
+
+        <button
+          onClick={() => handleSelectFashionStyle("boutique")}
+          className={`px-3 py-1 rounded-full text-xs font-semibold transition ${
+            selectedFashionStyle === "boutique"
+              ? "bg-[#422216] text-[#f5eae3] border border-[#a45d3e] font-bold shadow-xs scale-105"
+              : "text-neutral-300 hover:text-white"
+          }`}
+        >
+          1. Boutique (Ref 1)
+        </button>
+
+        <button
+          onClick={() => handleSelectFashionStyle("milano")}
+          className={`px-3 py-1 rounded-full text-xs font-semibold transition ${
+            selectedFashionStyle === "milano"
+              ? "bg-white text-black font-bold shadow-xs scale-105"
+              : "text-neutral-300 hover:text-white"
+          }`}
+        >
+          2. Milano (Ref 2)
+        </button>
+
+        <button
+          onClick={() => handleSelectFashionStyle("trend")}
+          className={`px-3 py-1 rounded-full text-xs font-semibold transition ${
+            selectedFashionStyle === "trend"
+              ? "bg-[#ffd630] text-black font-bold shadow-xs scale-105"
+              : "text-neutral-300 hover:text-white"
+          }`}
+        >
+          3. Trend (Ref 3)
+        </button>
+      </div>
 
       {/* ─── Universal Quick View Modal (Ella / WoodMart Signature) ─────────── */}
       {quickViewProduct && (
@@ -736,38 +705,6 @@ export function FashionStorefront({
               </div>
             </div>
           </div>
-        </div>
-      )}
-
-      {/* ─── Social Proof Live Order Activity Toast ─────────────────────────── */}
-      {!isSalesToastDismissed && (
-        <div className="fixed bottom-4 left-4 z-40 hidden sm:flex items-center space-x-3 p-3 bg-white/95 backdrop-blur-md border border-neutral-200/90 shadow-xl rounded-xl max-w-sm animate-fade-in font-sans text-neutral-900">
-          <img
-            src={RECENT_SALES[salesToastIndex].image}
-            alt="Recent order"
-            className="w-11 h-13 object-cover rounded-md flex-shrink-0"
-          />
-          <div className="min-w-0 flex-1 text-xs">
-            <div className="flex items-center space-x-1 text-[10px] text-neutral-400">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
-              <span>Verified Order • {RECENT_SALES[salesToastIndex].city}</span>
-            </div>
-            <p className="font-semibold text-neutral-950 truncate mt-0.5">
-              {RECENT_SALES[salesToastIndex].item}
-            </p>
-            <div className="flex items-center justify-between text-[10px] text-neutral-500 mt-0.5">
-              <span className="font-bold text-black">{formatPrice(RECENT_SALES[salesToastIndex].price)}</span>
-              <span>{RECENT_SALES[salesToastIndex].time}</span>
-            </div>
-          </div>
-          <button
-            onClick={() => setIsSalesToastDismissed(true)}
-            className="text-neutral-400 hover:text-black p-1 transition"
-            title="Dismiss notification"
-            aria-label="Dismiss"
-          >
-            <X className="w-3.5 h-3.5" />
-          </button>
         </div>
       )}
     </div>
