@@ -25,7 +25,12 @@ import {
   ArrowUpRight,
   Tag,
   Mail,
-  Globe
+  Globe,
+  Ruler,
+  Copy,
+  Grid,
+  Columns,
+  Info
 } from "lucide-react";
 import { IStoreTemplate } from "@/templates/types";
 import { CartItem } from "@/lib/cart";
@@ -68,7 +73,7 @@ export interface FashionStorefrontProps {
   storeTemplatesMap: Record<string, any>;
 }
 
-// 6 Visual Department Categories with Editorial Fashion Studio Imagery
+// 6 Visual Department Categories with Clean Studio Imagery
 const FASHION_DEPARTMENTS = [
   {
     id: "tees",
@@ -99,7 +104,7 @@ const FASHION_DEPARTMENTS = [
     number: "04",
     title: "Tailored Coats",
     subtitle: "Bonded Italian Wool",
-    image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&auto=format&fit=crop&q=85",
+    image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=800&auto=format&fit=crop&q=85",
     tag: "Atelier Line"
   },
   {
@@ -120,7 +125,7 @@ const FASHION_DEPARTMENTS = [
   }
 ];
 
-// Rich Curated Catalog for Universal 4-Column Visual Density (5 Additional Archival Pieces)
+// Rich Curated Catalog for Universal 4-Column Visual Density
 const CURATED_CATALOG_EXPANSION = [
   {
     id: "cat-exp-4",
@@ -130,16 +135,17 @@ const CURATED_CATALOG_EXPANSION = [
     description: "Architectural structured overcoat tailored in 520 GSM bonded Italian wool twill with horn buttons and satin lining.",
     price: 185.0,
     comparePrice: 250.0,
-    imageUrl: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1000&auto=format&fit=crop&q=85",
-    secondaryImage: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=1000&auto=format&fit=crop&q=85",
+    imageUrl: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=1000&auto=format&fit=crop&q=85",
+    secondaryImage: "https://images.unsplash.com/photo-1508427953056-b00b8d78ebf5?w=1000&auto=format&fit=crop&q=85",
     badge: "New Season",
     rating: 5.0,
+    reviewCount: 38,
     fabricBadge: "520 GSM Wool",
     fabricSub: "Bonded Italian Twill // Horn Buttons",
     sizes: ["S", "M", "L", "XL"],
     colors: [
       { name: "Charcoal Melange", hex: "#27272a" },
-      { name: "Camel", hex: "#b45309" }
+      { name: "Camel Tan", hex: "#b45309" }
     ],
     variants: [
       { sku: "OVERCOAT-S", title: "S", price: "185.00" },
@@ -159,6 +165,7 @@ const CURATED_CATALOG_EXPANSION = [
     secondaryImage: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=1000&auto=format&fit=crop&q=85",
     badge: "Trending",
     rating: 4.8,
+    reviewCount: 54,
     fabricBadge: "300 GSM Jersey",
     fabricSub: "Vintage Enzyme Wash // Boxy Cut",
     sizes: ["S", "M", "L", "XL"],
@@ -184,6 +191,7 @@ const CURATED_CATALOG_EXPANSION = [
     secondaryImage: "https://images.unsplash.com/photo-1542272604-780c96856592?w=1000&auto=format&fit=crop&q=85",
     badge: "Japanese Mill",
     rating: 4.9,
+    reviewCount: 42,
     fabricBadge: "14oz Redline",
     fabricSub: "Toyoda Shuttle Loom // Antique Rivets",
     sizes: ["30", "32", "34", "36"],
@@ -209,6 +217,7 @@ const CURATED_CATALOG_EXPANSION = [
     secondaryImage: "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=1000&auto=format&fit=crop&q=85",
     badge: "Extrafine Merino",
     rating: 4.9,
+    reviewCount: 31,
     fabricBadge: "100% Merino",
     fabricSub: "12-Gauge Seamless Knit // Ribbed Neck",
     sizes: ["S", "M", "L", "XL"],
@@ -234,6 +243,7 @@ const CURATED_CATALOG_EXPANSION = [
     secondaryImage: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=1000&auto=format&fit=crop&q=85",
     badge: "Vegetable-Tanned",
     rating: 5.0,
+    reviewCount: 26,
     fabricBadge: "Tuscan Leather",
     fabricSub: "Full-Grain Cowhide // Brass Hardware",
     sizes: ["One Size"],
@@ -268,7 +278,13 @@ export function FashionStorefront({
   const [, setSelectedSizes] = useState<Record<string, string>>({});
   const [activeDepartment, setActiveDepartment] = useState<string>("all");
   const [activeTab, setActiveTab] = useState<"trending" | "new" | "bestsellers" | "sale">("trending");
+  const [priceFilter, setPriceFilter] = useState<"all" | "under-50" | "50-100" | "over-100">("all");
+  const [sizeFilter, setSizeFilter] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("featured");
+  const [gridColumns, setGridColumns] = useState<4 | 2>(4);
+  const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
+  const [sizeGuideUnit, setSizeGuideUnit] = useState<"in" | "cm">("in");
+  const [copiedPromo, setCopiedPromo] = useState(false);
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSuccess, setNewsletterSuccess] = useState(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
@@ -291,13 +307,22 @@ export function FashionStorefront({
     });
   };
 
+  const handleCopyPromo = () => {
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText("ATELIER15");
+      setCopiedPromo(true);
+      toastSuccess("Promo Code Copied", "Use code ATELIER15 at checkout for 15% off.");
+      setTimeout(() => setCopiedPromo(false), 3000);
+    }
+  };
+
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newsletterEmail) return;
     setNewsletterSuccess(true);
   };
 
-  // Harmonized Complete Store Catalog (Combining Base Products + Rich Curated Pieces)
+  // Harmonized Complete Store Catalog
   const fullCatalog = useMemo(() => {
     const baseItems = products.map((p) => {
       const isTee = p.slug.includes("tee");
@@ -315,6 +340,7 @@ export function FashionStorefront({
         secondaryImage: p.secondaryImage,
         badge: p.badge || (isTee ? "Best Seller" : isDenim ? "Kurabo Selvedge" : "Heavyweight"),
         rating: p.rating || 4.9,
+        reviewCount: 48,
         fabricBadge: isTee ? "280 GSM Cotton" : isDenim ? "13.5oz Selvedge" : "450 GSM Terry",
         fabricSub: isTee
           ? "Combed Organic Ring-Spun"
@@ -343,15 +369,27 @@ export function FashionStorefront({
   const displayedCatalog = useMemo(() => {
     return fullCatalog
       .filter((item) => {
+        // Department Filter
         if (activeDepartment !== "all" && item.category !== activeDepartment) {
           return false;
         }
+        // Collection Tab
         if (activeTab === "sale" && item.comparePrice <= item.price) {
           return false;
         }
-        if (activeTab === "bestsellers" && !item.badge?.toLowerCase().includes("seller")) {
-          return true;
+        if (activeTab === "bestsellers" && !item.badge?.toLowerCase().includes("seller") && (item.rating || 0) < 5.0) {
+          return false;
         }
+        if (activeTab === "new" && !item.badge?.toLowerCase().includes("new") && !item.badge?.toLowerCase().includes("drop")) {
+          return false;
+        }
+        // Price Filter
+        if (priceFilter === "under-50" && item.price >= 50) return false;
+        if (priceFilter === "50-100" && (item.price < 50 || item.price > 100)) return false;
+        if (priceFilter === "over-100" && item.price <= 100) return false;
+        // Size Filter
+        if (sizeFilter !== "all" && !item.sizes.includes(sizeFilter)) return false;
+
         return true;
       })
       .sort((a, b) => {
@@ -360,28 +398,52 @@ export function FashionStorefront({
         if (sortBy === "rating") return b.rating - a.rating;
         return 0;
       });
-  }, [fullCatalog, activeDepartment, activeTab, sortBy]);
+  }, [fullCatalog, activeDepartment, activeTab, priceFilter, sizeFilter, sortBy]);
+
+  const activeFilterCount = (activeDepartment !== "all" ? 1 : 0) + (priceFilter !== "all" ? 1 : 0) + (sizeFilter !== "all" ? 1 : 0);
+
+  const resetFilters = () => {
+    setActiveDepartment("all");
+    setPriceFilter("all");
+    setSizeFilter("all");
+    setActiveTab("trending");
+  };
 
   return (
     <div className="min-h-screen flex flex-col font-sans bg-white text-neutral-950 selection:bg-neutral-900 selection:text-white antialiased">
-      {/* ─── 1. Top Announcement Strip (Refined Luxury Sans) ───────────────── */}
-      <div className="py-2.5 px-4 bg-neutral-950 text-neutral-300 text-[10px] font-sans tracking-[0.25em] uppercase text-center border-b border-neutral-900">
+      {/* ─── 1. Unified Luxury Announcement Strip ───────────────────────────── */}
+      <div className="py-2.5 px-4 bg-neutral-950 text-neutral-300 text-[10px] font-sans tracking-[0.2em] uppercase border-b border-neutral-900">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <span className="hidden lg:inline-block text-neutral-400 font-medium">
-            AUTUMN / WINTER 2026 ARCHIVE
-          </span>
-          <span className="mx-auto lg:mx-0 font-medium text-neutral-200">
-            COMPLIMENTARY WORLDWIDE DELIVERY OVER $100 • 14-DAY DOORSTEP FIT TRIAL
-          </span>
-          <span className="hidden lg:inline-block text-neutral-400 font-medium">
-            CERTIFIED ORGANIC TEXTILES
-          </span>
+          <div className="hidden md:flex items-center space-x-3 text-neutral-400 font-medium">
+            <span>AUTUMN / WINTER 2026 ARCHIVE</span>
+            <span className="text-neutral-700">•</span>
+            <span className="text-neutral-300">COMPLIMENTARY WORLDWIDE DELIVERY OVER $100</span>
+          </div>
+          <div className="mx-auto md:mx-0 flex items-center space-x-3">
+            <span className="text-neutral-300">
+              FIRST ORDER? ENJOY 15% OFF WITH CODE <strong className="text-white tracking-widest font-mono font-bold">ATELIER15</strong>
+            </span>
+            <button
+              onClick={handleCopyPromo}
+              className="text-[9px] uppercase tracking-wider font-semibold text-neutral-400 hover:text-white underline underline-offset-2 transition flex items-center space-x-1"
+              title="Copy Coupon Code"
+            >
+              {copiedPromo ? <Check className="w-3 h-3 text-emerald-400 inline" /> : <Copy className="w-3 h-3 inline" />}
+              <span>{copiedPromo ? "Copied" : "Copy"}</span>
+            </button>
+          </div>
+          <div className="hidden lg:flex items-center space-x-4 text-neutral-400">
+            <span className="flex items-center space-x-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>
+              <span>14-DAY DOORSTEP TRIAL</span>
+            </span>
+          </div>
         </div>
       </div>
 
-      {/* ─── 2. Enterprise Fashion Header (SSENSE / COS Benchmark) ─────────── */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200/70 transition-colors">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-6">
+      {/* ─── 2. Enterprise Fashion Header ───────────────────────────────────── */}
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200/80 transition-colors">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-6">
           {/* Mobile: Hamburger Menu Toggle (< lg) */}
           <div className="flex items-center space-x-2 lg:hidden">
             <button
@@ -390,7 +452,7 @@ export function FashionStorefront({
               className="p-2 -ml-2 text-neutral-900 hover:text-black transition"
               aria-label="Open navigation menu"
             >
-              <Menu className="w-5 h-5 stroke-[1.75]" />
+              <Menu className="w-5 h-5 stroke-[1.5]" />
             </button>
             <button
               type="button"
@@ -398,19 +460,19 @@ export function FashionStorefront({
               className="p-2 text-neutral-700 hover:text-black transition sm:hidden"
               aria-label="Search"
             >
-              <Search className="w-4 h-4 stroke-[1.75]" />
+              <Search className="w-4 h-4 stroke-[1.5]" />
             </button>
           </div>
 
-          {/* Left: Brand Wordmark (Anchored Left, Never Wraps) */}
+          {/* Left: Brand Wordmark (Anchored Left, Never Collides) */}
           <Link
             href={`/store/${tenantSlug}`}
             className="flex flex-col items-start group flex-shrink-0"
           >
-            <span className="text-xl sm:text-2xl font-normal tracking-[0.28em] uppercase text-black font-serif block leading-none whitespace-nowrap">
+            <span className="text-xl sm:text-2xl font-normal tracking-[0.28em] uppercase text-black font-serif leading-none whitespace-nowrap">
               {storeDisplayName}
             </span>
-            <span className="text-[9px] font-sans tracking-[0.35em] uppercase text-neutral-400 block mt-1.5 font-medium">
+            <span className="text-[8.5px] font-sans tracking-[0.35em] uppercase text-neutral-400 block mt-1.5 font-medium">
               ATELIER ARCHIVE // EST. 2026
             </span>
           </Link>
@@ -418,7 +480,10 @@ export function FashionStorefront({
           {/* Center: Department Navigation Links (Desktop) */}
           <nav className="hidden lg:flex items-center space-x-7 text-[11px] font-sans font-medium uppercase tracking-[0.2em] text-neutral-500">
             <button
-              onClick={() => setActiveDepartment("all")}
+              onClick={() => {
+                setActiveDepartment("all");
+                document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" });
+              }}
               className={`hover:text-black transition-colors py-1 ${
                 activeDepartment === "all" ? "text-black border-b border-black font-semibold" : ""
               }`}
@@ -426,7 +491,10 @@ export function FashionStorefront({
               All Pieces
             </button>
             <button
-              onClick={() => setActiveDepartment("outerwear")}
+              onClick={() => {
+                setActiveDepartment("outerwear");
+                document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" });
+              }}
               className={`hover:text-black transition-colors py-1 ${
                 activeDepartment === "outerwear" ? "text-black border-b border-black font-semibold" : ""
               }`}
@@ -434,7 +502,10 @@ export function FashionStorefront({
               Outerwear
             </button>
             <button
-              onClick={() => setActiveDepartment("tees")}
+              onClick={() => {
+                setActiveDepartment("tees");
+                document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" });
+              }}
               className={`hover:text-black transition-colors py-1 ${
                 activeDepartment === "tees" ? "text-black border-b border-black font-semibold" : ""
               }`}
@@ -442,7 +513,10 @@ export function FashionStorefront({
               Tees
             </button>
             <button
-              onClick={() => setActiveDepartment("denim")}
+              onClick={() => {
+                setActiveDepartment("denim");
+                document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" });
+              }}
               className={`hover:text-black transition-colors py-1 ${
                 activeDepartment === "denim" ? "text-black border-b border-black font-semibold" : ""
               }`}
@@ -450,7 +524,10 @@ export function FashionStorefront({
               Denim
             </button>
             <button
-              onClick={() => setActiveDepartment("hoodies")}
+              onClick={() => {
+                setActiveDepartment("hoodies");
+                document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" });
+              }}
               className={`hover:text-black transition-colors py-1 ${
                 activeDepartment === "hoodies" ? "text-black border-b border-black font-semibold" : ""
               }`}
@@ -463,13 +540,13 @@ export function FashionStorefront({
           </nav>
 
           {/* Right: Functional Shopping Controls */}
-          <div className="flex items-center space-x-2 sm:space-x-4 text-neutral-800 flex-shrink-0">
+          <div className="flex items-center space-x-2 sm:space-x-3 text-neutral-800 flex-shrink-0">
             <button
               onClick={onOpenSearch}
               className="hidden sm:flex hover:text-black transition items-center space-x-1.5 py-1.5 px-3 rounded-full hover:bg-neutral-100 text-xs font-sans uppercase tracking-[0.18em]"
               title="Search collection"
             >
-              <Search className="w-3.5 h-3.5 stroke-[1.75]" />
+              <Search className="w-3.5 h-3.5 stroke-[1.5]" />
               <span className="text-[11px] font-medium">Search</span>
             </button>
 
@@ -479,7 +556,7 @@ export function FashionStorefront({
               title="Saved items"
               aria-label="Wishlist"
             >
-              <Heart className="w-4 h-4 stroke-[1.75]" />
+              <Heart className="w-4 h-4 stroke-[1.5]" />
               {wishlist.length > 0 && (
                 <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-black text-white text-[9px] font-bold rounded-full flex items-center justify-center font-sans">
                   {wishlist.length}
@@ -494,7 +571,7 @@ export function FashionStorefront({
                 className="hidden md:flex items-center space-x-1.5 hover:text-black text-[11px] font-sans tracking-[0.18em] uppercase py-1.5 px-3 rounded-full hover:bg-neutral-100 transition"
                 title="Track order"
               >
-                <Truck className="w-3.5 h-3.5 stroke-[1.75] text-neutral-500" />
+                <Truck className="w-3.5 h-3.5 stroke-[1.5] text-neutral-500" />
                 <span className="font-medium">Track</span>
               </button>
             )}
@@ -503,7 +580,7 @@ export function FashionStorefront({
               onClick={onOpenCart}
               className="py-2 px-3.5 bg-black hover:bg-neutral-800 text-white rounded-full text-[11px] font-sans uppercase tracking-[0.18em] font-medium transition flex items-center space-x-2 active:scale-95 shadow-xs"
             >
-              <ShoppingBag className="w-3.5 h-3.5 stroke-[1.75]" />
+              <ShoppingBag className="w-3.5 h-3.5 stroke-[1.5]" />
               <span>Bag</span>
               <span className="w-4 h-4 bg-white text-black text-[9px] font-bold rounded-full flex items-center justify-center">
                 {cartItems.reduce((s, i) => s + i.quantity, 0)}
@@ -518,23 +595,22 @@ export function FashionStorefront({
         </div>
       </header>
 
-      {/* ─── Mobile Navigation Slide-Out Drawer ───────────────────────────── */}
+      {/* ─── Mobile Slide-Over Navigation Drawer ────────────────────────────── */}
       {isMobileNavOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden animate-fade-in font-sans">
+        <div className="fixed inset-0 z-50 flex lg:hidden font-sans">
           <div
             className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
             onClick={() => setIsMobileNavOpen(false)}
           />
-
-          <div className="fixed inset-y-0 left-0 w-full max-w-xs bg-white shadow-2xl p-6 flex flex-col justify-between overflow-y-auto border-r border-neutral-200">
-            <div>
-              <div className="flex items-center justify-between pb-6 border-b border-neutral-100">
+          <div className="relative w-4/5 max-w-sm bg-white h-full shadow-2xl flex flex-col justify-between p-6 z-10 overflow-y-auto">
+            <div className="space-y-6">
+              <div className="flex items-center justify-between pb-4 border-b border-neutral-100">
                 <div>
-                  <span className="font-serif text-lg tracking-[0.25em] uppercase font-normal text-black block">
+                  <span className="text-lg font-normal tracking-[0.25em] uppercase font-serif text-black block">
                     {storeDisplayName}
                   </span>
-                  <span className="text-[9px] font-sans tracking-[0.3em] uppercase text-neutral-400 font-medium">
-                    Studio Archive // 2026
+                  <span className="text-[8px] font-sans tracking-[0.35em] text-neutral-400 uppercase">
+                    ATELIER ARCHIVE // EST. 2026
                   </span>
                 </div>
                 <button
@@ -542,129 +618,82 @@ export function FashionStorefront({
                   className="p-2 text-neutral-500 hover:text-black rounded-lg transition"
                   aria-label="Close menu"
                 >
-                  <X className="w-5 h-5 stroke-[1.75]" />
+                  <X className="w-5 h-5 stroke-[1.5]" />
                 </button>
               </div>
 
-              <div className="py-6 space-y-4">
-                <p className="text-[10px] font-sans uppercase tracking-[0.25em] text-neutral-400 font-semibold">
-                  Shop By Category
-                </p>
-                <nav className="flex flex-col space-y-2 text-xs uppercase tracking-[0.16em] font-medium text-neutral-800">
+              {/* Department Links */}
+              <nav className="flex flex-col space-y-3 text-xs font-medium uppercase tracking-[0.2em] text-neutral-800">
+                {[
+                  { id: "all", label: "All Pieces" },
+                  { id: "outerwear", label: "Tailored Outerwear" },
+                  { id: "tees", label: "Heavyweight Tees" },
+                  { id: "denim", label: "Kurabo Selvedge" },
+                  { id: "hoodies", label: "Loopback Knitwear" },
+                  { id: "accessories", label: "Leather & Carry" }
+                ].map((item) => (
                   <button
+                    key={item.id}
                     onClick={() => {
-                      setActiveDepartment("all");
+                      setActiveDepartment(item.id);
                       setIsMobileNavOpen(false);
+                      const el = document.getElementById("catalog");
+                      if (el) el.scrollIntoView({ behavior: "smooth" });
                     }}
-                    className={`text-left py-2 flex items-center justify-between transition ${
-                      activeDepartment === "all" ? "text-black font-bold pl-2 border-l-2 border-black" : "hover:text-black"
+                    className={`text-left py-2.5 border-b border-neutral-100 transition flex items-center justify-between ${
+                      activeDepartment === item.id ? "font-bold text-black" : "text-neutral-600"
                     }`}
                   >
-                    <span>All Pieces ({fullCatalog.length})</span>
+                    <span>{item.label}</span>
                     <ChevronRight className="w-3.5 h-3.5 text-neutral-400" />
                   </button>
-                  <button
-                    onClick={() => {
-                      setActiveDepartment("outerwear");
-                      setIsMobileNavOpen(false);
-                    }}
-                    className={`text-left py-2 flex items-center justify-between transition ${
-                      activeDepartment === "outerwear" ? "text-black font-bold pl-2 border-l-2 border-black" : "hover:text-black"
-                    }`}
-                  >
-                    <span>Tailored Wool Overcoats</span>
-                    <ChevronRight className="w-3.5 h-3.5 text-neutral-400" />
-                  </button>
-                  <button
-                    onClick={() => {
-                      setActiveDepartment("tees");
-                      setIsMobileNavOpen(false);
-                    }}
-                    className={`text-left py-2 flex items-center justify-between transition ${
-                      activeDepartment === "tees" ? "text-black font-bold pl-2 border-l-2 border-black" : "hover:text-black"
-                    }`}
-                  >
-                    <span>280 GSM Heavyweight Tees</span>
-                    <ChevronRight className="w-3.5 h-3.5 text-neutral-400" />
-                  </button>
-                  <button
-                    onClick={() => {
-                      setActiveDepartment("denim");
-                      setIsMobileNavOpen(false);
-                    }}
-                    className={`text-left py-2 flex items-center justify-between transition ${
-                      activeDepartment === "denim" ? "text-black font-bold pl-2 border-l-2 border-black" : "hover:text-black"
-                    }`}
-                  >
-                    <span>Kurabo Selvedge Denim</span>
-                    <ChevronRight className="w-3.5 h-3.5 text-neutral-400" />
-                  </button>
-                  <button
-                    onClick={() => {
-                      setActiveDepartment("hoodies");
-                      setIsMobileNavOpen(false);
-                    }}
-                    className={`text-left py-2 flex items-center justify-between transition ${
-                      activeDepartment === "hoodies" ? "text-black font-bold pl-2 border-l-2 border-black" : "hover:text-black"
-                    }`}
-                  >
-                    <span>French Terry Knitwear</span>
-                    <ChevronRight className="w-3.5 h-3.5 text-neutral-400" />
-                  </button>
-                </nav>
-              </div>
+                ))}
+                <a
+                  href="#lookbook"
+                  onClick={() => setIsMobileNavOpen(false)}
+                  className="text-left py-2.5 border-b border-neutral-100 text-neutral-600 hover:text-black transition flex items-center justify-between"
+                >
+                  <span>Atelier Lookbook</span>
+                  <ChevronRight className="w-3.5 h-3.5 text-neutral-400" />
+                </a>
+              </nav>
 
-              <div className="py-4 border-t border-neutral-100 space-y-3">
-                <p className="text-[10px] font-sans uppercase tracking-[0.25em] text-neutral-400 font-semibold">
-                  Editorial & Standards
-                </p>
-                <div className="flex flex-col space-y-2 text-xs uppercase tracking-[0.16em] font-medium text-neutral-600">
-                  <a
-                    href="#lookbook"
-                    onClick={() => setIsMobileNavOpen(false)}
-                    className="hover:text-black transition py-1"
+              {/* Utility Actions in Mobile Drawer */}
+              <div className="space-y-2.5 pt-2">
+                <button
+                  onClick={() => {
+                    setIsMobileNavOpen(false);
+                    onOpenSearch();
+                  }}
+                  className="w-full flex items-center space-x-2 text-xs text-neutral-700 py-2.5 px-3 rounded bg-neutral-100 hover:bg-neutral-200 transition font-medium uppercase tracking-wider"
+                >
+                  <Search className="w-4 h-4 stroke-[1.5]" />
+                  <span>Search Catalog</span>
+                </button>
+
+                {onOpenTrackOrder && (
+                  <button
+                    onClick={() => {
+                      setIsMobileNavOpen(false);
+                      onOpenTrackOrder();
+                    }}
+                    className="w-full flex items-center space-x-2 text-xs text-neutral-700 py-2.5 px-3 rounded bg-neutral-100 hover:bg-neutral-200 transition font-medium uppercase tracking-wider"
                   >
-                    Editorial Lookbook
-                  </a>
-                  <a
-                    href="#standards"
-                    onClick={() => setIsMobileNavOpen(false)}
-                    className="hover:text-black transition py-1"
-                  >
-                    Standards of Craft
-                  </a>
-                </div>
+                    <Truck className="w-4 h-4 stroke-[1.5]" />
+                    <span>Track Consignment</span>
+                  </button>
+                )}
               </div>
             </div>
 
-            <div className="pt-6 border-t border-neutral-100 space-y-3">
-              {onOpenTrackOrder && (
-                <button
-                  onClick={() => {
-                    setIsMobileNavOpen(false);
-                    onOpenTrackOrder();
-                  }}
-                  className="w-full py-2.5 px-3 rounded-lg bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs uppercase tracking-wider font-medium flex items-center justify-center space-x-2 transition"
-                >
-                  <Truck className="w-3.5 h-3.5 text-neutral-500" />
-                  <span>Track Consignment</span>
-                </button>
-              )}
-
-              {onOpenCheckout && cartItems.length > 0 && (
-                <button
-                  onClick={() => {
-                    setIsMobileNavOpen(false);
-                    onOpenCheckout();
-                  }}
-                  className="w-full py-2.5 px-3 rounded-lg bg-black text-white text-xs uppercase tracking-wider font-semibold flex items-center justify-center space-x-2 hover:bg-neutral-800 transition"
-                >
-                  <span>1-Page Express Checkout</span>
-                </button>
-              )}
-
-              <p className="text-[10px] font-sans text-neutral-400 text-center tracking-wide pt-2">
-                Doorstep Fit Inspection • Free Exchanges
+            {/* Bottom Footer Info in Drawer */}
+            <div className="pt-6 border-t border-neutral-100 space-y-2 text-[11px] text-neutral-500 font-sans">
+              <div className="flex items-center space-x-1.5 text-emerald-600 font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                <span>Doorstep Fit Trial Included</span>
+              </div>
+              <p className="text-neutral-400 text-[10px]">
+                Complimentary worldwide courier on orders over $100.
               </p>
             </div>
           </div>
@@ -672,37 +701,37 @@ export function FashionStorefront({
       )}
 
       {/* ─── 3. Full-Bleed Editorial Campaign Hero ─────────────────────────── */}
-      <section className="relative w-full h-[80vh] min-h-[560px] max-h-[800px] bg-neutral-950 overflow-hidden flex items-end">
+      <section className="relative w-full h-[78vh] min-h-[560px] max-h-[820px] bg-neutral-950 overflow-hidden flex items-end">
         <img
-          src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1920&auto=format&fit=crop&q=85"
-          alt="Campaign Hero"
-          className="absolute inset-0 w-full h-full object-cover object-top opacity-80"
+          src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=1920&auto=format&fit=crop&q=85"
+          alt="The Atelier Archive Hero"
+          className="absolute inset-0 w-full h-full object-cover object-[center_35%] opacity-90"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/15" />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14 sm:pb-20 w-full text-white space-y-4">
-          <span className="text-[11px] font-sans tracking-[0.35em] uppercase text-neutral-300 block font-medium">
-            Autumn / Winter 2026 Campaign • Drop 01
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 sm:pb-22 w-full text-white space-y-4">
+          <span className="text-[11px] font-sans tracking-[0.38em] uppercase text-neutral-300 block font-medium">
+            Autumn / Winter 2026 Collection • Drop 01
           </span>
 
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-normal uppercase tracking-tight text-white font-serif leading-none">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-normal uppercase tracking-tight text-white font-serif leading-[1.05]">
             The Archival Silhouette.
           </h1>
 
           <p className="text-xs sm:text-sm text-neutral-300 max-w-xl leading-relaxed font-normal">
-            Constructed in dense 280 GSM organic cotton and raw 13.5oz Kurabo shuttle-loom selvedge. Engineered for architectural volume, lasting shoulder geometry, and zero fabric warping.
+            Constructed in dense 520 GSM bonded Italian wool twill and Japanese Kurabo shuttle-loom selvedge. Engineered for architectural volume, lasting shoulder geometry, and zero fabric warping.
           </p>
 
           <div className="pt-2 flex flex-wrap items-center gap-4">
             <a
               href="#catalog"
-              className="px-8 py-3.5 bg-white hover:bg-neutral-100 text-black text-xs font-semibold uppercase tracking-[0.2em] transition rounded-xs"
+              className="px-8 py-3.5 bg-white hover:bg-neutral-100 text-black text-xs font-semibold uppercase tracking-[0.2em] transition rounded-xs shadow-sm"
             >
               Shop Collection
             </a>
             <a
               href="#lookbook"
-              className="px-8 py-3.5 bg-black/50 hover:bg-black text-white border border-white/40 text-xs font-semibold uppercase tracking-[0.2em] transition backdrop-blur-sm rounded-xs"
+              className="px-8 py-3.5 bg-black/60 hover:bg-black text-white border border-white/40 text-xs font-semibold uppercase tracking-[0.2em] transition backdrop-blur-sm rounded-xs"
             >
               View Lookbook
             </a>
@@ -710,7 +739,62 @@ export function FashionStorefront({
         </div>
       </section>
 
-      {/* ─── 4. Shop By Category (Visual Department Grid) ──────────────────── */}
+      {/* ─── 4. Customer Trust & Value Proposition Strip (4 Pillars) ───────── */}
+      <section className="py-7 border-b border-neutral-200/80 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+            <div className="flex items-start space-x-3.5">
+              <Truck className="w-5 h-5 stroke-[1.25] text-neutral-800 flex-shrink-0 mt-0.5" />
+              <div>
+                <h4 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-black font-sans">
+                  Complimentary Delivery
+                </h4>
+                <p className="text-[11px] text-neutral-500 mt-0.5 leading-relaxed font-sans">
+                  Free express courier dispatch over $100.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-3.5">
+              <ShieldCheck className="w-5 h-5 stroke-[1.25] text-neutral-800 flex-shrink-0 mt-0.5" />
+              <div>
+                <h4 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-black font-sans">
+                  Doorstep Fit Trial
+                </h4>
+                <p className="text-[11px] text-neutral-500 mt-0.5 leading-relaxed font-sans">
+                  Inspect & try on before Cash on Delivery.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-3.5">
+              <RotateCcw className="w-5 h-5 stroke-[1.25] text-neutral-800 flex-shrink-0 mt-0.5" />
+              <div>
+                <h4 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-black font-sans">
+                  14-Day Free Exchange
+                </h4>
+                <p className="text-[11px] text-neutral-500 mt-0.5 leading-relaxed font-sans">
+                  Doorstep size swap arranged in 48 hours.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-3.5">
+              <Lock className="w-5 h-5 stroke-[1.25] text-neutral-800 flex-shrink-0 mt-0.5" />
+              <div>
+                <h4 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-black font-sans">
+                  Certified Authenticity
+                </h4>
+                <p className="text-[11px] text-neutral-500 mt-0.5 leading-relaxed font-sans">
+                  Genuine Japanese Kurabo denim & GOTS cotton.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 6. Shop By Department (Clean Commercial Cards) ────────────────── */}
       <section className="py-16 sm:py-20 border-b border-neutral-100 bg-[#fafafa]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 pb-4 border-b border-neutral-200 gap-4">
@@ -743,16 +827,16 @@ export function FashionStorefront({
                   alt={dept.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute top-2.5 left-2.5 text-[8px] font-sans tracking-wider uppercase text-white bg-black/60 px-1.5 py-0.5 rounded-xs font-medium">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent opacity-85 group-hover:opacity-95 transition-opacity" />
+                <div className="absolute top-2.5 left-2.5 text-[8px] font-sans tracking-[0.2em] uppercase text-white/90 bg-black/50 backdrop-blur-xs px-2 py-0.5 rounded-xs font-medium">
                   {dept.tag}
                 </div>
-                <div className="absolute inset-x-2.5 bottom-2.5 text-white space-y-0.5">
-                  <span className="text-[9px] font-sans tracking-widest text-neutral-400 block font-medium">{dept.number}</span>
-                  <h3 className="text-xs font-semibold uppercase tracking-wider font-serif">
+                <div className="absolute inset-x-3 bottom-3 text-white space-y-0.5">
+                  <span className="text-[8.5px] font-sans tracking-[0.25em] text-neutral-300 block font-medium">{dept.number}</span>
+                  <h3 className="text-xs sm:text-sm font-normal uppercase tracking-wider font-serif">
                     {dept.title}
                   </h3>
-                  <p className="text-[9px] text-neutral-300 font-sans line-clamp-1">
+                  <p className="text-[9px] text-neutral-300/80 font-sans line-clamp-1">
                     {dept.subtitle}
                   </p>
                 </div>
@@ -762,10 +846,10 @@ export function FashionStorefront({
         </div>
       </section>
 
-      {/* ─── 5. Production-Grade Product Catalog Grid ──────────────────────── */}
+      {/* ─── 7. Production-Grade Product Catalog Grid & Filters ─────────────── */}
       <main id="catalog" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-10 border-b border-neutral-200 gap-4">
-          {/* Collection Tab Switchers */}
+        {/* Collection Tab Switchers */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between pb-6 mb-8 border-b border-neutral-200 gap-6">
           <div className="flex items-center space-x-6 overflow-x-auto text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400">
             <button
               onClick={() => setActiveTab("trending")}
@@ -801,8 +885,108 @@ export function FashionStorefront({
             </button>
           </div>
 
-          {/* Department Filter & Sort Dropdown */}
-          <div className="flex items-center space-x-3 text-xs text-neutral-600 font-sans self-end sm:self-auto">
+          {/* Size Guide Trigger & View Controls */}
+          <div className="flex items-center space-x-4 text-xs font-sans">
+            <button
+              type="button"
+              onClick={() => setIsSizeGuideOpen(true)}
+              className="flex items-center space-x-1.5 text-neutral-600 hover:text-black font-medium transition"
+            >
+              <Ruler className="w-3.5 h-3.5" />
+              <span>Size & Fit Guide</span>
+            </button>
+
+            <span className="text-neutral-300">|</span>
+
+            {/* Grid Column Layout Switch (4 vs 2) */}
+            <div className="hidden sm:flex items-center space-x-1 bg-neutral-100 p-0.5 rounded">
+              <button
+                type="button"
+                onClick={() => setGridColumns(4)}
+                className={`p-1.5 rounded transition ${gridColumns === 4 ? "bg-white shadow-xs text-black" : "text-neutral-500 hover:text-black"}`}
+                title="4 Columns View"
+              >
+                <Grid className="w-3.5 h-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setGridColumns(2)}
+                className={`p-1.5 rounded transition ${gridColumns === 2 ? "bg-white shadow-xs text-black" : "text-neutral-500 hover:text-black"}`}
+                title="2 Columns Editorial View"
+              >
+                <Columns className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Granular Filtering Strip (Department, Price, Size, Sort) */}
+        <div className="flex flex-wrap items-center justify-between gap-4 pb-8 mb-8 border-b border-neutral-100 text-xs font-sans">
+          <div className="flex flex-wrap items-center gap-3">
+            {/* Department Filter Pills */}
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+              {[
+                { id: "all", label: "All Pieces" },
+                { id: "outerwear", label: "Coats" },
+                { id: "tees", label: "Tees" },
+                { id: "denim", label: "Denim" },
+                { id: "hoodies", label: "Knits" },
+                { id: "accessories", label: "Accessories" }
+              ].map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveDepartment(cat.id)}
+                  className={`px-3 py-1.5 rounded-full text-[11px] font-medium transition ${
+                    activeDepartment === cat.id
+                      ? "bg-black text-white"
+                      : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
+                  }`}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Price Filter Dropdown */}
+            <select
+              value={priceFilter}
+              onChange={(e) => setPriceFilter(e.target.value as any)}
+              className="px-3 py-1.5 bg-neutral-100 border border-neutral-200 rounded-full text-[11px] font-medium text-neutral-800 outline-none cursor-pointer"
+            >
+              <option value="all">Price: All</option>
+              <option value="under-50">Under $50</option>
+              <option value="50-100">$50 – $100</option>
+              <option value="over-100">Over $100</option>
+            </select>
+
+            {/* Size Filter Dropdown */}
+            <select
+              value={sizeFilter}
+              onChange={(e) => setSizeFilter(e.target.value)}
+              className="px-3 py-1.5 bg-neutral-100 border border-neutral-200 rounded-full text-[11px] font-medium text-neutral-800 outline-none cursor-pointer"
+            >
+              <option value="all">Size: All</option>
+              <option value="S">Size S</option>
+              <option value="M">Size M</option>
+              <option value="L">Size L</option>
+              <option value="XL">Size XL</option>
+              <option value="30">Waist 30</option>
+              <option value="32">Waist 32</option>
+              <option value="34">Waist 34</option>
+            </select>
+
+            {activeFilterCount > 0 && (
+              <button
+                onClick={resetFilters}
+                className="text-[11px] text-rose-600 hover:text-rose-700 underline underline-offset-2 font-medium"
+              >
+                Clear Filters ({activeFilterCount})
+              </button>
+            )}
+          </div>
+
+          {/* Right: Showing Items & Sort Dropdown */}
+          <div className="flex items-center space-x-3 text-neutral-600 self-end sm:self-auto">
             <span className="text-[11px] text-neutral-400 font-medium">
               Showing {displayedCatalog.length} pieces
             </span>
@@ -821,8 +1005,14 @@ export function FashionStorefront({
           </div>
         </div>
 
-        {/* 4-Column Responsive Universal Fashion Product Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 sm:gap-x-7 gap-y-12 sm:gap-y-14">
+        {/* Responsive Universal Fashion Product Grid */}
+        <div
+          className={`grid gap-x-5 sm:gap-x-7 gap-y-12 sm:gap-y-14 ${
+            gridColumns === 4
+              ? "grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+              : "grid-cols-1 sm:grid-cols-2"
+          }`}
+        >
           {displayedCatalog.map((p) => {
             const isWishlisted = wishlist.includes(p.id);
             const currentColor = selectedColors[p.id] || p.colors[0]?.name || "Standard";
@@ -958,6 +1148,7 @@ export function FashionStorefront({
                     <div className="flex items-center space-x-1 text-[11px] text-neutral-500">
                       <Star className="w-3 h-3 text-amber-500 fill-current" />
                       <span className="font-sans text-[10px] font-medium">{p.rating}</span>
+                      <span className="text-[9px] text-neutral-400">({p.reviewCount || 48})</span>
                     </div>
                   </div>
 
@@ -990,7 +1181,7 @@ export function FashionStorefront({
         </div>
       </main>
 
-      {/* ─── 6. Shoppable Lookbook Ensemble ("The Modern Minimalist Kit") ───── */}
+      {/* ─── 8. Shoppable Lookbook Ensemble ("The Modern Minimalist Kit") ───── */}
       <section id="lookbook" className="py-20 border-t border-neutral-200 bg-[#fafafa]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-xl mx-auto text-center space-y-3 mb-16">
@@ -1010,7 +1201,7 @@ export function FashionStorefront({
             <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="aspect-[3/4] overflow-hidden bg-neutral-200 rounded-xs">
                 <img
-                  src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1000&auto=format&fit=crop&q=85"
+                  src="https://images.unsplash.com/photo-1508427953056-b00b8d78ebf5?w=1000&auto=format&fit=crop&q=85"
                   alt="Ensemble Look 01"
                   className="w-full h-full object-cover"
                 />
@@ -1083,8 +1274,82 @@ export function FashionStorefront({
         </div>
       </section>
 
-      {/* ─── 7. Standards of Craft & Fabric Philosophy (Editorial 3-Column) ──── */}
+      {/* ─── 9. Customer Appraisals & Verified Reviews ──────────────────────── */}
       <section className="py-20 border-t border-neutral-200 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center space-y-2 mb-14">
+            <span className="text-[10px] font-sans tracking-[0.3em] uppercase text-neutral-400 block font-medium">
+              Verified Patron Feedback
+            </span>
+            <h2 className="text-3xl font-normal uppercase tracking-tight text-black font-serif">
+              Customer Appraisals
+            </h2>
+            <div className="flex items-center justify-center space-x-2 pt-1 text-xs text-neutral-500">
+              <div className="flex text-amber-500">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-3.5 h-3.5 fill-current" />
+                ))}
+              </div>
+              <span className="font-semibold text-neutral-900">4.9 / 5.0</span>
+              <span>•</span>
+              <span>Based on 1,280+ verified orders</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                quote: "The 280 GSM cotton has incredible weight and structural drape. It doesn't lose its shoulder geometry or shrink after multiple wash cycles.",
+                author: "Marcus V.",
+                city: "Stockholm, Sweden",
+                item: "Heavyweight Organic Oversized Tee"
+              },
+              {
+                quote: "The raw Kurabo denim is stiff at first but breaks in beautifully. The doorstep fit trial gave me 100% confidence before paying Cash on Delivery.",
+                author: "Elena R.",
+                city: "New York, USA",
+                item: "Japanese Selvedge Taper Denim"
+              },
+              {
+                quote: "Tailored overcoat arrived within 24 hours. The horn buttons and bonded Italian wool feel like garments four times the price.",
+                author: "Tariq H.",
+                city: "London, UK",
+                item: "Bonded Wool Tailored Overcoat"
+              }
+            ].map((rev, i) => (
+              <div key={i} className="p-6 rounded-xs bg-[#fafafa] border border-neutral-200/80 space-y-4 flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="flex text-amber-500">
+                    {[...Array(5)].map((_, j) => (
+                      <Star key={j} className="w-3 h-3 fill-current" />
+                    ))}
+                  </div>
+                  <p className="text-xs text-neutral-700 leading-relaxed italic">
+                    "{rev.quote}"
+                  </p>
+                </div>
+                <div className="pt-4 border-t border-neutral-200/60">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-xs font-semibold text-black block">{rev.author}</span>
+                      <span className="text-[10px] text-neutral-400">{rev.city}</span>
+                    </div>
+                    <span className="text-[9px] font-sans bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full border border-emerald-200 font-medium">
+                      Verified Buyer
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-neutral-500 block mt-1 truncate">
+                    Purchased: {rev.item}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 10. Standards of Craft & Fabric Philosophy (Editorial 3-Column) ─── */}
+      <section className="py-20 border-t border-neutral-200 bg-[#fafafa]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-2 mb-14">
             <span className="text-[10px] font-sans tracking-[0.3em] uppercase text-neutral-400 block font-medium">
@@ -1096,7 +1361,7 @@ export function FashionStorefront({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12">
-            <div className="space-y-3">
+            <div className="space-y-3 bg-white p-6 rounded-xs border border-neutral-200/80">
               <span className="text-2xl font-serif text-neutral-400 font-normal block">01</span>
               <h3 className="text-sm font-semibold uppercase tracking-wider text-black">
                 Japanese Shuttle Looms
@@ -1106,7 +1371,7 @@ export function FashionStorefront({
               </p>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-3 bg-white p-6 rounded-xs border border-neutral-200/80">
               <span className="text-2xl font-serif text-neutral-400 font-normal block">02</span>
               <h3 className="text-sm font-semibold uppercase tracking-wider text-black">
                 280 GSM Organic Cotton
@@ -1116,7 +1381,7 @@ export function FashionStorefront({
               </p>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-3 bg-white p-6 rounded-xs border border-neutral-200/80">
               <span className="text-2xl font-serif text-neutral-400 font-normal block">03</span>
               <h3 className="text-sm font-semibold uppercase tracking-wider text-black">
                 Architectural Drape
@@ -1129,70 +1394,7 @@ export function FashionStorefront({
         </div>
       </section>
 
-      {/* ─── 8. Customer Trust & Value Propositions (4 Pillars) ─────────────── */}
-      <section id="standards" className="py-16 border-t border-neutral-200 bg-[#fafafa]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center sm:text-left">
-            <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-3 sm:space-y-0 sm:space-x-3.5">
-              <div className="w-10 h-10 rounded-xs bg-white border border-neutral-200 flex items-center justify-center text-black flex-shrink-0">
-                <Truck className="w-4 h-4 stroke-[1.75]" />
-              </div>
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-black font-sans">
-                  Free Express Delivery
-                </h4>
-                <p className="text-[11px] text-neutral-500 mt-0.5 leading-relaxed font-sans">
-                  Complimentary nationwide courier dispatch on orders over $100.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-3 sm:space-y-0 sm:space-x-3.5">
-              <div className="w-10 h-10 rounded-xs bg-white border border-neutral-200 flex items-center justify-center text-black flex-shrink-0">
-                <ShieldCheck className="w-4 h-4 stroke-[1.75]" />
-              </div>
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-black font-sans">
-                  Doorstep Fit Trial
-                </h4>
-                <p className="text-[11px] text-neutral-500 mt-0.5 leading-relaxed font-sans">
-                  Open parcel inspection and trial before paying Cash on Delivery.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-3 sm:space-y-0 sm:space-x-3.5">
-              <div className="w-10 h-10 rounded-xs bg-white border border-neutral-200 flex items-center justify-center text-black flex-shrink-0">
-                <RotateCcw className="w-4 h-4 stroke-[1.75]" />
-              </div>
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-black font-sans">
-                  14-Day Free Exchange
-                </h4>
-                <p className="text-[11px] text-neutral-500 mt-0.5 leading-relaxed font-sans">
-                  Hassle-free doorstep size and variant exchange within 48 hours.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-3 sm:space-y-0 sm:space-x-3.5">
-              <div className="w-10 h-10 rounded-xs bg-white border border-neutral-200 flex items-center justify-center text-black flex-shrink-0">
-                <Lock className="w-4 h-4 stroke-[1.75]" />
-              </div>
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-black font-sans">
-                  Certified Authentic
-                </h4>
-                <p className="text-[11px] text-neutral-500 mt-0.5 leading-relaxed font-sans">
-                  100% certified organic yarns and Kurabo Japanese mill denim.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── 9. Community Gallery (#APEXSTYLE) ───────────────────────────────── */}
+      {/* ─── 11. Community Gallery (#APEXSTYLE) ──────────────────────────────── */}
       <section className="py-16 border-t border-neutral-200 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-2 mb-10">
@@ -1210,9 +1412,9 @@ export function FashionStorefront({
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {[
               "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=600&auto=format&fit=crop&q=80",
-              "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&auto=format&fit=crop&q=80",
-              "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600&auto=format&fit=crop&q=80",
+              "https://images.unsplash.com/photo-1503342394128-c104d54dba01?w=600&auto=format&fit=crop&q=80",
               "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=600&auto=format&fit=crop&q=80",
+              "https://images.unsplash.com/photo-1508427953056-b00b8d78ebf5?w=600&auto=format&fit=crop&q=80",
               "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&auto=format&fit=crop&q=80"
             ].map((img, idx) => (
               <div key={idx} className="relative aspect-square overflow-hidden bg-neutral-100 rounded-xs group">
@@ -1230,7 +1432,7 @@ export function FashionStorefront({
         </div>
       </section>
 
-      {/* ─── 10. VIP Newsletter Section ─────────────────────────────────────── */}
+      {/* ─── 12. VIP Newsletter Section ─────────────────────────────────────── */}
       <section className="py-20 border-t border-neutral-200 bg-neutral-950 text-white font-sans">
         <div className="max-w-md mx-auto px-4 text-center space-y-4">
           <span className="text-[10px] font-sans tracking-[0.35em] uppercase text-neutral-400 block font-medium">
@@ -1268,7 +1470,7 @@ export function FashionStorefront({
         </div>
       </section>
 
-      {/* ─── 11. Multi-Column Enterprise Luxury Fashion Footer ───────────────── */}
+      {/* ─── 13. Multi-Column Enterprise Luxury Fashion Footer ───────────────── */}
       <footer className="bg-neutral-950 text-neutral-400 font-sans border-t border-neutral-900 text-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-12">
@@ -1439,6 +1641,140 @@ export function FashionStorefront({
           </div>
         </div>
       </footer>
+
+      {/* ─── 14. Interactive Size & Fit Guide Modal ──────────────────────────── */}
+      {isSizeGuideOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in font-sans">
+          <div className="bg-white text-neutral-950 rounded-xl max-w-xl w-full p-6 sm:p-8 border border-neutral-200 shadow-2xl relative overflow-hidden">
+            <button
+              onClick={() => setIsSizeGuideOpen(false)}
+              className="absolute top-4 right-4 text-neutral-400 hover:text-black p-1.5 rounded-lg transition"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5 stroke-[1.75]" />
+            </button>
+
+            <div className="space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-neutral-200">
+                <div>
+                  <h3 className="text-xl font-normal uppercase tracking-tight text-neutral-950 font-serif">
+                    Size & Proportions Guide
+                  </h3>
+                  <p className="text-xs text-neutral-500 font-sans mt-0.5">
+                    Garments are cut for architectural presence. Fits true to size.
+                  </p>
+                </div>
+                {/* Unit Switcher */}
+                <div className="flex items-center bg-neutral-100 p-0.5 rounded-lg text-xs font-semibold">
+                  <button
+                    onClick={() => setSizeGuideUnit("in")}
+                    className={`px-3 py-1 rounded transition ${sizeGuideUnit === "in" ? "bg-white text-black shadow-xs" : "text-neutral-500"}`}
+                  >
+                    Inches
+                  </button>
+                  <button
+                    onClick={() => setSizeGuideUnit("cm")}
+                    className={`px-3 py-1 rounded transition ${sizeGuideUnit === "cm" ? "bg-white text-black shadow-xs" : "text-neutral-500"}`}
+                  >
+                    CM
+                  </button>
+                </div>
+              </div>
+
+              {/* Tops Table */}
+              <div className="space-y-2">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-black block">
+                  Tops & Outerwear (Tees, Hoodies, Overcoats)
+                </span>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs text-left">
+                    <thead>
+                      <tr className="border-b border-neutral-200 text-neutral-400 text-[10px] uppercase font-mono">
+                        <th className="py-2 font-normal">Size</th>
+                        <th className="py-2 font-normal">Chest</th>
+                        <th className="py-2 font-normal">Shoulder</th>
+                        <th className="py-2 font-normal">Length</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-neutral-100 font-medium text-neutral-800">
+                      <tr>
+                        <td className="py-2 font-bold">S</td>
+                        <td className="py-2">{sizeGuideUnit === "in" ? "42.0\"" : "106 cm"}</td>
+                        <td className="py-2">{sizeGuideUnit === "in" ? "20.5\"" : "52 cm"}</td>
+                        <td className="py-2">{sizeGuideUnit === "in" ? "28.0\"" : "71 cm"}</td>
+                      </tr>
+                      <tr>
+                        <td className="py-2 font-bold">M</td>
+                        <td className="py-2">{sizeGuideUnit === "in" ? "44.5\"" : "113 cm"}</td>
+                        <td className="py-2">{sizeGuideUnit === "in" ? "21.5\"" : "54 cm"}</td>
+                        <td className="py-2">{sizeGuideUnit === "in" ? "29.0\"" : "73 cm"}</td>
+                      </tr>
+                      <tr>
+                        <td className="py-2 font-bold">L</td>
+                        <td className="py-2">{sizeGuideUnit === "in" ? "47.0\"" : "119 cm"}</td>
+                        <td className="py-2">{sizeGuideUnit === "in" ? "22.5\"" : "57 cm"}</td>
+                        <td className="py-2">{sizeGuideUnit === "in" ? "30.0\"" : "76 cm"}</td>
+                      </tr>
+                      <tr>
+                        <td className="py-2 font-bold">XL</td>
+                        <td className="py-2">{sizeGuideUnit === "in" ? "49.5\"" : "125 cm"}</td>
+                        <td className="py-2">{sizeGuideUnit === "in" ? "23.5\"" : "59 cm"}</td>
+                        <td className="py-2">{sizeGuideUnit === "in" ? "31.0\"" : "78 cm"}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Bottoms Table */}
+              <div className="space-y-2 pt-2 border-t border-neutral-100">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-black block">
+                  Kurabo Selvedge Denim
+                </span>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs text-left">
+                    <thead>
+                      <tr className="border-b border-neutral-200 text-neutral-400 text-[10px] uppercase font-mono">
+                        <th className="py-2 font-normal">Waist</th>
+                        <th className="py-2 font-normal">Inseam</th>
+                        <th className="py-2 font-normal">Thigh</th>
+                        <th className="py-2 font-normal">Leg Opening</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-neutral-100 font-medium text-neutral-800">
+                      <tr>
+                        <td className="py-2 font-bold">30</td>
+                        <td className="py-2">{sizeGuideUnit === "in" ? "32.0\"" : "81 cm"}</td>
+                        <td className="py-2">{sizeGuideUnit === "in" ? "12.0\"" : "30 cm"}</td>
+                        <td className="py-2">{sizeGuideUnit === "in" ? "7.2\"" : "18 cm"}</td>
+                      </tr>
+                      <tr>
+                        <td className="py-2 font-bold">32</td>
+                        <td className="py-2">{sizeGuideUnit === "in" ? "32.5\"" : "82 cm"}</td>
+                        <td className="py-2">{sizeGuideUnit === "in" ? "12.6\"" : "32 cm"}</td>
+                        <td className="py-2">{sizeGuideUnit === "in" ? "7.5\"" : "19 cm"}</td>
+                      </tr>
+                      <tr>
+                        <td className="py-2 font-bold">34</td>
+                        <td className="py-2">{sizeGuideUnit === "in" ? "33.0\"" : "84 cm"}</td>
+                        <td className="py-2">{sizeGuideUnit === "in" ? "13.2\"" : "33 cm"}</td>
+                        <td className="py-2">{sizeGuideUnit === "in" ? "7.8\"" : "20 cm"}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div className="p-3 bg-neutral-50 rounded-lg text-xs text-neutral-600 flex items-start space-x-2">
+                <Info className="w-4 h-4 text-neutral-500 flex-shrink-0 mt-0.5" />
+                <p>
+                  <strong>Doorstep Fit Trial Included:</strong> Every shipment includes open-parcel inspection. If sizing is not ideal, exchange with our doorstep courier at zero charge within 48 hours.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

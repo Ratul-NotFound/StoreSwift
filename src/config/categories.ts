@@ -30,7 +30,7 @@ export const CATEGORIES_MAP: Record<string, CategoryConfig> = {
     editorialSubtitle: "STUDIO ARCHIVE 2026 • COMPILED WITH CERTIFIED ORGANIC YARNS",
     iconName: "Shirt",
     recommendedTemplate: "minimal",
-    heroImage: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1600&auto=format&fit=crop&q=85",
+    heroImage: "https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=1600&auto=format&fit=crop&q=85",
     defaultOptions: ["Size", "Color"],
     sampleProducts: [
       {
@@ -61,7 +61,7 @@ export const CATEGORIES_MAP: Record<string, CategoryConfig> = {
         description: "Ultra-dense custom loopback French terry hoodie with double-walled hood and seamless zero-chafing kangaroo pocket.",
         basePrice: "85.00",
         imageUrl: "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=1000&auto=format&fit=crop&q=85",
-        secondaryImage: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1000&auto=format&fit=crop&q=85",
+        secondaryImage: "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=1000&auto=format&fit=crop&q=85",
         badge: "Winter Heavyweight",
         rating: 4.9,
         options: { Size: ["M", "L", "XL"], Color: ["Heather Grey", "Onyx Black"] }
