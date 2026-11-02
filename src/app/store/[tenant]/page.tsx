@@ -61,7 +61,7 @@ import { trackEvent } from "@/lib/analytics";
 const CATEGORY_COLLECTIONS: Record<string, Array<{ title: string; subtitle: string; image: string; tag: string }>> = {
   fashion: [
     { title: "Heavyweight Tees", subtitle: "280 GSM Combed Organic", image: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=700&auto=format&fit=crop&q=85", tag: "Heavy Cotton" },
-    { title: "Kurabo Selvedge", subtitle: "13.5oz Raw Indigo", image: "https://images.unsplash.com/photo-1542272604-780c96856592?w=700&auto=format&fit=crop&q=85", tag: "Japanese Mill" },
+    { title: "Kurabo Selvedge", subtitle: "13.5oz Raw Indigo", image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=700&auto=format&fit=crop&q=85", tag: "Japanese Mill" },
     { title: "Loopback Terry", subtitle: "450 GSM Raglan Cut", image: "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=700&auto=format&fit=crop&q=85", tag: "French Terry" },
     { title: "Archival Tailoring", subtitle: "Bonded Twill Overcoats", image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=700&auto=format&fit=crop&q=85", tag: "Atelier Outerwear" }
   ],

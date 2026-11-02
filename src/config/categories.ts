@@ -49,7 +49,7 @@ export const CATEGORIES_MAP: Record<string, CategoryConfig> = {
         slug: "relaxed-taper-denim-jeans",
         description: "13.5oz Kurabo raw indigo selvedge denim with tailored modern taper and hand-hammered antique copper rivets.",
         basePrice: "98.00",
-        imageUrl: "https://images.unsplash.com/photo-1542272604-780c96856592?w=1000&auto=format&fit=crop&q=85",
+        imageUrl: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=1000&auto=format&fit=crop&q=85",
         secondaryImage: "https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=1000&auto=format&fit=crop&q=85",
         badge: "Selvedge Denim",
         rating: 5.0,
