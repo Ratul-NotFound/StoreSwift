@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { useToast } from "@/components/ui/toast";
 import {
@@ -30,7 +30,14 @@ import {
   Copy,
   Grid,
   Columns,
-  Info
+  Info,
+  Eye,
+  Clock,
+  CheckCircle2,
+  Flame,
+  Plus,
+  Minus,
+  ChevronDown
 } from "lucide-react";
 import { IStoreTemplate } from "@/templates/types";
 import { CartItem } from "@/lib/cart";
@@ -257,6 +264,34 @@ const CURATED_CATALOG_EXPANSION = [
   }
 ];
 
+// ThemeForest Best-Selling Social Proof Live Stream (Ella / Minimog Benchmark)
+const RECENT_SALES = [
+  {
+    name: "Marcus V.",
+    city: "Stockholm, Sweden",
+    item: "Heavyweight Organic Oversized Tee",
+    price: 34.0,
+    time: "2 mins ago",
+    image: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=160&auto=format&fit=crop&q=80"
+  },
+  {
+    name: "Elena R.",
+    city: "New York, USA",
+    item: "Japanese Selvedge Taper Denim",
+    price: 98.0,
+    time: "7 mins ago",
+    image: "https://images.unsplash.com/photo-1542272604-780c96856592?w=160&auto=format&fit=crop&q=80"
+  },
+  {
+    name: "Tariq H.",
+    city: "London, UK",
+    item: "Bonded Wool Tailored Overcoat",
+    price: 185.0,
+    time: "14 mins ago",
+    image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=160&auto=format&fit=crop&q=80"
+  }
+];
+
 export function FashionStorefront({
   storeDisplayName,
   tenantSlug,
@@ -288,6 +323,66 @@ export function FashionStorefront({
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSuccess, setNewsletterSuccess] = useState(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+
+  // ThemeForest Powerhouse States
+  const [currency, setCurrency] = useState<"USD" | "EUR" | "GBP">("USD");
+  const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
+  const [quickViewProduct, setQuickViewProduct] = useState<any | null>(null);
+  const [quickViewQty, setQuickViewQty] = useState(1);
+  const [quickViewSelectedSize, setQuickViewSelectedSize] = useState("");
+  const [quickViewSelectedColor, setQuickViewSelectedColor] = useState("");
+  const [quickViewImageAngle, setQuickViewImageAngle] = useState<"primary" | "secondary">("primary");
+  const [activeHotspot, setActiveHotspot] = useState<number | null>(null);
+  const [bundleChecked, setBundleChecked] = useState<{ tee: boolean; denim: boolean }>({
+    tee: true,
+    denim: true
+  });
+  const [salesToastIndex, setSalesToastIndex] = useState(0);
+  const [isSalesToastDismissed, setIsSalesToastDismissed] = useState(false);
+
+  // Limited Archival Drop Countdown Clock (ThemeForest Minimog Feature)
+  const [timeLeft, setTimeLeft] = useState({
+    days: 2,
+    hours: 14,
+    minutes: 36,
+    seconds: 48
+  });
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev.seconds > 0) return { ...prev, seconds: prev.seconds - 1 };
+        if (prev.minutes > 0) return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
+        if (prev.hours > 0) return { ...prev, hours: prev.hours - 1, minutes: 59, seconds: 59 };
+        return prev;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Social Proof Auto-Rotator (ThemeForest Ella Signature)
+  useEffect(() => {
+    if (isSalesToastDismissed) return;
+    const interval = setInterval(() => {
+      setSalesToastIndex((prev) => (prev + 1) % RECENT_SALES.length);
+    }, 9000);
+    return () => clearInterval(interval);
+  }, [isSalesToastDismissed]);
+
+  // Dynamic Multi-Currency Converter
+  const formatPrice = (usdAmount: number) => {
+    if (currency === "EUR") return `€${(usdAmount * 0.92).toFixed(2)}`;
+    if (currency === "GBP") return `£${(usdAmount * 0.78).toFixed(2)}`;
+    return `$${usdAmount.toFixed(2)}`;
+  };
+
+  const handleOpenQuickView = (product: any) => {
+    setQuickViewProduct(product);
+    setQuickViewQty(1);
+    setQuickViewSelectedSize(product.sizes?.[0] || "M");
+    setQuickViewSelectedColor(product.colors?.[0]?.name || "Standard");
+    setQuickViewImageAngle("primary");
+  };
 
   const handleColorSelect = (productId: string, color: string) => {
     setSelectedColors((prev) => ({ ...prev, [productId]: color }));
@@ -437,6 +532,21 @@ export function FashionStorefront({
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>
               <span>14-DAY DOORSTEP TRIAL</span>
             </span>
+
+            {/* Currency Selector (ThemeForest Ella Hallmark) */}
+            <div className="flex items-center space-x-1 border-l border-neutral-800 pl-3">
+              <Globe className="w-3 h-3 text-neutral-500" />
+              <select
+                value={currency}
+                onChange={(e) => setCurrency(e.target.value as any)}
+                className="bg-transparent text-neutral-300 text-[10px] uppercase font-mono outline-none cursor-pointer hover:text-white"
+                aria-label="Select Currency"
+              >
+                <option value="USD" className="bg-neutral-900 text-white">USD ($)</option>
+                <option value="EUR" className="bg-neutral-900 text-white">EUR (€)</option>
+                <option value="GBP" className="bg-neutral-900 text-white">GBP (£)</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -477,19 +587,154 @@ export function FashionStorefront({
             </span>
           </Link>
 
-          {/* Center: Department Navigation Links (Desktop) */}
+          {/* Center: Department Navigation Links with ThemeForest Mega Menu */}
           <nav className="hidden lg:flex items-center space-x-7 text-[11px] font-sans font-medium uppercase tracking-[0.2em] text-neutral-500">
-            <button
-              onClick={() => {
-                setActiveDepartment("all");
-                document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className={`hover:text-black transition-colors py-1 ${
-                activeDepartment === "all" ? "text-black border-b border-black font-semibold" : ""
-              }`}
+            {/* Mega Menu Trigger */}
+            <div
+              className="relative py-4"
+              onMouseEnter={() => setIsMegaMenuOpen(true)}
+              onMouseLeave={() => setIsMegaMenuOpen(false)}
             >
-              All Pieces
-            </button>
+              <button
+                onClick={() => {
+                  setActiveDepartment("all");
+                  document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className={`hover:text-black transition-colors py-1 flex items-center space-x-1 ${
+                  activeDepartment === "all" ? "text-black border-b border-black font-semibold" : ""
+                }`}
+              >
+                <span>Collections</span>
+                <ChevronDown className={`w-3 h-3 text-neutral-400 transition-transform ${isMegaMenuOpen ? "rotate-180 text-black" : ""}`} />
+              </button>
+
+              {/* ThemeForest Mega Menu Dropdown */}
+              {isMegaMenuOpen && (
+                <div className="absolute left-1/2 -translate-x-1/2 top-full w-[820px] bg-white border border-neutral-200/90 shadow-2xl p-6 rounded-xs grid grid-cols-4 gap-6 z-50 text-left normal-case tracking-normal animate-fade-in">
+                  {/* Col 1: Core Departments */}
+                  <div className="space-y-3">
+                    <h5 className="text-[10px] font-sans uppercase font-bold tracking-[0.2em] text-neutral-400">
+                      Core Departments
+                    </h5>
+                    <ul className="space-y-2 text-xs text-neutral-600">
+                      <li>
+                        <button
+                          onClick={() => {
+                            setActiveDepartment("outerwear");
+                            setIsMegaMenuOpen(false);
+                            document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" });
+                          }}
+                          className="hover:text-black transition text-left"
+                        >
+                          Tailored Overcoats
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          onClick={() => {
+                            setActiveDepartment("tees");
+                            setIsMegaMenuOpen(false);
+                            document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" });
+                          }}
+                          className="hover:text-black transition text-left"
+                        >
+                          Heavyweight Organic Tees
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          onClick={() => {
+                            setActiveDepartment("denim");
+                            setIsMegaMenuOpen(false);
+                            document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" });
+                          }}
+                          className="hover:text-black transition text-left"
+                        >
+                          Kurabo Selvedge Denim
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          onClick={() => {
+                            setActiveDepartment("hoodies");
+                            setIsMegaMenuOpen(false);
+                            document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" });
+                          }}
+                          className="hover:text-black transition text-left"
+                        >
+                          Loopback Knitwear
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          onClick={() => {
+                            setActiveDepartment("accessories");
+                            setIsMegaMenuOpen(false);
+                            document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" });
+                          }}
+                          className="hover:text-black transition text-left"
+                        >
+                          Full-Grain Tuscan Carry
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Col 2: Silhouettes */}
+                  <div className="space-y-3">
+                    <h5 className="text-[10px] font-sans uppercase font-bold tracking-[0.2em] text-neutral-400">
+                      Silhouettes & Fits
+                    </h5>
+                    <ul className="space-y-2 text-xs text-neutral-600">
+                      <li><span className="hover:text-black transition cursor-pointer" onClick={() => { setActiveDepartment("tees"); setIsMegaMenuOpen(false); document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" }); }}>Boxy Drop-Shoulder</span></li>
+                      <li><span className="hover:text-black transition cursor-pointer" onClick={() => { setActiveDepartment("denim"); setIsMegaMenuOpen(false); document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" }); }}>Relaxed Taper Selvedge</span></li>
+                      <li><span className="hover:text-black transition cursor-pointer" onClick={() => { setActiveDepartment("outerwear"); setIsMegaMenuOpen(false); document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" }); }}>Architectural Bonded Wool</span></li>
+                      <li><span className="hover:text-black transition cursor-pointer" onClick={() => { setActiveDepartment("hoodies"); setIsMegaMenuOpen(false); document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" }); }}>Seamless Mock-Neck Merino</span></li>
+                      <li><span className="hover:text-black transition cursor-pointer font-medium text-black" onClick={() => { setIsSizeGuideOpen(true); setIsMegaMenuOpen(false); }}>View Measurement Guide →</span></li>
+                    </ul>
+                  </div>
+
+                  {/* Col 3: Standards */}
+                  <div className="space-y-3">
+                    <h5 className="text-[10px] font-sans uppercase font-bold tracking-[0.2em] text-neutral-400">
+                      Textile Standards
+                    </h5>
+                    <ul className="space-y-2.5 text-xs text-neutral-600">
+                      <li className="flex items-center space-x-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /><span>Toyoda Shuttle Looms</span></li>
+                      <li className="flex items-center space-x-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /><span>280 GSM Ring-Spun Cotton</span></li>
+                      <li className="flex items-center space-x-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /><span>520 GSM Bonded Italian Twill</span></li>
+                      <li className="flex items-center space-x-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /><span>Doorstep Fit Trial Guaranteed</span></li>
+                    </ul>
+                  </div>
+
+                  {/* Col 4: Spotlight Banner */}
+                  <div
+                    onClick={() => {
+                      setIsMegaMenuOpen(false);
+                      const el = document.getElementById("lookbook");
+                      if (el) el.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="relative aspect-[3/4] rounded-xs overflow-hidden bg-neutral-100 group cursor-pointer"
+                  >
+                    <img
+                      src="https://images.unsplash.com/photo-1508427953056-b00b8d78ebf5?w=500&auto=format&fit=crop&q=80"
+                      alt="Campaign Spotlight"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    <div className="absolute inset-x-3 bottom-3 text-white">
+                      <span className="text-[9px] uppercase tracking-wider text-neutral-300 font-mono">Curated Ensemble</span>
+                      <h6 className="text-xs font-semibold uppercase tracking-wider font-serif">Look 01 Atelier Set</h6>
+                      <span className="inline-flex items-center space-x-1 text-[9px] uppercase tracking-widest text-amber-300 mt-1">
+                        <span>Shop Look</span>
+                        <ArrowRight className="w-2.5 h-2.5" />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
             <button
               onClick={() => {
                 setActiveDepartment("outerwear");
@@ -587,7 +832,7 @@ export function FashionStorefront({
               </span>
               {cartItems.length > 0 && (
                 <span className="hidden sm:inline border-l border-neutral-700 pl-2 tabular-nums">
-                  ${finalTotal.toFixed(2)}
+                  {formatPrice(finalTotal)}
                 </span>
               )}
             </button>
@@ -846,6 +1091,40 @@ export function FashionStorefront({
         </div>
       </section>
 
+      {/* ─── 6.5 Limited Archival Drop Allocation Countdown (ThemeForest Minimog / Ella Hallmark) ─── */}
+      <section className="bg-neutral-900 text-white border-y border-neutral-800 py-3.5 px-4 sm:px-6 lg:px-8 font-sans">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-center sm:text-left">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 rounded-full bg-neutral-800 flex items-center justify-center text-amber-400 flex-shrink-0">
+              <Flame className="w-4 h-4 fill-current" />
+            </div>
+            <div>
+              <div className="flex items-center justify-center sm:justify-start space-x-2">
+                <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-amber-400">Limited Production Run</span>
+                <span className="text-[9px] bg-neutral-800 px-1.5 py-0.5 rounded text-neutral-300 font-mono">AUTUMN DROP 01</span>
+              </div>
+              <p className="text-xs text-neutral-300 font-medium mt-0.5">
+                Archival batch allocations closing soon. Doorstep fit trial included on all dispatches.
+              </p>
+            </div>
+          </div>
+
+          {/* Countdown Clock */}
+          <div className="flex items-center space-x-2">
+            <span className="text-[10px] uppercase tracking-wider text-neutral-400 font-semibold mr-1">Closing In:</span>
+            <div className="flex items-center space-x-1.5 font-mono text-xs">
+              <span className="px-2 py-1 bg-black rounded font-bold">{String(timeLeft.days).padStart(2, "0")}d</span>
+              <span className="text-neutral-500 font-bold">:</span>
+              <span className="px-2 py-1 bg-black rounded font-bold">{String(timeLeft.hours).padStart(2, "0")}h</span>
+              <span className="text-neutral-500 font-bold">:</span>
+              <span className="px-2 py-1 bg-black rounded font-bold">{String(timeLeft.minutes).padStart(2, "0")}m</span>
+              <span className="text-neutral-500 font-bold">:</span>
+              <span className="px-2 py-1 bg-black rounded font-bold text-amber-400">{String(timeLeft.seconds).padStart(2, "0")}s</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ─── 7. Production-Grade Product Catalog Grid & Filters ─────────────── */}
       <main id="catalog" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
         {/* Collection Tab Switchers */}
@@ -1049,19 +1328,34 @@ export function FashionStorefront({
                     )}
                   </div>
 
-                  {/* Wishlist Heart */}
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onToggleWishlist(p.id);
-                    }}
-                    className="absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-white/90 flex items-center justify-center text-neutral-800 hover:text-black opacity-85 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shadow-xs"
-                    title="Save to wishlist"
-                    aria-label="Save to wishlist"
-                  >
-                    <Heart className={`w-3.5 h-3.5 stroke-[1.75] ${isWishlisted ? "text-black fill-current" : ""}`} />
-                  </button>
+                  {/* Action Buttons Top Right: Quick View & Wishlist (ThemeForest Ella/WoodMart Benchmark) */}
+                  <div className="absolute top-2.5 right-2.5 flex flex-col space-y-1.5 opacity-85 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onToggleWishlist(p.id);
+                      }}
+                      className="w-7 h-7 rounded-full bg-white/95 flex items-center justify-center text-neutral-800 hover:text-black hover:scale-105 transition shadow-xs"
+                      title="Save to wishlist"
+                      aria-label="Save to wishlist"
+                    >
+                      <Heart className={`w-3.5 h-3.5 stroke-[1.75] ${isWishlisted ? "text-black fill-current" : ""}`} />
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleOpenQuickView(p);
+                      }}
+                      className="w-7 h-7 rounded-full bg-white/95 flex items-center justify-center text-neutral-800 hover:text-black hover:scale-105 transition shadow-xs"
+                      title="Quick View Details"
+                      aria-label="Quick View"
+                    >
+                      <Eye className="w-3.5 h-3.5 stroke-[1.75]" />
+                    </button>
+                  </div>
 
                   {/* Desktop Quick Size Selector Bar (Slides up smoothly on hover) */}
                   <div className="hidden sm:flex absolute inset-x-3 bottom-3 p-1.5 bg-white/95 backdrop-blur-md border border-white/60 shadow-lg translate-y-6 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 ease-out z-10 items-center justify-between text-neutral-900 rounded-xs">
@@ -1137,11 +1431,11 @@ export function FashionStorefront({
                   <div className="flex items-center justify-between pt-0.5">
                     <div className="flex items-baseline space-x-2">
                       <span className="text-xs sm:text-sm font-semibold text-black font-sans tabular-nums">
-                        ${p.price.toFixed(2)}
+                        {formatPrice(p.price)}
                       </span>
                       {p.comparePrice > p.price && (
                         <span className="text-[10px] text-neutral-400 line-through font-sans tabular-nums">
-                          ${p.comparePrice.toFixed(2)}
+                          {formatPrice(p.comparePrice)}
                         </span>
                       )}
                     </div>
@@ -1197,15 +1491,106 @@ export function FashionStorefront({
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-            {/* Visual Diptych */}
+            {/* Visual Diptych with ThemeForest Kalles-Style Interactive Hotspots */}
             <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="aspect-[3/4] overflow-hidden bg-neutral-200 rounded-xs">
+              <div className="relative aspect-[3/4] overflow-hidden bg-neutral-200 rounded-xs group">
                 <img
                   src="https://images.unsplash.com/photo-1508427953056-b00b8d78ebf5?w=1000&auto=format&fit=crop&q=85"
                   alt="Ensemble Look 01"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
+
+                {/* Hotspot 1: Heavyweight Tee */}
+                <div className="absolute top-[38%] left-[45%] z-20">
+                  <button
+                    type="button"
+                    onClick={() => setActiveHotspot(activeHotspot === 1 ? null : 1)}
+                    onMouseEnter={() => setActiveHotspot(1)}
+                    className="relative flex items-center justify-center w-7 h-7 rounded-full bg-white text-black shadow-lg hover:scale-110 transition active:scale-95"
+                    aria-label="View Oversized Tee details"
+                  >
+                    <span className="absolute inset-0 rounded-full bg-white/70 animate-ping" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-black" />
+                  </button>
+
+                  {/* Hotspot 1 Popover Card */}
+                  {activeHotspot === 1 && (
+                    <div
+                      onMouseLeave={() => setActiveHotspot(null)}
+                      className="absolute left-8 -top-6 w-56 p-3 bg-white/95 backdrop-blur-md rounded-xs border border-neutral-200 shadow-2xl z-30 animate-fade-in text-neutral-900 font-sans"
+                    >
+                      <div className="flex items-center space-x-2.5">
+                        <img
+                          src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=120&auto=format&fit=crop&q=80"
+                          alt="Tee thumbnail"
+                          className="w-12 h-14 object-cover rounded-xs flex-shrink-0"
+                        />
+                        <div className="min-w-0 flex-1">
+                          <span className="text-[9px] font-sans uppercase tracking-wider text-neutral-400 block font-medium">Top Piece</span>
+                          <h4 className="text-xs font-semibold text-neutral-950 truncate">Heavyweight Organic Tee</h4>
+                          <span className="text-xs font-bold font-sans text-black">{formatPrice(34.0)}</span>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => {
+                          if (products[0]) onAddToCart(products[0], products[0].variants[0]);
+                          setActiveHotspot(null);
+                        }}
+                        className="mt-2.5 w-full py-1.5 bg-black hover:bg-neutral-800 text-white text-[10px] uppercase tracking-wider font-semibold rounded-xs transition flex items-center justify-center space-x-1"
+                      >
+                        <ShoppingBag className="w-3 h-3" />
+                        <span>Quick Add</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Hotspot 2: Selvedge Denim */}
+                <div className="absolute top-[72%] left-[54%] z-20">
+                  <button
+                    type="button"
+                    onClick={() => setActiveHotspot(activeHotspot === 2 ? null : 2)}
+                    onMouseEnter={() => setActiveHotspot(2)}
+                    className="relative flex items-center justify-center w-7 h-7 rounded-full bg-white text-black shadow-lg hover:scale-110 transition active:scale-95"
+                    aria-label="View Selvedge Denim details"
+                  >
+                    <span className="absolute inset-0 rounded-full bg-white/70 animate-ping" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-black" />
+                  </button>
+
+                  {/* Hotspot 2 Popover Card */}
+                  {activeHotspot === 2 && (
+                    <div
+                      onMouseLeave={() => setActiveHotspot(null)}
+                      className="absolute left-8 -top-12 w-56 p-3 bg-white/95 backdrop-blur-md rounded-xs border border-neutral-200 shadow-2xl z-30 animate-fade-in text-neutral-900 font-sans"
+                    >
+                      <div className="flex items-center space-x-2.5">
+                        <img
+                          src="https://images.unsplash.com/photo-1542272604-780c96856592?w=120&auto=format&fit=crop&q=80"
+                          alt="Denim thumbnail"
+                          className="w-12 h-14 object-cover rounded-xs flex-shrink-0"
+                        />
+                        <div className="min-w-0 flex-1">
+                          <span className="text-[9px] font-sans uppercase tracking-wider text-neutral-400 block font-medium">Bottom Piece</span>
+                          <h4 className="text-xs font-semibold text-neutral-950 truncate">Kurabo Selvedge Denim</h4>
+                          <span className="text-xs font-bold font-sans text-black">{formatPrice(98.0)}</span>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => {
+                          if (products[1]) onAddToCart(products[1], products[1].variants[0]);
+                          setActiveHotspot(null);
+                        }}
+                        className="mt-2.5 w-full py-1.5 bg-black hover:bg-neutral-800 text-white text-[10px] uppercase tracking-wider font-semibold rounded-xs transition flex items-center justify-center space-x-1"
+                      >
+                        <ShoppingBag className="w-3 h-3" />
+                        <span>Quick Add</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
+
               <div className="aspect-[3/4] overflow-hidden bg-neutral-200 rounded-xs hidden sm:block">
                 <img
                   src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=1000&auto=format&fit=crop&q=85"
@@ -1215,60 +1600,93 @@ export function FashionStorefront({
               </div>
             </div>
 
-            {/* Look Breakdown & 1-Click Purchase */}
+            {/* Look Breakdown & ThemeForest Ella-Style Interactive Bundle Builder */}
             <div className="lg:col-span-5 space-y-6 lg:pl-4 bg-white p-8 rounded-xs border border-neutral-200 shadow-sm font-sans">
               <div className="space-y-1.5">
                 <span className="text-[10px] font-sans uppercase tracking-[0.25em] text-neutral-400 block font-medium">
-                  Atelier Ensemble // Complete Set
+                  Atelier Ensemble // Complete The Look
                 </span>
                 <h3 className="text-2xl font-normal uppercase tracking-tight text-black font-serif">
                   The Modern Minimalist Kit
                 </h3>
                 <p className="text-xs text-neutral-600 leading-relaxed font-normal">
-                  Combining the 280 GSM combed organic cotton tee with 13.5oz raw Kurabo shuttle-loom selvedge denim.
+                  Combining the 280 GSM combed organic cotton tee with 13.5oz raw Kurabo shuttle-loom selvedge denim. Check items below to bundle.
                 </p>
               </div>
 
-              {/* Pieces Included */}
+              {/* Pieces Included with Interactive Checkboxes */}
               <div className="space-y-3 pt-2">
-                <div className="flex items-center justify-between py-2.5 border-b border-neutral-100 text-xs">
-                  <div>
-                    <span className="font-semibold text-neutral-900 block">Heavyweight Organic Oversized Tee</span>
-                    <span className="text-[10px] text-neutral-400 font-sans">280 GSM • Washed Slate</span>
+                <label className="flex items-center justify-between p-3 rounded-xs border border-neutral-200 hover:border-black cursor-pointer transition bg-neutral-50/50">
+                  <div className="flex items-center space-x-3">
+                    <input
+                      type="checkbox"
+                      checked={bundleChecked.tee}
+                      onChange={(e) => setBundleChecked({ ...bundleChecked, tee: e.target.checked })}
+                      className="w-4 h-4 rounded text-black focus:ring-black cursor-pointer accent-black"
+                    />
+                    <div>
+                      <span className="font-semibold text-neutral-900 block text-xs">Heavyweight Organic Oversized Tee</span>
+                      <span className="text-[10px] text-neutral-400 font-sans">280 GSM • Washed Slate</span>
+                    </div>
                   </div>
-                  <span className="font-sans font-semibold tabular-nums">$34.00</span>
-                </div>
+                  <span className="font-sans font-semibold text-xs tabular-nums">{formatPrice(34.0)}</span>
+                </label>
 
-                <div className="flex items-center justify-between py-2.5 border-b border-neutral-100 text-xs">
-                  <div>
-                    <span className="font-semibold text-neutral-900 block">Japanese Selvedge Taper Denim</span>
-                    <span className="text-[10px] text-neutral-400 font-sans">13.5oz Kurabo • Raw Indigo</span>
+                <label className="flex items-center justify-between p-3 rounded-xs border border-neutral-200 hover:border-black cursor-pointer transition bg-neutral-50/50">
+                  <div className="flex items-center space-x-3">
+                    <input
+                      type="checkbox"
+                      checked={bundleChecked.denim}
+                      onChange={(e) => setBundleChecked({ ...bundleChecked, denim: e.target.checked })}
+                      className="w-4 h-4 rounded text-black focus:ring-black cursor-pointer accent-black"
+                    />
+                    <div>
+                      <span className="font-semibold text-neutral-900 block text-xs">Japanese Selvedge Taper Denim</span>
+                      <span className="text-[10px] text-neutral-400 font-sans">13.5oz Kurabo • Raw Indigo</span>
+                    </div>
                   </div>
-                  <span className="font-sans font-semibold tabular-nums">$98.00</span>
-                </div>
+                  <span className="font-sans font-semibold text-xs tabular-nums">{formatPrice(98.0)}</span>
+                </label>
               </div>
 
-              {/* Total & Action */}
-              <div className="pt-2 space-y-4">
-                <div className="flex items-baseline justify-between">
-                  <span className="text-xs text-neutral-500 uppercase font-sans tracking-wider">Bundle Price</span>
-                  <div className="text-right">
-                    <span className="text-2xl font-bold font-sans text-black tabular-nums">$132.00</span>
-                    <span className="text-[11px] text-neutral-400 line-through font-sans block tabular-nums">$188.00</span>
-                  </div>
-                </div>
+              {/* Dynamic Total & 1-Click Purchase */}
+              {(() => {
+                const bundleTotal = (bundleChecked.tee ? 34.0 : 0) + (bundleChecked.denim ? 98.0 : 0);
+                const bundleCompare = (bundleChecked.tee ? 50.0 : 0) + (bundleChecked.denim ? 138.0 : 0);
+                const bundleCount = (bundleChecked.tee ? 1 : 0) + (bundleChecked.denim ? 1 : 0);
 
-                <button
-                  onClick={() => {
-                    if (products[0]) onAddToCart(products[0], products[0].variants[0]);
-                    if (products[1]) onAddToCart(products[1], products[1].variants[0]);
-                  }}
-                  className="w-full py-4 bg-black hover:bg-neutral-800 text-white text-xs font-semibold uppercase tracking-[0.2em] transition flex items-center justify-center space-x-2 rounded-xs"
-                >
-                  <ShoppingBag className="w-4 h-4 stroke-[1.75]" />
-                  <span>Add Complete Look to Bag ($132.00)</span>
-                </button>
-              </div>
+                return (
+                  <div className="pt-2 space-y-4">
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-xs text-neutral-500 uppercase font-sans tracking-wider">
+                        Bundle Price ({bundleCount} piece{bundleCount !== 1 ? "s" : ""})
+                      </span>
+                      <div className="text-right">
+                        <span className="text-2xl font-bold font-sans text-black tabular-nums">
+                          {formatPrice(bundleTotal)}
+                        </span>
+                        {bundleCompare > bundleTotal && (
+                          <span className="text-[11px] text-neutral-400 line-through font-sans block tabular-nums">
+                            {formatPrice(bundleCompare)}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <button
+                      disabled={bundleCount === 0}
+                      onClick={() => {
+                        if (bundleChecked.tee && products[0]) onAddToCart(products[0], products[0].variants[0]);
+                        if (bundleChecked.denim && products[1]) onAddToCart(products[1], products[1].variants[0]);
+                      }}
+                      className="w-full py-4 bg-black hover:bg-neutral-800 disabled:bg-neutral-300 disabled:cursor-not-allowed text-white text-xs font-semibold uppercase tracking-[0.2em] transition flex items-center justify-center space-x-2 rounded-xs active:scale-98 shadow-sm"
+                    >
+                      <ShoppingBag className="w-4 h-4 stroke-[1.75]" />
+                      <span>Add Selected ({bundleCount}) to Bag ({formatPrice(bundleTotal)})</span>
+                    </button>
+                  </div>
+                );
+              })()}
             </div>
           </div>
         </div>
@@ -1770,6 +2188,244 @@ export function FashionStorefront({
                 <p>
                   <strong>Doorstep Fit Trial Included:</strong> Every shipment includes open-parcel inspection. If sizing is not ideal, exchange with our doorstep courier at zero charge within 48 hours.
                 </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── 15. Social Proof Live Order Activity (ThemeForest Ella / Minimog Signature) ──── */}
+      {!isSalesToastDismissed && (
+        <div className="fixed bottom-4 left-4 z-40 hidden sm:flex items-center space-x-3 p-3 bg-white/95 backdrop-blur-md border border-neutral-200/90 shadow-xl rounded-xs max-w-sm animate-fade-in font-sans text-neutral-900">
+          <img
+            src={RECENT_SALES[salesToastIndex].image}
+            alt="Recent order"
+            className="w-11 h-13 object-cover rounded-xs flex-shrink-0"
+          />
+          <div className="min-w-0 flex-1 text-xs">
+            <div className="flex items-center space-x-1 text-[10px] text-neutral-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
+              <span>Verified Order • {RECENT_SALES[salesToastIndex].city}</span>
+            </div>
+            <p className="font-semibold text-neutral-950 truncate mt-0.5">
+              {RECENT_SALES[salesToastIndex].item}
+            </p>
+            <div className="flex items-center justify-between text-[10px] text-neutral-500 mt-0.5">
+              <span className="font-bold text-black">{formatPrice(RECENT_SALES[salesToastIndex].price)}</span>
+              <span>{RECENT_SALES[salesToastIndex].time}</span>
+            </div>
+          </div>
+          <button
+            onClick={() => setIsSalesToastDismissed(true)}
+            className="text-neutral-400 hover:text-black p-1 transition"
+            title="Dismiss notification"
+            aria-label="Dismiss"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
+
+      {/* ─── 16. ThemeForest Quick View Modal (Ella / WoodMart Signature) ───── */}
+      {quickViewProduct && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in font-sans">
+          <div className="bg-white text-neutral-950 rounded-xs max-w-3xl w-full p-6 sm:p-8 border border-neutral-200 shadow-2xl relative overflow-hidden max-h-[90vh] overflow-y-auto">
+            <button
+              onClick={() => setQuickViewProduct(null)}
+              className="absolute top-4 right-4 text-neutral-400 hover:text-black p-1.5 rounded-lg transition z-20"
+              aria-label="Close Quick View"
+            >
+              <X className="w-5 h-5 stroke-[1.75]" />
+            </button>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+              {/* Left: Gallery */}
+              <div className="space-y-3">
+                <div className="relative aspect-[3/4] bg-neutral-100 rounded-xs overflow-hidden">
+                  <img
+                    src={quickViewImageAngle === "primary" ? quickViewProduct.imageUrl : (quickViewProduct.secondaryImage || quickViewProduct.imageUrl)}
+                    alt={quickViewProduct.title}
+                    className="w-full h-full object-cover transition-all duration-300"
+                  />
+                  {quickViewProduct.badge && (
+                    <span className="absolute top-3 left-3 text-[9px] font-sans uppercase tracking-[0.2em] bg-black text-white px-2 py-0.5 rounded-xs font-medium">
+                      {quickViewProduct.badge}
+                    </span>
+                  )}
+                </div>
+
+                {quickViewProduct.secondaryImage && (
+                  <div className="flex items-center space-x-2">
+                    <button
+                      type="button"
+                      onClick={() => setQuickViewImageAngle("primary")}
+                      className={`w-14 h-16 rounded-xs overflow-hidden border-2 transition ${
+                        quickViewImageAngle === "primary" ? "border-black" : "border-transparent opacity-60 hover:opacity-100"
+                      }`}
+                    >
+                      <img src={quickViewProduct.imageUrl} alt="Front angle" className="w-full h-full object-cover" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setQuickViewImageAngle("secondary")}
+                      className={`w-14 h-16 rounded-xs overflow-hidden border-2 transition ${
+                        quickViewImageAngle === "secondary" ? "border-black" : "border-transparent opacity-60 hover:opacity-100"
+                      }`}
+                    >
+                      <img src={quickViewProduct.secondaryImage} alt="Lookbook angle" className="w-full h-full object-cover" />
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Right: Product Details & Actions */}
+              <div className="space-y-4">
+                <div>
+                  <span className="text-[10px] font-sans uppercase tracking-[0.25em] text-neutral-400 block font-medium">
+                    Atelier Archive // Studio Grade
+                  </span>
+                  <h3 className="text-xl sm:text-2xl font-normal uppercase tracking-tight text-neutral-950 font-serif mt-1">
+                    {quickViewProduct.title}
+                  </h3>
+                  <div className="flex items-center space-x-2 pt-1 text-xs text-neutral-500">
+                    <div className="flex text-amber-500">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3 h-3 fill-current" />
+                      ))}
+                    </div>
+                    <span className="font-semibold text-neutral-900">{quickViewProduct.rating || 4.9}</span>
+                    <span>•</span>
+                    <span className="text-neutral-400">({quickViewProduct.reviewCount || 48} verified reviews)</span>
+                  </div>
+                </div>
+
+                {/* Price Display */}
+                <div className="flex items-baseline space-x-3 pt-1 border-y border-neutral-100 py-3">
+                  <span className="text-2xl font-bold text-black font-sans tabular-nums">
+                    {formatPrice(quickViewProduct.price)}
+                  </span>
+                  {quickViewProduct.comparePrice > quickViewProduct.price && (
+                    <>
+                      <span className="text-xs text-neutral-400 line-through font-sans tabular-nums">
+                        {formatPrice(quickViewProduct.comparePrice)}
+                      </span>
+                      <span className="text-[10px] font-semibold text-rose-600 bg-rose-50 px-2 py-0.5 rounded uppercase tracking-wider font-sans">
+                        Save {Math.round(((quickViewProduct.comparePrice - quickViewProduct.price) / quickViewProduct.comparePrice) * 100)}%
+                      </span>
+                    </>
+                  )}
+                </div>
+
+                {/* Description */}
+                <p className="text-xs text-neutral-600 leading-relaxed font-sans">
+                  {quickViewProduct.description}
+                </p>
+
+                {/* Urgency Stock Meter (ThemeForest Ella/Minimog Hallmark) */}
+                <div className="p-2.5 bg-amber-50/80 border border-amber-200/80 rounded-xs flex items-center space-x-2 text-xs text-amber-900 font-sans">
+                  <Flame className="w-4 h-4 text-amber-600 fill-current flex-shrink-0" />
+                  <span><strong>Low Stock:</strong> Only 4 pieces remain in current production lot.</span>
+                </div>
+
+                {/* Color Swatches */}
+                {quickViewProduct.colors && (
+                  <div className="space-y-1.5 pt-1">
+                    <div className="flex justify-between text-xs">
+                      <span className="font-medium text-neutral-700">Color:</span>
+                      <span className="font-bold text-black">{quickViewSelectedColor}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      {quickViewProduct.colors.map((c: any) => (
+                        <button
+                          key={c.name}
+                          type="button"
+                          onClick={() => setQuickViewSelectedColor(c.name)}
+                          className={`w-6 h-6 rounded-full flex items-center justify-center transition-all ${
+                            quickViewSelectedColor === c.name ? "ring-2 ring-black ring-offset-2 scale-110" : "opacity-75 hover:opacity-100"
+                          }`}
+                          title={c.name}
+                        >
+                          <span className="w-4 h-4 rounded-full border border-black/20" style={{ backgroundColor: c.hex }} />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Size Selector */}
+                {quickViewProduct.sizes && (
+                  <div className="space-y-1.5 pt-1">
+                    <div className="flex justify-between text-xs">
+                      <span className="font-medium text-neutral-700">Size:</span>
+                      <button
+                        type="button"
+                        onClick={() => setIsSizeGuideOpen(true)}
+                        className="text-[11px] text-neutral-500 hover:text-black underline transition"
+                      >
+                        Size Guide
+                      </button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {quickViewProduct.sizes.map((sz: string) => (
+                        <button
+                          key={sz}
+                          type="button"
+                          onClick={() => setQuickViewSelectedSize(sz)}
+                          className={`px-3 py-1.5 rounded-xs text-xs font-semibold font-sans transition ${
+                            quickViewSelectedSize === sz
+                              ? "bg-black text-white"
+                              : "bg-neutral-100 text-neutral-800 hover:bg-neutral-200"
+                          }`}
+                        >
+                          {sz}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Quantity and Add to Bag */}
+                <div className="pt-3 flex items-center space-x-3">
+                  <div className="flex items-center border border-neutral-300 rounded-xs">
+                    <button
+                      type="button"
+                      onClick={() => setQuickViewQty(Math.max(1, quickViewQty - 1))}
+                      className="p-2 hover:bg-neutral-100 text-neutral-600 transition"
+                      aria-label="Decrease quantity"
+                    >
+                      <Minus className="w-3 h-3" />
+                    </button>
+                    <span className="px-3 text-xs font-bold font-sans tabular-nums">{quickViewQty}</span>
+                    <button
+                      type="button"
+                      onClick={() => setQuickViewQty(quickViewQty + 1)}
+                      className="p-2 hover:bg-neutral-100 text-neutral-600 transition"
+                      aria-label="Increase quantity"
+                    >
+                      <Plus className="w-3 h-3" />
+                    </button>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      for (let i = 0; i < quickViewQty; i++) {
+                        handleQuickSizeAdd(quickViewProduct, quickViewSelectedSize || "M");
+                      }
+                      setQuickViewProduct(null);
+                    }}
+                    className="flex-1 py-3 px-6 bg-black hover:bg-neutral-800 text-white text-xs font-semibold uppercase tracking-[0.2em] transition flex items-center justify-center space-x-2 rounded-xs active:scale-98 shadow-sm"
+                  >
+                    <ShoppingBag className="w-4 h-4 stroke-[1.75]" />
+                    <span>Add to Bag • {formatPrice(quickViewProduct.price * quickViewQty)}</span>
+                  </button>
+                </div>
+
+                {/* Reassurance Pills */}
+                <div className="pt-2 grid grid-cols-2 gap-2 text-[10px] text-neutral-500 font-sans border-t border-neutral-100">
+                  <span className="flex items-center space-x-1.5"><Truck className="w-3 h-3 text-neutral-700" /><span>Free Courier Over $100</span></span>
+                  <span className="flex items-center space-x-1.5"><ShieldCheck className="w-3 h-3 text-neutral-700" /><span>Doorstep Fit Trial Included</span></span>
+                </div>
               </div>
             </div>
           </div>
