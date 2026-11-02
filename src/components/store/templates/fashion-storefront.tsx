@@ -24,7 +24,8 @@ import {
   Layers,
   ArrowUpRight,
   Tag,
-  Mail
+  Mail,
+  Globe
 } from "lucide-react";
 import { IStoreTemplate } from "@/templates/types";
 import { CartItem } from "@/lib/cart";
@@ -349,7 +350,7 @@ export function FashionStorefront({
           return false;
         }
         if (activeTab === "bestsellers" && !item.badge?.toLowerCase().includes("seller")) {
-          return true; // Keep catalog full and balanced
+          return true;
         }
         return true;
       })
@@ -362,25 +363,25 @@ export function FashionStorefront({
   }, [fullCatalog, activeDepartment, activeTab, sortBy]);
 
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-white text-neutral-950 selection:bg-black selection:text-white antialiased">
-      {/* ─── 1. Top Announcement Marquee Strip ──────────────────────────────── */}
-      <div className="py-2 px-4 bg-black text-white text-[10px] font-mono tracking-[0.25em] uppercase text-center border-b border-neutral-900">
+    <div className="min-h-screen flex flex-col font-sans bg-white text-neutral-950 selection:bg-neutral-900 selection:text-white antialiased">
+      {/* ─── 1. Top Announcement Strip (Refined Luxury Sans) ───────────────── */}
+      <div className="py-2.5 px-4 bg-neutral-950 text-neutral-300 text-[10px] font-sans tracking-[0.25em] uppercase text-center border-b border-neutral-900">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <span className="hidden lg:inline-block text-neutral-400">
+          <span className="hidden lg:inline-block text-neutral-400 font-medium">
             AUTUMN / WINTER 2026 ARCHIVE
           </span>
-          <span className="mx-auto lg:mx-0 font-medium">
-            COMPLIMENTARY WORLDWIDE DELIVERY ON ORDERS OVER $100 • 14-DAY DOORSTEP FIT TRIAL
+          <span className="mx-auto lg:mx-0 font-medium text-neutral-200">
+            COMPLIMENTARY WORLDWIDE DELIVERY OVER $100 • 14-DAY DOORSTEP FIT TRIAL
           </span>
-          <span className="hidden lg:inline-block text-neutral-400">
+          <span className="hidden lg:inline-block text-neutral-400 font-medium">
             CERTIFIED ORGANIC TEXTILES
           </span>
         </div>
       </div>
 
-      {/* ─── 2. Enterprise Fashion Header (Zara / SSENSE Benchmark) ─────────── */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-100 transition-colors">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      {/* ─── 2. Enterprise Fashion Header (SSENSE / COS Benchmark) ─────────── */}
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200/70 transition-colors">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-6">
           {/* Mobile: Hamburger Menu Toggle (< lg) */}
           <div className="flex items-center space-x-2 lg:hidden">
             <button
@@ -389,7 +390,7 @@ export function FashionStorefront({
               className="p-2 -ml-2 text-neutral-900 hover:text-black transition"
               aria-label="Open navigation menu"
             >
-              <Menu className="w-5 h-5" />
+              <Menu className="w-5 h-5 stroke-[1.75]" />
             </button>
             <button
               type="button"
@@ -397,86 +398,90 @@ export function FashionStorefront({
               className="p-2 text-neutral-700 hover:text-black transition sm:hidden"
               aria-label="Search"
             >
-              <Search className="w-4 h-4" />
+              <Search className="w-4 h-4 stroke-[1.75]" />
             </button>
           </div>
 
-          {/* Left: Department Navigation Links (Desktop) */}
-          <nav className="hidden lg:flex items-center space-x-7 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-600">
+          {/* Left: Brand Wordmark (Anchored Left, Never Wraps) */}
+          <Link
+            href={`/store/${tenantSlug}`}
+            className="flex flex-col items-start group flex-shrink-0"
+          >
+            <span className="text-xl sm:text-2xl font-normal tracking-[0.28em] uppercase text-black font-serif block leading-none whitespace-nowrap">
+              {storeDisplayName}
+            </span>
+            <span className="text-[9px] font-sans tracking-[0.35em] uppercase text-neutral-400 block mt-1.5 font-medium">
+              ATELIER ARCHIVE // EST. 2026
+            </span>
+          </Link>
+
+          {/* Center: Department Navigation Links (Desktop) */}
+          <nav className="hidden lg:flex items-center space-x-7 text-[11px] font-sans font-medium uppercase tracking-[0.2em] text-neutral-500">
             <button
               onClick={() => setActiveDepartment("all")}
-              className={`hover:text-black transition pb-0.5 ${
-                activeDepartment === "all" ? "text-black border-b-2 border-black font-bold" : ""
+              className={`hover:text-black transition-colors py-1 ${
+                activeDepartment === "all" ? "text-black border-b border-black font-semibold" : ""
               }`}
             >
               All Pieces
             </button>
             <button
               onClick={() => setActiveDepartment("outerwear")}
-              className={`hover:text-black transition pb-0.5 ${
-                activeDepartment === "outerwear" ? "text-black border-b-2 border-black font-bold" : ""
+              className={`hover:text-black transition-colors py-1 ${
+                activeDepartment === "outerwear" ? "text-black border-b border-black font-semibold" : ""
               }`}
             >
               Outerwear
             </button>
             <button
               onClick={() => setActiveDepartment("tees")}
-              className={`hover:text-black transition pb-0.5 ${
-                activeDepartment === "tees" ? "text-black border-b-2 border-black font-bold" : ""
+              className={`hover:text-black transition-colors py-1 ${
+                activeDepartment === "tees" ? "text-black border-b border-black font-semibold" : ""
               }`}
             >
-              Heavyweight Tees
+              Tees
             </button>
             <button
               onClick={() => setActiveDepartment("denim")}
-              className={`hover:text-black transition pb-0.5 ${
-                activeDepartment === "denim" ? "text-black border-b-2 border-black font-bold" : ""
+              className={`hover:text-black transition-colors py-1 ${
+                activeDepartment === "denim" ? "text-black border-b border-black font-semibold" : ""
               }`}
             >
-              Raw Denim
+              Denim
             </button>
             <button
               onClick={() => setActiveDepartment("hoodies")}
-              className={`hover:text-black transition pb-0.5 ${
-                activeDepartment === "hoodies" ? "text-black border-b-2 border-black font-bold" : ""
+              className={`hover:text-black transition-colors py-1 ${
+                activeDepartment === "hoodies" ? "text-black border-b border-black font-semibold" : ""
               }`}
             >
               Knitwear
             </button>
-            <a href="#lookbook" className="hover:text-black transition pb-0.5 text-neutral-500">
+            <a href="#lookbook" className="hover:text-black transition-colors py-1">
               Lookbook
             </a>
           </nav>
 
-          {/* Center: Brand Wordmark */}
-          <Link href={`/store/${tenantSlug}`} className="text-center group block">
-            <span className="text-xl sm:text-2xl font-light tracking-[0.35em] uppercase text-black font-serif block leading-none">
-              {storeDisplayName}
-            </span>
-            <span className="text-[9px] font-mono tracking-[0.45em] uppercase text-neutral-400 block mt-1">
-              STUDIO ARCHIVE // 2026
-            </span>
-          </Link>
-
           {/* Right: Functional Shopping Controls */}
-          <div className="flex items-center space-x-4 sm:space-x-6 text-neutral-800">
+          <div className="flex items-center space-x-2 sm:space-x-4 text-neutral-800 flex-shrink-0">
             <button
               onClick={onOpenSearch}
-              className="hidden sm:flex hover:text-black transition items-center space-x-1.5 p-1"
+              className="hidden sm:flex hover:text-black transition items-center space-x-1.5 py-1.5 px-3 rounded-full hover:bg-neutral-100 text-xs font-sans uppercase tracking-[0.18em]"
               title="Search collection"
             >
-              <Search className="w-4 h-4" />
-              <span className="text-xs font-mono tracking-widest uppercase">Search</span>
+              <Search className="w-3.5 h-3.5 stroke-[1.75]" />
+              <span className="text-[11px] font-medium">Search</span>
             </button>
 
             <button
               onClick={() => toastSuccess("Wishlist", `${wishlist.length} piece(s) saved.`)}
-              className="hover:text-black transition relative p-1"
+              className="hover:text-black transition relative p-2 rounded-full hover:bg-neutral-100"
               title="Saved items"
+              aria-label="Wishlist"
             >
-              <Heart className="w-4 h-4" />
+              <Heart className="w-4 h-4 stroke-[1.75]" />
               {wishlist.length > 0 && (
-                <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-black text-white text-[8px] font-bold rounded-full flex items-center justify-center">
+                <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-black text-white text-[9px] font-bold rounded-full flex items-center justify-center font-sans">
                   {wishlist.length}
                 </span>
               )}
@@ -486,22 +491,25 @@ export function FashionStorefront({
               <button
                 type="button"
                 onClick={onOpenTrackOrder}
-                className="hidden md:flex items-center space-x-1 hover:text-black text-xs font-mono tracking-widest uppercase p-1"
+                className="hidden md:flex items-center space-x-1.5 hover:text-black text-[11px] font-sans tracking-[0.18em] uppercase py-1.5 px-3 rounded-full hover:bg-neutral-100 transition"
                 title="Track order"
               >
-                <Truck className="w-4 h-4 text-neutral-400" />
-                <span>Track</span>
+                <Truck className="w-3.5 h-3.5 stroke-[1.75] text-neutral-500" />
+                <span className="font-medium">Track</span>
               </button>
             )}
 
             <button
               onClick={onOpenCart}
-              className="px-4 py-2 bg-black hover:bg-neutral-800 text-white rounded-xs text-xs font-mono uppercase tracking-widest transition flex items-center space-x-2"
+              className="py-2 px-3.5 bg-black hover:bg-neutral-800 text-white rounded-full text-[11px] font-sans uppercase tracking-[0.18em] font-medium transition flex items-center space-x-2 active:scale-95 shadow-xs"
             >
-              <ShoppingBag className="w-3.5 h-3.5" />
-              <span>Bag ({cartItems.reduce((s, i) => s + i.quantity, 0)})</span>
+              <ShoppingBag className="w-3.5 h-3.5 stroke-[1.75]" />
+              <span>Bag</span>
+              <span className="w-4 h-4 bg-white text-black text-[9px] font-bold rounded-full flex items-center justify-center">
+                {cartItems.reduce((s, i) => s + i.quantity, 0)}
+              </span>
               {cartItems.length > 0 && (
-                <span className="hidden sm:inline border-l border-neutral-700 pl-2">
+                <span className="hidden sm:inline border-l border-neutral-700 pl-2 tabular-nums">
                   ${finalTotal.toFixed(2)}
                 </span>
               )}
@@ -512,24 +520,21 @@ export function FashionStorefront({
 
       {/* ─── Mobile Navigation Slide-Out Drawer ───────────────────────────── */}
       {isMobileNavOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden animate-fade-in">
-          {/* Backdrop */}
+        <div className="fixed inset-0 z-50 lg:hidden animate-fade-in font-sans">
           <div
             className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
             onClick={() => setIsMobileNavOpen(false)}
           />
 
-          {/* Drawer Sheet */}
           <div className="fixed inset-y-0 left-0 w-full max-w-xs bg-white shadow-2xl p-6 flex flex-col justify-between overflow-y-auto border-r border-neutral-200">
             <div>
-              {/* Header */}
               <div className="flex items-center justify-between pb-6 border-b border-neutral-100">
                 <div>
-                  <span className="font-serif text-lg tracking-[0.25em] uppercase font-light text-black block">
+                  <span className="font-serif text-lg tracking-[0.25em] uppercase font-normal text-black block">
                     {storeDisplayName}
                   </span>
-                  <span className="text-[9px] font-mono tracking-[0.3em] uppercase text-neutral-400">
-                    Studio Archive
+                  <span className="text-[9px] font-sans tracking-[0.3em] uppercase text-neutral-400 font-medium">
+                    Studio Archive // 2026
                   </span>
                 </div>
                 <button
@@ -537,16 +542,15 @@ export function FashionStorefront({
                   className="p-2 text-neutral-500 hover:text-black rounded-lg transition"
                   aria-label="Close menu"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-5 h-5 stroke-[1.75]" />
                 </button>
               </div>
 
-              {/* Collections Filter Navigation */}
               <div className="py-6 space-y-4">
-                <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-neutral-400 font-medium">
+                <p className="text-[10px] font-sans uppercase tracking-[0.25em] text-neutral-400 font-semibold">
                   Shop By Category
                 </p>
-                <nav className="flex flex-col space-y-3 text-xs uppercase tracking-[0.15em] font-medium text-neutral-800">
+                <nav className="flex flex-col space-y-2 text-xs uppercase tracking-[0.16em] font-medium text-neutral-800">
                   <button
                     onClick={() => {
                       setActiveDepartment("all");
@@ -610,12 +614,11 @@ export function FashionStorefront({
                 </nav>
               </div>
 
-              {/* Editorial & Standards */}
               <div className="py-4 border-t border-neutral-100 space-y-3">
-                <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-neutral-400 font-medium">
+                <p className="text-[10px] font-sans uppercase tracking-[0.25em] text-neutral-400 font-semibold">
                   Editorial & Standards
                 </p>
-                <div className="flex flex-col space-y-2.5 text-xs uppercase tracking-[0.15em] font-medium text-neutral-600">
+                <div className="flex flex-col space-y-2 text-xs uppercase tracking-[0.16em] font-medium text-neutral-600">
                   <a
                     href="#lookbook"
                     onClick={() => setIsMobileNavOpen(false)}
@@ -634,7 +637,6 @@ export function FashionStorefront({
               </div>
             </div>
 
-            {/* Bottom Actions */}
             <div className="pt-6 border-t border-neutral-100 space-y-3">
               {onOpenTrackOrder && (
                 <button
@@ -642,7 +644,7 @@ export function FashionStorefront({
                     setIsMobileNavOpen(false);
                     onOpenTrackOrder();
                   }}
-                  className="w-full py-2.5 px-3 rounded-xs bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs uppercase tracking-wider font-medium flex items-center justify-center space-x-2 transition"
+                  className="w-full py-2.5 px-3 rounded-lg bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs uppercase tracking-wider font-medium flex items-center justify-center space-x-2 transition"
                 >
                   <Truck className="w-3.5 h-3.5 text-neutral-500" />
                   <span>Track Consignment</span>
@@ -655,13 +657,13 @@ export function FashionStorefront({
                     setIsMobileNavOpen(false);
                     onOpenCheckout();
                   }}
-                  className="w-full py-2.5 px-3 rounded-xs bg-black text-white text-xs uppercase tracking-wider font-semibold flex items-center justify-center space-x-2 hover:bg-neutral-800 transition"
+                  className="w-full py-2.5 px-3 rounded-lg bg-black text-white text-xs uppercase tracking-wider font-semibold flex items-center justify-center space-x-2 hover:bg-neutral-800 transition"
                 >
                   <span>1-Page Express Checkout</span>
                 </button>
               )}
 
-              <p className="text-[10px] font-mono text-neutral-400 text-center tracking-wide pt-2">
+              <p className="text-[10px] font-sans text-neutral-400 text-center tracking-wide pt-2">
                 Doorstep Fit Inspection • Free Exchanges
               </p>
             </div>
@@ -669,7 +671,7 @@ export function FashionStorefront({
         </div>
       )}
 
-      {/* ─── 3. Full-Bleed Editorial Campaign Hero (Zara / SSENSE Style) ─────── */}
+      {/* ─── 3. Full-Bleed Editorial Campaign Hero ─────────────────────────── */}
       <section className="relative w-full h-[80vh] min-h-[560px] max-h-[800px] bg-neutral-950 overflow-hidden flex items-end">
         <img
           src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1920&auto=format&fit=crop&q=85"
@@ -679,11 +681,11 @@ export function FashionStorefront({
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14 sm:pb-20 w-full text-white space-y-4">
-          <span className="text-[11px] font-mono tracking-[0.35em] uppercase text-neutral-300 block font-medium">
+          <span className="text-[11px] font-sans tracking-[0.35em] uppercase text-neutral-300 block font-medium">
             Autumn / Winter 2026 Campaign • Drop 01
           </span>
 
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-light uppercase tracking-tight text-white font-serif leading-none">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-normal uppercase tracking-tight text-white font-serif leading-none">
             The Archival Silhouette.
           </h1>
 
@@ -694,13 +696,13 @@ export function FashionStorefront({
           <div className="pt-2 flex flex-wrap items-center gap-4">
             <a
               href="#catalog"
-              className="px-8 py-3.5 bg-white hover:bg-neutral-200 text-black text-xs font-semibold uppercase tracking-[0.2em] transition rounded-xs"
+              className="px-8 py-3.5 bg-white hover:bg-neutral-100 text-black text-xs font-semibold uppercase tracking-[0.2em] transition rounded-xs"
             >
               Shop Collection
             </a>
             <a
               href="#lookbook"
-              className="px-8 py-3.5 bg-black/60 hover:bg-black text-white border border-white/40 text-xs font-semibold uppercase tracking-[0.2em] transition backdrop-blur-sm rounded-xs"
+              className="px-8 py-3.5 bg-black/50 hover:bg-black text-white border border-white/40 text-xs font-semibold uppercase tracking-[0.2em] transition backdrop-blur-sm rounded-xs"
             >
               View Lookbook
             </a>
@@ -713,14 +715,14 @@ export function FashionStorefront({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 pb-4 border-b border-neutral-200 gap-4">
             <div>
-              <span className="text-[10px] font-mono tracking-[0.3em] uppercase text-neutral-400 block font-medium">
+              <span className="text-[10px] font-sans tracking-[0.3em] uppercase text-neutral-400 block font-medium">
                 Core Departments
               </span>
-              <h2 className="text-2xl sm:text-3xl font-light uppercase tracking-tight text-black font-serif mt-1">
+              <h2 className="text-2xl sm:text-3xl font-normal uppercase tracking-tight text-black font-serif mt-1">
                 Shop By Category
               </h2>
             </div>
-            <p className="text-xs text-neutral-500 font-mono tracking-wider">
+            <p className="text-xs text-neutral-500 font-sans tracking-wider">
               6 Tailored Industry Architectures
             </p>
           </div>
@@ -742,15 +744,15 @@ export function FashionStorefront({
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute top-2.5 left-2.5 text-[8px] font-mono tracking-wider uppercase text-white bg-black/60 px-1.5 py-0.5 rounded-xs">
+                <div className="absolute top-2.5 left-2.5 text-[8px] font-sans tracking-wider uppercase text-white bg-black/60 px-1.5 py-0.5 rounded-xs font-medium">
                   {dept.tag}
                 </div>
                 <div className="absolute inset-x-2.5 bottom-2.5 text-white space-y-0.5">
-                  <span className="text-[9px] font-mono text-neutral-400 block">{dept.number}</span>
+                  <span className="text-[9px] font-sans tracking-widest text-neutral-400 block font-medium">{dept.number}</span>
                   <h3 className="text-xs font-semibold uppercase tracking-wider font-serif">
                     {dept.title}
                   </h3>
-                  <p className="text-[9px] text-neutral-300 font-mono line-clamp-1">
+                  <p className="text-[9px] text-neutral-300 font-sans line-clamp-1">
                     {dept.subtitle}
                   </p>
                 </div>
@@ -800,8 +802,8 @@ export function FashionStorefront({
           </div>
 
           {/* Department Filter & Sort Dropdown */}
-          <div className="flex items-center space-x-3 text-xs text-neutral-600 font-mono self-end sm:self-auto">
-            <span className="text-[11px] text-neutral-400">
+          <div className="flex items-center space-x-3 text-xs text-neutral-600 font-sans self-end sm:self-auto">
+            <span className="text-[11px] text-neutral-400 font-medium">
               Showing {displayedCatalog.length} pieces
             </span>
             <span>•</span>
@@ -847,11 +849,11 @@ export function FashionStorefront({
 
                   {/* Badges in Top Left */}
                   <div className="absolute top-2.5 left-2.5 flex flex-col space-y-1 items-start">
-                    <span className="text-[9px] font-mono tracking-[0.2em] uppercase bg-black text-white px-2 py-0.5 rounded-xs pointer-events-none">
+                    <span className="text-[9px] font-sans tracking-[0.2em] uppercase bg-black text-white px-2 py-0.5 rounded-xs pointer-events-none font-medium">
                       {p.badge}
                     </span>
                     {p.comparePrice > p.price && (
-                      <span className="text-[9px] font-mono tracking-[0.2em] uppercase bg-rose-600 text-white px-2 py-0.5 rounded-xs pointer-events-none">
+                      <span className="text-[9px] font-sans tracking-[0.2em] uppercase bg-rose-600 text-white px-2 py-0.5 rounded-xs pointer-events-none font-medium">
                         Save {Math.round(((p.comparePrice - p.price) / p.comparePrice) * 100)}%
                       </span>
                     )}
@@ -868,12 +870,12 @@ export function FashionStorefront({
                     title="Save to wishlist"
                     aria-label="Save to wishlist"
                   >
-                    <Heart className={`w-3.5 h-3.5 ${isWishlisted ? "text-black fill-current" : ""}`} />
+                    <Heart className={`w-3.5 h-3.5 stroke-[1.75] ${isWishlisted ? "text-black fill-current" : ""}`} />
                   </button>
 
                   {/* Desktop Quick Size Selector Bar (Slides up smoothly on hover) */}
                   <div className="hidden sm:flex absolute inset-x-3 bottom-3 p-1.5 bg-white/95 backdrop-blur-md border border-white/60 shadow-lg translate-y-6 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 ease-out z-10 items-center justify-between text-neutral-900 rounded-xs">
-                    <span className="text-[9px] font-mono uppercase tracking-wider text-neutral-400 pl-1">
+                    <span className="text-[9px] font-sans uppercase tracking-wider text-neutral-400 pl-1 font-medium">
                       Quick Add
                     </span>
                     <div className="flex items-center space-x-1">
@@ -885,7 +887,7 @@ export function FashionStorefront({
                             e.stopPropagation();
                             handleQuickSizeAdd(p, sz);
                           }}
-                          className="w-6 h-6 rounded text-[10px] font-mono font-medium hover:bg-black hover:text-white transition flex items-center justify-center text-neutral-800"
+                          className="w-6 h-6 rounded text-[10px] font-sans font-medium hover:bg-black hover:text-white transition flex items-center justify-center text-neutral-800"
                           title={`Add Size ${sz} to Bag`}
                         >
                           {sz}
@@ -923,7 +925,7 @@ export function FashionStorefront({
                         );
                       })}
                     </div>
-                    <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-wider truncate max-w-[120px]">
+                    <span className="text-[9px] font-sans text-neutral-400 uppercase tracking-wider truncate max-w-[120px] font-medium">
                       {currentColor}
                     </span>
                   </div>
@@ -937,31 +939,31 @@ export function FashionStorefront({
                   </h3>
 
                   {/* Fabric Description Subline */}
-                  <p className="text-[10px] text-neutral-400 font-mono tracking-tight truncate">
+                  <p className="text-[10px] text-neutral-400 font-sans tracking-tight truncate">
                     {p.fabricSub}
                   </p>
 
                   {/* Price & Rating */}
                   <div className="flex items-center justify-between pt-0.5">
                     <div className="flex items-baseline space-x-2">
-                      <span className="text-xs sm:text-sm font-semibold text-black font-mono">
+                      <span className="text-xs sm:text-sm font-semibold text-black font-sans tabular-nums">
                         ${p.price.toFixed(2)}
                       </span>
                       {p.comparePrice > p.price && (
-                        <span className="text-[10px] text-neutral-400 line-through font-mono">
+                        <span className="text-[10px] text-neutral-400 line-through font-sans tabular-nums">
                           ${p.comparePrice.toFixed(2)}
                         </span>
                       )}
                     </div>
                     <div className="flex items-center space-x-1 text-[11px] text-neutral-500">
                       <Star className="w-3 h-3 text-amber-500 fill-current" />
-                      <span className="font-mono text-[10px]">{p.rating}</span>
+                      <span className="font-sans text-[10px] font-medium">{p.rating}</span>
                     </div>
                   </div>
 
                   {/* Mobile Quick-Add Size Strip (< sm) */}
                   <div className="sm:hidden pt-2 border-t border-neutral-100 flex items-center justify-between gap-1">
-                    <span className="text-[9px] font-mono uppercase tracking-wider text-neutral-400">
+                    <span className="text-[9px] font-sans uppercase tracking-wider text-neutral-400 font-medium">
                       Size:
                     </span>
                     <div className="flex items-center gap-1">
@@ -973,7 +975,7 @@ export function FashionStorefront({
                             e.stopPropagation();
                             handleQuickSizeAdd(p, sz);
                           }}
-                          className="px-1.5 py-0.5 rounded bg-neutral-100 hover:bg-black hover:text-white text-[9px] font-mono font-medium text-neutral-800 transition active:scale-95"
+                          className="px-1.5 py-0.5 rounded bg-neutral-100 hover:bg-black hover:text-white text-[9px] font-sans font-medium text-neutral-800 transition active:scale-95"
                           title={`Add Size ${sz}`}
                         >
                           {sz}
@@ -992,10 +994,10 @@ export function FashionStorefront({
       <section id="lookbook" className="py-20 border-t border-neutral-200 bg-[#fafafa]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-xl mx-auto text-center space-y-3 mb-16">
-            <span className="text-[11px] font-mono tracking-[0.3em] uppercase text-neutral-400 block font-medium">
+            <span className="text-[11px] font-sans tracking-[0.3em] uppercase text-neutral-400 block font-medium">
               Curated Outfits // Look 01
             </span>
-            <h2 className="text-3xl sm:text-4xl font-light uppercase tracking-tight text-black font-serif">
+            <h2 className="text-3xl sm:text-4xl font-normal uppercase tracking-tight text-black font-serif">
               Shop The Complete Look
             </h2>
             <p className="text-xs sm:text-sm text-neutral-500 max-w-md mx-auto leading-relaxed">
@@ -1008,14 +1010,14 @@ export function FashionStorefront({
             <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="aspect-[3/4] overflow-hidden bg-neutral-200 rounded-xs">
                 <img
-                  src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1000&auto=format&fit=crop&q=85"
+                  src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1000&auto=format&fit=crop&q=85"
                   alt="Ensemble Look 01"
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="aspect-[3/4] overflow-hidden bg-neutral-200 rounded-xs hidden sm:block">
                 <img
-                  src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1000&auto=format&fit=crop&q=85"
+                  src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=1000&auto=format&fit=crop&q=85"
                   alt="Ensemble Look 02"
                   className="w-full h-full object-cover"
                 />
@@ -1023,12 +1025,12 @@ export function FashionStorefront({
             </div>
 
             {/* Look Breakdown & 1-Click Purchase */}
-            <div className="lg:col-span-5 space-y-6 lg:pl-4 bg-white p-8 rounded-xs border border-neutral-200 shadow-sm">
+            <div className="lg:col-span-5 space-y-6 lg:pl-4 bg-white p-8 rounded-xs border border-neutral-200 shadow-sm font-sans">
               <div className="space-y-1.5">
-                <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-neutral-400 block font-medium">
+                <span className="text-[10px] font-sans uppercase tracking-[0.25em] text-neutral-400 block font-medium">
                   Atelier Ensemble // Complete Set
                 </span>
-                <h3 className="text-2xl font-light uppercase tracking-tight text-black font-serif">
+                <h3 className="text-2xl font-normal uppercase tracking-tight text-black font-serif">
                   The Modern Minimalist Kit
                 </h3>
                 <p className="text-xs text-neutral-600 leading-relaxed font-normal">
@@ -1041,27 +1043,27 @@ export function FashionStorefront({
                 <div className="flex items-center justify-between py-2.5 border-b border-neutral-100 text-xs">
                   <div>
                     <span className="font-semibold text-neutral-900 block">Heavyweight Organic Oversized Tee</span>
-                    <span className="text-[10px] text-neutral-400 font-mono">280 GSM • Washed Slate</span>
+                    <span className="text-[10px] text-neutral-400 font-sans">280 GSM • Washed Slate</span>
                   </div>
-                  <span className="font-mono font-semibold">$34.00</span>
+                  <span className="font-sans font-semibold tabular-nums">$34.00</span>
                 </div>
 
                 <div className="flex items-center justify-between py-2.5 border-b border-neutral-100 text-xs">
                   <div>
                     <span className="font-semibold text-neutral-900 block">Japanese Selvedge Taper Denim</span>
-                    <span className="text-[10px] text-neutral-400 font-mono">13.5oz Kurabo • Raw Indigo</span>
+                    <span className="text-[10px] text-neutral-400 font-sans">13.5oz Kurabo • Raw Indigo</span>
                   </div>
-                  <span className="font-mono font-semibold">$98.00</span>
+                  <span className="font-sans font-semibold tabular-nums">$98.00</span>
                 </div>
               </div>
 
               {/* Total & Action */}
               <div className="pt-2 space-y-4">
                 <div className="flex items-baseline justify-between">
-                  <span className="text-xs text-neutral-500 uppercase font-mono tracking-wider">Bundle Price</span>
+                  <span className="text-xs text-neutral-500 uppercase font-sans tracking-wider">Bundle Price</span>
                   <div className="text-right">
-                    <span className="text-2xl font-bold font-mono text-black">$132.00</span>
-                    <span className="text-[11px] text-neutral-400 line-through font-mono block">$188.00</span>
+                    <span className="text-2xl font-bold font-sans text-black tabular-nums">$132.00</span>
+                    <span className="text-[11px] text-neutral-400 line-through font-sans block tabular-nums">$188.00</span>
                   </div>
                 </div>
 
@@ -1072,7 +1074,7 @@ export function FashionStorefront({
                   }}
                   className="w-full py-4 bg-black hover:bg-neutral-800 text-white text-xs font-semibold uppercase tracking-[0.2em] transition flex items-center justify-center space-x-2 rounded-xs"
                 >
-                  <ShoppingBag className="w-4 h-4" />
+                  <ShoppingBag className="w-4 h-4 stroke-[1.75]" />
                   <span>Add Complete Look to Bag ($132.00)</span>
                 </button>
               </div>
@@ -1085,41 +1087,41 @@ export function FashionStorefront({
       <section className="py-20 border-t border-neutral-200 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-2 mb-14">
-            <span className="text-[10px] font-mono tracking-[0.3em] uppercase text-neutral-400 block font-medium">
+            <span className="text-[10px] font-sans tracking-[0.3em] uppercase text-neutral-400 block font-medium">
               Material Ethics & Longevity
             </span>
-            <h2 className="text-3xl font-light uppercase tracking-tight text-black font-serif">
+            <h2 className="text-3xl font-normal uppercase tracking-tight text-black font-serif">
               The Standards of Atelier Craft
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12">
             <div className="space-y-3">
-              <span className="text-2xl font-serif text-neutral-400 font-light block">01</span>
+              <span className="text-2xl font-serif text-neutral-400 font-normal block">01</span>
               <h3 className="text-sm font-semibold uppercase tracking-wider text-black">
                 Japanese Shuttle Looms
               </h3>
-              <p className="text-xs text-neutral-500 leading-relaxed">
+              <p className="text-xs text-neutral-500 leading-relaxed font-sans">
                 Woven in Kojima on antique Toyoda shuttle looms with genuine redline ID. High-density indigo warp yarns fade organically with wear.
               </p>
             </div>
 
             <div className="space-y-3">
-              <span className="text-2xl font-serif text-neutral-400 font-light block">02</span>
+              <span className="text-2xl font-serif text-neutral-400 font-normal block">02</span>
               <h3 className="text-sm font-semibold uppercase tracking-wider text-black">
                 280 GSM Organic Cotton
               </h3>
-              <p className="text-xs text-neutral-500 leading-relaxed">
+              <p className="text-xs text-neutral-500 leading-relaxed font-sans">
                 Combed long-staple ring-spun cotton with silk-soft handfeel and zero shrinkage. Double-stitched neckline guarantees lasting collar drape.
               </p>
             </div>
 
             <div className="space-y-3">
-              <span className="text-2xl font-serif text-neutral-400 font-light block">03</span>
+              <span className="text-2xl font-serif text-neutral-400 font-normal block">03</span>
               <h3 className="text-sm font-semibold uppercase tracking-wider text-black">
                 Architectural Drape
               </h3>
-              <p className="text-xs text-neutral-500 leading-relaxed">
+              <p className="text-xs text-neutral-500 leading-relaxed font-sans">
                 Engineered drop-shoulder silhouette drafted in Stockholm. Clean proportions that maintain structural poise across every body type.
               </p>
             </div>
@@ -1133,13 +1135,13 @@ export function FashionStorefront({
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center sm:text-left">
             <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-3 sm:space-y-0 sm:space-x-3.5">
               <div className="w-10 h-10 rounded-xs bg-white border border-neutral-200 flex items-center justify-center text-black flex-shrink-0">
-                <Truck className="w-4 h-4" />
+                <Truck className="w-4 h-4 stroke-[1.75]" />
               </div>
               <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-black">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-black font-sans">
                   Free Express Delivery
                 </h4>
-                <p className="text-[11px] text-neutral-500 mt-0.5 leading-relaxed">
+                <p className="text-[11px] text-neutral-500 mt-0.5 leading-relaxed font-sans">
                   Complimentary nationwide courier dispatch on orders over $100.
                 </p>
               </div>
@@ -1147,13 +1149,13 @@ export function FashionStorefront({
 
             <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-3 sm:space-y-0 sm:space-x-3.5">
               <div className="w-10 h-10 rounded-xs bg-white border border-neutral-200 flex items-center justify-center text-black flex-shrink-0">
-                <ShieldCheck className="w-4 h-4" />
+                <ShieldCheck className="w-4 h-4 stroke-[1.75]" />
               </div>
               <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-black">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-black font-sans">
                   Doorstep Fit Trial
                 </h4>
-                <p className="text-[11px] text-neutral-500 mt-0.5 leading-relaxed">
+                <p className="text-[11px] text-neutral-500 mt-0.5 leading-relaxed font-sans">
                   Open parcel inspection and trial before paying Cash on Delivery.
                 </p>
               </div>
@@ -1161,13 +1163,13 @@ export function FashionStorefront({
 
             <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-3 sm:space-y-0 sm:space-x-3.5">
               <div className="w-10 h-10 rounded-xs bg-white border border-neutral-200 flex items-center justify-center text-black flex-shrink-0">
-                <RotateCcw className="w-4 h-4" />
+                <RotateCcw className="w-4 h-4 stroke-[1.75]" />
               </div>
               <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-black">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-black font-sans">
                   14-Day Free Exchange
                 </h4>
-                <p className="text-[11px] text-neutral-500 mt-0.5 leading-relaxed">
+                <p className="text-[11px] text-neutral-500 mt-0.5 leading-relaxed font-sans">
                   Hassle-free doorstep size and variant exchange within 48 hours.
                 </p>
               </div>
@@ -1175,13 +1177,13 @@ export function FashionStorefront({
 
             <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-3 sm:space-y-0 sm:space-x-3.5">
               <div className="w-10 h-10 rounded-xs bg-white border border-neutral-200 flex items-center justify-center text-black flex-shrink-0">
-                <Lock className="w-4 h-4" />
+                <Lock className="w-4 h-4 stroke-[1.75]" />
               </div>
               <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-black">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-black font-sans">
                   Certified Authentic
                 </h4>
-                <p className="text-[11px] text-neutral-500 mt-0.5 leading-relaxed">
+                <p className="text-[11px] text-neutral-500 mt-0.5 leading-relaxed font-sans">
                   100% certified organic yarns and Kurabo Japanese mill denim.
                 </p>
               </div>
@@ -1194,13 +1196,13 @@ export function FashionStorefront({
       <section className="py-16 border-t border-neutral-200 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-2 mb-10">
-            <span className="text-[10px] font-mono tracking-[0.3em] uppercase text-neutral-400 block font-medium">
+            <span className="text-[10px] font-sans tracking-[0.3em] uppercase text-neutral-400 block font-medium">
               Community Gallery
             </span>
-            <h2 className="text-2xl sm:text-3xl font-light uppercase tracking-tight text-black font-serif">
+            <h2 className="text-2xl sm:text-3xl font-normal uppercase tracking-tight text-black font-serif">
               As Seen On The Streets // #ApexStyle
             </h2>
-            <p className="text-xs text-neutral-500 font-mono tracking-wider">
+            <p className="text-xs text-neutral-500 font-sans tracking-wider">
               Tag @apexstudios on Instagram to be featured
             </p>
           </div>
@@ -1219,7 +1221,7 @@ export function FashionStorefront({
                   alt={`Community Style ${idx + 1}`}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-mono uppercase tracking-widest">
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-sans uppercase tracking-widest font-medium">
                   @apexstudios
                 </div>
               </div>
@@ -1229,20 +1231,20 @@ export function FashionStorefront({
       </section>
 
       {/* ─── 10. VIP Newsletter Section ─────────────────────────────────────── */}
-      <section className="py-20 border-t border-neutral-200 bg-black text-white">
+      <section className="py-20 border-t border-neutral-200 bg-neutral-950 text-white font-sans">
         <div className="max-w-md mx-auto px-4 text-center space-y-4">
-          <span className="text-[10px] font-mono tracking-[0.35em] uppercase text-neutral-400 block font-medium">
+          <span className="text-[10px] font-sans tracking-[0.35em] uppercase text-neutral-400 block font-medium">
             VIP Privileges
           </span>
-          <h3 className="text-3xl font-light uppercase tracking-tight text-white font-serif">
+          <h3 className="text-3xl font-normal uppercase tracking-tight text-white font-serif">
             Join The Apex Archive
           </h3>
-          <p className="text-xs text-neutral-400 max-w-sm mx-auto leading-relaxed">
+          <p className="text-xs text-neutral-400 max-w-sm mx-auto leading-relaxed font-sans">
             Receive private seasonal previews, archival drops, and an exclusive 15% discount code on your first order.
           </p>
 
           {newsletterSuccess ? (
-            <div className="p-3 bg-neutral-900 border border-neutral-800 text-white text-xs font-semibold tracking-wider uppercase font-mono rounded-xs">
+            <div className="p-3 bg-neutral-900 border border-neutral-800 text-white text-xs font-semibold tracking-wider uppercase font-sans rounded-xs">
               Welcome to the Archive. Use code <span className="text-emerald-400 font-bold">ATELIER15</span> at checkout.
             </div>
           ) : (
@@ -1252,12 +1254,12 @@ export function FashionStorefront({
                 placeholder="Enter your email address"
                 value={newsletterEmail}
                 onChange={(e) => setNewsletterEmail(e.target.value)}
-                className="flex-1 px-4 py-3 bg-neutral-900 border border-neutral-800 rounded-xs text-xs text-white outline-none focus:border-white transition placeholder:text-neutral-500"
+                className="flex-1 px-4 py-3 bg-neutral-900 border border-neutral-800 rounded-xs text-xs text-white outline-none focus:border-white transition placeholder:text-neutral-500 font-sans"
                 required
               />
               <button
                 type="submit"
-                className="px-6 py-3 bg-white hover:bg-neutral-200 text-black text-xs font-semibold uppercase tracking-[0.2em] transition rounded-xs"
+                className="px-6 py-3 bg-white hover:bg-neutral-200 text-black text-xs font-semibold uppercase tracking-[0.2em] transition rounded-xs font-sans"
               >
                 Subscribe
               </button>
@@ -1266,44 +1268,49 @@ export function FashionStorefront({
         </div>
       </section>
 
-      {/* ─── 11. Multi-Column Enterprise Fashion Footer ─────────────────────── */}
+      {/* ─── 11. Multi-Column Enterprise Luxury Fashion Footer ───────────────── */}
       <footer className="bg-neutral-950 text-neutral-400 font-sans border-t border-neutral-900 text-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
-            {/* Column 1: Store Brand Info */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-12">
+            {/* Column 1: Store Brand Info (Spans 2 cols on lg) */}
             <div className="lg:col-span-2 space-y-4">
               <div>
-                <span className="text-lg font-light tracking-[0.3em] uppercase text-white font-serif block">
+                <span className="text-xl font-normal tracking-[0.32em] uppercase text-white font-serif block leading-none">
                   {storeDisplayName}
                 </span>
-                <span className="text-[9px] font-mono tracking-[0.4em] uppercase text-neutral-500 block mt-0.5">
-                  ATELIER ARCHIVE
+                <span className="text-[9px] font-sans tracking-[0.38em] uppercase text-neutral-500 block mt-1.5 font-medium">
+                  ATELIER ARCHIVE // EST. 2026
                 </span>
               </div>
-              <p className="text-xs text-neutral-400 leading-relaxed max-w-sm">
+              <p className="text-xs text-neutral-400 leading-relaxed max-w-sm font-sans">
                 Official authenticated online flagship for {storeDisplayName}. Engineered textiles, Japanese Kurabo denim, nationwide express courier dispatch, and doorstep fit verification before tender.
               </p>
-              <div className="space-y-1.5 text-xs text-neutral-400 pt-2 font-mono">
+              <div className="space-y-2 text-xs text-neutral-400 pt-2 font-sans">
                 <div className="flex items-center space-x-2 text-neutral-300">
-                  <Mail className="w-3.5 h-3.5 text-neutral-400" />
+                  <Mail className="w-3.5 h-3.5 stroke-[1.75] text-neutral-400" />
                   <span>concierge@{tenantSlug || "store"}.storeswift.app</span>
                 </div>
                 <div className="flex items-center space-x-2 text-neutral-400">
-                  <Package className="w-3.5 h-3.5 text-neutral-500" />
-                  <span>Concierge: 10:00 AM – 10:00 PM Everyday</span>
+                  <Package className="w-3.5 h-3.5 stroke-[1.75] text-neutral-500" />
+                  <span>Atelier Fitting Hours: 10:00 AM – 10:00 PM Daily</span>
                 </div>
               </div>
             </div>
 
             {/* Column 2: Department Shopping */}
-            <div className="space-y-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-white">
+            <div className="space-y-3.5">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white font-sans">
                 Departments
               </p>
-              <ul className="space-y-2.5 text-neutral-400">
+              <ul className="space-y-2.5 text-neutral-400 font-sans">
                 <li>
                   <button onClick={() => setActiveDepartment("all")} className="hover:text-white transition">
-                    All Collections
+                    All Pieces
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => setActiveDepartment("outerwear")} className="hover:text-white transition">
+                    Tailored Overcoats
                   </button>
                 </li>
                 <li>
@@ -1322,22 +1329,22 @@ export function FashionStorefront({
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => setActiveDepartment("outerwear")} className="hover:text-white transition">
-                    Tailored Overcoats
-                  </button>
+                  <a href="#lookbook" className="hover:text-white transition">
+                    Atelier Lookbook
+                  </a>
                 </li>
               </ul>
             </div>
 
             {/* Column 3: Client Services */}
-            <div className="space-y-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-white">
+            <div className="space-y-3.5">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white font-sans">
                 Client Care
               </p>
-              <ul className="space-y-2.5 text-neutral-400">
+              <ul className="space-y-2.5 text-neutral-400 font-sans">
                 {onOpenTrackOrder && (
                   <li>
-                    <button onClick={onOpenTrackOrder} className="hover:text-white transition flex items-center space-x-1">
+                    <button onClick={onOpenTrackOrder} className="hover:text-white transition flex items-center space-x-1.5">
                       <span>Track Consignment</span>
                       <ArrowRight className="w-3 h-3 text-neutral-500" />
                     </button>
@@ -1359,7 +1366,7 @@ export function FashionStorefront({
                   </a>
                 </li>
                 <li>
-                  <Link href={`/admin?store=${tenantSlug}`} className="hover:text-white transition flex items-center space-x-1">
+                  <Link href={`/admin?store=${tenantSlug}`} className="hover:text-white transition flex items-center space-x-1.5">
                     <span>Merchant Portal</span>
                     <ExternalLink className="w-3 h-3 text-neutral-500" />
                   </Link>
@@ -1368,25 +1375,25 @@ export function FashionStorefront({
             </div>
 
             {/* Column 4: Payment & Security */}
-            <div className="space-y-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-white">
-                Payment & Logistics
+            <div className="space-y-3.5">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white font-sans">
+                Fulfillment & Trust
               </p>
-              <ul className="space-y-2.5 text-neutral-400">
+              <ul className="space-y-2.5 text-neutral-400 font-sans">
                 <li className="flex items-center space-x-2 text-neutral-300">
-                  <ShieldCheck className="w-3.5 h-3.5 text-neutral-400" />
+                  <ShieldCheck className="w-3.5 h-3.5 stroke-[1.75] text-neutral-400" />
                   <span>Cash on Delivery (COD)</span>
                 </li>
                 <li className="flex items-center space-x-2 text-neutral-300">
-                  <Lock className="w-3.5 h-3.5 text-neutral-400" />
+                  <Lock className="w-3.5 h-3.5 stroke-[1.75] text-neutral-400" />
                   <span>256-Bit SSL Encryption</span>
                 </li>
                 <li className="flex items-center space-x-2 text-neutral-300">
-                  <Truck className="w-3.5 h-3.5 text-neutral-400" />
+                  <Truck className="w-3.5 h-3.5 stroke-[1.75] text-neutral-400" />
                   <span>Steadfast & Pathao Courier</span>
                 </li>
                 <li className="pt-1 text-[11px] text-neutral-500">
-                  <span>Metropolitan: 24h Express</span>
+                  <span>Metropolitan: 24h Express Dispatch</span>
                 </li>
                 <li className="text-[11px] text-neutral-500">
                   <span>Nationwide: 48h–72h Insured</span>
@@ -1396,17 +1403,23 @@ export function FashionStorefront({
           </div>
 
           {/* Bottom Bar: Copyright & Attribution */}
-          <div className="mt-12 pt-8 border-t border-neutral-900 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
+          <div className="mt-16 pt-8 border-t border-neutral-900 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-neutral-500 font-sans">
             <div className="flex flex-wrap items-center gap-2 text-center sm:text-left">
-              <span>© {new Date().getFullYear()} {storeDisplayName}. All rights reserved.</span>
+              <span>© {new Date().getFullYear()} {storeDisplayName} Atelier. All rights reserved.</span>
               <span>•</span>
               <Link href="/" className="hover:text-neutral-300 transition text-[11px]">
                 Powered by <span className="font-semibold text-white">StoreSwift</span>
               </Link>
             </div>
 
+            {/* Country & Currency Indicator */}
+            <div className="flex items-center space-x-1.5 text-[11px] text-neutral-400">
+              <Globe className="w-3.5 h-3.5 text-neutral-500" />
+              <span>Worldwide Shipping // USD ($)</span>
+            </div>
+
             {/* Monochromatic Trust & Payment Badges */}
-            <div className="flex flex-wrap items-center justify-center gap-2 text-[10px] font-mono">
+            <div className="flex flex-wrap items-center justify-center gap-1.5 text-[10px] font-sans font-medium">
               <span className="px-2.5 py-1 bg-neutral-900 rounded-xs border border-neutral-800 text-neutral-300">
                 Cash on Delivery (COD)
               </span>
@@ -1417,7 +1430,7 @@ export function FashionStorefront({
                 Visa • Mastercard
               </span>
               <span className="px-2.5 py-1 bg-neutral-900 rounded-xs border border-neutral-800 text-neutral-300">
-                Steadfast Logistics
+                Steadfast Courier
               </span>
               <span className="px-2.5 py-1 bg-neutral-900 rounded-xs border border-neutral-800 text-neutral-300">
                 256-Bit SSL

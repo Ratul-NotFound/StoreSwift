@@ -9,6 +9,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["var(--font-inter)", "-apple-system", "BlinkMacSystemFont", "'Segoe UI'", "Roboto", "'Helvetica Neue'", "Arial", "sans-serif"],
+        serif: ["var(--font-serif)", "'Playfair Display'", "'Didot'", "'Bodoni MT'", "'Cinzel'", "Georgia", "serif"],
+        mono: ["'JetBrains Mono'", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"]
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { ToastProvider } from "@/components/ui/toast";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -7,6 +7,12 @@ import { ThemeProvider } from "@/components/theme-provider";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap"
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-serif",
   display: "swap"
 });
 
@@ -86,7 +92,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.variable} min-h-screen antialiased font-sans selection:bg-zinc-800 selection:text-zinc-100 dark:selection:bg-zinc-200 dark:selection:text-zinc-900`}>
+      <body className={`${inter.variable} ${playfair.variable} min-h-screen antialiased font-sans selection:bg-zinc-800 selection:text-zinc-100 dark:selection:bg-zinc-200 dark:selection:text-zinc-900`}>
         <ThemeProvider>
           <ToastProvider>{children}</ToastProvider>
         </ThemeProvider>
