@@ -60,7 +60,7 @@ export function MilanoStyle({
     {
       id: "hoodies",
       name: "Hoodies",
-      heightClass: "h-80 sm:h-96",
+      heightClass: "h-64 sm:h-80",
       image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=700&auto=format&fit=crop&q=80",
       grayscale: true,
       hasArrow: false
@@ -68,7 +68,7 @@ export function MilanoStyle({
     {
       id: "sweatshirts",
       name: "Sweatshirts",
-      heightClass: "h-72 sm:h-84",
+      heightClass: "h-56 sm:h-64",
       image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=700&auto=format&fit=crop&q=80",
       grayscale: true,
       hasArrow: false
@@ -76,7 +76,7 @@ export function MilanoStyle({
     {
       id: "shirts",
       name: "Shirts",
-      heightClass: "h-96 sm:h-[430px]",
+      heightClass: "h-72 sm:h-[400px]",
       image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=700&auto=format&fit=crop&q=80",
       grayscale: false,
       hasArrow: true
@@ -84,7 +84,7 @@ export function MilanoStyle({
     {
       id: "tees",
       name: "T-Shirts",
-      heightClass: "h-72 sm:h-84",
+      heightClass: "h-56 sm:h-64",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=700&auto=format&fit=crop&q=80",
       grayscale: true,
       hasArrow: false
@@ -92,7 +92,7 @@ export function MilanoStyle({
     {
       id: "jackets",
       name: "Jackets",
-      heightClass: "h-80 sm:h-96",
+      heightClass: "h-64 sm:h-80",
       image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=700&auto=format&fit=crop&q=80",
       grayscale: true,
       hasArrow: false
@@ -208,13 +208,14 @@ export function MilanoStyle({
         </div>
       )}
 
-      {/* ─── 2. Signature Milano Hero: Split Frosted Typography (Ref 2 Exact) ── */}
-      <section className="relative overflow-hidden bg-[#e8e4de] min-h-[560px] sm:min-h-[640px] flex items-center">
+      {/* ─── 2. Signature Milano Hero with 5 Integrated Staggered Cards (Ref 2 Exact) ── */}
+      <section className="relative overflow-hidden bg-[#e8e4de] pt-8 sm:pt-14 pb-0">
         {/* Soft amber square frosted blur (Ref 2 Exact) */}
-        <div className="absolute right-[22%] top-[28%] w-80 h-80 rounded-3xl bg-[#c9956d]/35 blur-3xl pointer-events-none" />
+        <div className="absolute right-[22%] top-[14%] w-80 sm:w-96 h-80 sm:h-96 rounded-3xl bg-[#c9956d]/35 blur-3xl pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 w-full relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Top Half: Headline on Left, Model on Right */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end pb-8 sm:pb-12">
             {/* Left: High-Impact Display Typography (Ref 2 Exact) */}
             <div className="lg:col-span-7 space-y-6">
               <div className="space-y-0 leading-[0.88] tracking-tight">
@@ -232,7 +233,7 @@ export function MilanoStyle({
                 </h1>
               </div>
 
-              <div className="pt-3">
+              <div className="pt-2">
                 <a
                   href="#milano-catalog"
                   className="inline-flex items-center space-x-2 text-xs font-mono font-bold uppercase tracking-[0.25em] text-neutral-800 hover:text-black border-b-2 border-black pb-1 transition group"
@@ -243,38 +244,24 @@ export function MilanoStyle({
               </div>
             </div>
 
-            {/* Right: Male Streetwear Model Looking Downward in Sleeveless Hoodie Vest (Ref 2 Exact) */}
-            <div className="lg:col-span-5 relative flex justify-center">
-              <div className="relative aspect-[3/4] w-full max-w-md rounded-2xl overflow-hidden shadow-2xl bg-[#cfc5bb] border-2 border-white/50">
+            {/* Right: Streetwear Model in Sleeveless Hoodie looking down (Ref 2 Exact) */}
+            <div className="lg:col-span-5 relative flex justify-center lg:justify-end">
+              <div className="relative w-64 sm:w-80 aspect-[3/4] overflow-hidden rounded-2xl shadow-xl bg-[#cfc5bb] border border-black/10">
                 <img
                   src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=1000&auto=format&fit=crop&q=85"
                   alt="Milano Streetwear Model in Sleeveless Hoodie"
                   className="w-full h-full object-cover object-top"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                <div className="absolute bottom-4 left-4 text-white text-xs font-mono tracking-widest uppercase">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                <div className="absolute bottom-3 left-3 text-white text-[10px] font-mono tracking-widest uppercase">
                   <span>URBAN SILHOUETTE // 2026</span>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* ─── 3. Staggered Department Accordion Cards (Ref 2 Exact) ──────────── */}
-      <section className="py-12 sm:py-16 bg-[#e8e4de] border-t border-black/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center sm:text-left mb-8">
-            <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-neutral-600 block">
-              Department Architecture
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-black mt-1">
-              Select Your Category
-            </h2>
-          </div>
-
-          {/* 5 Staggered Vertical Cards Grid (Ref 2 Exact) */}
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4 items-end">
+          {/* Bottom Half: 5 Staggered Department Vertical Cards (Ref 2 Exact) */}
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4 items-end pt-4">
             {MILANO_DEPARTMENTS.map((dept) => (
               <div
                 key={dept.id}
@@ -282,7 +269,7 @@ export function MilanoStyle({
                   setActiveDepartment(dept.id === "sweatshirts" ? "hoodies" : dept.id === "shirts" ? "outerwear" : dept.id);
                   document.getElementById("milano-catalog")?.scrollIntoView({ behavior: "smooth" });
                 }}
-                className={`relative ${dept.heightClass} rounded-2xl overflow-hidden cursor-pointer group shadow-md transition-transform duration-500 hover:-translate-y-2`}
+                className={`relative ${dept.heightClass} rounded-t-2xl sm:rounded-t-3xl overflow-hidden cursor-pointer group shadow-xl transition-all duration-500 hover:-translate-y-2`}
               >
                 <img
                   src={dept.image}
@@ -296,7 +283,7 @@ export function MilanoStyle({
                 {/* Center arrow circle button if center card (Ref 2 Exact) */}
                 {dept.hasArrow && (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-11 h-11 rounded-full bg-black/80 border-2 border-[#e69d45] text-[#e69d45] flex items-center justify-center shadow-xl group-hover:scale-110 group-hover:bg-[#e69d45] group-hover:text-black transition">
+                    <div className="w-12 h-12 rounded-full bg-black/85 border-2 border-[#e69d45] text-[#e69d45] flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:bg-[#e69d45] group-hover:text-black transition">
                       <ArrowRight className="w-5 h-5 stroke-[2.5]" />
                     </div>
                   </div>
@@ -507,28 +494,8 @@ export function MilanoStyle({
   );
 
   return (
-    <div className={isTabletView ? "min-h-screen bg-[#141517] flex flex-col items-center py-6 sm:py-10 px-2 sm:px-4" : "min-h-screen"}>
-      {/* Tablet Showcase Mode Switcher Banner (Ref 2 Mockup Match) */}
-      <div className="max-w-[1020px] w-full flex items-center justify-between pb-3 px-2 text-xs font-mono text-neutral-400">
-        <span className="flex items-center space-x-2">
-          <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-          <span className="uppercase tracking-wider">Reference 2: M MILANO (Streetwear Device Mockup)</span>
-        </span>
-        <button
-          onClick={() => setIsTabletView(!isTabletView)}
-          className="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-[11px] font-sans transition flex items-center space-x-1.5 border border-white/10"
-        >
-          <span>{isTabletView ? "🖥️ Switch to Full-Bleed View" : "📱 Switch to Tablet Mockup View"}</span>
-        </button>
-      </div>
-
-      {isTabletView ? (
-        <div className="max-w-[1020px] w-full rounded-[44px] border-[14px] sm:border-[18px] border-[#0a0a0b] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.95)] overflow-hidden bg-[#e8e4de] ring-1 ring-white/15 relative">
-          {storeContent}
-        </div>
-      ) : (
-        storeContent
-      )}
+    <div className="min-h-screen bg-[#e8e4de] text-neutral-950 font-sans antialiased selection:bg-black selection:text-white pb-16">
+      {storeContent}
     </div>
   );
 }

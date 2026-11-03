@@ -82,24 +82,9 @@ export function TrendStyle({
   ];
 
   return (
-    <div className="min-h-screen bg-[#fed053] text-neutral-900 font-sans antialiased selection:bg-black selection:text-[#fed053] py-4 sm:py-8 px-2 sm:px-6 relative overflow-x-hidden">
-      {/* Background Decorative Concentric Arcs (Ref 3 Exact) */}
-      <svg className="absolute top-0 left-0 w-96 h-96 text-amber-300/40 pointer-events-none -z-0" viewBox="0 0 400 400" fill="none">
-        <circle cx="0" cy="0" r="120" stroke="currentColor" strokeWidth="2" />
-        <circle cx="0" cy="0" r="200" stroke="currentColor" strokeWidth="2" />
-        <circle cx="0" cy="0" r="280" stroke="currentColor" strokeWidth="2" />
-        <circle cx="0" cy="0" r="360" stroke="currentColor" strokeWidth="2" />
-      </svg>
-      <svg className="absolute bottom-0 right-0 w-96 h-96 text-amber-300/40 pointer-events-none -z-0" viewBox="0 0 400 400" fill="none">
-        <circle cx="400" cy="400" r="140" stroke="currentColor" strokeWidth="2" />
-        <circle cx="400" cy="400" r="220" stroke="currentColor" strokeWidth="2" />
-        <circle cx="400" cy="400" r="300" stroke="currentColor" strokeWidth="2" />
-      </svg>
-
-      {/* ─── White Card Container (Ref 3 Exact) ──────────────────────────────── */}
-      <div className="max-w-[1360px] mx-auto bg-white rounded-[32px] sm:rounded-[44px] shadow-2xl overflow-hidden border border-amber-200/50 relative z-10 pb-8">
-        {/* ─── 1. High-Street Header: FASHION (Ref 3 Exact) ────────────────────── */}
-        <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-100">
+    <div className="min-h-screen bg-white text-neutral-900 font-sans antialiased selection:bg-[#ffd630] selection:text-black pb-16">
+      {/* ─── 1. High-Street Header: FASHION (Ref 3 Exact) ────────────────────── */}
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             {/* Logo with Geometric Icon (Ref 3 Exact) */}
             <Link href={`/store/${tenantSlug}`} className="flex items-center space-x-2.5 group">
@@ -275,12 +260,12 @@ export function TrendStyle({
                 </div>
               </div>
 
-              {/* Right: Joyful Girl Model with Curly Hair Smiling (Ref 3 Exact) */}
+              {/* Right: Joyful Model in Fluffy Pink Outfit (Ref 3 Exact) */}
               <div className="lg:col-span-5 relative flex justify-center">
                 <div className="relative aspect-[3/4] w-full max-w-md rounded-3xl overflow-hidden shadow-2xl bg-[#ffd6e0]/30 border-4 border-white">
                   <img
-                    src="https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=1000&auto=format&fit=crop&q=85"
-                    alt="High Street Joyful Model in Curly Hair and Fluffy Coat"
+                    src="https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=1000&auto=format&fit=crop&q=85"
+                    alt="High Street Model in Fluffy Pink Coat"
                     className="w-full h-full object-cover object-top"
                   />
                   {/* Floating Star Badges */}
@@ -679,7 +664,6 @@ export function TrendStyle({
             </div>
           </div>
         </footer>
-      </div>
     </div>
   );
 }

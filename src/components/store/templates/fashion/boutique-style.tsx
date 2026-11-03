@@ -376,9 +376,9 @@ export function BoutiqueStyle({
                     Ultimate Fashion Destination
                   </h1>
 
-                  {/* Subtitle (Ref 1 Exact: Lorem ipsum 2 lines) */}
-                  <p className="text-xs sm:text-sm text-neutral-500 max-w-lg leading-relaxed">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  {/* Subtitle */}
+                  <p className="text-xs sm:text-sm text-neutral-600 max-w-lg leading-relaxed">
+                    Discover our summer curation of lightweight Italian linens, artisanal dresses, and tailored separates designed for effortless sunlit elegance.
                   </p>
 
                   {/* Primary Button: Solid Brown Rounded Rectangle (Ref 1 Exact) */}
@@ -401,28 +401,28 @@ export function BoutiqueStyle({
                   <div className="relative aspect-[4/5] w-full max-w-md rounded-2xl overflow-hidden shadow-lg bg-[#f0e9df]">
                     {/* Model Photo with Sunglasses, camera & backpack (Ref 1 Exact) */}
                     <img
-                      src="https://images.unsplash.com/photo-1502716119720-b23a93e5fe1b?w=1000&auto=format&fit=crop&q=85"
+                      src="https://images.unsplash.com/photo-1654648342143-4dab6c62bb4d?w=1000&auto=format&fit=crop&q=85"
                       alt="Summer Fashion Model with Sunglasses"
-                      className="w-full h-full object-cover object-top"
+                      className="w-full h-full object-cover object-center"
                     />
 
-                    {/* Dotted pointer curved line pointing to sunglasses */}
+                    {/* Dotted pointer curved line pointing directly from sunglasses to badge */}
                     <svg
-                      className="absolute top-[20%] right-[16%] w-20 h-16 pointer-events-none z-10"
-                      viewBox="0 0 80 60"
+                      className="absolute inset-0 w-full h-full pointer-events-none z-10"
+                      viewBox="0 0 400 500"
                       fill="none"
                     >
                       <path
-                        d="M10,35 Q40,15 70,25"
+                        d="M 200 240 Q 270 210 325 140"
                         stroke="#e69d45"
-                        strokeWidth="2"
+                        strokeWidth="2.5"
                         strokeDasharray="4 4"
                       />
-                      <circle cx="10" cy="35" r="3.5" fill="#e69d45" />
+                      <circle cx="200" cy="240" r="4" fill="#e69d45" />
                     </svg>
 
                     {/* Shoppable Hotspot Pin pointing to sunglasses (Ref 1 Exact) */}
-                    <div className="absolute top-[22%] right-[10%] z-20">
+                    <div className="absolute top-[20%] right-[10%] z-20">
                       {/* Round Yellow Badge with Sunglasses Icon (Ref 1 Exact) */}
                       <div className="flex flex-col items-center">
                         <button
@@ -514,8 +514,8 @@ export function BoutiqueStyle({
                         <h3 className="text-2xl sm:text-3xl font-bold text-neutral-900 mt-0.5">
                           For Women's
                         </h3>
-                        <p className="text-xs text-neutral-400 mt-1 max-w-xs">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        <p className="text-xs text-neutral-500 mt-1 max-w-xs">
+                          Handcrafted silhouettes tailored in breathable natural fibers for everyday refinement.
                         </p>
                       </div>
 
@@ -541,7 +541,7 @@ export function BoutiqueStyle({
 
                     <div className="w-full sm:w-56 aspect-[3/4] rounded-xl overflow-hidden bg-[#f4ece3] shadow-md flex-shrink-0">
                       <img
-                        src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=700&auto=format&fit=crop&q=85"
+                        src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=700&auto=format&fit=crop&q=85"
                         alt="Women in Summer Dresses"
                         className="w-full h-full object-cover"
                       />
@@ -622,8 +622,8 @@ export function BoutiqueStyle({
 
                     <div className="w-36 sm:w-44 aspect-[3/4] rounded-xl overflow-hidden bg-[#f4ece3] shadow-md flex-shrink-0">
                       <img
-                        src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&auto=format&fit=crop&q=85"
-                        alt="Accessories Leather Bag & Straw Hat"
+                        src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=600&auto=format&fit=crop&q=85"
+                        alt="Accessories Woven Straw & Leather Bag"
                         className="w-full h-full object-cover"
                       />
                     </div>

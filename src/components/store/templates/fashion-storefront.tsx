@@ -218,13 +218,18 @@ export function FashionStorefront({
   // "milano" = Reference Picture 2 (M MILANO / GET YOURSELF INTO THE RIGHT GEAR / Staggered Vertical Strips)
   // "trend" = Reference Picture 3 (FASHION / LET'S EXPLORE UNIQUE CLOTHES / Yellow Highlighter / 3 Pastel Cards)
   const [selectedFashionStyle, setSelectedFashionStyle] = useState<"boutique" | "milano" | "trend">("boutique");
+  const [isSwitcherCollapsed, setIsSwitcherCollapsed] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
-      const style = params.get("style");
-      if (style === "milano" || style === "trend" || style === "boutique") {
-        setSelectedFashionStyle(style);
+      const style = params.get("style")?.toLowerCase() || params.get("theme")?.toLowerCase();
+      if (style === "milano" || style === "2" || style === "streetwear") {
+        setSelectedFashionStyle("milano");
+      } else if (style === "trend" || style === "3" || style === "nickelfox" || style === "fashion") {
+        setSelectedFashionStyle("trend");
+      } else if (style === "boutique" || style === "1" || style === "clothing") {
+        setSelectedFashionStyle("boutique");
       }
     }
   }, []);
@@ -401,45 +406,67 @@ export function FashionStorefront({
       {selectedFashionStyle === "trend" && <TrendStyle {...sharedProps} />}
 
       {/* ─── Sleek Floating Bottom Switcher Dock (Clean, Minimal, Non-Intrusive) ─── */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-black/90 text-white backdrop-blur-md px-3 sm:px-4 py-2 rounded-full shadow-2xl border border-white/20 flex items-center space-x-1.5 sm:space-x-2 text-xs font-sans">
-        <span className="hidden sm:inline-flex items-center space-x-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-400 mr-1">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span>Switch Template:</span>
-        </span>
+      {isSwitcherCollapsed ? (
+        <div className="fixed bottom-4 right-4 z-50 animate-fade-in font-sans">
+          <button
+            onClick={() => setIsSwitcherCollapsed(false)}
+            className="bg-black/90 hover:bg-black text-white text-xs font-bold px-3.5 py-2 rounded-full shadow-2xl border border-white/20 backdrop-blur-md flex items-center space-x-2 transition hover:scale-105"
+            title="Switch Fashion Store Theme"
+          >
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>Switch Theme (3)</span>
+          </button>
+        </div>
+      ) : (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-black/95 text-white backdrop-blur-md px-3 sm:px-4 py-2 rounded-full shadow-2xl border border-white/20 flex items-center space-x-1.5 sm:space-x-2 text-xs font-sans animate-fade-in">
+          <span className="hidden sm:inline-flex items-center space-x-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-400 mr-1">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>Theme:</span>
+          </span>
 
-        <button
-          onClick={() => handleSelectFashionStyle("boutique")}
-          className={`px-3 py-1 rounded-full text-xs font-semibold transition ${
-            selectedFashionStyle === "boutique"
-              ? "bg-[#422216] text-[#f5eae3] border border-[#a45d3e] font-bold shadow-xs scale-105"
-              : "text-neutral-300 hover:text-white"
-          }`}
-        >
-          1. Boutique (Ref 1)
-        </button>
+          <button
+            onClick={() => handleSelectFashionStyle("boutique")}
+            className={`px-3 py-1 rounded-full text-xs font-semibold transition ${
+              selectedFashionStyle === "boutique"
+                ? "bg-[#422216] text-[#f5eae3] border border-[#a45d3e] font-bold shadow-xs scale-105"
+                : "text-neutral-300 hover:text-white"
+            }`}
+          >
+            1. Boutique (Clothing.)
+          </button>
 
-        <button
-          onClick={() => handleSelectFashionStyle("milano")}
-          className={`px-3 py-1 rounded-full text-xs font-semibold transition ${
-            selectedFashionStyle === "milano"
-              ? "bg-white text-black font-bold shadow-xs scale-105"
-              : "text-neutral-300 hover:text-white"
-          }`}
-        >
-          2. Milano (Ref 2)
-        </button>
+          <button
+            onClick={() => handleSelectFashionStyle("milano")}
+            className={`px-3 py-1 rounded-full text-xs font-semibold transition ${
+              selectedFashionStyle === "milano"
+                ? "bg-white text-black font-bold shadow-xs scale-105"
+                : "text-neutral-300 hover:text-white"
+            }`}
+          >
+            2. M MILANO (Streetwear)
+          </button>
 
-        <button
-          onClick={() => handleSelectFashionStyle("trend")}
-          className={`px-3 py-1 rounded-full text-xs font-semibold transition ${
-            selectedFashionStyle === "trend"
-              ? "bg-[#ffd630] text-black font-bold shadow-xs scale-105"
-              : "text-neutral-300 hover:text-white"
-          }`}
-        >
-          3. Trend (Ref 3)
-        </button>
-      </div>
+          <button
+            onClick={() => handleSelectFashionStyle("trend")}
+            className={`px-3 py-1 rounded-full text-xs font-semibold transition ${
+              selectedFashionStyle === "trend"
+                ? "bg-[#ffd630] text-black font-bold shadow-xs scale-105"
+                : "text-neutral-300 hover:text-white"
+            }`}
+          >
+            3. Nickelfox (FASHION)
+          </button>
+
+          <button
+            onClick={() => setIsSwitcherCollapsed(true)}
+            className="p-1 text-neutral-400 hover:text-white transition ml-1"
+            title="Minimize theme switcher"
+            aria-label="Minimize"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
 
       {/* ─── Universal Quick View Modal (Ella / WoodMart Signature) ─────────── */}
       {quickViewProduct && (

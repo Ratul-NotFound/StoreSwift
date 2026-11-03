@@ -31,3 +31,4 @@ export interface FashionSubTemplateProps {
   setIsSizeGuideOpen: (open: boolean) => void;
   onSelectFashionStyle: (style: "boutique" | "milano" | "trend") => void;
 }
+
