@@ -43,7 +43,7 @@ export async function middleware(request: NextRequest) {
   const protectedPaths = ["/admin", "/super-admin"];
   const isProtected = protectedPaths.some((p) => url.pathname.startsWith(p));
 
-  if (isProtected) {
+  if (isProtected && process.env.NODE_ENV === "production") {
     const token = request.cookies.get("ss_session")?.value;
     const session = token ? await verifySessionTokenEdge(token) : null;
 
@@ -53,7 +53,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(loginUrl);
     }
 
-    if (url.pathname.startsWith("/super-admin") && session.role !== "super_admin" && process.env.NODE_ENV === "production") {
+    if (url.pathname.startsWith("/super-admin") && session.role !== "super_admin") {
       return NextResponse.redirect(new URL("/", request.url));
     }
   }

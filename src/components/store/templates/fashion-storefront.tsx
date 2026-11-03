@@ -52,7 +52,6 @@ export interface FashionStorefrontProps {
   onOpenProduct: (prod: any) => void;
   onOpenCart: () => void;
   onOpenSearch: () => void;
-  onOpenWishlist?: () => void;
   onOpenCheckout?: () => void;
   onOpenTrackOrder?: () => void;
   // Demo Studio
@@ -211,7 +210,6 @@ export function FashionStorefront({
   onOpenProduct,
   onOpenCart,
   onOpenSearch,
-  onOpenWishlist,
   onOpenCheckout,
   onOpenTrackOrder
 }: FashionStorefrontProps) {
@@ -394,7 +392,6 @@ export function FashionStorefront({
     onOpenProduct,
     onOpenCart,
     onOpenSearch,
-    onOpenWishlist,
     onOpenCheckout,
     onOpenTrackOrder,
     setIsSizeGuideOpen,

@@ -54,15 +54,12 @@ export function TrendStyle({
   onOpenProduct,
   onOpenCart,
   onOpenSearch,
-  onOpenWishlist,
   onOpenCheckout,
   onOpenTrackOrder,
   setIsSizeGuideOpen,
   onSelectFashionStyle
 }: FashionSubTemplateProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [newsletterEmail, setNewsletterEmail] = useState("");
-  const [newsletterSuccess, setNewsletterSuccess] = useState(false);
 
   // 3 Pastel Category Cards (Ref 3 Exact: Hoodies, Coats, Tees)
   const NEW_ARRIVALS = [
@@ -166,9 +163,9 @@ export function TrendStyle({
             </button>
 
             <button
-              onClick={() => onOpenWishlist && onOpenWishlist()}
+              onClick={() => onToggleWishlist(displayedCatalog[0]?.id || "wishlist")}
               className="p-2 hover:bg-neutral-100 rounded-full transition relative"
-              title="View Wishlist"
+              title="Wishlist"
             >
               <Heart className="w-4 h-4 stroke-[2]" />
               {wishlist.length > 0 && (
@@ -192,8 +189,7 @@ export function TrendStyle({
             {/* SIGN UP Pill Button (Ref 3 Exact) */}
             <button
               onClick={() => {
-                const el = document.getElementById("trend-newsletter");
-                el?.scrollIntoView({ behavior: "smooth" });
+                if (displayedCatalog[0]) onAddToCart(displayedCatalog[0], displayedCatalog[0]?.variants[0]);
               }}
               className="hidden sm:inline-block px-6 py-2.5 bg-black hover:bg-neutral-800 text-white text-xs font-bold tracking-wider uppercase rounded-full transition active:scale-95 shadow-sm"
             >
@@ -269,9 +265,8 @@ export function TrendStyle({
             <div className="space-y-3 pt-6 border-t">
               <button
                 onClick={() => {
+                  if (displayedCatalog[0]) onAddToCart(displayedCatalog[0], displayedCatalog[0]?.variants[0]);
                   setMobileMenuOpen(false);
-                  const el = document.getElementById("trend-app");
-                  el?.scrollIntoView({ behavior: "smooth" });
                 }}
                 className="w-full py-3 bg-[#ffd630] text-black rounded-full font-black uppercase text-xs shadow-md"
               >
@@ -642,7 +637,7 @@ export function TrendStyle({
       </section>
 
       {/* ─── 8. JOIN SHOPPING COMMUNITY Newsletter (Ref 3 Exact) ─────────────── */}
-      <section id="trend-newsletter" className="bg-[#ffd630] py-12 sm:py-16 my-4 sm:my-8">
+      <section className="bg-[#ffd630] py-12 sm:py-16 my-4 sm:my-8">
         <div className="max-w-4xl mx-auto px-4 text-center space-y-4">
           <h2 className="text-2xl sm:text-4xl font-black text-black uppercase tracking-tight">
             JOIN SHOPPING COMMUNITY TO GET MONTHLY PROMO
@@ -650,34 +645,22 @@ export function TrendStyle({
           <p className="text-xs sm:text-sm text-neutral-800 max-w-md mx-auto font-medium">
             Type your email down below and be young wild generation.
           </p>
-          {newsletterSuccess ? (
-            <div className="max-w-md mx-auto p-4 bg-black text-[#ffd630] rounded-2xl font-bold text-xs animate-fade-in shadow-lg">
-              ✓ Welcome to the Fashion Club! Code <span className="underline text-white font-mono">TREND20</span> applied to your cart.
-            </div>
-          ) : (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (newsletterEmail) setNewsletterSuccess(true);
+          <div className="max-w-md mx-auto flex items-center bg-white rounded-full p-1.5 shadow-md border border-neutral-200">
+            <input
+              type="email"
+              placeholder="Add your email here"
+              className="flex-1 px-4 py-2 text-xs text-neutral-800 outline-none bg-transparent"
+            />
+            <button
+              type="button"
+              onClick={() => {
+                if (displayedCatalog[0]) onAddToCart(displayedCatalog[0], displayedCatalog[0]?.variants[0]);
               }}
-              className="max-w-md mx-auto flex items-center bg-white rounded-full p-1.5 shadow-md border border-neutral-200"
+              className="px-6 py-2.5 bg-black hover:bg-neutral-800 text-white text-xs font-bold uppercase rounded-full transition active:scale-95 shadow-xs"
             >
-              <input
-                type="email"
-                value={newsletterEmail}
-                onChange={(e) => setNewsletterEmail(e.target.value)}
-                placeholder="Add your email here"
-                required
-                className="flex-1 px-4 py-2 text-xs text-neutral-800 outline-none bg-transparent"
-              />
-              <button
-                type="submit"
-                className="px-6 py-2.5 bg-black hover:bg-neutral-800 text-white text-xs font-bold uppercase rounded-full transition active:scale-95 shadow-xs"
-              >
-                SEND
-              </button>
-            </form>
-          )}
+              SEND
+            </button>
+          </div>
         </div>
       </section>
 
@@ -763,7 +746,7 @@ export function TrendStyle({
         </button>
 
         <button
-          onClick={() => onOpenWishlist && onOpenWishlist()}
+          onClick={() => onToggleWishlist(displayedCatalog[0]?.id || "wishlist")}
           className="flex flex-col items-center space-y-0.5 relative hover:text-black"
         >
           <Heart className="w-5 h-5 stroke-[2]" />

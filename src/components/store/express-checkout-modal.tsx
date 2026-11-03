@@ -256,7 +256,6 @@ export function ExpressCheckoutModal({
 
             <button
               onClick={onClose}
-              aria-label="Close checkout modal"
               className="text-zinc-400 hover:text-zinc-600 p-1.5 rounded-xl hover:bg-zinc-200/50 transition"
             >
               <X className="w-4 h-4" />
