@@ -407,18 +407,18 @@ export function FashionStorefront({
 
       {/* ─── Sleek Floating Bottom Switcher Dock (Clean, Minimal, Non-Intrusive) ─── */}
       {isSwitcherCollapsed ? (
-        <div className="fixed bottom-4 right-4 z-50 animate-fade-in font-sans">
+        <div className="fixed bottom-16 sm:bottom-4 right-3 sm:right-4 z-40 animate-fade-in font-sans">
           <button
             onClick={() => setIsSwitcherCollapsed(false)}
-            className="bg-black/90 hover:bg-black text-white text-xs font-bold px-3.5 py-2 rounded-full shadow-2xl border border-white/20 backdrop-blur-md flex items-center space-x-2 transition hover:scale-105"
+            className="bg-black/90 hover:bg-black text-white text-[11px] sm:text-xs font-bold px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full shadow-2xl border border-white/20 backdrop-blur-md flex items-center space-x-1.5 transition hover:scale-105"
             title="Switch Fashion Store Theme"
           >
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Switch Theme (3)</span>
+            <span>Theme (3)</span>
           </button>
         </div>
       ) : (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-black/95 text-white backdrop-blur-md px-3 sm:px-4 py-2 rounded-full shadow-2xl border border-white/20 flex items-center space-x-1.5 sm:space-x-2 text-xs font-sans animate-fade-in">
+        <div className="fixed bottom-16 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 bg-black/95 text-white backdrop-blur-md px-3 sm:px-4 py-2 rounded-full shadow-2xl border border-white/20 flex items-center space-x-1 sm:space-x-2 text-xs font-sans animate-fade-in max-w-[95vw] overflow-x-auto">
           <span className="hidden sm:inline-flex items-center space-x-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-400 mr-1">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             <span>Theme:</span>
@@ -426,35 +426,35 @@ export function FashionStorefront({
 
           <button
             onClick={() => handleSelectFashionStyle("boutique")}
-            className={`px-3 py-1 rounded-full text-xs font-semibold transition ${
+            className={`px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold whitespace-nowrap transition ${
               selectedFashionStyle === "boutique"
                 ? "bg-[#422216] text-[#f5eae3] border border-[#a45d3e] font-bold shadow-xs scale-105"
                 : "text-neutral-300 hover:text-white"
             }`}
           >
-            1. Boutique (Clothing.)
+            1. Boutique
           </button>
 
           <button
             onClick={() => handleSelectFashionStyle("milano")}
-            className={`px-3 py-1 rounded-full text-xs font-semibold transition ${
+            className={`px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold whitespace-nowrap transition ${
               selectedFashionStyle === "milano"
                 ? "bg-white text-black font-bold shadow-xs scale-105"
                 : "text-neutral-300 hover:text-white"
             }`}
           >
-            2. M MILANO (Streetwear)
+            2. MILANO
           </button>
 
           <button
             onClick={() => handleSelectFashionStyle("trend")}
-            className={`px-3 py-1 rounded-full text-xs font-semibold transition ${
+            className={`px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold whitespace-nowrap transition ${
               selectedFashionStyle === "trend"
                 ? "bg-[#ffd630] text-black font-bold shadow-xs scale-105"
                 : "text-neutral-300 hover:text-white"
             }`}
           >
-            3. Nickelfox (FASHION)
+            3. FASHION
           </button>
 
           <button

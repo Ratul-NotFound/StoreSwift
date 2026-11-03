@@ -38,7 +38,7 @@ export function DemoStoreBar({
 
   if (isDismissed) {
     return (
-      <div className="fixed top-3 right-3 z-50 animate-fade-in font-sans">
+      <div className="fixed bottom-20 right-4 z-40 animate-fade-in font-sans hidden sm:block">
         <button
           onClick={() => setIsDismissed(false)}
           className="bg-zinc-950/90 hover:bg-black text-white text-[11px] font-bold px-3 py-1.5 rounded-full shadow-lg border border-white/20 backdrop-blur-md flex items-center space-x-1.5 transition hover:scale-105"
