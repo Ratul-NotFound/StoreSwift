@@ -56,6 +56,7 @@ export function BoutiqueStyle({
   onOpenProduct,
   onOpenCart,
   onOpenSearch,
+  onOpenWishlist,
   onOpenCheckout,
   onOpenTrackOrder,
   setIsSizeGuideOpen,
@@ -65,6 +66,45 @@ export function BoutiqueStyle({
   const [activeHotspot, setActiveHotspot] = useState(true);
   const [currentView, setCurrentView] = useState<"home" | "shop" | "about">("home");
   const [shopCategoryFilter, setShopCategoryFilter] = useState<string>("All");
+
+  const SUNGLASSES_PRODUCT = {
+    id: "btq-sunglasses-acetate",
+    title: "Atelier Handcrafted Acetate Sunglasses",
+    slug: "acetate-sunglasses",
+    category: "accessories",
+    description: "UV400 polarized mineral lenses with custom Italian Mazzucchelli acetate frames and 5-barrel hinges.",
+    price: 45.0,
+    comparePrice: 65.0,
+    imageUrl: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=700&auto=format&fit=crop&q=80",
+    secondaryImage: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=700&auto=format&fit=crop&q=80",
+    badge: "Iconic",
+    rating: 4.9,
+    reviewCount: 38,
+    sizes: ["One Size"],
+    variants: [{ title: "One Size", price: "45.00", sku: "btq-sg-01" }]
+  };
+
+  const toProduct = (item: any) => ({
+    id: item.id,
+    title: item.title,
+    slug: item.id,
+    category: item.category.toLowerCase(),
+    description: "Handcrafted with quiet luxury architectural poise in breathable natural fibers for everyday refinement.",
+    price: item.price,
+    comparePrice: item.comparePrice || item.price * 1.3,
+    imageUrl: item.image || item.imageUrl,
+    secondaryImage: item.secondaryImage,
+    badge: item.badge,
+    rating: item.rating || 4.9,
+    reviewCount: item.reviews || item.reviewCount || 42,
+    sizes: ["S", "M", "L", "XL"],
+    variants: [
+      { title: "S", price: item.price.toString(), sku: `${item.id}-S` },
+      { title: "M", price: item.price.toString(), sku: `${item.id}-M` },
+      { title: "L", price: item.price.toString(), sku: `${item.id}-L` },
+      { title: "XL", price: item.price.toString(), sku: `${item.id}-XL` }
+    ]
+  });
 
   // Mock catalog items precisely matching Reference 1 Screen 2 ("Shop")
   const BOUTIQUE_SHOP_ITEMS = [
@@ -187,7 +227,8 @@ export function BoutiqueStyle({
             <span> for your first order. </span>
             <button
               onClick={() => {
-                if (displayedCatalog[0]) onAddToCart(displayedCatalog[0], displayedCatalog[0].variants[0]);
+                const el = document.getElementById("boutique-newsletter");
+                el?.scrollIntoView({ behavior: "smooth" });
               }}
               className="underline font-bold text-white hover:text-[#e69d45] ml-1 transition"
             >
@@ -327,9 +368,9 @@ export function BoutiqueStyle({
             </button>
 
             <button
-              onClick={() => onToggleWishlist(displayedCatalog[0]?.id || "wishlist")}
+              onClick={() => onOpenWishlist && onOpenWishlist()}
               className="p-2 hover:text-[#422216] transition relative rounded-full hover:bg-[#f5eae3]/60"
-              title="Wishlist"
+              title="View Wishlist"
               aria-label="Wishlist"
             >
               <Heart className="w-4 h-4 stroke-[2]" />
@@ -603,9 +644,7 @@ export function BoutiqueStyle({
                           <span className="font-semibold text-neutral-800 text-[10px] sm:text-[11px]">Sunglasses</span>
                           <span className="font-bold text-[#422216] text-[10px] sm:text-[11px]">{formatPrice(45.0)}</span>
                           <button
-                            onClick={() => {
-                              if (displayedCatalog[0]) onAddToCart(displayedCatalog[0], displayedCatalog[0].variants[0]);
-                            }}
+                            onClick={() => onAddToCart(SUNGLASSES_PRODUCT, SUNGLASSES_PRODUCT.variants[0])}
                             className="p-0.5 rounded-full bg-[#422216] text-white hover:bg-black transition ml-0.5"
                             title="Add Sunglasses"
                           >
@@ -905,14 +944,22 @@ export function BoutiqueStyle({
                         />
                       </button>
 
+                      {/* Quick View Button on Image Center */}
+                      <button
+                        type="button"
+                        onClick={() => handleOpenQuickView && handleOpenQuickView(toProduct(item))}
+                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/95 hover:bg-black hover:text-white text-neutral-900 text-[10px] font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200 transform scale-95 group-hover:scale-100 whitespace-nowrap"
+                      >
+                        Quick View
+                      </button>
+
                       {/* Quick Size Select Bar on Hover */}
                       <div className="absolute inset-x-2 bottom-2 bg-white/95 backdrop-blur-md rounded-lg p-1.5 flex items-center justify-around opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-md">
                         {["S", "M", "L", "XL"].map((size) => (
                           <button
                             key={size}
-                            onClick={() => {
-                              if (displayedCatalog[0]) handleQuickSizeAdd(displayedCatalog[0], size);
-                            }}
+                            type="button"
+                            onClick={() => handleQuickSizeAdd && handleQuickSizeAdd(toProduct(item), size)}
                             className="text-[10px] font-bold text-neutral-700 hover:text-white hover:bg-[#422216] px-1.5 py-0.5 rounded-sm transition"
                           >
                             {size}
@@ -932,7 +979,10 @@ export function BoutiqueStyle({
                           </span>
                         </div>
 
-                        <h3 className="font-serif font-bold text-xs sm:text-sm text-neutral-900 mt-1 truncate group-hover:text-[#422216] transition">
+                        <h3
+                          onClick={() => handleOpenQuickView && handleOpenQuickView(toProduct(item))}
+                          className="font-serif font-bold text-xs sm:text-sm text-neutral-900 mt-1 truncate group-hover:text-[#422216] transition cursor-pointer"
+                        >
                           {item.title}
                         </h3>
 
@@ -949,9 +999,8 @@ export function BoutiqueStyle({
                       </div>
 
                       <button
-                        onClick={() => {
-                          if (displayedCatalog[0]) onAddToCart(displayedCatalog[0], displayedCatalog[0].variants[0]);
-                        }}
+                        type="button"
+                        onClick={() => onAddToCart(toProduct(item), toProduct(item).variants[1])}
                         className="mt-3 w-full py-2 sm:py-2.5 bg-[#422216] hover:bg-[#2d150c] text-white text-[11px] font-bold rounded-md transition flex items-center justify-center space-x-1.5 shadow-2xs active:scale-95"
                       >
                         <ShoppingBag className="w-3.5 h-3.5" />
@@ -1200,7 +1249,10 @@ export function BoutiqueStyle({
                       </span>
                     </div>
 
-                    <h3 className="font-serif font-bold text-xs sm:text-sm text-neutral-900 mt-1 truncate">
+                    <h3
+                      onClick={() => handleOpenQuickView && handleOpenQuickView(toProduct(item))}
+                      className="font-serif font-bold text-xs sm:text-sm text-neutral-900 mt-1 truncate hover:text-[#422216] transition cursor-pointer"
+                    >
                       {item.title}
                     </h3>
 
@@ -1217,10 +1269,9 @@ export function BoutiqueStyle({
                   </div>
 
                   <button
-                    onClick={() => {
-                      if (displayedCatalog[0]) onAddToCart(displayedCatalog[0], displayedCatalog[0].variants[0]);
-                    }}
-                    className="mt-3 w-full py-2 bg-[#422216] hover:bg-[#2d150c] text-white text-[11px] font-bold rounded-md transition flex items-center justify-center space-x-1.5"
+                    type="button"
+                    onClick={() => onAddToCart(toProduct(item), toProduct(item).variants[1])}
+                    className="mt-3 w-full py-2 bg-[#422216] hover:bg-[#2d150c] text-white text-[11px] font-bold rounded-md transition flex items-center justify-center space-x-1.5 active:scale-95 shadow-2xs"
                   >
                     <ShoppingBag className="w-3.5 h-3.5" />
                     <span>Add to Bag</span>
@@ -1381,7 +1432,7 @@ export function BoutiqueStyle({
         </button>
 
         <button
-          onClick={() => onToggleWishlist(displayedCatalog[0]?.id || "wishlist")}
+          onClick={() => onOpenWishlist && onOpenWishlist()}
           className="flex flex-col items-center space-y-0.5 relative hover:text-[#422216]"
         >
           <Heart className="w-5 h-5 stroke-[1.75]" />

@@ -26,6 +26,7 @@ export interface FashionSubTemplateProps {
   onOpenProduct: (prod: any) => void;
   onOpenCart: () => void;
   onOpenSearch: () => void;
+  onOpenWishlist?: () => void;
   onOpenCheckout?: () => void;
   onOpenTrackOrder?: () => void;
   setIsSizeGuideOpen: (open: boolean) => void;

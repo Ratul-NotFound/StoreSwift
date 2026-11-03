@@ -51,6 +51,7 @@ export function MilanoStyle({
   onOpenProduct,
   onOpenCart,
   onOpenSearch,
+  onOpenWishlist,
   onOpenCheckout,
   onOpenTrackOrder,
   setIsSizeGuideOpen,
@@ -168,9 +169,9 @@ export function MilanoStyle({
             </button>
 
             <button
-              onClick={() => onToggleWishlist(displayedCatalog[0]?.id || "wishlist")}
+              onClick={() => onOpenWishlist && onOpenWishlist()}
               className="p-1.5 hover:opacity-70 transition relative"
-              title="Wishlist"
+              title="View Wishlist"
               aria-label="Wishlist"
             >
               <Heart className="w-4 h-4 stroke-[2]" />
@@ -671,7 +672,7 @@ export function MilanoStyle({
         </button>
 
         <button
-          onClick={() => onToggleWishlist(displayedCatalog[0]?.id || "wishlist")}
+          onClick={() => onOpenWishlist && onOpenWishlist()}
           className="flex flex-col items-center space-y-0.5 relative hover:text-white"
         >
           <Heart className="w-5 h-5 stroke-[1.75]" />
