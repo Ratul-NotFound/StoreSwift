@@ -5,7 +5,9 @@ export interface SessionPayload {
   userId: string;
   email: string;
   storeId: string;
+  storeName?: string;
   role: string;
+  plan?: string;        // "free" | "medium" | "pro"
 }
 
 function getSecret(customSecret?: string): string {

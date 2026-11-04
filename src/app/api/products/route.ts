@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { db, products, productVariants } from "@/db";
-import { eq, desc } from "drizzle-orm";
+import { db, products, productVariants, stores } from "@/db";
+import { eq, desc, count } from "drizzle-orm";
 import { getSessionFromRequest } from "@/lib/api-auth";
 import { generateStoreSeedData } from "@/lib/seed-store";
+import { checkProductLimit, isValidPlan, type PlanId } from "@/lib/plan-limits";
 
 const productCreateSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
@@ -65,6 +66,32 @@ export async function POST(request: Request) {
         .slice(0, 60);
 
     try {
+      // ── Plan Limit Enforcement ────────────────────────────────────
+      const storeRecord = await db.query.stores.findFirst({
+        where: eq(stores.id, session.storeId),
+        columns: { plan: true }
+      });
+      const plan = (isValidPlan(storeRecord?.plan ?? "") ? storeRecord!.plan : "free") as PlanId;
+
+      const [{ productCount }] = await db
+        .select({ productCount: count() })
+        .from(products)
+        .where(eq(products.storeId, session.storeId));
+
+      const limitCheck = checkProductLimit(plan, productCount);
+      if (!limitCheck.allowed) {
+        return NextResponse.json(
+          {
+            error: `Product limit reached (${limitCheck.limit} max on your ${plan} plan). Upgrade to add more.`,
+            upgrade: true,
+            currentCount: productCount,
+            limit: limitCheck.limit,
+            plan
+          },
+          { status: 403 }
+        );
+      }
+
       const [newProduct] = await db
         .insert(products)
         .values({

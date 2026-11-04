@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { db, orders, orderItems, productVariants, stores } from "@/db";
-import { eq, desc, sql } from "drizzle-orm";
+import { db, orders, orderItems, productVariants, stores, commissionEvents, storeCustomers } from "@/db";
+import { eq, desc, sql, count } from "drizzle-orm";
 import { getSessionFromRequest } from "@/lib/api-auth";
 import { verifyAndDeductStock } from "@/lib/stock";
 import { generateConsignment } from "@/lib/courier";
 import { fireServerSidePixelEvent } from "@/lib/pixels";
+import { calculateCommission, PLAN_LIMITS, isValidPlan, type PlanId } from "@/lib/plan-limits";
 
 const orderCreateSchema = z.object({
   storeSlug: z.string().optional(),
@@ -160,6 +161,59 @@ export async function POST(request: Request) {
             priceAtCheckout: parseFloat(String(item.price)).toFixed(2),
             quantity: item.quantity
           });
+        }
+
+        // ── Commission Recording ──────────────────────────────────────
+        // Non-fatal: failure here does not block order confirmation
+        try {
+          const storeRecord = await db.query.stores.findFirst({
+            where: eq(stores.id, targetStoreId),
+            columns: { plan: true }
+          });
+          const plan = (isValidPlan(storeRecord?.plan ?? "") ? storeRecord!.plan : "free") as PlanId;
+          const commissionRate = PLAN_LIMITS[plan].commissionRate;
+          const commissionBdt = calculateCommission(plan, totalAmount);
+
+          if (commissionRate > 0) {
+            await db.insert(commissionEvents).values({
+              storeId: targetStoreId,
+              orderId: newOrder.id,
+              orderAmount: totalAmount.toFixed(2),
+              commissionRate: String(commissionRate),
+              commissionBdt: String(commissionBdt),
+              status: "pending"
+            });
+          }
+        } catch (commErr) {
+          console.error("[Commission recording failed — non-fatal]", commErr);
+        }
+
+        // ── Customer Upsert ───────────────────────────────────────────
+        // Upsert storeCustomers row for CRM (non-fatal)
+        try {
+          await db
+            .insert(storeCustomers)
+            .values({
+              storeId: targetStoreId,
+              phone: data.customerPhone,
+              name: data.customerName,
+              email: data.customerEmail ?? null,
+              orderCount: 1,
+              totalSpent: totalAmount.toFixed(2),
+              lastOrderAt: new Date()
+            })
+            .onConflictDoUpdate({
+              target: [storeCustomers.storeId, storeCustomers.phone],
+              set: {
+                name: data.customerName,
+                email: data.customerEmail ?? null,
+                orderCount: sql`${storeCustomers.orderCount} + 1`,
+                totalSpent: sql`${storeCustomers.totalSpent} + ${totalAmount.toFixed(2)}`,
+                lastOrderAt: new Date()
+              }
+            });
+        } catch (custErr) {
+          console.error("[Customer upsert failed — non-fatal]", custErr);
         }
       }
 

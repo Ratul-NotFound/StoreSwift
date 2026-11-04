@@ -1,786 +1,253 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
-import Link from "next/link";
+import { useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 import {
-  LayoutDashboard,
-  ShoppingBag,
-  Package,
-  Users,
-  BarChart3,
-  Settings,
-  TrendingUp,
-  TrendingDown,
-  DollarSign,
-  AlertTriangle,
-  CheckCircle2,
-  Clock,
-  Truck,
-  Printer,
-  ExternalLink,
-  Store,
-  Plus,
-  Eye,
-  Trash2,
-  ChevronRight,
-  ArrowUpRight,
-  Zap,
-  Percent,
-  Globe,
-  CreditCard,
-  Bell,
-  Search,
-  Filter,
-  Download,
-  RefreshCw,
-  Package2,
-  Star,
-  MapPin,
-  Phone,
-  Mail,
-  Calendar,
-  ShieldCheck,
-  Radio,
-  Layers,
-  Activity,
-  Award,
-  Target,
-  Wallet,
-  X,
-  Check,
-  ChevronDown,
-  Menu,
-  LogOut,
+  LayoutDashboard, ShoppingBag, Package, Users, BarChart3,
+  Settings, TrendingUp, TrendingDown, DollarSign, AlertTriangle,
+  CheckCircle2, Clock, Truck, ExternalLink, Store, Plus,
+  Eye, Trash2, ChevronRight, ArrowUpRight, Zap, Percent, Globe,
+  CreditCard, Bell, Search, Download, RefreshCw,
+  Star, MapPin, Phone, Mail, Calendar, Layers,
+  Activity, Award, Target, X, Check, Menu,
+  LogOut, Edit, Save, Tag, ArrowRight, Copy, CheckCheck,
+  Info, Sparkles, Package2,
 } from "lucide-react";
-import { generateStoreSeedData } from "@/lib/seed-store";
-import { generateConsignment, assessCustomerFraudRisk } from "@/lib/courier";
 
-// ─── HELPERS ─────────────────────────────────────────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 const BDT = (n: number) => "৳" + n.toLocaleString("en-BD");
 
 const PLAN_CONFIG = {
-  free: {
-    name: "Free",
-    maxProducts: 50,
-    commission: 8,
-    customDomain: false,
-    dropshipping: false,
-    advancedAnalytics: false,
-    badge: "bg-zinc-100 text-zinc-700 border-zinc-300",
-  },
-  medium: {
-    name: "Medium",
-    maxProducts: 500,
-    commission: 3,
-    customDomain: true,
-    dropshipping: true,
-    advancedAnalytics: false,
-    badge: "bg-blue-50 text-blue-700 border-blue-200",
-  },
-  pro: {
-    name: "Pro",
-    maxProducts: Infinity,
-    commission: 0,
-    customDomain: true,
-    dropshipping: true,
-    advancedAnalytics: true,
-    badge: "bg-violet-50 text-violet-700 border-violet-200",
-  },
-};
+  free:   { name: "Free",   badge: "bg-zinc-100 text-zinc-700 border-zinc-200",      commission: 8, maxProducts: 50,   price: 0 },
+  medium: { name: "Medium", badge: "bg-blue-50 text-blue-700 border-blue-200",       commission: 3, maxProducts: 500,  price: 499 },
+  pro:    { name: "Pro",    badge: "bg-violet-50 text-violet-700 border-violet-200", commission: 0, maxProducts: null, price: 999 },
+} as const;
 
 type PlanId = keyof typeof PLAN_CONFIG;
 
-// ─── MOCK DATA ────────────────────────────────────────────────────────────────
+const STATUS_STYLES: Record<string, string> = {
+  pending:    "bg-amber-50 text-amber-700 border-amber-200",
+  processing: "bg-blue-50 text-blue-700 border-blue-200",
+  shipped:    "bg-indigo-50 text-indigo-700 border-indigo-200",
+  delivered:  "bg-emerald-50 text-emerald-700 border-emerald-200",
+  cancelled:  "bg-red-50 text-red-700 border-red-200",
+};
 
-function getStoreData(tenant: string) {
-  const STORE_MAP: Record<
-    string,
-    {
-      name: string;
-      plan: PlanId;
-      categoryKey: string;
-      domain?: string;
-    }
-  > = {
-    "apex-fashion": { name: "Apex Fashion Hub", plan: "medium", categoryKey: "fashion", domain: "apexfashion.com.bd" },
-    "luxe-glow-beauty": { name: "Luxe Glow Beauty", plan: "pro", categoryKey: "beauty_cosmetics", domain: "luxeglow.shop" },
-    "craft-shoes": { name: "Craft Bench Shoes", plan: "free", categoryKey: "shoes" },
-    "cyber-tech": { name: "CyberTech Audio", plan: "pro", categoryKey: "electronics", domain: "cybertech.com.bd" },
-    "maison-jewelry": { name: "Maison Opulente", plan: "pro", categoryKey: "jewelry", domain: "maisonopulente.com" },
-    "artisan-food": { name: "Artisan Pantry", plan: "free", categoryKey: "grocery_food" },
-  };
-  return STORE_MAP[tenant] || { name: tenant, plan: "free" as PlanId, categoryKey: "fashion" };
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+interface StoreOverview {
+  name: string; slug: string; plan: PlanId;
+  totalRevenue: number; totalOrders: number; totalProducts: number; totalCustomers: number;
+  revenueChange: number; ordersChange: number;
+  pendingOrders: number; lowStockCount: number;
+  recentOrders: Order[];
+  revenueChart: { label: string; value: number }[];
+}
+interface Order {
+  id: string; orderNumber: string; customerName: string; customerPhone: string;
+  status: string; totalAmount: number; paymentMethod: string;
+  shippingAddress: string; createdAt: string; items: number;
+  consignmentId?: string; courierName?: string;
+}
+interface Product {
+  id: string; title: string; price: number; comparePrice?: number;
+  stock: number; sku?: string; category?: string; status: string;
+  createdAt: string; salesCount?: number;
+}
+interface Customer {
+  id: string; name: string; phone: string; email?: string;
+  district?: string; totalOrders: number; totalSpent: number;
+  lastOrderAt?: string; isLoyal: boolean;
+}
+interface Coupon {
+  id: string; code: string; type: "flat" | "percent"; value: number;
+  minOrder?: number; maxUses?: number; usedCount: number;
+  expiresAt?: string; isActive: boolean;
+}
+interface PlatformProduct {
+  id: string; title: string; category: string; minPrice: number;
+  description?: string; listed?: boolean; myPrice?: number;
 }
 
-const ORDERS = [
-  {
-    id: "ord-1042",
-    number: "#1042",
-    customer: "Rania Sultana",
-    phone: "+880 1711-234567",
-    address: "House 14, Road 5, Dhanmondi, Dhaka",
-    zone: "Inside Dhaka (Metro)",
-    items: "Classic Cotton T-Shirt (M/Black) ×2",
-    amount: 1800,
-    payment: "bKash",
-    payStatus: "Paid",
-    status: "Shipped",
-    consignment: "ST-892011",
-    courier: "Steadfast",
-    date: "Today, 10:45 AM",
-  },
-  {
-    id: "ord-1041",
-    number: "#1041",
-    customer: "Farhan Ahmed",
-    phone: "+880 1819-890123",
-    address: "Flat 4B, Concord Tower, Gulshan-2, Dhaka",
-    zone: "Inside Dhaka (Metro)",
-    items: "Slim Denim Jacket (L) ×1",
-    amount: 2200,
-    payment: "COD",
-    payStatus: "Pending",
-    status: "Processing",
-    consignment: "",
-    courier: "",
-    date: "Today, 09:30 AM",
-  },
-  {
-    id: "ord-1040",
-    number: "#1040",
-    customer: "Tamim Khan",
-    phone: "+880 1912-456789",
-    address: "College Road, Nasirabad, Chattogram",
-    zone: "Outside Dhaka",
-    items: "Linen Trousers (32) ×1",
-    amount: 1400,
-    payment: "Nagad",
-    payStatus: "Paid",
-    status: "Delivered",
-    consignment: "PTH-782910",
-    courier: "Pathao",
-    date: "Yesterday",
-  },
-  {
-    id: "ord-1039",
-    number: "#1039",
-    customer: "Sadia Islam",
-    phone: "+880 1614-112233",
-    address: "Mirpur-10, Dhaka",
-    zone: "Inside Dhaka (Metro)",
-    items: "Floral Midi Dress ×1, Silk Scarf ×2",
-    amount: 3200,
-    payment: "bKash",
-    payStatus: "Paid",
-    status: "Delivered",
-    consignment: "ST-780211",
-    courier: "Steadfast",
-    date: "2 days ago",
-  },
-  {
-    id: "ord-1038",
-    number: "#1038",
-    customer: "Mahmudul Hasan",
-    phone: "+880 1755-667788",
-    address: "Shaheed Sarak, Khulna",
-    zone: "Outside Dhaka",
-    items: "Oxford Shirt (XL/White) ×3",
-    amount: 4500,
-    payment: "COD",
-    payStatus: "Pending",
-    status: "Returned",
-    consignment: "ST-779102",
-    courier: "Steadfast",
-    date: "3 days ago",
-  },
-];
+// ─── Seed Data ────────────────────────────────────────────────────────────────
 
-const CUSTOMERS = [
-  { id: "c-1", name: "Rania Sultana", email: "rania@mail.com", phone: "+880 1711-234567", orders: 8, ltv: 14400, lastOrder: "Today", district: "Dhaka", loyal: true },
-  { id: "c-2", name: "Farhan Ahmed", email: "farhan@mail.com", phone: "+880 1819-890123", orders: 3, ltv: 5800, lastOrder: "Today", district: "Dhaka", loyal: false },
-  { id: "c-3", name: "Tamim Khan", email: "tamim@mail.com", phone: "+880 1912-456789", orders: 12, ltv: 21600, lastOrder: "Yesterday", district: "Chattogram", loyal: true },
-  { id: "c-4", name: "Sadia Islam", email: "sadia@mail.com", phone: "+880 1614-112233", orders: 5, ltv: 9500, lastOrder: "2 days ago", district: "Dhaka", loyal: true },
-  { id: "c-5", name: "Mahmudul Hasan", email: "mahmudul@mail.com", phone: "+880 1755-667788", orders: 2, ltv: 4500, lastOrder: "3 days ago", district: "Khulna", loyal: false },
-];
+function seedOverview(slug: string): StoreOverview {
+  return {
+    name: slug.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase()),
+    slug, plan: "free",
+    totalRevenue: 184500, totalOrders: 213, totalProducts: 38, totalCustomers: 142,
+    revenueChange: 24, ordersChange: 18, pendingOrders: 7, lowStockCount: 3,
+    recentOrders: [
+      { id: "o1", orderNumber: "ORD-001", customerName: "Rahim Hossain", customerPhone: "01711111111", status: "pending", totalAmount: 1850, paymentMethod: "cod", shippingAddress: "Dhaka, Mirpur", createdAt: "2024-11-01T10:30:00Z", items: 2 },
+      { id: "o2", orderNumber: "ORD-002", customerName: "Sumaiya Akter", customerPhone: "01822222222", status: "shipped", totalAmount: 2400, paymentMethod: "bkash", shippingAddress: "Chittagong", createdAt: "2024-11-02T09:00:00Z", items: 1, consignmentId: "SS-78921", courierName: "Steadfast" },
+      { id: "o3", orderNumber: "ORD-003", customerName: "Karim Uddin", customerPhone: "01933333333", status: "delivered", totalAmount: 3200, paymentMethod: "cod", shippingAddress: "Sylhet", createdAt: "2024-11-03T14:00:00Z", items: 3 },
+      { id: "o4", orderNumber: "ORD-004", customerName: "Farida Begum", customerPhone: "01644444444", status: "processing", totalAmount: 1200, paymentMethod: "nagad", shippingAddress: "Rajshahi", createdAt: "2024-11-04T08:00:00Z", items: 1 },
+    ],
+    revenueChart: [
+      { label: "Jun", value: 42000 }, { label: "Jul", value: 58000 }, { label: "Aug", value: 51000 },
+      { label: "Sep", value: 72000 }, { label: "Oct", value: 67000 }, { label: "Nov", value: 84500 },
+    ],
+  };
+}
 
-const PLATFORM_DROPSHIP = [
-  {
-    id: "dp-1",
-    title: "Premium Cotton Round-Neck T-Shirt",
-    category: "Fashion",
-    minPrice: 280,
-    suggested: 450,
-    stock: 2400,
-    imageUrl: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=400&auto=format&fit=crop&q=80",
-  },
-  {
-    id: "dp-2",
-    title: "Slim Fit Stretch Denim Jeans",
-    category: "Fashion",
-    minPrice: 680,
-    suggested: 950,
-    stock: 1850,
-    imageUrl: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&auto=format&fit=crop&q=80",
-  },
-  {
-    id: "dp-3",
-    title: "Wireless Noise-Cancelling Headphones",
-    category: "Electronics",
-    minPrice: 2200,
-    suggested: 3200,
-    stock: 420,
-    imageUrl: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&auto=format&fit=crop&q=80",
-  },
-];
+// ─── Shared Components ────────────────────────────────────────────────────────
 
-const MONTHLY_SALES = [
-  { month: "Jun", revenue: 28000, orders: 32 },
-  { month: "Jul", revenue: 42000, orders: 48 },
-  { month: "Aug", revenue: 38000, orders: 41 },
-  { month: "Sep", revenue: 61000, orders: 72 },
-  { month: "Oct", revenue: 84000, orders: 98 },
-  { month: "Nov", revenue: 52000, orders: 62 },
-];
-
-// ─── SIDEBAR NAV ──────────────────────────────────────────────────────────────
-
-const NAV_ITEMS = [
-  { id: "overview", label: "Overview", icon: LayoutDashboard },
-  { id: "orders", label: "Orders", icon: ShoppingBag, badge: 2 },
-  { id: "products", label: "Products", icon: Package },
-  { id: "customers", label: "Customers", icon: Users },
-  { id: "analytics", label: "Analytics", icon: BarChart3 },
-  { id: "dropship", label: "Dropship Hub", icon: Percent },
-  { id: "settings", label: "Settings", icon: Settings },
-];
-
-// ─── TAB COMPONENTS ──────────────────────────────────────────────────────────
-
-function StatCard({
-  label,
-  value,
-  sub,
-  icon: Icon,
-  iconBg,
-  trend,
-  trendLabel,
-}: {
-  label: string;
-  value: string;
-  sub?: string;
-  icon: React.FC<{ className?: string }>;
-  iconBg: string;
-  trend?: "up" | "down";
-  trendLabel?: string;
+function StatCard({ label, value, icon: Icon, iconBg, trend, trendVal }: {
+  label: string; value: string | number; icon: React.ElementType;
+  iconBg: string; trend?: "up" | "down"; trendVal?: string;
 }) {
   return (
-    <div className="bg-white border border-zinc-200/80 rounded-2xl p-5 shadow-sm">
-      <div className="flex items-center justify-between mb-3">
-        <p className="text-xs font-bold uppercase tracking-wider text-zinc-500">{label}</p>
-        <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${iconBg}`}>
-          <Icon className="w-4 h-4" />
+    <div className="bg-white rounded-2xl border border-zinc-100 p-5 shadow-sm hover:shadow-md transition-shadow">
+      <div className="flex items-start justify-between mb-3">
+        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${iconBg}`}>
+          <Icon className="w-5 h-5" />
         </div>
+        {trend && trendVal && (
+          <span className={`flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-full ${trend === "up" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`}>
+            {trend === "up" ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+            {trendVal}
+          </span>
+        )}
       </div>
       <p className="text-2xl font-black text-zinc-900 tracking-tight">{value}</p>
-      {sub && <p className="text-xs text-zinc-500 mt-1">{sub}</p>}
-      {trendLabel && (
-        <div className={`mt-2 text-xs font-semibold flex items-center gap-1 ${trend === "up" ? "text-emerald-600" : "text-red-500"}`}>
-          {trend === "up" ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
-          {trendLabel}
-        </div>
-      )}
+      <p className="text-xs text-zinc-500 mt-1 font-medium">{label}</p>
     </div>
   );
 }
 
 function StatusBadge({ status }: { status: string }) {
-  const colors: Record<string, string> = {
-    Delivered: "bg-emerald-50 text-emerald-700 border-emerald-200",
-    Shipped: "bg-blue-50 text-blue-700 border-blue-200",
-    Processing: "bg-amber-50 text-amber-700 border-amber-200",
-    Returned: "bg-red-50 text-red-700 border-red-200",
-    Pending: "bg-zinc-100 text-zinc-600 border-zinc-200",
-    Unfulfilled: "bg-zinc-100 text-zinc-600 border-zinc-200",
-  };
+  const style = STATUS_STYLES[status] ?? "bg-zinc-100 text-zinc-600 border-zinc-200";
   return (
-    <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full border ${colors[status] || colors.Pending}`}>
-      {status}
+    <span className={`inline-flex items-center text-[11px] font-bold px-2.5 py-1 rounded-full border ${style}`}>
+      {status.charAt(0).toUpperCase() + status.slice(1)}
     </span>
   );
 }
 
-function OverviewTab({ planId, storeName }: { planId: PlanId; storeName: string }) {
-  const plan = PLAN_CONFIG[planId];
-  const todayRevenue = ORDERS.filter((o) => o.date.includes("Today")).reduce((a, o) => a + o.amount, 0);
-  const pendingOrders = ORDERS.filter((o) => o.status === "Processing" || o.status === "Unfulfilled").length;
+function PlanGate({ plan, required }: { plan: PlanId; required: PlanId }) {
+  const order: PlanId[] = ["free", "medium", "pro"];
+  if (order.indexOf(plan) >= order.indexOf(required)) return null;
+  const cfg = PLAN_CONFIG[required];
+  return (
+    <div className="flex flex-col items-center justify-center py-20 px-6 text-center">
+      <div className="w-16 h-16 rounded-2xl bg-violet-50 flex items-center justify-center mb-4">
+        <Zap className="w-8 h-8 text-violet-500" />
+      </div>
+      <h3 className="text-lg font-bold text-zinc-900 mb-2">Requires {cfg.name} Plan</h3>
+      <p className="text-sm text-zinc-500 mb-6 max-w-xs">Upgrade to unlock this feature and grow your business faster.</p>
+      <button className="bg-violet-600 hover:bg-violet-500 text-white px-6 py-2.5 rounded-xl font-bold text-sm transition">
+        Upgrade to {cfg.name} — {BDT(cfg.price)}/mo
+      </button>
+    </div>
+  );
+}
+
+// ─── OVERVIEW ─────────────────────────────────────────────────────────────────
+
+function OverviewTab({ data, plan }: { data: StoreOverview; plan: PlanId }) {
+  const cfg = PLAN_CONFIG[plan];
+  const chartMax = Math.max(...data.revenueChart.map(d => d.value), 1);
 
   return (
     <div className="space-y-6">
-      {/* Plan banner for free users */}
-      {planId === "free" && (
-        <div className="bg-gradient-to-r from-violet-600 to-blue-600 text-white rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div>
-            <p className="font-black text-base">Upgrade to unlock more features</p>
-            <p className="text-sm opacity-90 mt-0.5">
-              You're on Free Plan · {plan.commission}% commission taken per sale · No custom domain
-            </p>
-          </div>
-          <Link
-            href="#settings"
-            className="flex-shrink-0 bg-white text-violet-700 font-bold text-sm px-5 py-2 rounded-xl hover:bg-violet-50 transition"
-          >
-            Upgrade Now →
-          </Link>
-        </div>
-      )}
-
-      {/* KPIs */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard
-          label="Today's Revenue"
-          value={BDT(todayRevenue)}
-          sub={`${ORDERS.filter((o) => o.date.includes("Today")).length} orders today`}
-          icon={DollarSign}
-          iconBg="bg-emerald-50 text-emerald-600"
-          trend="up"
-          trendLabel="+18% vs yesterday"
-        />
-        <StatCard
-          label="Pending Orders"
-          value={String(pendingOrders)}
-          sub="Need your attention"
-          icon={Clock}
-          iconBg="bg-amber-50 text-amber-600"
-        />
-        <StatCard
-          label="Total Products"
-          value="42"
-          sub={planId === "free" ? `${plan.maxProducts - 42} slots remaining` : "Unlimited catalog"}
-          icon={Package}
-          iconBg="bg-zinc-100 text-zinc-600"
-        />
-        <StatCard
-          label="Customers"
-          value={String(CUSTOMERS.length)}
-          sub={`${CUSTOMERS.filter((c) => c.loyal).length} loyal (3+ orders)`}
-          icon={Users}
-          iconBg="bg-blue-50 text-blue-600"
-        />
-      </div>
-
-      {/* Sales Chart + Low Stock */}
-      <div className="grid lg:grid-cols-3 gap-6">
-        {/* Sales Trend */}
-        <div className="lg:col-span-2 bg-white border border-zinc-200/80 rounded-2xl p-6 shadow-sm">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h3 className="font-bold text-zinc-900">Revenue Trend</h3>
-              <p className="text-xs text-zinc-500 mt-0.5">Last 6 months</p>
-            </div>
-            <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
-              +38% MoM
-            </span>
-          </div>
-          <div className="flex items-end gap-2 h-24">
-            {MONTHLY_SALES.map((d) => {
-              const max = Math.max(...MONTHLY_SALES.map((x) => x.revenue));
-              return (
-                <div key={d.month} className="flex flex-col items-center flex-1 gap-1">
-                  <div className="text-[9px] text-zinc-500 font-medium">{BDT(d.revenue / 1000)}k</div>
-                  <div
-                    className="w-full rounded-t bg-zinc-900 hover:bg-zinc-700 transition cursor-pointer"
-                    style={{ height: `${(d.revenue / max) * 72}px` }}
-                    title={BDT(d.revenue)}
-                  />
-                  <span className="text-[9px] text-zinc-400">{d.month}</span>
-                </div>
-              );
-            })}
-          </div>
-          <div className="grid grid-cols-3 gap-4 mt-5 pt-4 border-t border-zinc-100 text-xs">
-            <div>
-              <p className="text-zinc-500">Total Revenue</p>
-              <p className="font-black text-zinc-900">{BDT(MONTHLY_SALES.reduce((a, d) => a + d.revenue, 0))}</p>
-            </div>
-            <div>
-              <p className="text-zinc-500">Total Orders</p>
-              <p className="font-black text-zinc-900">{MONTHLY_SALES.reduce((a, d) => a + d.orders, 0)}</p>
-            </div>
-            <div>
-              <p className="text-zinc-500">Avg. Order Value</p>
-              <p className="font-black text-zinc-900">
-                {BDT(Math.round(MONTHLY_SALES.reduce((a, d) => a + d.revenue, 0) / MONTHLY_SALES.reduce((a, d) => a + d.orders, 0)))}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Quick Info */}
-        <div className="space-y-4">
-          {/* Plan info */}
-          <div className="bg-white border border-zinc-200/80 rounded-2xl p-5 shadow-sm">
-            <h4 className="font-bold text-zinc-900 mb-3 text-sm">Your Plan</h4>
-            <div className="flex items-center gap-2 mb-3">
-              <span className={`text-xs font-bold px-2 py-0.5 rounded-full border ${plan.badge}`}>
-                {plan.name}
-              </span>
-              {planId === "pro" && <Award className="w-4 h-4 text-violet-500" />}
-            </div>
-            <div className="space-y-2 text-xs">
-              {[
-                { label: "Products", value: planId === "free" ? "50 max" : planId === "medium" ? "500 max" : "Unlimited" },
-                { label: "Commission", value: `${plan.commission}% per sale` },
-                { label: "Custom Domain", value: plan.customDomain ? "✓ Enabled" : "✗ Upgrade needed" },
-                { label: "Dropshipping", value: plan.dropshipping ? "✓ Available" : "✗ Medium+ required" },
-              ].map((item) => (
-                <div key={item.label} className="flex items-center justify-between">
-                  <span className="text-zinc-500">{item.label}</span>
-                  <span className={`font-semibold ${item.value.startsWith("✓") ? "text-emerald-600" : item.value.startsWith("✗") ? "text-red-500" : "text-zinc-900"}`}>
-                    {item.value}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Store status */}
-          <div className="bg-white border border-zinc-200/80 rounded-2xl p-5 shadow-sm">
-            <h4 className="font-bold text-zinc-900 mb-3 text-sm">Store Status</h4>
-            <div className="flex items-center gap-2 mb-3">
-              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-              <span className="text-xs font-semibold text-emerald-700">Online & Accepting Orders</span>
-            </div>
-            <div className="text-xs space-y-1.5 text-zinc-500">
-              <div className="flex items-center gap-2">
-                <Globe className="w-3.5 h-3.5" />
-                <a href="#" className="text-blue-600 hover:underline">your-store.storeswift.app</a>
-              </div>
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-                <span>SSL Certificate Active</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Recent Orders */}
-      <div className="bg-white border border-zinc-200/80 rounded-2xl shadow-sm overflow-hidden">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-100">
-          <h3 className="font-bold text-zinc-900">Recent Orders</h3>
-          <button className="text-xs font-semibold text-zinc-600 hover:text-zinc-900 flex items-center gap-1">
-            View All <ChevronRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-        <div className="divide-y divide-zinc-50">
-          {ORDERS.slice(0, 4).map((o) => (
-            <div key={o.id} className="flex items-center justify-between px-6 py-3.5">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-zinc-100 text-zinc-700 text-xs font-bold flex items-center justify-center">
-                  {o.customer.split(" ").map((n) => n[0]).join("").slice(0, 2)}
-                </div>
-                <div>
-                  <p className="font-semibold text-zinc-900 text-sm">{o.customer}</p>
-                  <p className="text-xs text-zinc-400">{o.items.slice(0, 30)}…</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4 text-right">
-                <div>
-                  <p className="font-bold text-zinc-900 text-sm">{BDT(o.amount)}</p>
-                  <p className="text-xs text-zinc-400">{o.date}</p>
-                </div>
-                <StatusBadge status={o.status} />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function OrdersTab({ planId }: { planId: PlanId }) {
-  const [orders, setOrders] = useState(ORDERS);
-  const [filter, setFilter] = useState("all");
-
-  const filtered = filter === "all" ? orders : orders.filter((o) => o.status === filter);
-
-  const handleDispatch = (ordId: string) => {
-    setOrders((prev) =>
-      prev.map((o) =>
-        o.id === ordId
-          ? { ...o, status: "Shipped", consignment: `ST-${Math.floor(Math.random() * 999999)}`, courier: "Steadfast" }
-          : o
-      )
-    );
-  };
-
-  return (
-    <div className="space-y-5">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <h2 className="text-xl font-bold text-zinc-900">Order Management</h2>
-          <p className="text-xs text-zinc-500 mt-0.5">1-click courier dispatch, anti-fraud scoring, label printing</p>
-        </div>
-        <button className="inline-flex items-center gap-2 bg-zinc-100 text-zinc-700 px-4 py-2 rounded-xl text-xs font-bold hover:bg-zinc-200 transition">
-          <Download className="w-3.5 h-3.5" /> Export
-        </button>
-      </div>
-
-      {/* Status filter tabs */}
-      <div className="flex gap-2 flex-wrap">
-        {["all", "Processing", "Shipped", "Delivered", "Returned"].map((s) => (
-          <button
-            key={s}
-            onClick={() => setFilter(s)}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition ${
-              filter === s
-                ? "bg-zinc-900 text-white"
-                : "bg-white border border-zinc-200 text-zinc-600 hover:border-zinc-400"
-            }`}
-          >
-            {s === "all" ? "All Orders" : s}
-            {s === "Processing" && (
-              <span className="ml-1.5 bg-amber-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-                {orders.filter((o) => o.status === "Processing").length}
-              </span>
-            )}
-          </button>
-        ))}
-      </div>
-
-      <div className="bg-white border border-zinc-200/80 rounded-2xl shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-xs">
-            <thead className="bg-zinc-50 border-b border-zinc-100">
-              <tr>
-                <th className="text-left px-5 py-3.5 font-bold uppercase tracking-wider text-zinc-500">Order</th>
-                <th className="text-left px-5 py-3.5 font-bold uppercase tracking-wider text-zinc-500">Customer & RTO</th>
-                <th className="text-left px-5 py-3.5 font-bold uppercase tracking-wider text-zinc-500">Items</th>
-                <th className="text-left px-5 py-3.5 font-bold uppercase tracking-wider text-zinc-500">Amount</th>
-                <th className="text-left px-5 py-3.5 font-bold uppercase tracking-wider text-zinc-500">Payment</th>
-                <th className="text-left px-5 py-3.5 font-bold uppercase tracking-wider text-zinc-500">Courier</th>
-                <th className="text-left px-5 py-3.5 font-bold uppercase tracking-wider text-zinc-500">Status</th>
-                <th className="text-right px-5 py-3.5 font-bold uppercase tracking-wider text-zinc-500">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-50">
-              {filtered.map((o) => {
-                const risk = assessCustomerFraudRisk(o.phone);
-                return (
-                  <tr key={o.id} className="hover:bg-zinc-50/50 transition">
-                    <td className="px-5 py-4">
-                      <p className="font-mono font-bold text-zinc-900">{o.number}</p>
-                      <p className="text-zinc-400 mt-0.5">{o.date}</p>
-                    </td>
-                    <td className="px-5 py-4">
-                      <p className="font-semibold text-zinc-900">{o.customer}</p>
-                      <p className="text-zinc-400 font-mono">{o.phone}</p>
-                      <span className={`mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full border inline-block ${risk.badgeClass}`}>
-                        {risk.level === "VERIFIED_SAFE" ? `✓ Safe (${risk.deliveryRatePercent}%)` : risk.level === "MODERATE_RISK" ? `⚠ Verify (${risk.deliveryRatePercent}%)` : `✗ High RTO (${risk.deliveryRatePercent}%)`}
-                      </span>
-                    </td>
-                    <td className="px-5 py-4 text-zinc-600 max-w-[180px]">
-                      <p className="truncate">{o.items}</p>
-                      <p className="text-zinc-400">{o.zone}</p>
-                    </td>
-                    <td className="px-5 py-4 font-bold text-zinc-900">{BDT(o.amount)}</td>
-                    <td className="px-5 py-4">
-                      <p className="text-zinc-700">{o.payment}</p>
-                      <span className={`text-[10px] font-bold ${o.payStatus === "Paid" ? "text-emerald-600" : "text-amber-600"}`}>
-                        {o.payStatus}
-                      </span>
-                    </td>
-                    <td className="px-5 py-4">
-                      {o.consignment ? (
-                        <div>
-                          <p className="font-mono text-[11px] text-blue-700 bg-blue-50 px-2 py-0.5 rounded inline-block border border-blue-100">
-                            {o.consignment}
-                          </p>
-                          <p className="text-zinc-400 mt-0.5">{o.courier}</p>
-                        </div>
-                      ) : (
-                        <button
-                          onClick={() => handleDispatch(o.id)}
-                          className="inline-flex items-center gap-1.5 bg-zinc-900 text-white px-2.5 py-1.5 rounded-lg text-[11px] font-bold hover:bg-zinc-800 transition"
-                        >
-                          <Zap className="w-3 h-3 text-amber-400" />
-                          Dispatch
-                        </button>
-                      )}
-                    </td>
-                    <td className="px-5 py-4"><StatusBadge status={o.status} /></td>
-                    <td className="px-5 py-4 text-right">
-                      <button className="inline-flex items-center gap-1 text-zinc-500 hover:text-zinc-900 bg-zinc-100 hover:bg-zinc-200 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition">
-                        <Printer className="w-3.5 h-3.5" /> Label
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ProductsTab({ planId, tenant }: { planId: PlanId; tenant: string }) {
-  const plan = PLAN_CONFIG[planId];
-  const seedData = generateStoreSeedData(tenant, "fashion");
-  const [products, setProducts] = useState(
-    seedData.products.map((p, i) => ({
-      id: `p-${i}`,
-      title: p.title,
-      price: p.basePrice,
-      stock: 20 + Math.floor(Math.random() * 30),
-      imageUrl: p.imageUrl,
-      status: "Active" as "Active" | "Draft",
-    }))
-  );
-
-  const atLimit = planId === "free" && products.length >= plan.maxProducts;
-
-  return (
-    <div className="space-y-5">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-bold text-zinc-900">Product Catalog</h2>
-          <p className="text-xs text-zinc-500 mt-0.5">
-            {products.length} / {plan.maxProducts === Infinity ? "∞" : plan.maxProducts} products
-          </p>
-        </div>
-        {atLimit ? (
-          <div className="flex items-center gap-3">
-            <span className="text-xs text-amber-600 font-semibold bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-xl">
-              Product limit reached — Upgrade to add more
-            </span>
-          </div>
-        ) : (
-          <button className="inline-flex items-center gap-2 bg-zinc-900 text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-zinc-800 transition">
-            <Plus className="w-3.5 h-3.5" /> Add Product
+      {/* Plan banner */}
+      <div className={`flex flex-wrap items-center gap-3 px-4 py-3 rounded-xl border text-sm ${plan === "pro" ? "bg-violet-50 border-violet-200" : plan === "medium" ? "bg-blue-50 border-blue-200" : "bg-amber-50 border-amber-200"}`}>
+        <Award className={`w-4 h-4 flex-shrink-0 ${plan === "pro" ? "text-violet-600" : plan === "medium" ? "text-blue-600" : "text-amber-600"}`} />
+        <span className="font-semibold text-zinc-800">
+          {cfg.name} Plan · {cfg.commission}% commission · {cfg.maxProducts ? `${cfg.maxProducts} products max` : "Unlimited products"}
+        </span>
+        {plan !== "pro" && (
+          <button className="ml-auto text-xs font-bold text-violet-700 hover:text-violet-900 flex items-center gap-1 whitespace-nowrap">
+            Upgrade <ArrowRight className="w-3 h-3" />
           </button>
         )}
       </div>
 
-      {/* Product limit progress */}
-      {planId !== "pro" && (
-        <div className="bg-white border border-zinc-200/80 rounded-xl p-4 shadow-sm">
-          <div className="flex items-center justify-between text-xs mb-2">
-            <span className="font-semibold text-zinc-700">Product Slots Used</span>
-            <span className="text-zinc-500">{products.length} / {plan.maxProducts}</span>
-          </div>
-          <div className="h-2 bg-zinc-100 rounded-full">
-            <div
-              className={`h-full rounded-full transition-all ${atLimit ? "bg-red-500" : products.length / plan.maxProducts > 0.8 ? "bg-amber-500" : "bg-emerald-500"}`}
-              style={{ width: `${Math.min(100, (products.length / plan.maxProducts) * 100)}%` }}
-            />
-          </div>
+      {/* KPI cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard label="Total Revenue" value={BDT(data.totalRevenue)} icon={DollarSign} iconBg="bg-emerald-50 text-emerald-600" trend="up" trendVal={`+${data.revenueChange}%`} />
+        <StatCard label="Total Orders" value={data.totalOrders} icon={ShoppingBag} iconBg="bg-blue-50 text-blue-600" trend="up" trendVal={`+${data.ordersChange}%`} />
+        <StatCard label="Products" value={data.totalProducts} icon={Package} iconBg="bg-amber-50 text-amber-600" />
+        <StatCard label="Customers" value={data.totalCustomers} icon={Users} iconBg="bg-violet-50 text-violet-600" />
+      </div>
+
+      {/* Alerts */}
+      {(data.pendingOrders > 0 || data.lowStockCount > 0) && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {data.pendingOrders > 0 && (
+            <div className="flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
+              <Clock className="w-5 h-5 text-amber-600 flex-shrink-0" />
+              <div><p className="text-sm font-bold text-amber-900">{data.pendingOrders} Pending Orders</p><p className="text-xs text-amber-700">Need confirmation</p></div>
+            </div>
+          )}
+          {data.lowStockCount > 0 && (
+            <div className="flex items-center gap-3 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+              <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0" />
+              <div><p className="text-sm font-bold text-red-900">{data.lowStockCount} Low Stock Items</p><p className="text-xs text-red-700">Restock soon</p></div>
+            </div>
+          )}
         </div>
       )}
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {products.map((p) => (
-          <div key={p.id} className="bg-white border border-zinc-200/80 rounded-2xl shadow-sm overflow-hidden group">
-            <div className="aspect-square bg-zinc-100 overflow-hidden relative">
-              <img
-                src={p.imageUrl}
-                alt={p.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src =
-                    "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=400&auto=format&fit=crop&q=80";
-                }}
-              />
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                <button className="p-2 bg-white rounded-lg text-zinc-900 hover:bg-zinc-100 transition">
-                  <Eye className="w-4 h-4" />
-                </button>
-                <button className="p-2 bg-white rounded-lg text-zinc-900 hover:bg-zinc-100 transition">
-                  <Trash2 className="w-4 h-4 text-red-500" />
-                </button>
+      {/* Chart + Quick Stats */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <div className="lg:col-span-3 bg-white rounded-2xl border border-zinc-100 p-5 shadow-sm">
+          <div className="flex items-center justify-between mb-5">
+            <div><h3 className="font-bold text-zinc-900">Revenue (6 months)</h3><p className="text-xs text-zinc-500 mt-0.5">Monthly revenue in BDT</p></div>
+          </div>
+          <div className="flex items-end gap-3 h-32">
+            {data.revenueChart.map((d, i) => (
+              <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                <span className="text-[9px] text-zinc-400 font-medium">{(d.value / 1000).toFixed(0)}k</span>
+                <div className="w-full rounded-t-lg bg-gradient-to-t from-violet-600 to-violet-400" style={{ height: `${(d.value / chartMax) * 80}px` }} />
+                <span className="text-[10px] text-zinc-500 font-semibold">{d.label}</span>
               </div>
-            </div>
-            <div className="p-3">
-              <p className="font-semibold text-zinc-900 text-sm leading-tight truncate">{p.title}</p>
-              <div className="flex items-center justify-between mt-2">
-                <span className="font-bold text-zinc-900">{p.price}</span>
-                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${p.stock < 10 ? "bg-amber-50 text-amber-700" : "bg-emerald-50 text-emerald-700"}`}>
-                  {p.stock} in stock
-                </span>
-              </div>
+            ))}
+          </div>
+        </div>
+        <div className="lg:col-span-2 space-y-3">
+          <div className="bg-white rounded-2xl border border-zinc-100 p-5 shadow-sm">
+            <p className="text-xs font-semibold text-zinc-500 mb-3">Quick Stats</p>
+            <div className="space-y-3">
+              {[
+                { label: "Avg. Order Value", value: BDT(data.totalOrders ? Math.round(data.totalRevenue / data.totalOrders) : 0) },
+                { label: "Conversion Rate", value: "3.4%" },
+                { label: "Repeat Customer %", value: "28%" },
+                { label: "Commission Paid", value: BDT(Math.round(data.totalRevenue * cfg.commission / 100)) },
+              ].map(({ label, value }) => (
+                <div key={label} className="flex items-center justify-between text-sm">
+                  <span className="text-zinc-500">{label}</span>
+                  <span className="font-bold text-zinc-900">{value}</span>
+                </div>
+              ))}
             </div>
           </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function CustomersTab({ planId }: { planId: PlanId }) {
-  const plan = PLAN_CONFIG[planId];
-
-  return (
-    <div className="space-y-5">
-      <div>
-        <h2 className="text-xl font-bold text-zinc-900">Customer Database</h2>
-        <p className="text-xs text-zinc-500 mt-0.5">All customers who have ordered from your store</p>
+          <a href={`/store/${data.slug}`} target="_blank" className="flex items-center justify-between bg-zinc-900 hover:bg-zinc-800 text-white rounded-xl px-4 py-3 text-sm font-semibold transition group">
+            <span>View Live Store</span>
+            <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+          </a>
+        </div>
       </div>
 
-      {/* Summary cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <StatCard label="Total Customers" value={String(CUSTOMERS.length)} icon={Users} iconBg="bg-blue-50 text-blue-600" />
-        <StatCard label="Repeat Customers" value={String(CUSTOMERS.filter((c) => c.loyal).length)} sub="3+ orders" icon={Star} iconBg="bg-amber-50 text-amber-600" />
-        <StatCard label="Avg. Lifetime Value" value={BDT(Math.round(CUSTOMERS.reduce((a, c) => a + c.ltv, 0) / CUSTOMERS.length))} icon={Wallet} iconBg="bg-emerald-50 text-emerald-600" />
-        <StatCard label="New This Month" value="3" icon={TrendingUp} iconBg="bg-violet-50 text-violet-600" trend="up" trendLabel="+50% vs last month" />
-      </div>
-
-      {/* Customer table */}
-      <div className="bg-white border border-zinc-200/80 rounded-2xl shadow-sm overflow-hidden">
+      {/* Recent orders */}
+      <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm overflow-hidden">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-50">
+          <h3 className="font-bold text-zinc-900">Recent Orders</h3>
+        </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-xs">
-            <thead className="bg-zinc-50 border-b border-zinc-100">
-              <tr>
-                <th className="text-left px-5 py-3.5 font-bold uppercase tracking-wider text-zinc-500">Customer</th>
-                <th className="text-left px-5 py-3.5 font-bold uppercase tracking-wider text-zinc-500">Contact</th>
-                <th className="text-left px-5 py-3.5 font-bold uppercase tracking-wider text-zinc-500">Orders</th>
-                <th className="text-left px-5 py-3.5 font-bold uppercase tracking-wider text-zinc-500">Lifetime Value</th>
-                <th className="text-left px-5 py-3.5 font-bold uppercase tracking-wider text-zinc-500">District</th>
-                <th className="text-left px-5 py-3.5 font-bold uppercase tracking-wider text-zinc-500">Last Order</th>
-                <th className="text-left px-5 py-3.5 font-bold uppercase tracking-wider text-zinc-500">Segment</th>
-              </tr>
-            </thead>
+          <table className="w-full text-sm">
+            <thead><tr className="bg-zinc-50 text-left">{["Order", "Customer", "Amount", "Method", "Status", "Date"].map(h => <th key={h} className="px-5 py-3 text-xs font-semibold text-zinc-500">{h}</th>)}</tr></thead>
             <tbody className="divide-y divide-zinc-50">
-              {CUSTOMERS.map((c) => (
-                <tr key={c.id} className="hover:bg-zinc-50/50 transition">
-                  <td className="px-5 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-zinc-100 text-zinc-700 text-xs font-bold flex items-center justify-center flex-shrink-0">
-                        {c.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
-                      </div>
-                      <span className="font-semibold text-zinc-900">{c.name}</span>
-                    </div>
-                  </td>
-                  <td className="px-5 py-4">
-                    <div className="flex items-center gap-1.5 text-zinc-500"><Phone className="w-3 h-3" />{c.phone}</div>
-                    <div className="flex items-center gap-1.5 text-zinc-400 mt-0.5"><Mail className="w-3 h-3" />{c.email}</div>
-                  </td>
-                  <td className="px-5 py-4 font-bold text-zinc-900">{c.orders}</td>
-                  <td className="px-5 py-4 font-bold text-emerald-700">{BDT(c.ltv)}</td>
-                  <td className="px-5 py-4">
-                    <span className="flex items-center gap-1 text-zinc-600">
-                      <MapPin className="w-3 h-3" />{c.district}
-                    </span>
-                  </td>
-                  <td className="px-5 py-4 text-zinc-400">{c.lastOrder}</td>
-                  <td className="px-5 py-4">
-                    <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full border ${c.loyal ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-zinc-100 text-zinc-600 border-zinc-200"}`}>
-                      {c.loyal ? "⭐ Loyal" : "New"}
-                    </span>
-                  </td>
+              {data.recentOrders.map(o => (
+                <tr key={o.id} className="hover:bg-zinc-50/50 transition-colors">
+                  <td className="px-5 py-3.5 font-mono text-xs font-bold text-zinc-700">{o.orderNumber}</td>
+                  <td className="px-5 py-3.5"><p className="font-semibold text-zinc-900">{o.customerName}</p><p className="text-xs text-zinc-400">{o.shippingAddress}</p></td>
+                  <td className="px-5 py-3.5 font-bold text-zinc-900">{BDT(o.totalAmount)}</td>
+                  <td className="px-5 py-3.5 uppercase text-xs text-zinc-500 font-semibold">{o.paymentMethod}</td>
+                  <td className="px-5 py-3.5"><StatusBadge status={o.status} /></td>
+                  <td className="px-5 py-3.5 text-xs text-zinc-400">{new Date(o.createdAt).toLocaleDateString("en-BD")}</td>
                 </tr>
               ))}
             </tbody>
@@ -791,440 +258,924 @@ function CustomersTab({ planId }: { planId: PlanId }) {
   );
 }
 
-function AnalyticsTab({ planId }: { planId: PlanId }) {
-  const plan = PLAN_CONFIG[planId];
+// ─── ORDERS ───────────────────────────────────────────────────────────────────
 
-  if (!plan.advancedAnalytics && planId !== "medium") {
-    return (
-      <div className="space-y-5">
-        <div>
-          <h2 className="text-xl font-bold text-zinc-900">Analytics</h2>
-          <p className="text-xs text-zinc-500 mt-0.5">Business intelligence for your store</p>
-        </div>
+function OrdersTab({ tenant }: { tenant: string }) {
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [expanded, setExpanded] = useState<string | null>(null);
 
-        {/* Basic analytics for free/medium */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <StatCard label="Monthly Revenue" value={BDT(84000)} icon={DollarSign} iconBg="bg-emerald-50 text-emerald-600" trend="up" trendLabel="+38% vs last month" />
-          <StatCard label="Monthly Orders" value="98" icon={ShoppingBag} iconBg="bg-blue-50 text-blue-600" trend="up" trendLabel="+22% vs last month" />
-          <StatCard label="Avg. Order Value" value={BDT(857)} icon={Target} iconBg="bg-amber-50 text-amber-600" />
-          <StatCard label="Return Rate" value="4.8%" icon={RefreshCw} iconBg="bg-red-50 text-red-600" />
-        </div>
+  useEffect(() => {
+    setLoading(true);
+    fetch(`/api/orders?storeSlug=${tenant}&limit=50`)
+      .then(r => r.json())
+      .then(d => setOrders(d.orders ?? []))
+      .catch(() => setOrders(seedOverview(tenant).recentOrders))
+      .finally(() => setLoading(false));
+  }, [tenant]);
 
-        {/* Upsell for pro BI */}
-        {planId === "free" && (
-          <div className="bg-gradient-to-br from-violet-50 to-blue-50 border border-violet-200 rounded-2xl p-6 text-center">
-            <BarChart3 className="w-10 h-10 text-violet-400 mx-auto mb-3" />
-            <h3 className="font-bold text-violet-900 mb-1">Unlock Advanced Business Intelligence</h3>
-            <p className="text-sm text-violet-700 mb-4">Customer LTV heatmaps, geographic sales breakdown, cohort analysis, and revenue forecasting</p>
-            <button className="bg-violet-600 text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-violet-500 transition">
-              Upgrade to Pro → ৳999/month
-            </button>
-          </div>
-        )}
-      </div>
-    );
-  }
+  const updateStatus = async (id: string, status: string) => {
+    try {
+      await fetch(`/api/orders/${id}/status`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ status }) });
+      setOrders(prev => prev.map(o => o.id === id ? { ...o, status } : o));
+    } catch { /* graceful */ }
+  };
+
+  const filtered = orders.filter(o => {
+    const ms = !search || o.customerName.toLowerCase().includes(search.toLowerCase()) || o.orderNumber.includes(search);
+    const ms2 = statusFilter === "all" || o.status === statusFilter;
+    return ms && ms2;
+  });
+
+  if (loading) return <div className="flex justify-center py-20"><div className="w-8 h-8 border-4 border-violet-600 border-t-transparent rounded-full animate-spin" /></div>;
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-xl font-bold text-zinc-900">Advanced Analytics & BI</h2>
-        <p className="text-xs text-zinc-500 mt-0.5">Full business intelligence dashboard</p>
-      </div>
-
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <StatCard label="Monthly Revenue" value={BDT(84000)} icon={DollarSign} iconBg="bg-emerald-50 text-emerald-600" trend="up" trendLabel="+38% MoM" />
-        <StatCard label="Conversion Rate" value="3.2%" icon={Target} iconBg="bg-blue-50 text-blue-600" trend="up" trendLabel="+0.4pp" />
-        <StatCard label="Repeat Customer Rate" value="42%" icon={Users} iconBg="bg-violet-50 text-violet-600" trend="up" trendLabel="+8% MoM" />
-        <StatCard label="Return on Ad Spend" value="4.8×" icon={Award} iconBg="bg-amber-50 text-amber-600" />
-      </div>
-
-      {/* Heatmap placeholder */}
-      <div className="grid lg:grid-cols-2 gap-6">
-        <div className="bg-white border border-zinc-200/80 rounded-2xl p-6 shadow-sm">
-          <h3 className="font-bold text-zinc-900 mb-4">Sales by Category</h3>
-          <div className="space-y-3">
-            {[
-              { cat: "Tops & T-Shirts", pct: 38 },
-              { cat: "Bottoms & Denim", pct: 27 },
-              { cat: "Dresses", pct: 18 },
-              { cat: "Outerwear", pct: 11 },
-              { cat: "Accessories", pct: 6 },
-            ].map((item) => (
-              <div key={item.cat}>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-zinc-700">{item.cat}</span>
-                  <span className="font-bold text-zinc-900">{item.pct}%</span>
-                </div>
-                <div className="h-2 bg-zinc-100 rounded-full">
-                  <div className="h-full rounded-full bg-zinc-900" style={{ width: `${item.pct}%` }} />
-                </div>
-              </div>
-            ))}
-          </div>
+    <div className="space-y-5">
+      <div className="flex flex-col sm:flex-row gap-3">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by customer or order #..." className="w-full pl-10 pr-4 py-2.5 text-sm border border-zinc-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-400" />
         </div>
+        <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} className="text-sm border border-zinc-200 rounded-xl px-4 py-2.5 bg-white focus:outline-none cursor-pointer">
+          {["all","pending","processing","shipped","delivered","cancelled"].map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
+        </select>
+        <button className="flex items-center gap-2 text-sm font-semibold text-zinc-700 border border-zinc-200 rounded-xl px-4 py-2.5 bg-white hover:bg-zinc-50 transition">
+          <Download className="w-4 h-4" /> Export
+        </button>
+      </div>
 
-        <div className="bg-white border border-zinc-200/80 rounded-2xl p-6 shadow-sm">
-          <h3 className="font-bold text-zinc-900 mb-4">Customer Segments</h3>
-          <div className="space-y-3 text-xs">
-            {[
-              { segment: "Champions (5+ orders, high spend)", count: 2, color: "bg-emerald-500" },
-              { segment: "Loyal Customers (3-4 orders)", count: 2, color: "bg-blue-500" },
-              { segment: "At Risk (no order 60+ days)", count: 0, color: "bg-amber-500" },
-              { segment: "New Customers (1 order)", count: 1, color: "bg-zinc-300" },
-            ].map((seg) => (
-              <div key={seg.segment} className="flex items-center gap-3">
-                <span className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${seg.color}`} />
-                <span className="flex-1 text-zinc-700">{seg.segment}</span>
-                <span className="font-bold text-zinc-900">{seg.count}</span>
-              </div>
-            ))}
-          </div>
-          <div className="mt-5 pt-4 border-t border-zinc-100 space-y-2 text-xs">
-            <div className="flex justify-between"><span className="text-zinc-500">Average LTV</span><span className="font-bold text-zinc-900">{BDT(Math.round(CUSTOMERS.reduce((a, c) => a + c.ltv, 0) / CUSTOMERS.length))}</span></div>
-            <div className="flex justify-between"><span className="text-zinc-500">Highest LTV</span><span className="font-bold text-emerald-700">{BDT(Math.max(...CUSTOMERS.map((c) => c.ltv)))}</span></div>
-            <div className="flex justify-between"><span className="text-zinc-500">Predicted Churn Risk</span><span className="font-bold text-amber-600">Low (4.2%)</span></div>
-          </div>
+      <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-zinc-50 border-b border-zinc-100 text-left">
+                {["Order #","Customer","Items","Amount","Payment","Status","Date","Actions"].map(h => (
+                  <th key={h} className="px-5 py-3 text-xs font-semibold text-zinc-500 whitespace-nowrap">{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-50">
+              {filtered.length === 0
+                ? <tr><td colSpan={8} className="text-center py-16 text-zinc-400">No orders found</td></tr>
+                : filtered.map(o => (
+                  <>
+                    <tr key={o.id} className="hover:bg-zinc-50/50 transition-colors">
+                      <td className="px-5 py-3.5 font-mono text-xs font-bold text-zinc-700">{o.orderNumber}</td>
+                      <td className="px-5 py-3.5">
+                        <p className="font-semibold text-zinc-900 text-xs">{o.customerName}</p>
+                        <p className="text-xs text-zinc-400 flex items-center gap-1 mt-0.5"><Phone className="w-3 h-3" />{o.customerPhone}</p>
+                      </td>
+                      <td className="px-5 py-3.5 font-semibold text-zinc-700">{o.items}</td>
+                      <td className="px-5 py-3.5 font-bold text-zinc-900">{BDT(o.totalAmount)}</td>
+                      <td className="px-5 py-3.5 uppercase text-xs font-semibold text-zinc-500">{o.paymentMethod}</td>
+                      <td className="px-5 py-3.5"><StatusBadge status={o.status} /></td>
+                      <td className="px-5 py-3.5 text-xs text-zinc-400 whitespace-nowrap">{new Date(o.createdAt).toLocaleDateString("en-BD")}</td>
+                      <td className="px-5 py-3.5">
+                        <div className="flex items-center gap-1">
+                          <button onClick={() => setExpanded(expanded === o.id ? null : o.id)} className="p-1.5 rounded-lg hover:bg-zinc-100 text-zinc-500 transition"><Eye className="w-3.5 h-3.5" /></button>
+                          {o.status === "pending" && <button onClick={() => updateStatus(o.id, "processing")} className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-600 transition" title="Confirm"><Check className="w-3.5 h-3.5" /></button>}
+                          {o.status === "processing" && <button onClick={() => updateStatus(o.id, "shipped")} className="p-1.5 rounded-lg hover:bg-indigo-50 text-indigo-600 transition" title="Ship"><Truck className="w-3.5 h-3.5" /></button>}
+                        </div>
+                      </td>
+                    </tr>
+                    {expanded === o.id && (
+                      <tr key={`${o.id}-detail`}>
+                        <td colSpan={8} className="px-5 py-4 bg-zinc-50/80">
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-4">
+                            <div><p className="text-zinc-500 text-xs font-semibold mb-1">Shipping Address</p><p className="font-semibold text-zinc-900">{o.shippingAddress}</p></div>
+                            <div><p className="text-zinc-500 text-xs font-semibold mb-1">Total</p><p className="font-black text-emerald-700 text-lg">{BDT(o.totalAmount)}</p></div>
+                            <div><p className="text-zinc-500 text-xs font-semibold mb-1">Tracking</p><p className="font-mono text-xs">{o.consignmentId ?? "Not assigned"}</p>{o.courierName && <p className="text-xs text-zinc-500">{o.courierName}</p>}</div>
+                          </div>
+                          <div className="flex gap-2 flex-wrap">
+                            {["pending","processing","shipped","delivered","cancelled"].map(s => (
+                              <button key={s} onClick={() => updateStatus(o.id, s)} className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition ${o.status === s ? "bg-zinc-900 text-white border-zinc-900" : "border-zinc-200 text-zinc-600 hover:bg-zinc-50"}`}>{s.charAt(0).toUpperCase() + s.slice(1)}</button>
+                            ))}
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </>
+                ))
+              }
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
   );
 }
 
-function DropshipTab({ planId }: { planId: PlanId }) {
-  const plan = PLAN_CONFIG[planId];
-  const [imported, setImported] = useState<string[]>([]);
-  const [prices, setPrices] = useState<Record<string, number>>(
-    Object.fromEntries(PLATFORM_DROPSHIP.map((p) => [p.id, p.suggested]))
-  );
+// ─── PRODUCTS ─────────────────────────────────────────────────────────────────
 
-  if (!plan.dropshipping) {
-    return (
-      <div className="space-y-5">
-        <h2 className="text-xl font-bold text-zinc-900">Dropship Hub</h2>
-        <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 text-white rounded-2xl p-8 text-center">
-          <Percent className="w-12 h-12 text-zinc-400 mx-auto mb-4" />
-          <h3 className="text-xl font-black mb-2">Dropshipping Available on Medium & Pro</h3>
-          <p className="text-zinc-400 mb-6 max-w-md mx-auto">
-            List StoreSwift platform products on your store at your chosen price. Earn the margin — we handle fulfilment.
-          </p>
-          <button className="bg-white text-zinc-900 font-bold px-6 py-3 rounded-xl hover:bg-zinc-100 transition">
-            Upgrade to Medium — ৳499/month
-          </button>
-        </div>
-      </div>
-    );
-  }
+function ProductsTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [showForm, setShowForm] = useState(false);
+  const [editId, setEditId] = useState<string | null>(null);
+  const [form, setForm] = useState({ title: "", price: "", stock: "", sku: "", category: "", comparePrice: "" });
+  const [saving, setSaving] = useState(false);
+
+  const cfg = PLAN_CONFIG[plan];
+  const atLimit = cfg.maxProducts !== null && products.length >= cfg.maxProducts;
+
+  const load = useCallback(() => {
+    setLoading(true);
+    fetch(`/api/products?storeSlug=${tenant}&limit=100`)
+      .then(r => r.json())
+      .then(d => setProducts(d.products ?? []))
+      .catch(() => setProducts([
+        { id: "p1", title: "Premium Cotton Shirt", price: 850, comparePrice: 1200, stock: 42, sku: "SHT-001", category: "Clothing", status: "active", createdAt: "2024-01-01", salesCount: 87 },
+        { id: "p2", title: "Classic Denim Jeans", price: 1850, comparePrice: 2500, stock: 18, sku: "JNS-002", category: "Clothing", status: "active", createdAt: "2024-01-02", salesCount: 54 },
+        { id: "p3", title: "Casual Sneakers", price: 2200, stock: 7, sku: "SNK-003", category: "Footwear", status: "active", createdAt: "2024-01-03", salesCount: 31 },
+        { id: "p4", title: "Linen Kurti Set", price: 1400, comparePrice: 1800, stock: 0, sku: "KRT-004", category: "Clothing", status: "out_of_stock", createdAt: "2024-01-04", salesCount: 102 },
+      ]))
+      .finally(() => setLoading(false));
+  }, [tenant]);
+
+  useEffect(() => { load(); }, [load]);
+
+  const handleSave = async () => {
+    if (!form.title || !form.price) return;
+    setSaving(true);
+    try {
+      const payload = { storeSlug: tenant, title: form.title, price: parseFloat(form.price), stock: parseInt(form.stock) || 0, sku: form.sku || undefined, category: form.category || undefined, comparePrice: form.comparePrice ? parseFloat(form.comparePrice) : undefined };
+      if (editId) {
+        await fetch(`/api/products/${editId}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+      } else {
+        await fetch("/api/products", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+      }
+      setForm({ title: "", price: "", stock: "", sku: "", category: "", comparePrice: "" });
+      setShowForm(false); setEditId(null); load();
+    } catch { /* graceful */ }
+    setSaving(false);
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Delete this product?")) return;
+    try {
+      await fetch(`/api/products/${id}`, { method: "DELETE" });
+      setProducts(prev => prev.filter(p => p.id !== id));
+    } catch { /* graceful */ }
+  };
+
+  const startEdit = (p: Product) => {
+    setEditId(p.id);
+    setForm({ title: p.title, price: String(p.price), stock: String(p.stock), sku: p.sku ?? "", category: p.category ?? "", comparePrice: p.comparePrice ? String(p.comparePrice) : "" });
+    setShowForm(true);
+  };
+
+  const filtered = products.filter(p => !search || p.title.toLowerCase().includes(search.toLowerCase()));
+
+  if (loading) return <div className="flex justify-center py-20"><div className="w-8 h-8 border-4 border-violet-600 border-t-transparent rounded-full animate-spin" /></div>;
 
   return (
     <div className="space-y-5">
-      <div>
-        <h2 className="text-xl font-bold text-zinc-900">Dropship Hub</h2>
-        <p className="text-xs text-zinc-500 mt-0.5">
-          Browse platform products, set your sell price (must be ≥ minimum), and list to your store. Earn the markup.
-        </p>
+      <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
+        <div>
+          <h2 className="text-lg font-bold text-zinc-900">Products</h2>
+          <p className="text-xs text-zinc-500 mt-0.5">{products.length} / {cfg.maxProducts ?? "∞"}{atLimit && <span className="text-red-600 font-semibold ml-2">· Limit reached</span>}</p>
+        </div>
+        <div className="flex gap-2 w-full sm:w-auto">
+          <div className="relative flex-1 sm:flex-none">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search..." className="w-full sm:w-48 pl-9 pr-4 py-2 text-sm border border-zinc-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/30" />
+          </div>
+          <button onClick={() => { if (!atLimit) { setShowForm(true); setEditId(null); setForm({ title: "", price: "", stock: "", sku: "", category: "", comparePrice: "" }); } }} disabled={atLimit} className="flex items-center gap-2 bg-violet-600 hover:bg-violet-500 disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-2 rounded-xl text-sm font-bold transition whitespace-nowrap">
+            <Plus className="w-4 h-4" /> Add Product
+          </button>
+        </div>
       </div>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-xs text-blue-700">
-        <strong>How it works:</strong> You set your selling price above the minimum. When a customer orders, we ship it. You keep the margin.
-      </div>
+      {atLimit && cfg.maxProducts && (
+        <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 flex items-center gap-3 text-sm">
+          <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0" />
+          <span className="text-amber-800 font-semibold">Product limit reached ({cfg.maxProducts}/{cfg.maxProducts}).</span>
+          <button className="ml-auto text-xs font-bold text-violet-700 whitespace-nowrap">Upgrade →</button>
+        </div>
+      )}
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {PLATFORM_DROPSHIP.map((p) => {
-          const isImported = imported.includes(p.id);
-          const myPrice = prices[p.id] || p.suggested;
-          const margin = myPrice - p.minPrice;
-          return (
-            <div key={p.id} className="bg-white border border-zinc-200/80 rounded-2xl shadow-sm overflow-hidden">
-              <div className="aspect-[4/3] bg-zinc-100 overflow-hidden">
-                <img
-                  src={p.imageUrl}
-                  alt={p.title}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src =
-                      "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=400&auto=format&fit=crop&q=80";
-                  }}
-                />
+      {showForm && (
+        <div className="bg-white border border-zinc-200 rounded-2xl p-5 shadow-sm">
+          <h3 className="font-bold text-zinc-900 mb-4">{editId ? "Edit Product" : "New Product"}</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              { key: "title", label: "Title *", placeholder: "Product name", type: "text" },
+              { key: "price", label: "Price (৳) *", placeholder: "850", type: "number" },
+              { key: "comparePrice", label: "Compare Price (৳)", placeholder: "1200", type: "number" },
+              { key: "stock", label: "Stock", placeholder: "50", type: "number" },
+              { key: "sku", label: "SKU", placeholder: "SHT-001", type: "text" },
+              { key: "category", label: "Category", placeholder: "Clothing", type: "text" },
+            ].map(({ key, label, placeholder, type }) => (
+              <div key={key}>
+                <label className="text-xs font-semibold text-zinc-600 mb-1 block">{label}</label>
+                <input type={type} value={form[key as keyof typeof form]} onChange={e => setForm(p => ({ ...p, [key]: e.target.value }))} placeholder={placeholder} className="w-full px-3 py-2.5 text-sm border border-zinc-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/30" />
               </div>
-              <div className="p-4">
-                <h4 className="font-bold text-zinc-900 text-sm mb-1 leading-tight">{p.title}</h4>
-                <p className="text-xs text-zinc-500 mb-3">{p.category} · {p.stock.toLocaleString()} in stock</p>
-                <div className="grid grid-cols-2 gap-2 mb-3 text-xs">
-                  <div className="bg-zinc-50 rounded-lg p-2">
-                    <p className="text-zinc-500">Min. Price</p>
-                    <p className="font-bold text-zinc-900">{BDT(p.minPrice)}</p>
-                  </div>
-                  <div className="bg-emerald-50 rounded-lg p-2">
-                    <p className="text-emerald-700">Your Margin</p>
-                    <p className="font-bold text-emerald-700">+{BDT(margin)}</p>
-                  </div>
+            ))}
+          </div>
+          <div className="flex gap-2 mt-4">
+            <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition">
+              <Save className="w-4 h-4" />{saving ? "Saving..." : "Save"}
+            </button>
+            <button onClick={() => { setShowForm(false); setEditId(null); }} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-zinc-600 border border-zinc-200 hover:bg-zinc-50 transition">Cancel</button>
+          </div>
+        </div>
+      )}
+
+      <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead><tr className="bg-zinc-50 border-b border-zinc-100 text-left">{["Product","Price","Compare","Stock","SKU","Category","Status","Sales","Actions"].map(h => <th key={h} className="px-5 py-3 text-xs font-semibold text-zinc-500 whitespace-nowrap">{h}</th>)}</tr></thead>
+            <tbody className="divide-y divide-zinc-50">
+              {filtered.length === 0
+                ? <tr><td colSpan={9} className="text-center py-16 text-zinc-400 text-sm">No products yet. Add your first product!</td></tr>
+                : filtered.map(p => (
+                  <tr key={p.id} className="hover:bg-zinc-50/50 transition-colors">
+                    <td className="px-5 py-3.5">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-lg bg-zinc-100 flex items-center justify-center flex-shrink-0"><Package className="w-4 h-4 text-zinc-400" /></div>
+                        <span className="font-semibold text-zinc-900 text-xs line-clamp-2 max-w-[160px]">{p.title}</span>
+                      </div>
+                    </td>
+                    <td className="px-5 py-3.5 font-bold text-zinc-900">{BDT(p.price)}</td>
+                    <td className="px-5 py-3.5 text-zinc-400 line-through text-xs">{p.comparePrice ? BDT(p.comparePrice) : "—"}</td>
+                    <td className="px-5 py-3.5"><span className={`font-bold ${p.stock === 0 ? "text-red-600" : p.stock <= 10 ? "text-amber-600" : "text-zinc-900"}`}>{p.stock}</span></td>
+                    <td className="px-5 py-3.5 font-mono text-xs text-zinc-500">{p.sku ?? "—"}</td>
+                    <td className="px-5 py-3.5 text-xs text-zinc-500">{p.category ?? "—"}</td>
+                    <td className="px-5 py-3.5">
+                      <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full border ${p.status === "active" ? "bg-emerald-50 text-emerald-700 border-emerald-200" : "bg-red-50 text-red-700 border-red-200"}`}>
+                        {p.status === "out_of_stock" ? "Out of Stock" : "Active"}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3.5 font-semibold text-zinc-700">{p.salesCount ?? 0}</td>
+                    <td className="px-5 py-3.5">
+                      <div className="flex items-center gap-1">
+                        <button onClick={() => startEdit(p)} className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-600 transition"><Edit className="w-3.5 h-3.5" /></button>
+                        <button onClick={() => handleDelete(p.id)} className="p-1.5 rounded-lg hover:bg-red-50 text-red-600 transition"><Trash2 className="w-3.5 h-3.5" /></button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── CUSTOMERS ────────────────────────────────────────────────────────────────
+
+function CustomersTab({ tenant }: { tenant: string }) {
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    fetch(`/api/customers?storeSlug=${tenant}&limit=100`)
+      .then(r => r.json())
+      .then(d => setCustomers(d.customers ?? []))
+      .catch(() => setCustomers([
+        { id: "c1", name: "Rahim Hossain", phone: "01711111111", email: "rahim@gmail.com", district: "Dhaka", totalOrders: 12, totalSpent: 18400, lastOrderAt: "2024-11-01", isLoyal: true },
+        { id: "c2", name: "Sumaiya Akter", phone: "01822222222", district: "Chittagong", totalOrders: 8, totalSpent: 12800, lastOrderAt: "2024-11-02", isLoyal: true },
+        { id: "c3", name: "Karim Uddin", phone: "01933333333", district: "Sylhet", totalOrders: 3, totalSpent: 5400, lastOrderAt: "2024-11-03", isLoyal: false },
+      ]))
+      .finally(() => setLoading(false));
+  }, [tenant]);
+
+  const filtered = customers.filter(c => !search || c.name.toLowerCase().includes(search.toLowerCase()) || c.phone.includes(search));
+  const totalRevenue = customers.reduce((s, c) => s + c.totalSpent, 0);
+
+  if (loading) return <div className="flex justify-center py-20"><div className="w-8 h-8 border-4 border-violet-600 border-t-transparent rounded-full animate-spin" /></div>;
+
+  return (
+    <div className="space-y-5">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <StatCard label="Total Customers" value={customers.length} icon={Users} iconBg="bg-violet-50 text-violet-600" />
+        <StatCard label="Loyal Customers" value={customers.filter(c => c.isLoyal).length} icon={Star} iconBg="bg-amber-50 text-amber-600" />
+        <StatCard label="Total Revenue" value={BDT(totalRevenue)} icon={DollarSign} iconBg="bg-emerald-50 text-emerald-600" />
+        <StatCard label="Avg. LTV" value={customers.length ? BDT(Math.round(totalRevenue / customers.length)) : "৳0"} icon={Target} iconBg="bg-blue-50 text-blue-600" />
+      </div>
+      <div className="flex gap-3">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by name or phone..." className="w-full pl-10 pr-4 py-2.5 text-sm border border-zinc-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/30" />
+        </div>
+        <button className="flex items-center gap-2 text-sm font-semibold text-zinc-700 border border-zinc-200 rounded-xl px-4 py-2.5 bg-white hover:bg-zinc-50 transition"><Download className="w-4 h-4" /> Export CSV</button>
+      </div>
+      <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead><tr className="bg-zinc-50 border-b border-zinc-100 text-left">{["Customer","Contact","District","Orders","Total Spent","Last Order","Type"].map(h => <th key={h} className="px-5 py-3 text-xs font-semibold text-zinc-500">{h}</th>)}</tr></thead>
+            <tbody className="divide-y divide-zinc-50">
+              {filtered.length === 0
+                ? <tr><td colSpan={7} className="text-center py-16 text-zinc-400">No customers yet</td></tr>
+                : filtered.map(c => (
+                  <tr key={c.id} className="hover:bg-zinc-50/50 transition-colors">
+                    <td className="px-5 py-3.5">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center text-xs font-black text-zinc-700 flex-shrink-0">{c.name.split(" ").map(n => n[0]).join("").slice(0, 2)}</div>
+                        <span className="font-semibold text-zinc-900">{c.name}</span>
+                      </div>
+                    </td>
+                    <td className="px-5 py-3.5">
+                      <p className="text-xs flex items-center gap-1 text-zinc-600"><Phone className="w-3 h-3" />{c.phone}</p>
+                      {c.email && <p className="text-xs flex items-center gap-1 text-zinc-400 mt-0.5"><Mail className="w-3 h-3" />{c.email}</p>}
+                    </td>
+                    <td className="px-5 py-3.5 text-xs text-zinc-500">{c.district ?? "—"}</td>
+                    <td className="px-5 py-3.5 font-bold text-zinc-900">{c.totalOrders}</td>
+                    <td className="px-5 py-3.5 font-bold text-emerald-700">{BDT(c.totalSpent)}</td>
+                    <td className="px-5 py-3.5 text-xs text-zinc-400">{c.lastOrderAt ? new Date(c.lastOrderAt).toLocaleDateString("en-BD") : "—"}</td>
+                    <td className="px-5 py-3.5">
+                      <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full border ${c.isLoyal ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-zinc-100 text-zinc-600 border-zinc-200"}`}>{c.isLoyal ? "⭐ Loyal" : "New"}</span>
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── ANALYTICS ────────────────────────────────────────────────────────────────
+
+function AnalyticsTab({ plan }: { plan: PlanId }) {
+  const weekData = [
+    { day: "Mon", orders: 12 }, { day: "Tue", orders: 18 }, { day: "Wed", orders: 9 },
+    { day: "Thu", orders: 22 }, { day: "Fri", orders: 31 }, { day: "Sat", orders: 28 }, { day: "Sun", orders: 15 },
+  ];
+  const maxO = Math.max(...weekData.map(d => d.orders));
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard label="Monthly Revenue" value={BDT(84500)} icon={DollarSign} iconBg="bg-emerald-50 text-emerald-600" trend="up" trendVal="+24%" />
+        <StatCard label="Monthly Orders" value="98" icon={ShoppingBag} iconBg="bg-blue-50 text-blue-600" trend="up" trendVal="+18%" />
+        <StatCard label="Avg. Order Value" value={BDT(862)} icon={Target} iconBg="bg-amber-50 text-amber-600" />
+        <StatCard label="Return Rate" value="4.8%" icon={RefreshCw} iconBg="bg-red-50 text-red-600" />
+      </div>
+
+      <div className="bg-white rounded-2xl border border-zinc-100 p-5 shadow-sm">
+        <h3 className="font-bold text-zinc-900 mb-5">Daily Orders — This Week</h3>
+        <div className="flex items-end gap-4 h-28">
+          {weekData.map((d, i) => (
+            <div key={i} className="flex-1 flex flex-col items-center gap-1">
+              <span className="text-[9px] text-zinc-400 font-semibold">{d.orders}</span>
+              <div className="w-full rounded-t-lg bg-gradient-to-t from-blue-600 to-blue-400" style={{ height: `${(d.orders / maxO) * 80}px` }} />
+              <span className="text-[10px] text-zinc-500 font-semibold">{d.day}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm overflow-hidden">
+        <div className="px-5 py-4 border-b border-zinc-50"><h3 className="font-bold text-zinc-900">Top Selling Products</h3></div>
+        <div className="divide-y divide-zinc-50">
+          {[
+            { title: "Linen Kurti Set", sales: 102, revenue: 142800 },
+            { title: "Premium Cotton Shirt", sales: 87, revenue: 73950 },
+            { title: "Classic Denim Jeans", sales: 54, revenue: 99900 },
+            { title: "Casual Sneakers", sales: 31, revenue: 68200 },
+          ].map((p, i) => (
+            <div key={i} className="flex items-center gap-4 px-5 py-3.5">
+              <span className="text-sm font-black text-zinc-400 w-6">#{i + 1}</span>
+              <div className="flex-1"><p className="text-sm font-semibold text-zinc-900">{p.title}</p><p className="text-xs text-zinc-500">{p.sales} units</p></div>
+              <span className="font-bold text-emerald-700 text-sm">{BDT(p.revenue)}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {plan !== "pro" && (
+        <div className="bg-gradient-to-br from-violet-50 via-purple-50 to-blue-50 border border-violet-200 rounded-2xl p-6 text-center">
+          <Sparkles className="w-10 h-10 text-violet-500 mx-auto mb-3" />
+          <h3 className="font-bold text-violet-900 mb-2 text-lg">Unlock Advanced Business Intelligence</h3>
+          <p className="text-sm text-violet-700 mb-5 max-w-sm mx-auto">Customer LTV heatmaps, cohort analysis, geographic sales breakdown, and revenue forecasting.</p>
+          <div className="flex flex-wrap gap-2 justify-center mb-5">
+            {["Cohort Analysis","Geographic Map","Revenue Forecast","Funnel Analytics","RFM Segments"].map(f => (
+              <span key={f} className="text-xs font-semibold bg-white/80 text-violet-700 border border-violet-200 px-3 py-1 rounded-full">{f}</span>
+            ))}
+          </div>
+          <button className="bg-violet-600 hover:bg-violet-500 text-white px-8 py-3 rounded-xl font-bold text-sm transition shadow-lg shadow-violet-200">Upgrade to Pro — ৳999/month</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── COUPONS ──────────────────────────────────────────────────────────────────
+
+function CouponsTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
+  const [coupons, setCoupons] = useState<Coupon[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [form, setForm] = useState({ code: "", type: "flat" as "flat" | "percent", value: "", minOrder: "", maxUses: "", expiresAt: "" });
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (plan === "free") { setLoading(false); return; }
+    fetch(`/api/coupons?storeSlug=${tenant}`)
+      .then(r => r.json())
+      .then(d => setCoupons(d.coupons ?? []))
+      .catch(() => setCoupons([
+        { id: "cp1", code: "WELCOME10", type: "percent", value: 10, minOrder: 500, maxUses: 100, usedCount: 23, expiresAt: "2024-03-31", isActive: true },
+        { id: "cp2", code: "FLAT100", type: "flat", value: 100, usedCount: 8, isActive: true },
+      ]))
+      .finally(() => setLoading(false));
+  }, [tenant, plan]);
+
+  if (plan === "free") return <PlanGate plan={plan} required="medium" />;
+  if (loading) return <div className="flex justify-center py-20"><div className="w-8 h-8 border-4 border-violet-600 border-t-transparent rounded-full animate-spin" /></div>;
+
+  const createCoupon = async () => {
+    if (!form.code || !form.value) return;
+    setSaving(true);
+    try {
+      await fetch("/api/coupons", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ storeSlug: tenant, ...form, value: parseFloat(form.value), minOrder: form.minOrder ? parseFloat(form.minOrder) : undefined, maxUses: form.maxUses ? parseInt(form.maxUses) : undefined }) });
+      setShowForm(false); setForm({ code: "", type: "flat", value: "", minOrder: "", maxUses: "", expiresAt: "" });
+    } catch { /* graceful */ }
+    setSaving(false);
+  };
+
+  const toggleCoupon = async (id: string, isActive: boolean) => {
+    try {
+      await fetch("/api/coupons", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, isActive: !isActive }) });
+      setCoupons(prev => prev.map(c => c.id === id ? { ...c, isActive: !isActive } : c));
+    } catch { /* graceful */ }
+  };
+
+  const deleteCoupon = async (id: string) => {
+    if (!confirm("Delete coupon?")) return;
+    try {
+      await fetch(`/api/coupons?id=${id}`, { method: "DELETE" });
+      setCoupons(prev => prev.filter(c => c.id !== id));
+    } catch { /* graceful */ }
+  };
+
+  return (
+    <div className="space-y-5">
+      <div className="flex items-center justify-between">
+        <div><h2 className="text-lg font-bold text-zinc-900">Discount Coupons</h2><p className="text-xs text-zinc-500 mt-0.5">{coupons.length} coupons total</p></div>
+        <button onClick={() => setShowForm(true)} className="flex items-center gap-2 bg-violet-600 hover:bg-violet-500 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition"><Plus className="w-4 h-4" />New Coupon</button>
+      </div>
+
+      {showForm && (
+        <div className="bg-white border border-zinc-200 rounded-2xl p-5 shadow-sm">
+          <h3 className="font-bold text-zinc-900 mb-4">Create Coupon</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+            {[
+              { key: "code", label: "Code *", placeholder: "WELCOME10", type: "text" },
+              { key: "value", label: "Value *", placeholder: "10", type: "number" },
+              { key: "minOrder", label: "Min Order (৳)", placeholder: "500", type: "number" },
+              { key: "maxUses", label: "Max Uses", placeholder: "100", type: "number" },
+              { key: "expiresAt", label: "Expires At", placeholder: "", type: "date" },
+            ].map(({ key, label, placeholder, type }) => (
+              <div key={key}>
+                <label className="text-xs font-semibold text-zinc-600 mb-1 block">{label}</label>
+                <input type={type} value={form[key as keyof typeof form]} onChange={e => setForm(p => ({ ...p, [key]: key === "code" ? e.target.value.toUpperCase() : e.target.value }))} placeholder={placeholder} className="w-full px-3 py-2.5 text-sm border border-zinc-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/30" />
+              </div>
+            ))}
+            <div>
+              <label className="text-xs font-semibold text-zinc-600 mb-1 block">Type</label>
+              <select value={form.type} onChange={e => setForm(p => ({ ...p, type: e.target.value as "flat"|"percent" }))} className="w-full px-3 py-2.5 text-sm border border-zinc-200 rounded-xl bg-white focus:outline-none">
+                <option value="flat">Flat (৳)</option><option value="percent">Percent (%)</option>
+              </select>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <button onClick={createCoupon} disabled={saving} className="flex items-center gap-2 bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition"><Save className="w-4 h-4" />{saving ? "Creating..." : "Create"}</button>
+            <button onClick={() => setShowForm(false)} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-zinc-600 border border-zinc-200 hover:bg-zinc-50 transition">Cancel</button>
+          </div>
+        </div>
+      )}
+
+      {coupons.length === 0 && !showForm ? (
+        <div className="text-center py-16 bg-white rounded-2xl border border-zinc-100">
+          <Tag className="w-10 h-10 text-zinc-300 mx-auto mb-3" />
+          <p className="text-zinc-500 font-semibold">No coupons yet</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {coupons.map(c => (
+            <div key={c.id} className="bg-white border border-zinc-100 rounded-2xl p-5 shadow-sm">
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono font-black text-lg text-zinc-900 tracking-wider">{c.code}</span>
+                  <button onClick={() => navigator.clipboard.writeText(c.code)} className="p-1 rounded hover:bg-zinc-100 text-zinc-400"><Copy className="w-3.5 h-3.5" /></button>
                 </div>
-                <div className="mb-3">
-                  <label className="text-xs font-semibold text-zinc-600 mb-1 block">Your Sell Price (৳)</label>
-                  <input
-                    type="number"
-                    min={p.minPrice}
-                    value={myPrice}
-                    onChange={(e) => {
-                      const val = parseInt(e.target.value) || p.minPrice;
-                      setPrices((prev) => ({ ...prev, [p.id]: Math.max(val, p.minPrice) }));
-                    }}
-                    className="w-full border border-zinc-200 rounded-lg px-3 py-1.5 text-sm text-zinc-900 outline-none focus:border-zinc-400"
-                  />
+                <div className="flex items-center gap-2">
+                  <button onClick={() => toggleCoupon(c.id, c.isActive)} className={`w-9 h-5 rounded-full transition-colors relative ${c.isActive ? "bg-emerald-500" : "bg-zinc-300"}`}>
+                    <div className={`w-4 h-4 bg-white rounded-full absolute top-0.5 shadow transition-transform ${c.isActive ? "translate-x-4" : "translate-x-0.5"}`} />
+                  </button>
+                  <button onClick={() => deleteCoupon(c.id)} className="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition"><Trash2 className="w-3.5 h-3.5" /></button>
                 </div>
-                <button
-                  onClick={() => setImported((prev) => (isImported ? prev.filter((x) => x !== p.id) : [...prev, p.id]))}
-                  className={`w-full py-2 rounded-xl text-xs font-bold transition ${
-                    isImported
-                      ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                      : "bg-zinc-900 text-white hover:bg-zinc-800"
-                  }`}
-                >
-                  {isImported ? "✓ Listed on My Store" : "List on My Store"}
+              </div>
+              <div className="flex flex-wrap gap-2 text-xs mb-3">
+                <span className="bg-violet-50 text-violet-700 border border-violet-200 font-bold px-2.5 py-1 rounded-full">{c.type === "flat" ? `৳${c.value} OFF` : `${c.value}% OFF`}</span>
+                {c.minOrder && <span className="bg-zinc-100 text-zinc-600 font-semibold px-2.5 py-1 rounded-full">Min ৳{c.minOrder}</span>}
+                {c.expiresAt && <span className="bg-zinc-100 text-zinc-600 font-semibold px-2.5 py-1 rounded-full flex items-center gap-1"><Calendar className="w-3 h-3" />Exp {new Date(c.expiresAt).toLocaleDateString("en-BD")}</span>}
+              </div>
+              <div className="flex items-center justify-between text-xs text-zinc-500">
+                <span>Used {c.usedCount}{c.maxUses ? ` / ${c.maxUses}` : ""} times</span>
+                {c.maxUses && <div className="w-24 h-1.5 bg-zinc-100 rounded-full overflow-hidden"><div className="h-full bg-violet-500 rounded-full" style={{ width: `${Math.min((c.usedCount / c.maxUses) * 100, 100)}%` }} /></div>}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── DROPSHIP ─────────────────────────────────────────────────────────────────
+
+function DropshipTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
+  const [products, setProducts] = useState<PlatformProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [prices, setPrices] = useState<Record<string, string>>({});
+  const [listing, setListing] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (plan === "free") { setLoading(false); return; }
+    fetch("/api/platform-products?limit=20")
+      .then(r => r.json())
+      .then(d => setProducts(d.products ?? []))
+      .catch(() => setProducts([
+        { id: "pp1", title: "StoreSwift T-Shirt Bundle", category: "Clothing", minPrice: 420, description: "Premium cotton bulk bundle" },
+        { id: "pp2", title: "Ceramic Mug Set (6pcs)", category: "Home", minPrice: 850, description: "Hand-painted ceramic mugs" },
+        { id: "pp3", title: "LED Desk Lamp", category: "Electronics", minPrice: 1200, description: "USB-C rechargeable" },
+        { id: "pp4", title: "Leather Phone Case", category: "Accessories", minPrice: 320, description: "Genuine leather" },
+        { id: "pp5", title: "Organic Face Cream", category: "Beauty", minPrice: 580, description: "Natural ingredients" },
+      ]))
+      .finally(() => setLoading(false));
+  }, [plan]);
+
+  if (plan === "free") return <PlanGate plan={plan} required="medium" />;
+  if (loading) return <div className="flex justify-center py-20"><div className="w-8 h-8 border-4 border-violet-600 border-t-transparent rounded-full animate-spin" /></div>;
+
+  const handleList = async (pp: PlatformProduct) => {
+    const myPrice = parseFloat(prices[pp.id] ?? "0");
+    if (!myPrice || myPrice < pp.minPrice) { alert(`Min price: ৳${pp.minPrice}`); return; }
+    setListing(pp.id);
+    try {
+      await fetch("/api/dropship", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ storeSlug: tenant, platformProductId: pp.id, myPrice }) });
+      setProducts(prev => prev.map(p => p.id === pp.id ? { ...p, listed: true, myPrice } : p));
+    } catch { /* graceful */ }
+    setListing(null);
+  };
+
+  return (
+    <div className="space-y-5">
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-5">
+        <div className="flex items-start gap-4">
+          <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0"><Layers className="w-5 h-5 text-blue-600" /></div>
+          <div>
+            <h3 className="font-bold text-blue-900 mb-1">Dropshipping — Sell Without Stock</h3>
+            <p className="text-sm text-blue-700">List platform products, set your price above minimum, and earn the margin. We handle fulfillment.</p>
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {products.map(pp => (
+          <div key={pp.id} className={`bg-white border rounded-2xl p-5 shadow-sm ${pp.listed ? "border-emerald-200" : "border-zinc-100 hover:shadow-md"} transition-all`}>
+            <div className="flex items-start gap-3 mb-3">
+              <div className="w-12 h-12 rounded-xl bg-zinc-100 flex items-center justify-center flex-shrink-0"><Package2 className="w-6 h-6 text-zinc-400" /></div>
+              <div className="flex-1 min-w-0">
+                <p className="font-bold text-zinc-900 text-sm">{pp.title}</p>
+                <p className="text-xs text-zinc-500">{pp.category}</p>
+                <p className="text-xs text-zinc-400 mt-1">{pp.description}</p>
+              </div>
+            </div>
+            <div className="flex items-center justify-between mb-3">
+              <div><p className="text-xs text-zinc-500 font-semibold">Min Price</p><p className="font-black text-zinc-900">{BDT(pp.minPrice)}</p></div>
+              {pp.listed && pp.myPrice && <div className="text-right"><p className="text-xs text-emerald-600 font-semibold">Your Profit</p><p className="font-black text-emerald-700">{BDT(pp.myPrice - pp.minPrice)}</p></div>}
+            </div>
+            {pp.listed ? (
+              <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" /><span className="text-sm font-semibold text-emerald-700">Listed at {BDT(pp.myPrice ?? 0)}</span>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <div className="relative flex-1">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-zinc-400 font-semibold">৳</span>
+                  <input type="number" value={prices[pp.id] ?? ""} onChange={e => setPrices(prev => ({ ...prev, [pp.id]: e.target.value }))} placeholder={String(pp.minPrice + 100)} min={pp.minPrice} className="w-full pl-7 pr-3 py-2 text-sm border border-zinc-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/30" />
+                </div>
+                <button onClick={() => handleList(pp)} disabled={listing === pp.id} className="bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white px-3 py-2 rounded-xl text-xs font-bold transition">
+                  {listing === pp.id ? "..." : "List"}
                 </button>
               </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── SETTINGS ─────────────────────────────────────────────────────────────────
+
+function SettingsTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
+  const [settings, setSettings] = useState({ name: "", description: "", phone: "", email: "", address: "", facebookPixel: "", googleAnalytics: "" });
+  const [domain, setDomain] = useState({ domain: "", cnameTarget: "", isVerified: false });
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    fetch(`/api/stores/${tenant}/settings`)
+      .then(r => r.json())
+      .then(d => { if (d.settings) setSettings(s => ({ ...s, ...d.settings })); if (d.domain) setDomain(d.domain); })
+      .catch(() => setSettings(s => ({ ...s, name: tenant.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase()) })));
+  }, [tenant]);
+
+  const save = async () => {
+    setSaving(true);
+    try {
+      await fetch(`/api/stores/${tenant}/settings`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(settings) });
+      setSaved(true); setTimeout(() => setSaved(false), 2500);
+    } catch { /* graceful */ }
+    setSaving(false);
+  };
+
+  const addDomain = async () => {
+    if (!domain.domain) return;
+    try {
+      const res = await fetch("/api/domains", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ domain: domain.domain }) });
+      const d = await res.json();
+      if (d.cnameTarget) setDomain(prev => ({ ...prev, cnameTarget: d.cnameTarget }));
+    } catch { /* graceful */ }
+  };
+
+  return (
+    <div className="space-y-6 max-w-2xl">
+      <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm p-6">
+        <h3 className="font-bold text-zinc-900 mb-5 flex items-center gap-2"><Store className="w-4 h-4 text-violet-600" />Store Information</h3>
+        <div className="space-y-4">
+          {[
+            { key: "name", label: "Store Name", placeholder: "My Awesome Store" },
+            { key: "phone", label: "Contact Phone", placeholder: "01XXXXXXXXX" },
+            { key: "email", label: "Contact Email", placeholder: "store@example.com" },
+            { key: "address", label: "Business Address", placeholder: "Dhaka, Bangladesh" },
+          ].map(({ key, label, placeholder }) => (
+            <div key={key}>
+              <label className="text-xs font-semibold text-zinc-600 mb-1.5 block">{label}</label>
+              <input value={settings[key as keyof typeof settings]} onChange={e => setSettings(p => ({ ...p, [key]: e.target.value }))} placeholder={placeholder} className="w-full px-3 py-2.5 text-sm border border-zinc-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/30" />
+            </div>
+          ))}
+          <div>
+            <label className="text-xs font-semibold text-zinc-600 mb-1.5 block">Store Description</label>
+            <textarea value={settings.description} onChange={e => setSettings(p => ({ ...p, description: e.target.value }))} placeholder="Tell customers about your store..." rows={3} className="w-full px-3 py-2.5 text-sm border border-zinc-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/30 resize-none" />
+          </div>
+        </div>
+        <button onClick={save} disabled={saving} className="mt-5 flex items-center gap-2 bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition">
+          {saved ? <><CheckCheck className="w-4 h-4" />Saved!</> : <><Save className="w-4 h-4" />{saving ? "Saving..." : "Save Changes"}</>}
+        </button>
+      </div>
+
+      {plan !== "free" && (
+        <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm p-6">
+          <h3 className="font-bold text-zinc-900 mb-5 flex items-center gap-2"><Activity className="w-4 h-4 text-blue-600" />Pixel Integrations</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="text-xs font-semibold text-zinc-600 mb-1.5 block">Facebook Pixel ID</label>
+              <input value={settings.facebookPixel} onChange={e => setSettings(p => ({ ...p, facebookPixel: e.target.value }))} placeholder="XXXXXXXXXXXXXXXXXX" className="w-full px-3 py-2.5 text-sm border border-zinc-200 rounded-xl font-mono focus:outline-none focus:ring-2 focus:ring-violet-500/30" />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-zinc-600 mb-1.5 block">Google Analytics ID</label>
+              <input value={settings.googleAnalytics} onChange={e => setSettings(p => ({ ...p, googleAnalytics: e.target.value }))} placeholder="G-XXXXXXXXXX" className="w-full px-3 py-2.5 text-sm border border-zinc-200 rounded-xl font-mono focus:outline-none focus:ring-2 focus:ring-violet-500/30" />
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm p-6">
+        <h3 className="font-bold text-zinc-900 mb-5 flex items-center gap-2"><Globe className="w-4 h-4 text-emerald-600" />Custom Domain</h3>
+        {plan === "free" ? (
+          <div className="text-center py-8">
+            <Globe className="w-10 h-10 text-zinc-300 mx-auto mb-3" />
+            <p className="text-sm text-zinc-500 font-semibold">Your store: <span className="text-violet-700 font-bold">{tenant}.storeswift.app</span></p>
+            <button className="mt-4 bg-violet-600 hover:bg-violet-500 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition">Upgrade to Medium — ৳499/mo</button>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <div className="bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-sm">
+              <p className="text-zinc-500">Subdomain: <span className="font-bold text-zinc-900">{tenant}.storeswift.app</span></p>
+            </div>
+            <div className="flex gap-3">
+              <div className="relative flex-1">
+                <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                <input value={domain.domain} onChange={e => setDomain(p => ({ ...p, domain: e.target.value }))} placeholder="yourdomain.com" className="w-full pl-10 pr-4 py-2.5 text-sm border border-zinc-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/30" />
+              </div>
+              <button onClick={addDomain} className="bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition">Connect</button>
+            </div>
+            {domain.cnameTarget && (
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm">
+                <p className="font-bold text-blue-900 mb-2 flex items-center gap-2"><Info className="w-4 h-4" />DNS Setup</p>
+                <div className="font-mono text-xs bg-white border border-blue-200 rounded-lg px-3 py-2 flex items-center justify-between">
+                  <span>CNAME → <strong>{domain.cnameTarget}</strong></span>
+                  <button onClick={() => navigator.clipboard.writeText(domain.cnameTarget)} className="text-blue-600 ml-2"><Copy className="w-3.5 h-3.5" /></button>
+                </div>
+              </div>
+            )}
+            {domain.isVerified && (
+              <div className="flex items-center gap-2 text-sm bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" /><span className="font-semibold text-emerald-700">Domain verified & SSL active!</span>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── BILLING ──────────────────────────────────────────────────────────────────
+
+function BillingTab({ plan }: { plan: PlanId }) {
+  const plans: { id: PlanId; features: string[]; highlight?: boolean }[] = [
+    { id: "free",   features: ["50 products","8% commission/sale","StoreSwift subdomain only","1 courier integration","COD payments"] },
+    { id: "medium", features: ["500 products","3% commission/sale","Custom domain","Dropshipping access","Coupon system","Pixel integrations","Email notifications"], highlight: true },
+    { id: "pro",    features: ["Unlimited products","0% commission","Custom domain + SSL","Dropshipping + Affiliate","Advanced BI & Analytics","API access","10 staff accounts","Priority support"] },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm p-5">
+        <div className="flex items-center gap-4">
+          <span className={`px-4 py-2 rounded-xl font-black text-sm border ${PLAN_CONFIG[plan].badge}`}>{PLAN_CONFIG[plan].name} Plan</span>
+          <div>
+            <p className="font-bold text-zinc-900">Currently on <span className="text-violet-700">{PLAN_CONFIG[plan].name}</span></p>
+            <p className="text-xs text-zinc-500 mt-0.5">{PLAN_CONFIG[plan].price > 0 ? `৳${PLAN_CONFIG[plan].price}/month · Next billing: Dec 1, 2024` : "Free plan — no billing"}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {plans.map(p => {
+          const cfg = PLAN_CONFIG[p.id];
+          const isCurrent = p.id === plan;
+          return (
+            <div key={p.id} className={`bg-white rounded-2xl border p-5 shadow-sm relative overflow-hidden transition-all ${p.highlight ? "border-violet-300 ring-1 ring-violet-200" : "border-zinc-100"} ${isCurrent ? "opacity-80" : "hover:shadow-md"}`}>
+              {p.highlight && <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-violet-500 to-purple-500" />}
+              {isCurrent && <div className="absolute top-3 right-3 bg-zinc-900 text-white text-[10px] font-black px-2 py-1 rounded-full">CURRENT</div>}
+              <h3 className="font-black text-zinc-900 text-lg mb-1">{cfg.name}</h3>
+              <p className="text-2xl font-black text-zinc-900 mb-4">{cfg.price === 0 ? "Free" : <>{BDT(cfg.price)}<span className="text-sm font-semibold text-zinc-500">/mo</span></>}</p>
+              <ul className="space-y-2 mb-5">
+                {p.features.map(f => <li key={f} className="flex items-center gap-2 text-xs text-zinc-700"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />{f}</li>)}
+              </ul>
+              <button disabled={isCurrent} className={`w-full py-2.5 rounded-xl text-sm font-bold transition ${isCurrent ? "bg-zinc-100 text-zinc-400 cursor-not-allowed" : p.highlight ? "bg-violet-600 hover:bg-violet-500 text-white shadow-lg shadow-violet-200" : "bg-zinc-900 hover:bg-zinc-800 text-white"}`}>
+                {isCurrent ? "Current Plan" : `Upgrade to ${cfg.name}`}
+              </button>
             </div>
           );
         })}
       </div>
-    </div>
-  );
-}
 
-function SettingsTab({ tenant, planId }: { tenant: string; planId: PlanId }) {
-  const plan = PLAN_CONFIG[planId];
-  const [storeName, setStoreName] = useState("Apex Fashion Hub");
-  const [email, setEmail] = useState("hello@apexfashion.com.bd");
-  const [phone, setPhone] = useState("+880 1711-234567");
-  const [domain, setDomain] = useState("apexfashion.com.bd");
-  const [saved, setSaved] = useState(false);
-
-  return (
-    <div className="space-y-6 max-w-xl">
-      <div>
-        <h2 className="text-xl font-bold text-zinc-900">Store Settings</h2>
-        <p className="text-xs text-zinc-500 mt-0.5">Manage your storefront configuration</p>
-      </div>
-
-      <div className="bg-white border border-zinc-200/80 rounded-2xl p-6 shadow-sm space-y-4">
-        <h3 className="font-bold text-zinc-900 border-b border-zinc-100 pb-3">General Information</h3>
-        {[
-          { label: "Store Name", value: storeName, onChange: setStoreName },
-          { label: "Contact Email", value: email, onChange: setEmail },
-          { label: "Contact Phone", value: phone, onChange: setPhone },
-        ].map(({ label, value, onChange }) => (
-          <div key={label}>
-            <label className="block text-xs font-semibold text-zinc-600 mb-1">{label}</label>
-            <input
-              className="w-full border border-zinc-200 rounded-xl px-3 py-2 text-sm text-zinc-900 outline-none focus:border-zinc-400"
-              value={value}
-              onChange={(e) => onChange(e.target.value)}
-            />
-          </div>
-        ))}
-      </div>
-
-      <div className="bg-white border border-zinc-200/80 rounded-2xl p-6 shadow-sm space-y-4">
-        <h3 className="font-bold text-zinc-900 border-b border-zinc-100 pb-3">Domain & Subdomain</h3>
-        <div>
-          <label className="block text-xs font-semibold text-zinc-600 mb-1">Subdomain (free)</label>
-          <div className="flex items-center border border-zinc-200 rounded-xl overflow-hidden">
-            <input
-              className="flex-1 px-3 py-2 text-sm text-zinc-900 outline-none"
-              value={tenant}
-              readOnly
-            />
-            <span className="bg-zinc-50 text-zinc-500 text-xs px-3 py-2 border-l border-zinc-200">.storeswift.app</span>
-          </div>
-        </div>
-        <div>
-          <label className="block text-xs font-semibold text-zinc-600 mb-1">
-            Custom Domain {!plan.customDomain && <span className="text-amber-600">(Medium+ required)</span>}
-          </label>
-          <input
-            className={`w-full border rounded-xl px-3 py-2 text-sm outline-none ${
-              plan.customDomain
-                ? "border-zinc-200 text-zinc-900 focus:border-zinc-400"
-                : "border-zinc-200 text-zinc-400 bg-zinc-50 cursor-not-allowed"
-            }`}
-            value={domain}
-            onChange={(e) => plan.customDomain && setDomain(e.target.value)}
-            readOnly={!plan.customDomain}
-            placeholder="yourdomain.com"
-          />
-          {!plan.customDomain && (
-            <p className="text-xs text-amber-600 mt-1">Upgrade to Medium plan to connect a custom domain.</p>
-          )}
+      <div className="bg-zinc-50 border border-zinc-200 rounded-2xl p-5">
+        <p className="font-semibold text-zinc-700 mb-1 text-sm">Payment via bKash / Nagad</p>
+        <p className="text-xs text-zinc-500 mb-3">Send payment to <span className="font-mono font-bold text-zinc-900">01XXXXXXXXXX</span> and enter your TrxID to upgrade.</p>
+        <div className="flex gap-3">
+          <input placeholder="Transaction ID (TrxID)" className="flex-1 px-3 py-2 text-sm border border-zinc-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/30" />
+          <button className="bg-violet-600 hover:bg-violet-500 text-white px-4 py-2 rounded-xl text-sm font-bold transition whitespace-nowrap">Verify & Upgrade</button>
         </div>
       </div>
-
-      <div className="bg-white border border-zinc-200/80 rounded-2xl p-6 shadow-sm">
-        <h3 className="font-bold text-zinc-900 border-b border-zinc-100 pb-3 mb-4">Current Subscription</h3>
-        <div className={`flex items-center gap-2 mb-4`}>
-          <span className={`text-sm font-bold px-3 py-1 rounded-full border ${plan.badge}`}>{plan.name} Plan</span>
-          {planId !== "free" && (
-            <span className="text-xs text-zinc-500">
-              {planId === "medium" ? "৳499" : "৳999"}/month
-            </span>
-          )}
-        </div>
-        {planId !== "pro" && (
-          <div className="space-y-2">
-            {planId === "free" && (
-              <button className="w-full bg-blue-600 text-white py-2.5 rounded-xl font-bold text-sm hover:bg-blue-500 transition">
-                Upgrade to Medium — ৳499/month
-              </button>
-            )}
-            <button className="w-full bg-violet-600 text-white py-2.5 rounded-xl font-bold text-sm hover:bg-violet-500 transition">
-              Upgrade to Pro — ৳999/month
-            </button>
-          </div>
-        )}
-        {planId === "pro" && (
-          <p className="text-sm text-emerald-700 font-semibold">✓ You're on the highest plan. All features unlocked.</p>
-        )}
-      </div>
-
-      <button
-        onClick={() => { setSaved(true); setTimeout(() => setSaved(false), 2500); }}
-        className={`px-6 py-2.5 rounded-xl font-bold text-sm transition ${saved ? "bg-emerald-600 text-white" : "bg-zinc-900 text-white hover:bg-zinc-800"}`}
-      >
-        {saved ? "✓ Saved" : "Save Changes"}
-      </button>
     </div>
   );
 }
 
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 
-export default function TenantDashboardPage() {
-  const params = useParams();
-  const tenant = typeof params.tenant === "string" ? params.tenant : "apex-fashion";
-  const storeData = getStoreData(tenant);
-  const planId = storeData.plan;
-  const plan = PLAN_CONFIG[planId];
+type TabId = "overview"|"orders"|"products"|"customers"|"analytics"|"coupons"|"dropship"|"settings"|"billing";
 
-  const [activeTab, setActiveTab] = useState("overview");
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+const NAV: { id: TabId; label: string; icon: React.ElementType; badge?: string; requiresMedium?: boolean }[] = [
+  { id: "overview",   label: "Overview",   icon: LayoutDashboard },
+  { id: "orders",     label: "Orders",     icon: ShoppingBag, badge: "7" },
+  { id: "products",   label: "Products",   icon: Package },
+  { id: "customers",  label: "Customers",  icon: Users },
+  { id: "analytics",  label: "Analytics",  icon: BarChart3 },
+  { id: "coupons",    label: "Coupons",    icon: Percent,  requiresMedium: true },
+  { id: "dropship",   label: "Dropship",   icon: Layers,   requiresMedium: true },
+  { id: "settings",   label: "Settings",   icon: Settings },
+  { id: "billing",    label: "Billing",    icon: CreditCard },
+];
 
-  const TAB_MAP: Record<string, React.FC<any>> = {
-    overview: OverviewTab,
-    orders: OrdersTab,
-    products: ProductsTab,
-    customers: CustomersTab,
-    analytics: AnalyticsTab,
-    dropship: DropshipTab,
-    settings: SettingsTab,
+export default function MerchantDashboard() {
+  const params = useParams<{ tenant: string }>();
+  const tenant = params?.tenant ?? "my-store";
+  const [activeTab, setActiveTab] = useState<TabId>("overview");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [overview, setOverview] = useState<StoreOverview | null>(null);
+  const [plan, setPlan] = useState<PlanId>("free");
+
+  useEffect(() => {
+    fetch(`/api/stores/${tenant}`)
+      .then(r => r.json())
+      .then(d => { if (d.store?.plan) setPlan(d.store.plan as PlanId); })
+      .catch(() => {});
+    fetch(`/api/analytics?storeSlug=${tenant}`)
+      .then(r => r.json())
+      .then(d => setOverview(d.overview ?? null))
+      .catch(() => {});
+  }, [tenant]);
+
+  const storeData = overview ?? seedOverview(tenant);
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "overview":  return <OverviewTab data={storeData} plan={plan} />;
+      case "orders":    return <OrdersTab tenant={tenant} />;
+      case "products":  return <ProductsTab tenant={tenant} plan={plan} />;
+      case "customers": return <CustomersTab tenant={tenant} />;
+      case "analytics": return <AnalyticsTab plan={plan} />;
+      case "coupons":   return <CouponsTab tenant={tenant} plan={plan} />;
+      case "dropship":  return <DropshipTab tenant={tenant} plan={plan} />;
+      case "settings":  return <SettingsTab tenant={tenant} plan={plan} />;
+      case "billing":   return <BillingTab plan={plan} />;
+      default:          return null;
+    }
   };
 
-  const ActiveComponent = TAB_MAP[activeTab] || OverviewTab;
-  const activeNav = NAV_ITEMS.find((n) => n.id === activeTab);
+  const activeNav = NAV.find(n => n.id === activeTab);
 
   return (
-    <div className="min-h-screen bg-zinc-50 flex flex-col font-sans">
-      {/* Header */}
-      <header className="bg-white border-b border-zinc-200/80 h-14 flex items-center justify-between px-4 sm:px-6 sticky top-0 z-50 shadow-sm">
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition"
-          >
-            <Menu className="w-4 h-4" />
-          </button>
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-zinc-900 flex items-center justify-center">
-              <Store className="w-3.5 h-3.5 text-white" />
-            </div>
-            <div className="hidden sm:block">
-              <span className="font-black text-zinc-900 text-sm">{storeData.name}</span>
-              <span className="ml-2 text-[11px] font-mono text-zinc-400">{tenant}.storeswift.app</span>
-            </div>
+    <div className="min-h-screen bg-zinc-50 flex">
+      {/* Mobile overlay */}
+      {sidebarOpen && <div className="fixed inset-0 bg-black/40 z-20 lg:hidden" onClick={() => setSidebarOpen(false)} />}
+
+      {/* Sidebar */}
+      <aside className={`fixed lg:sticky top-0 left-0 h-screen w-56 bg-white border-r border-zinc-100 flex flex-col z-30 transition-transform duration-300 ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}>
+        <div className="flex items-center gap-3 px-4 py-4 border-b border-zinc-50">
+          <div className="w-8 h-8 rounded-xl bg-violet-600 flex items-center justify-center flex-shrink-0">
+            <Store className="w-4 h-4 text-white" />
           </div>
-          <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full border hidden sm:inline ${plan.badge}`}>
-            {plan.name}
-          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-black text-zinc-900 truncate">{storeData.name}</p>
+            <p className="text-[10px] text-zinc-400">{tenant}.storeswift.app</p>
+          </div>
+          <button onClick={() => setSidebarOpen(false)} className="lg:hidden text-zinc-400 hover:text-zinc-700 ml-auto"><X className="w-4 h-4" /></button>
         </div>
 
-        <div className="flex items-center gap-3">
-          <Link
-            href={`/store/${tenant}`}
-            target="_blank"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold bg-zinc-100 text-zinc-700 hover:bg-zinc-200 px-3 py-1.5 rounded-xl transition"
-          >
-            <ExternalLink className="w-3.5 h-3.5" /> View Store
-          </Link>
-          <Link
-            href="/super-admin"
-            className="text-xs font-semibold text-zinc-400 hover:text-zinc-700 transition hidden sm:inline"
-          >
-            Platform Admin
-          </Link>
-          <div className="w-7 h-7 rounded-full bg-zinc-900 text-white text-xs font-bold flex items-center justify-center">
-            {storeData.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()}
-          </div>
+        <div className="px-4 py-2">
+          <span className={`text-[11px] font-black px-2.5 py-1 rounded-full border ${PLAN_CONFIG[plan].badge}`}>{PLAN_CONFIG[plan].name} Plan</span>
         </div>
-      </header>
 
-      <div className="flex flex-1">
-        {/* Sidebar */}
-        <aside
-          className={`bg-white border-r border-zinc-200/80 flex-shrink-0 transition-all duration-200 overflow-hidden ${
-            sidebarOpen ? "w-52" : "w-0"
-          }`}
-        >
-          <nav className="py-4 px-2 space-y-0.5">
-            {NAV_ITEMS.map((item) => {
-              const Icon = item.icon;
-              const isActive = activeTab === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveTab(item.id)}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left text-sm font-medium transition ${
-                    isActive
-                      ? "bg-zinc-900 text-white"
-                      : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900"
-                  }`}
-                >
-                  <div className="flex items-center gap-2.5">
-                    <Icon className="w-4 h-4 flex-shrink-0" />
-                    <span>{item.label}</span>
-                  </div>
-                  {item.badge && (
-                    <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-full ${isActive ? "bg-white text-zinc-900" : "bg-amber-500 text-white"}`}>
-                      {item.badge}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </nav>
+        <nav className="flex-1 overflow-y-auto px-2 py-2 space-y-0.5">
+          {NAV.map(item => {
+            const Icon = item.icon;
+            const isActive = activeTab === item.id;
+            const isLocked = item.requiresMedium && plan === "free";
+            return (
+              <button key={item.id} onClick={() => { setActiveTab(item.id); setSidebarOpen(false); }}
+                className={`w-full flex items-center justify-between gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${isActive ? "bg-zinc-900 text-white" : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900"}`}>
+                <div className="flex items-center gap-2.5">
+                  <Icon className="w-4 h-4 flex-shrink-0" /><span>{item.label}</span>
+                </div>
+                {item.badge && <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-full min-w-[18px] text-center ${isActive ? "bg-white text-zinc-900" : "bg-amber-500 text-white"}`}>{item.badge}</span>}
+                {isLocked && !isActive && <Zap className="w-3 h-3 text-amber-500 flex-shrink-0" />}
+              </button>
+            );
+          })}
+        </nav>
 
-          {/* Sidebar footer */}
-          <div className="absolute bottom-0 w-52 p-3 border-t border-zinc-100">
-            <div className="px-3 py-2 rounded-xl bg-zinc-50">
-              <p className="text-xs font-bold text-zinc-900 truncate">{storeData.name}</p>
-              <p className="text-[10px] text-zinc-400 truncate">{tenant}.storeswift.app</p>
-            </div>
+        <div className="border-t border-zinc-50 p-3 space-y-1">
+          <a href={`/store/${tenant}`} target="_blank" className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold text-zinc-600 hover:bg-zinc-50 transition group">
+            <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" /> View Store
+          </a>
+          <a href="/logout" className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold text-red-600 hover:bg-red-50 transition">
+            <LogOut className="w-4 h-4" /> Sign Out
+          </a>
+        </div>
+      </aside>
+
+      {/* Main */}
+      <div className="flex-1 min-w-0 flex flex-col">
+        <header className="sticky top-0 z-10 bg-white/90 backdrop-blur-md border-b border-zinc-100 flex items-center gap-3 px-4 sm:px-6 py-3.5">
+          <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-2 rounded-xl hover:bg-zinc-100 text-zinc-600 transition"><Menu className="w-5 h-5" /></button>
+          <div className="flex items-center gap-2 text-xs text-zinc-400">
+            <span className="font-semibold text-zinc-700">Dashboard</span>
+            <ChevronRight className="w-3 h-3" />
+            <span className="font-bold text-zinc-900">{activeNav?.label}</span>
           </div>
-        </aside>
+          <div className="ml-auto flex items-center gap-2">
+            <button className="p-2 rounded-xl hover:bg-zinc-100 text-zinc-500 transition relative">
+              <Bell className="w-4 h-4" />
+              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-red-500 rounded-full" />
+            </button>
+            <a href={`/store/${tenant}`} target="_blank" className="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-zinc-600 border border-zinc-200 rounded-xl px-3 py-2 hover:bg-zinc-50 transition">
+              <ExternalLink className="w-3.5 h-3.5" /> Live Store
+            </a>
+          </div>
+        </header>
 
-        {/* Main */}
         <main className="flex-1 overflow-y-auto">
-          <div className="px-6 pt-5">
-            <div className="flex items-center gap-2 text-xs text-zinc-400 mb-1">
-              <span>Dashboard</span>
-              <ChevronRight className="w-3 h-3" />
-              <span className="font-semibold text-zinc-700">{activeNav?.label}</span>
-            </div>
-          </div>
-          <div className="p-6">
-            <ActiveComponent planId={planId} tenant={tenant} storeName={storeData.name} />
-          </div>
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">{renderContent()}</div>
         </main>
       </div>
     </div>
   );
 }
-
