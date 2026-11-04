@@ -116,3 +116,4 @@
   2. Add assertions that all 30 templates resolve cleanly via `TemplateFactory`.
   3. Run `npx tsc --noEmit` and `npm test -- --run`.
   4. Commit all clean changes to git.
+

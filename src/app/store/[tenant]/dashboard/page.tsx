@@ -1193,14 +1193,204 @@ function BillingTab({ tenant, plan, onPlanUpdate }: { tenant: string; plan: Plan
   );
 }
 
+// ─── THEMES & DESIGN STUDIO ──────────────────────────────────────────────────
+
+function ThemesTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
+  const [activeTemplate, setActiveTemplate] = useState<string>("minimal");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [savingId, setSavingId] = useState<string | null>(null);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch(`/api/stores/${tenant}/settings`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.settings?.template) setActiveTemplate(d.settings.template);
+      })
+      .catch(() => {});
+  }, [tenant]);
+
+  const handleActivate = async (templateId: string) => {
+    setSavingId(templateId);
+    try {
+      const res = await fetch(`/api/stores/${tenant}/settings`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ template: templateId }),
+      });
+      if (res.ok) {
+        setActiveTemplate(templateId);
+        const match = ALL_TEMPLATE_CHOICES.find((t) => t.id === templateId);
+        setStatusMessage(`Theme switched to "${match?.name || templateId}". Live store updated!`);
+        setTimeout(() => setStatusMessage(null), 3500);
+      }
+    } catch {
+      setActiveTemplate(templateId);
+    } finally {
+      setSavingId(null);
+    }
+  };
+
+  const currentTheme =
+    ALL_TEMPLATE_CHOICES.find((t) => t.id === activeTemplate) || ALL_TEMPLATE_CHOICES[0];
+
+  const filteredTemplates =
+    selectedCategory === "all"
+      ? ALL_TEMPLATE_CHOICES
+      : ALL_TEMPLATE_CHOICES.filter((t) => t.category === selectedCategory);
+
+  return (
+    <div className="space-y-6">
+      {/* Hero Banner */}
+      <div className="bg-gradient-to-r from-zinc-900 via-zinc-950 to-neutral-900 text-white rounded-2xl p-6 shadow-sm border border-zinc-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2 text-violet-400 text-xs font-mono font-bold tracking-wider uppercase mb-1">
+            <Palette className="w-4 h-4" />
+            <span>Storefront Theme & Design Studio</span>
+          </div>
+          <h2 className="text-xl font-black tracking-tight text-white">
+            Themes & Visual Experience
+          </h2>
+          <p className="text-xs text-zinc-400 mt-1 max-w-xl">
+            Choose from 30 production-grade themes tailored for each retail industry (5 per category). Real products, variants, cart, and 1-Page Express Checkout remain 100% connected.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3 shrink-0">
+          <div className="bg-white/10 backdrop-blur border border-white/10 rounded-xl px-4 py-2 text-left">
+            <span className="text-[10px] uppercase font-mono text-zinc-400 block">Current Theme</span>
+            <span className="text-sm font-bold text-white flex items-center gap-1.5 mt-0.5">
+              <span>{currentTheme.badge}</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            </span>
+          </div>
+
+          <a
+            href={`/store/${tenant}`}
+            target="_blank"
+            className="px-4 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-bold text-xs transition flex items-center gap-1.5 shadow-md shadow-violet-600/20"
+          >
+            <ExternalLink className="w-3.5 h-3.5" />
+            <span>View Live Store</span>
+          </a>
+        </div>
+      </div>
+
+      {statusMessage && (
+        <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center justify-between animate-fade-in">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+            <span>{statusMessage}</span>
+          </div>
+          <a
+            href={`/store/${tenant}`}
+            target="_blank"
+            className="text-emerald-700 underline font-bold hover:text-emerald-900"
+          >
+            Inspect Storefront &rarr;
+          </a>
+        </div>
+      )}
+
+      {/* Category Filter Tabs */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+        {CATEGORY_FILTERS.map((cat) => {
+          const isActive = selectedCategory === cat.id;
+          return (
+            <button
+              key={cat.id}
+              onClick={() => setSelectedCategory(cat.id)}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 ${
+                isActive
+                  ? "bg-zinc-900 text-white shadow-xs"
+                  : "bg-white border border-zinc-200 text-zinc-600 hover:bg-zinc-50"
+              }`}
+            >
+              <span>{cat.icon}</span>
+              <span>{cat.label}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Templates Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {filteredTemplates.map((tmpl) => {
+          const isCurrent = activeTemplate === tmpl.id;
+          const isSaving = savingId === tmpl.id;
+
+          return (
+            <div
+              key={tmpl.id}
+              className={`rounded-2xl border p-5 transition-all flex flex-col justify-between ${
+                isCurrent
+                  ? "bg-white border-violet-600 ring-2 ring-violet-500/20 shadow-md"
+                  : "bg-white border-zinc-200 hover:border-zinc-300 shadow-xs"
+              }`}
+            >
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-black text-zinc-900">{tmpl.badge}</span>
+                  <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-600 font-bold">
+                    {tmpl.tag}
+                  </span>
+                </div>
+                <h4 className="font-bold text-xs text-zinc-700">{tmpl.name}</h4>
+                <p className="text-xs text-zinc-500 mt-1 leading-relaxed">{tmpl.desc}</p>
+
+                <div className="mt-3 flex items-center gap-2">
+                  <span className={`text-[10px] font-mono px-2 py-0.5 rounded border ${tmpl.color}`}>
+                    {tmpl.categoryName}
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-5 pt-3 border-t border-zinc-100 flex items-center justify-between">
+                <a
+                  href={`/store/${tenant}?template=${tmpl.id}`}
+                  target="_blank"
+                  className="text-[11px] font-bold text-zinc-500 hover:text-zinc-900 flex items-center gap-1 transition"
+                >
+                  <Eye className="w-3.5 h-3.5" />
+                  <span>Preview</span>
+                </a>
+
+                <button
+                  onClick={() => handleActivate(tmpl.id)}
+                  disabled={isCurrent || isSaving}
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                    isCurrent
+                      ? "bg-emerald-50 text-emerald-700 border border-emerald-200 cursor-default"
+                      : "bg-zinc-900 hover:bg-zinc-800 text-white shadow-xs"
+                  }`}
+                >
+                  {isCurrent ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Active Theme</span>
+                    </>
+                  ) : (
+                    <span>{isSaving ? "Activating..." : "Activate Theme"}</span>
+                  )}
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 
-type TabId = "overview"|"orders"|"products"|"customers"|"analytics"|"coupons"|"dropship"|"settings"|"billing";
+type TabId = "overview"|"orders"|"products"|"themes"|"customers"|"analytics"|"coupons"|"dropship"|"settings"|"billing";
 
 const NAV: { id: TabId; label: string; icon: React.ElementType; badge?: string; requiresMedium?: boolean }[] = [
   { id: "overview",   label: "Overview",   icon: LayoutDashboard },
   { id: "orders",     label: "Orders",     icon: ShoppingBag, badge: "7" },
   { id: "products",   label: "Products",   icon: Package },
+  { id: "themes",     label: "Themes & Design", icon: Palette, badge: "30" },
   { id: "customers",  label: "Customers",  icon: Users },
   { id: "analytics",  label: "Analytics",  icon: BarChart3 },
   { id: "coupons",    label: "Coupons",    icon: Percent,  requiresMedium: true },
@@ -1240,6 +1430,7 @@ export default function MerchantDashboard() {
       case "overview":  return <OverviewTab data={storeData} plan={plan} />;
       case "orders":    return <OrdersTab tenant={tenant} />;
       case "products":  return <ProductsTab tenant={tenant} plan={plan} />;
+      case "themes":    return <ThemesTab tenant={tenant} plan={plan} />;
       case "customers": return <CustomersTab tenant={tenant} />;
       case "analytics": return <AnalyticsTab plan={plan} />;
       case "coupons":   return <CouponsTab tenant={tenant} plan={plan} />;

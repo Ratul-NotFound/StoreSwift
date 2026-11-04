@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, Suspense, useMemo } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Store, ArrowRight, User, Mail, Lock, ShoppingBag, Globe, Sparkles, AlertCircle } from "lucide-react";
+import { Store, ArrowRight, User, Mail, Lock, ShoppingBag, Globe, Sparkles, AlertCircle, Palette, Check } from "lucide-react";
+import { getCategoryConfig } from "@/config/categories";
+import { ALL_TEMPLATE_CHOICES } from "@/components/store/template-switcher-bar";
 
 const CATEGORIES = [
   { value: "fashion", label: "Fashion & Apparel" },
@@ -42,11 +44,26 @@ function RegisterForm() {
     currency: "BDT"
   });
 
+  const categoryTemplates = useMemo(() => {
+    const config = getCategoryConfig(form.category);
+    const available = config.availableTemplates || ["minimal"];
+    return ALL_TEMPLATE_CHOICES.filter(t => available.includes(t.id));
+  }, [form.category]);
+
+  const [selectedTemplate, setSelectedTemplate] = useState<string>(() => {
+    return getCategoryConfig(initialCategory).recommendedTemplate || "minimal";
+  });
+
   useEffect(() => {
     if (initialCategory) {
       setForm(prev => ({ ...prev, category: initialCategory }));
     }
   }, [initialCategory]);
+
+  useEffect(() => {
+    const rec = getCategoryConfig(form.category).recommendedTemplate || "minimal";
+    setSelectedTemplate(rec);
+  }, [form.category]);
 
   const update = (field: string, value: string) =>
     setForm(prev => ({ ...prev, [field]: value }));
@@ -69,7 +86,10 @@ function RegisterForm() {
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form)
+        body: JSON.stringify({
+          ...form,
+          template: selectedTemplate
+        })
       });
 
       const data = await res.json();
@@ -148,11 +168,41 @@ function RegisterForm() {
         </div>
 
         <div>
-          <label className="block text-[11px] font-semibold text-zinc-700 uppercase tracking-wider mb-1">Category & Design Style</label>
+          <label className="block text-[11px] font-semibold text-zinc-700 uppercase tracking-wider mb-1">Category & Industry</label>
           <select value={form.category} onChange={e => update("category", e.target.value)}
             className="w-full px-3 py-2 border border-zinc-200 rounded-xl text-xs outline-none focus:border-zinc-900 transition bg-white text-zinc-800 font-medium">
             {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
           </select>
+        </div>
+
+        <div>
+          <label className="block text-[11px] font-semibold text-zinc-700 uppercase tracking-wider mb-1 flex items-center justify-between">
+            <span>Choose Starter Theme</span>
+            <span className="text-[10px] text-violet-600 font-bold lowercase">switchable anytime</span>
+          </label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {categoryTemplates.map(tmpl => {
+              const isSelected = selectedTemplate === tmpl.id;
+              return (
+                <button
+                  key={tmpl.id}
+                  type="button"
+                  onClick={() => setSelectedTemplate(tmpl.id)}
+                  className={`p-2.5 rounded-xl border text-left transition flex items-center justify-between ${
+                    isSelected
+                      ? "border-violet-600 bg-violet-50/50 text-violet-950 font-bold ring-1 ring-violet-500/30"
+                      : "border-zinc-200 bg-white hover:border-zinc-300 text-zinc-700"
+                  }`}
+                >
+                  <div className="min-w-0 pr-1">
+                    <div className="text-xs font-bold truncate">{tmpl.badge}</div>
+                    <div className="text-[10px] text-zinc-400 font-normal truncate">{tmpl.tag}</div>
+                  </div>
+                  {isSelected && <Check className="w-3.5 h-3.5 text-violet-600 shrink-0" />}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         <div>

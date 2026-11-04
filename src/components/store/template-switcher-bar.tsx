@@ -369,16 +369,28 @@ export function TemplateSwitcherBar({
   return (
     <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-auto max-w-[calc(100vw-2rem)] font-sans">
       {!isOpen ? (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 bg-zinc-950/90 hover:bg-zinc-950 backdrop-blur-md text-white text-xs font-bold px-4 py-2.5 rounded-full shadow-2xl border border-white/20 transition group"
-        >
-          <Palette className="w-3.5 h-3.5 text-violet-400" />
-          <span>Active: {activeTemplate.badge}</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
-          <span className="text-zinc-400 text-[10px] uppercase font-mono tracking-wider ml-1">Switch</span>
-          <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition" />
-        </button>
+        <div className="flex items-center bg-zinc-950/90 backdrop-blur-md text-white rounded-full shadow-2xl border border-white/20 pl-4 pr-1.5 py-1.5 gap-2">
+          <button
+            onClick={() => setIsOpen(true)}
+            className="flex items-center gap-2 text-xs font-bold hover:text-violet-300 transition group"
+            title="Browse all 30 Store Templates"
+          >
+            <Palette className="w-3.5 h-3.5 text-violet-400" />
+            <span>Active: {activeTemplate.badge}</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-0.5" />
+            <span className="text-zinc-400 text-[10px] uppercase font-mono tracking-wider ml-0.5">Switch</span>
+            <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition text-zinc-400" />
+          </button>
+          <div className="w-[1px] h-3.5 bg-white/20" />
+          <button
+            onClick={() => setDismissed(true)}
+            className="p-1 text-zinc-400 hover:text-white transition rounded-full hover:bg-white/10"
+            title="Hide template switcher"
+            aria-label="Hide template switcher"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
       ) : (
         <div className="bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-zinc-200 dark:border-white/10 rounded-2xl shadow-2xl p-4 w-[min(540px,calc(100vw-2rem))] max-h-[85vh] flex flex-col">
           {/* Header */}

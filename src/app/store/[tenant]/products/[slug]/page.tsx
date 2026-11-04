@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, use, useMemo } from "react";
+import { useState, use, useMemo, useEffect } from "react";
 import Link from "next/link";
 import {
   ShoppingBag,
@@ -55,7 +55,26 @@ export default function ProductDetailPage({
   }, [tenantSlug, productSlug]);
 
   const categoryConfig = getCategoryConfig(categoryKey);
-  const template = TemplateFactory.getTemplate(categoryConfig.recommendedTemplate);
+  const [storeTemplate, setStoreTemplate] = useState<string>("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const p = new URLSearchParams(window.location.search).get("template");
+      if (p) {
+        setStoreTemplate(p);
+        return;
+      }
+    }
+    fetch(`/api/stores/${tenantSlug}/settings`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.settings?.template) setStoreTemplate(d.settings.template);
+      })
+      .catch(() => {});
+  }, [tenantSlug]);
+
+  const activeTemplateId = storeTemplate || categoryConfig.recommendedTemplate;
+  const template = TemplateFactory.getTemplate(activeTemplateId);
 
   const seed = generateStoreSeedData(tenantSlug, categoryKey);
   const matchingProduct =

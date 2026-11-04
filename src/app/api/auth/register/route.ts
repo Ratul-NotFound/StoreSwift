@@ -12,6 +12,7 @@ const registerSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters"),
   storeName: z.string().min(2, "Store name must be at least 2 characters").max(100),
   category: z.string().min(1, "Category is required"),
+  template: z.string().optional(),
   currency: z.string().default("USD")
 });
 
@@ -37,7 +38,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const { fullName, email, password, storeName, category, currency } = result.data;
+    const { fullName, email, password, storeName, category, template, currency } = result.data;
 
     let baseSlug = slugify(storeName);
     if (!baseSlug || isReservedSlug(baseSlug)) {
@@ -88,13 +89,16 @@ export async function POST(request: Request) {
           category,
           currency,
           primaryColor: "#0f172a",
-          themeConfig: {},
+          themeConfig: { template: template || "minimal" },
           paymentConfig: { enable_cod: true, enable_stripe: false, enable_manual: false },
           subscriptionStatus: "trial"
         })
         .returning();
 
       devStore.ensureStore(newStore.slug, newStore.name, newStore.category);
+      if (template) {
+        devStore.updateStore(newStore.slug, { template });
+      }
 
       const token = signSessionToken({
         userId: newUser.id,
@@ -126,6 +130,9 @@ export async function POST(request: Request) {
       console.error("[Register API DB error]", dbError);
       // If DB is not available in mock/local dev mode, provide fallback session
       const registeredStore = devStore.ensureStore(finalSlug, storeName.trim(), category);
+      if (template) {
+        devStore.updateStore(finalSlug, { template });
+      }
       const fallbackStoreId = registeredStore.id;
       const fallbackUserId = `user-${Date.now()}`;
       const token = signSessionToken({
