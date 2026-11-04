@@ -401,11 +401,11 @@ export default function TenantStorefrontPage({
   const isMilanoTemplate = currentTemplateId === "milano";
   const isNickelFoxTemplate = currentTemplateId === "nickelfox";
   const isMinimalTemplate = currentTemplateId === "minimal";
-  const isBeautyVertical = currentTemplateId === "glow" || currentTemplateId === "beauty";
-  const isFootwearVertical = currentTemplateId === "artisan" || currentTemplateId === "shoes";
-  const isTechVertical = currentTemplateId === "bold" || currentTemplateId === "cyber" || currentTemplateId === "tech";
-  const isJewelryVertical = currentTemplateId === "maison" || currentTemplateId === "jewelry";
-  const isPantryVertical = currentTemplateId === "pantry" || currentTemplateId === "food";
+  const isBeautyVertical = currentTemplateId === "glow" || currentTemplateId === "beauty" || currentTemplateId === "luxe-glam";
+  const isFootwearVertical = currentTemplateId === "artisan" || currentTemplateId === "shoes" || currentTemplateId === "velocity";
+  const isTechVertical = currentTemplateId === "bold" || currentTemplateId === "cyber" || currentTemplateId === "tech" || currentTemplateId === "lumina";
+  const isJewelryVertical = currentTemplateId === "maison" || currentTemplateId === "jewelry" || currentTemplateId === "aurora";
+  const isPantryVertical = currentTemplateId === "pantry" || currentTemplateId === "food" || currentTemplateId === "bazaar";
 
   return (
     <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${template.classes.pageBg}`}>
@@ -499,6 +499,7 @@ export default function TenantStorefrontPage({
         />
       ) : isBeautyVertical ? (
         <BeautyStorefront
+          variant={currentTemplateId === "luxe-glam" ? "luxe-glam" : "glow"}
           storeDisplayName={storeDisplayName}
           tenantSlug={tenantSlug}
           onOpenCheckout={() => setIsCheckoutOpen(true)}
@@ -528,6 +529,7 @@ export default function TenantStorefrontPage({
         />
       ) : isFootwearVertical ? (
         <FootwearStorefront
+          variant={currentTemplateId === "velocity" ? "velocity" : "artisan"}
           storeDisplayName={storeDisplayName}
           tenantSlug={tenantSlug}
           onOpenCheckout={() => setIsCheckoutOpen(true)}
@@ -557,6 +559,7 @@ export default function TenantStorefrontPage({
         />
       ) : isTechVertical ? (
         <TechStorefront
+          variant={currentTemplateId === "lumina" ? "lumina" : "bold"}
           storeDisplayName={storeDisplayName}
           tenantSlug={tenantSlug}
           onOpenCheckout={() => setIsCheckoutOpen(true)}
@@ -586,6 +589,7 @@ export default function TenantStorefrontPage({
         />
       ) : isJewelryVertical ? (
         <JewelryStorefront
+          variant={currentTemplateId === "aurora" ? "aurora" : "maison"}
           storeDisplayName={storeDisplayName}
           tenantSlug={tenantSlug}
           onOpenCheckout={() => setIsCheckoutOpen(true)}
@@ -615,6 +619,7 @@ export default function TenantStorefrontPage({
         />
       ) : isPantryVertical ? (
         <PantryStorefront
+          variant={currentTemplateId === "bazaar" ? "bazaar" : "pantry"}
           storeDisplayName={storeDisplayName}
           tenantSlug={tenantSlug}
           onOpenCheckout={() => setIsCheckoutOpen(true)}
@@ -964,6 +969,7 @@ export default function TenantStorefrontPage({
       <TemplateSwitcherBar
         currentSlug={tenantSlug}
         activeTemplateId={currentTemplateId}
+        storeCategory={activeCategoryKey}
         onSelectTemplate={(t) => {
           setCurrentTemplateId(t);
           setTemplateKey(t);

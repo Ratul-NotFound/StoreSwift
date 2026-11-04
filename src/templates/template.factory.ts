@@ -30,27 +30,35 @@ export class TemplateFactory {
     this.registerAlias("cosmetics", "glow");
     this.registerAlias("beauty_cosmetics", "glow");
     this.registerAlias("skincare", "glow");
+    this.registerAlias("luxe-glam", "glow");
+    this.registerAlias("glam", "glow");
 
     this.registerAlias("cyber", "bold");
     this.registerAlias("tech", "bold");
     this.registerAlias("electronics", "bold");
     this.registerAlias("hardware", "bold");
+    this.registerAlias("lumina", "bold");
 
     this.registerAlias("shoes", "artisan");
     this.registerAlias("footwear", "artisan");
     this.registerAlias("leather", "artisan");
     this.registerAlias("heritage", "artisan");
+    this.registerAlias("velocity", "artisan");
+    this.registerAlias("sneaker", "artisan");
 
     this.registerAlias("jewelry", "maison");
     this.registerAlias("watches", "maison");
     this.registerAlias("luxury", "maison");
     this.registerAlias("opulent", "maison");
+    this.registerAlias("aurora", "maison");
 
     this.registerAlias("grocery_food", "pantry");
     this.registerAlias("food", "pantry");
     this.registerAlias("grocery", "pantry");
     this.registerAlias("coffee", "pantry");
     this.registerAlias("organic", "pantry");
+    this.registerAlias("bazaar", "pantry");
+    this.registerAlias("market", "pantry");
   }
 
   /**

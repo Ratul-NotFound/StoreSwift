@@ -61,6 +61,7 @@ export interface JewelryStorefrontProps {
   onOpenSearch: () => void;
   onOpenCheckout?: () => void;
   onOpenTrackOrder?: () => void;
+  variant?: "maison" | "aurora" | string;
   // Demo Studio
   allCategories: string[];
   activeCategoryKey: string;
@@ -126,12 +127,15 @@ export function JewelryStorefront({
   templateKey,
   onSelectTemplate,
   categoriesMap,
-  storeTemplatesMap
+  storeTemplatesMap,
+  variant = "maison"
 }: JewelryStorefrontProps) {
   const [selectedCollection, setSelectedCollection] = useState<string>("all");
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   const [quickOptionMap, setQuickOptionMap] = useState<Record<string, string>>({});  const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
+
+  const isAurora = variant === "aurora";
 
   // Filter products by collection
   const filteredProducts = products.filter((p) => {
@@ -174,13 +178,13 @@ export function JewelryStorefront({
   };
 
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-[#0b0c0e] text-zinc-100 selection:bg-amber-500 selection:text-black">
+    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${isAurora ? "bg-[#faf8f5] text-stone-900 selection:bg-amber-600 selection:text-white" : "bg-[#0b0c0e] text-zinc-100 selection:bg-amber-500 selection:text-black"}`}>
       {/* ─── 1. Maison Fine Jewelry Utility Bar ─────────────────────────────── */}
-      <div className="py-2.5 px-4 text-xs font-serif tracking-wide bg-black text-amber-300/90 border-b border-neutral-900">
+      <div className={`py-2.5 px-4 text-xs font-serif tracking-wide border-b ${isAurora ? "bg-[#f5efe6] text-amber-900 border-amber-200" : "bg-black text-amber-300/90 border-neutral-900"}`}>
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="hidden sm:flex items-center space-x-2 text-[11px] text-zinc-400">
             <Crown className="w-3.5 h-3.5 text-amber-400" />
-            <span>Assay Office Hallmarked • GIA Certified Stones</span>
+            <span>{isAurora ? "Contemporary Fine Atelier • Stackable Ring Studio & Bridal Suite" : "Assay Office Hallmarked • GIA Certified Stones"}</span>
           </div>
           <div className="mx-auto sm:mx-0 flex items-center space-x-2 text-xs font-semibold text-amber-200">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
@@ -193,7 +197,7 @@ export function JewelryStorefront({
       </div>
 
       {/* ─── 2. Clean Maison Brand Header ───────────────────────────────────── */}
-      <header className="sticky top-0 z-30 bg-[#0b0c0e]/90 backdrop-blur-md border-b border-neutral-800/80 text-zinc-100 transition-colors">
+      <header className={`sticky top-0 z-30 backdrop-blur-md border-b transition-colors ${isAurora ? "bg-[#faf8f5]/90 border-amber-200/80 text-stone-900" : "bg-[#0b0c0e]/90 border-neutral-800/80 text-zinc-100"}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-18 flex items-center justify-between gap-6">
           {/* Brand Logo & Maison Tag */}
           <Link href={`/store/${tenantSlug}`} className="flex items-center space-x-3 flex-shrink-0 group">
@@ -205,7 +209,7 @@ export function JewelryStorefront({
                 {storeDisplayName}
               </span>
               <span className="text-[10px] text-amber-400/90 font-semibold block mt-1 tracking-wider uppercase font-mono">
-                Haute Horology & Fine Jewelry
+                {isAurora ? "Modern Fine Atelier & Bridal" : "Haute Horology & Fine Jewelry"}
               </span>
             </div>
           </Link>

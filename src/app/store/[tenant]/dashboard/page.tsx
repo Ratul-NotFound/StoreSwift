@@ -1,6 +1,6 @@
 "use client";
 
-import { ALL_TEMPLATE_CHOICES } from "@/components/store/template-switcher-bar";
+import { ALL_TEMPLATE_CHOICES, CATEGORY_FILTERS } from "@/components/store/template-switcher-bar";
 
 import { useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
@@ -884,6 +884,7 @@ function DropshipTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
 
 function SettingsTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
   const [settings, setSettings] = useState({ name: "", description: "", phone: "", email: "", address: "", facebookPixel: "", googleAnalytics: "", template: "minimal" });
+  const [templateCategoryFilter, setTemplateCategoryFilter] = useState<string>("all");
   const [domain, setDomain] = useState({ domain: "", cnameTarget: "", isVerified: false });
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -959,8 +960,32 @@ function SettingsTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
           Select a production template tailored for your industry. Products, cart, and orders stay 100% synced.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
-          {ALL_TEMPLATE_CHOICES.map((tmpl) => {
+        {/* Category Filter Tabs */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-2 mb-4 scrollbar-none">
+          {CATEGORY_FILTERS.map((cat) => {
+            const isCatActive = templateCategoryFilter === cat.id;
+            return (
+              <button
+                key={cat.id}
+                type="button"
+                onClick={() => setTemplateCategoryFilter(cat.id)}
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition flex items-center gap-1.5 ${
+                  isCatActive
+                    ? "bg-violet-600 text-white shadow-xs font-bold"
+                    : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+                }`}
+              >
+                <span>{cat.icon}</span>
+                <span>{cat.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5 max-h-[500px] overflow-y-auto pr-1">
+          {ALL_TEMPLATE_CHOICES.filter(
+            (t) => templateCategoryFilter === "all" || t.category === templateCategoryFilter
+          ).map((tmpl) => {
             const isSelected = (settings.template || "minimal") === tmpl.id;
             return (
               <button

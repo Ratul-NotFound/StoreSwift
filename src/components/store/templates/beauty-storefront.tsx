@@ -59,6 +59,7 @@ export interface BeautyStorefrontProps {
   onOpenSearch: () => void;
   onOpenCheckout?: () => void;
   onOpenTrackOrder?: () => void;
+  variant?: "glow" | "luxe-glam" | string;
   // Demo Studio
   allCategories: string[];
   activeCategoryKey: string;
@@ -128,12 +129,15 @@ export function BeautyStorefront({
   templateKey,
   onSelectTemplate,
   categoriesMap,
-  storeTemplatesMap
+  storeTemplatesMap,
+  variant = "glow"
 }: BeautyStorefrontProps) {
   const [selectedConcern, setSelectedConcern] = useState<string>("all");
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   const [quickVolumeMap, setQuickVolumeMap] = useState<Record<string, string>>({});  const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
+
+  const isGlam = variant === "luxe-glam";
 
   // Filter products by skin concern / category
   const filteredProducts = products.filter((p) => {
@@ -176,13 +180,13 @@ export function BeautyStorefront({
   };
 
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-[#faf8f6] text-zinc-900 selection:bg-rose-500 selection:text-white">
+    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${isGlam ? "bg-[#0e0714] text-rose-100 selection:bg-amber-500" : "bg-[#faf8f6] text-zinc-900 selection:bg-rose-500 selection:text-white"}`}>
       {/* ─── 1. Clinical Beauty Announcement Bar ────────────────────────────── */}
-      <div className="py-2.5 px-4 text-xs font-medium tracking-wide bg-[#1c0f13] text-rose-200 border-b border-rose-950/80">
+      <div className={`py-2.5 px-4 text-xs font-medium tracking-wide border-b ${isGlam ? "bg-[#140a1c] text-amber-200 border-rose-950/80" : "bg-[#1c0f13] text-rose-200 border-rose-950/80"}`}>
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="hidden sm:flex items-center space-x-2 text-[11px] text-rose-300/80">
             <Sparkles className="w-3.5 h-3.5 text-rose-400" />
-            <span>Complimentary Deluxe Mini on Orders $45+</span>
+            <span>{isGlam ? "Complimentary Golden Elixir Decant on Orders ৳2,000+" : "Complimentary Deluxe Mini on Orders ৳1,500+"}</span>
           </div>
           <div className="mx-auto sm:mx-0 flex items-center space-x-2 text-xs font-semibold text-rose-100">
             <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse" />
@@ -195,7 +199,7 @@ export function BeautyStorefront({
       </div>
 
       {/* ─── 2. Clean Luxe Glow Brand Header ────────────────────────────────── */}
-      <header className="sticky top-0 z-30 bg-[#faf8f6]/85 backdrop-blur-md border-b border-rose-100/70 text-zinc-900 transition-colors">
+      <header className={`sticky top-0 z-30 backdrop-blur-md border-b transition-colors ${isGlam ? "bg-[#0e0714]/90 border-rose-950/80 text-rose-100" : "bg-[#faf8f6]/85 border-rose-100/70 text-zinc-900"}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-18 flex items-center justify-between gap-6">
           {/* Brand Logo & Tag */}
           <Link href={`/store/${tenantSlug}`} className="flex items-center space-x-3 flex-shrink-0 group">
@@ -203,11 +207,11 @@ export function BeautyStorefront({
               <Flower2 className="w-5 h-5" />
             </div>
             <div>
-              <span className="font-extrabold tracking-tight text-base block leading-none text-zinc-900">
+              <span className={`font-extrabold tracking-tight text-base block leading-none ${isGlam ? "text-amber-100" : "text-zinc-900"}`}>
                 {storeDisplayName}
               </span>
               <span className="text-[10px] text-rose-600 font-semibold block mt-1 tracking-wider uppercase">
-                Clinical Botanical Labs
+                {isGlam ? "Haute Parfumerie & Velvet Glamour" : "Clinical Botanical Labs"}
               </span>
             </div>
           </Link>

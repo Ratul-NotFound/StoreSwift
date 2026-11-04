@@ -60,6 +60,7 @@ export interface FootwearStorefrontProps {
   onOpenSearch: () => void;
   onOpenCheckout?: () => void;
   onOpenTrackOrder?: () => void;
+  variant?: "artisan" | "velocity" | string;
   // Demo Studio
   allCategories: string[];
   activeCategoryKey: string;
@@ -135,13 +136,16 @@ export function FootwearStorefront({
   templateKey,
   onSelectTemplate,
   categoriesMap,
-  storeTemplatesMap
+  storeTemplatesMap,
+  variant = "artisan"
 }: FootwearStorefrontProps) {
   const [selectedSilhouette, setSelectedSilhouette] = useState<string>("all");
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   const [quickSizeMap, setQuickSizeMap] = useState<Record<string, string>>({});
   const [quickWidthMap, setQuickWidthMap] = useState<Record<string, string>>({});  const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
+
+  const isVelocity = variant === "velocity";
 
   // Filter products by silhouette
   const filteredProducts = products.filter((p) => {
@@ -189,13 +193,13 @@ export function FootwearStorefront({
   };
 
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-[#faf7f2] text-stone-900 selection:bg-amber-900 selection:text-white">
+    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${isVelocity ? "bg-[#0b0c10] text-zinc-100 selection:bg-orange-500" : "bg-[#faf7f2] text-stone-900 selection:bg-amber-900 selection:text-white"}`}>
       {/* ─── 1. Heritage Guild Utility Bar ──────────────────────────────────── */}
-      <div className="py-2.5 px-4 text-xs font-medium tracking-wide bg-[#1c1917] text-stone-300 border-b border-stone-800">
+      <div className={`py-2.5 px-4 text-xs font-medium tracking-wide border-b ${isVelocity ? "bg-[#10121a] text-orange-200 border-zinc-800" : "bg-[#1c1917] text-stone-300 border-stone-800"}`}>
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="hidden sm:flex items-center space-x-2 text-[11px] text-stone-400">
             <Hammer className="w-3.5 h-3.5 text-amber-500" />
-            <span>Master Hand-Lasted Benchcraft • Built to be Resoled</span>
+            <span>{isVelocity ? "Kinetic Propulsion Labs • Carbon Torsion Plate Release" : "Master Hand-Lasted Benchcraft • Built to be Resoled"}</span>
           </div>
           <div className="mx-auto sm:mx-0 flex items-center space-x-2 text-xs font-semibold text-stone-100">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
@@ -208,7 +212,7 @@ export function FootwearStorefront({
       </div>
 
       {/* ─── 2. Clean Heritage Guild Brand Header ───────────────────────────── */}
-      <header className="sticky top-0 z-30 bg-[#faf7f2]/90 backdrop-blur-md border-b border-stone-200/80 text-stone-900 transition-colors">
+      <header className={`sticky top-0 z-30 backdrop-blur-md border-b transition-colors ${isVelocity ? "bg-[#0b0c10]/90 border-zinc-800 text-zinc-100" : "bg-[#faf7f2]/90 border-stone-200/80 text-stone-900"}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-18 flex items-center justify-between gap-6">
           {/* Brand Logo & Guild Tag */}
           <Link href={`/store/${tenantSlug}`} className="flex items-center space-x-3 flex-shrink-0 group">
@@ -220,7 +224,7 @@ export function FootwearStorefront({
                 {storeDisplayName}
               </span>
               <span className="text-[10px] text-amber-900 font-semibold block mt-1 tracking-wider uppercase font-mono">
-                Guild Bootmakers & Leathercraft
+                {isVelocity ? "Kinetic Streetwear & Runners" : "Guild Bootmakers & Leathercraft"}
               </span>
             </div>
           </Link>

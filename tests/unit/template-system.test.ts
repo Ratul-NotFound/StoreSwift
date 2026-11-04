@@ -5,11 +5,11 @@ import { GET as getSettings, PATCH as patchSettings } from "@/app/api/stores/[sl
 import { NextRequest } from "next/server";
 
 describe("Storefront Template Switcher & Dynamic Catalog System", () => {
-  it("defines all 9 production-grade templates with unique identifiers and metadata", () => {
-    expect(ALL_TEMPLATE_CHOICES.length).toBe(9);
+  it("defines all 14 production-grade templates categorized across 6 retail industries", () => {
+    expect(ALL_TEMPLATE_CHOICES.length).toBe(14);
     const ids = ALL_TEMPLATE_CHOICES.map((t) => t.id);
     const uniqueIds = new Set(ids);
-    expect(uniqueIds.size).toBe(9);
+    expect(uniqueIds.size).toBe(14);
 
     const expectedTemplates = [
       "minimal",
@@ -17,10 +17,15 @@ describe("Storefront Template Switcher & Dynamic Catalog System", () => {
       "milano",
       "nickelfox",
       "glow",
+      "luxe-glam",
       "artisan",
+      "velocity",
       "bold",
+      "lumina",
       "maison",
+      "aurora",
       "pantry",
+      "bazaar",
     ];
 
     expectedTemplates.forEach((expectedId) => {
@@ -30,6 +35,15 @@ describe("Storefront Template Switcher & Dynamic Catalog System", () => {
       expect(tmpl?.name.length).toBeGreaterThan(0);
       expect(tmpl?.badge.length).toBeGreaterThan(0);
       expect(tmpl?.desc.length).toBeGreaterThan(0);
+      expect(tmpl?.category.length).toBeGreaterThan(0);
+      expect(tmpl?.categoryName.length).toBeGreaterThan(0);
+    });
+
+    // Verify all 6 categories have multiple templates
+    const categories = ["fashion", "beauty_cosmetics", "shoes", "electronics", "jewelry", "grocery_food"];
+    categories.forEach((cat) => {
+      const catTemplates = ALL_TEMPLATE_CHOICES.filter((t) => t.category === cat);
+      expect(catTemplates.length).toBeGreaterThanOrEqual(2);
     });
   });
 
@@ -130,5 +144,14 @@ describe("Storefront Template Switcher & Dynamic Catalog System", () => {
     expect(FashionStorefront).toBeDefined();
     // FashionStorefront is an alias / forwarder to MinimalStorefront
     expect(FashionStorefront).toBe(MinimalStorefront);
+  });
+
+  it("verifies category configuration has multiple assigned templates per category", async () => {
+    const { CATEGORIES_MAP } = await import("@/config/categories");
+    Object.values(CATEGORIES_MAP).forEach((cat) => {
+      expect(cat.availableTemplates).toBeDefined();
+      expect(cat.availableTemplates?.length).toBeGreaterThanOrEqual(2);
+      expect(cat.availableTemplates).toContain(cat.recommendedTemplate);
+    });
   });
 });

@@ -61,6 +61,7 @@ export interface TechStorefrontProps {
   onOpenSearch: () => void;
   onOpenCheckout?: () => void;
   onOpenTrackOrder?: () => void;
+  variant?: "bold" | "lumina" | string;
   // Demo Studio
   allCategories: string[];
   activeCategoryKey: string;
@@ -130,12 +131,15 @@ export function TechStorefront({
   templateKey,
   onSelectTemplate,
   categoriesMap,
-  storeTemplatesMap
+  storeTemplatesMap,
+  variant = "bold"
 }: TechStorefrontProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   const [quickVariantMap, setQuickVariantMap] = useState<Record<string, string>>({});  const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
+
+  const isLumina = variant === "lumina";
 
   // Filter products by tech category
   const filteredProducts = products.filter((p) => {
@@ -178,13 +182,13 @@ export function TechStorefront({
   };
 
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-[#0c0d12] text-zinc-100 selection:bg-sky-500 selection:text-black">
+    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${isLumina ? "bg-[#fbfbfd] text-zinc-950 selection:bg-zinc-900 selection:text-white" : "bg-[#0c0d12] text-zinc-100 selection:bg-sky-500 selection:text-black"}`}>
       {/* ─── 1. Cyber Hardware Utility Bar ──────────────────────────────────── */}
-      <div className="py-2.5 px-4 text-xs font-mono tracking-wide bg-black text-sky-400 border-b border-zinc-900">
+      <div className={`py-2.5 px-4 text-xs font-mono tracking-wide border-b ${isLumina ? "bg-zinc-100 text-zinc-700 border-zinc-200" : "bg-black text-sky-400 border-zinc-900"}`}>
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="hidden sm:flex items-center space-x-2 text-[11px] text-zinc-400">
             <Cpu className="w-3.5 h-3.5 text-sky-400" />
-            <span>Mil-Spec QC Calibrated • Factory Sealed Direct</span>
+            <span>{isLumina ? "Pristine Minimal Silicon • 100% Recycled Aluminum Enclosure" : "Mil-Spec QC Calibrated • Factory Sealed Direct"}</span>
           </div>
           <div className="mx-auto sm:mx-0 flex items-center space-x-2 text-xs font-semibold text-zinc-200">
             <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse" />
@@ -197,7 +201,7 @@ export function TechStorefront({
       </div>
 
       {/* ─── 2. Clean Precision Hardware Brand Header ───────────────────────── */}
-      <header className="sticky top-0 z-30 bg-[#0c0d12]/90 backdrop-blur-md border-b border-zinc-800/80 text-zinc-100 transition-colors">
+      <header className={`sticky top-0 z-30 backdrop-blur-md border-b transition-colors ${isLumina ? "bg-[#fbfbfd]/90 border-zinc-200 text-zinc-950" : "bg-[#0c0d12]/90 border-zinc-800/80 text-zinc-100"}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-18 flex items-center justify-between gap-6">
           {/* Brand Logo & Telemetry Tag */}
           <Link href={`/store/${tenantSlug}`} className="flex items-center space-x-3 flex-shrink-0 group">
@@ -209,7 +213,7 @@ export function TechStorefront({
                 {storeDisplayName}
               </span>
               <span className="text-[10px] text-sky-400 font-semibold block mt-1 tracking-wider uppercase font-mono">
-                Precision Hardware Telemetry
+                {isLumina ? "Zen Minimal Silicon Architecture" : "Precision Hardware Telemetry"}
               </span>
             </div>
           </Link>

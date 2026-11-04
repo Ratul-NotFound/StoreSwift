@@ -61,6 +61,7 @@ export interface PantryStorefrontProps {
   onOpenSearch: () => void;
   onOpenCheckout?: () => void;
   onOpenTrackOrder?: () => void;
+  variant?: "pantry" | "bazaar" | string;
   // Demo Studio
   allCategories: string[];
   activeCategoryKey: string;
@@ -126,12 +127,15 @@ export function PantryStorefront({
   templateKey,
   onSelectTemplate,
   categoriesMap,
-  storeTemplatesMap
+  storeTemplatesMap,
+  variant = "pantry"
 }: PantryStorefrontProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   const [quickOptionMap, setQuickOptionMap] = useState<Record<string, string>>({});  const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
+
+  const isBazaar = variant === "bazaar";
 
   // Filter products by pantry category
   const filteredProducts = products.filter((p) => {
@@ -174,13 +178,13 @@ export function PantryStorefront({
   };
 
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-[#f8f9f5] text-stone-900 selection:bg-emerald-800 selection:text-white">
+    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${isBazaar ? "bg-[#f5f9f2] text-stone-900 selection:bg-lime-600 selection:text-white" : "bg-[#f8f9f5] text-stone-900 selection:bg-emerald-800 selection:text-white"}`}>
       {/* ─── 1. Farmstead Utility Bar ───────────────────────────────────────── */}
-      <div className="py-2.5 px-4 text-xs font-mono tracking-wide bg-[#111c16] text-emerald-200 border-b border-emerald-950">
+      <div className={`py-2.5 px-4 text-xs font-mono tracking-wide border-b ${isBazaar ? "bg-[#112417] text-lime-200 border-lime-950" : "bg-[#111c16] text-emerald-200 border-emerald-950"}`}>
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="hidden sm:flex items-center space-x-2 text-[11px] text-emerald-300/80">
             <Leaf className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Regenerative Organic Farmstead • Direct-Trade Sourced</span>
+            <span>{isBazaar ? "Fresh Daily Organic Market • Harvested Today, Delivered Same-Day" : "Regenerative Organic Farmstead • Direct-Trade Sourced"}</span>
           </div>
           <div className="mx-auto sm:mx-0 flex items-center space-x-2 text-xs font-semibold text-emerald-100">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -193,7 +197,7 @@ export function PantryStorefront({
       </div>
 
       {/* ─── 2. Clean Farmstead Brand Header ────────────────────────────────── */}
-      <header className="sticky top-0 z-30 bg-[#f8f9f5]/90 backdrop-blur-md border-b border-stone-200/80 text-stone-900 transition-colors">
+      <header className={`sticky top-0 z-30 backdrop-blur-md border-b transition-colors ${isBazaar ? "bg-[#f5f9f2]/90 border-lime-200/80 text-stone-900" : "bg-[#f8f9f5]/90 border-stone-200/80 text-stone-900"}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-18 flex items-center justify-between gap-6">
           {/* Brand Logo & Farmstead Tag */}
           <Link href={`/store/${tenantSlug}`} className="flex items-center space-x-3 flex-shrink-0 group">
@@ -205,7 +209,7 @@ export function PantryStorefront({
                 {storeDisplayName}
               </span>
               <span className="text-[10px] text-emerald-800 font-semibold block mt-1 tracking-wider uppercase font-mono">
-                Regenerative Farmstead Provisions
+                {isBazaar ? "Fresh Daily Farmstead Provisions" : "Regenerative Farmstead Provisions"}
               </span>
             </div>
           </Link>
