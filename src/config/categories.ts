@@ -31,7 +31,7 @@ export const CATEGORIES_MAP: Record<string, CategoryConfig> = {
     editorialSubtitle: "STUDIO ARCHIVE 2026 • COMPILED WITH CERTIFIED ORGANIC YARNS",
     iconName: "Shirt",
     recommendedTemplate: "minimal",
-    availableTemplates: ["minimal", "clothing", "milano", "nickelfox"],
+    availableTemplates: ["minimal", "clothing", "milano", "nickelfox", "athleisure"],
     heroImage: "https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=1600&auto=format&fit=crop&q=85",
     defaultOptions: ["Size", "Color"],
     sampleProducts: [
@@ -77,7 +77,7 @@ export const CATEGORIES_MAP: Record<string, CategoryConfig> = {
     editorialSubtitle: "BUILT FOR LIFELONG COMFORT • GOODYEAR WELTED CRAFTSMANSHIP",
     iconName: "Footprints",
     recommendedTemplate: "artisan",
-    availableTemplates: ["artisan", "velocity"],
+    availableTemplates: ["artisan", "velocity", "street-hype", "bespoke", "alpine-trek"],
     heroImage: "https://images.unsplash.com/photo-1552346154-21d32810aba3?w=1600&auto=format&fit=crop&q=85",
     defaultOptions: ["Shoe Size", "Color"],
     sampleProducts: [
@@ -123,7 +123,7 @@ export const CATEGORIES_MAP: Record<string, CategoryConfig> = {
     editorialSubtitle: "CLEAN BOTANICAL LABS • DERMATOLOGICALLY PROVEN FORMULATIONS",
     iconName: "Sparkles",
     recommendedTemplate: "glow",
-    availableTemplates: ["glow", "luxe-glam"],
+    availableTemplates: ["glow", "luxe-glam", "k-beauty", "derma-rx", "apothecary"],
     heroImage: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1600&auto=format&fit=crop&q=85",
     defaultOptions: ["Volume", "Shade"],
     sampleProducts: [
@@ -169,7 +169,7 @@ export const CATEGORIES_MAP: Record<string, CategoryConfig> = {
     editorialSubtitle: "PRECISION HARDWARE ARCHITECTURE • HIGH-RES WIRELESS AUDIO",
     iconName: "Headphones",
     recommendedTemplate: "bold",
-    availableTemplates: ["bold", "lumina"],
+    availableTemplates: ["bold", "lumina", "cyber-rgb", "smart-home", "studio-rig"],
     heroImage: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1600&auto=format&fit=crop&q=85",
     defaultOptions: ["Color", "Storage"],
     sampleProducts: [
@@ -215,7 +215,7 @@ export const CATEGORIES_MAP: Record<string, CategoryConfig> = {
     editorialSubtitle: "HEIRLOOM QUALITY PIECES • INDIVIDUALLY NUMBERED ATELIER EDITIONS",
     iconName: "Watch",
     recommendedTemplate: "maison",
-    availableTemplates: ["maison", "aurora"],
+    availableTemplates: ["maison", "aurora", "solitaire", "raw-silver", "chronos"],
     heroImage: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1600&auto=format&fit=crop&q=85",
     defaultOptions: ["Material", "Size"],
     sampleProducts: [
@@ -261,7 +261,7 @@ export const CATEGORIES_MAP: Record<string, CategoryConfig> = {
     editorialSubtitle: "ARTISANAL ESTATE BOTTLING • REGENERATIVE FARMSTEAD SOURCING",
     iconName: "Coffee",
     recommendedTemplate: "pantry",
-    availableTemplates: ["pantry", "bazaar"],
+    availableTemplates: ["pantry", "bazaar", "patisserie", "matcha-zen", "smokehouse"],
     heroImage: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1600&auto=format&fit=crop&q=85",
     defaultOptions: ["Pack Size"],
     sampleProducts: [

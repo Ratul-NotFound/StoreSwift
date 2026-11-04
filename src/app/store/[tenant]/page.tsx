@@ -59,6 +59,7 @@ import { PantryStorefront } from "@/components/store/templates/pantry-storefront
 import { ClothingStorefront } from "@/components/store/templates/clothing-storefront";
 import { MilanoStorefront } from "@/components/store/templates/milano-storefront";
 import { NickelFoxStorefront } from "@/components/store/templates/nickelfox-storefront";
+import { AthleisureStorefront } from "@/components/store/templates/athleisure-storefront";
 import { TemplateSwitcherBar } from "@/components/store/template-switcher-bar";
 import { trackEvent } from "@/lib/analytics";
 
@@ -397,15 +398,16 @@ export default function TenantStorefrontPage({
   const philosophy = template.getDesignPhilosophy();
   const collections = CATEGORY_COLLECTIONS[activeCategoryKey] || CATEGORY_COLLECTIONS.fashion;
   // Dynamic Template Architecture (Priority: URL query > Store Settings > Category default)
+  const isAthleisureTemplate = currentTemplateId === "athleisure";
   const isClothingTemplate = currentTemplateId === "clothing";
   const isMilanoTemplate = currentTemplateId === "milano";
   const isNickelFoxTemplate = currentTemplateId === "nickelfox";
   const isMinimalTemplate = currentTemplateId === "minimal";
-  const isBeautyVertical = currentTemplateId === "glow" || currentTemplateId === "beauty" || currentTemplateId === "luxe-glam";
-  const isFootwearVertical = currentTemplateId === "artisan" || currentTemplateId === "shoes" || currentTemplateId === "velocity";
-  const isTechVertical = currentTemplateId === "bold" || currentTemplateId === "cyber" || currentTemplateId === "tech" || currentTemplateId === "lumina";
-  const isJewelryVertical = currentTemplateId === "maison" || currentTemplateId === "jewelry" || currentTemplateId === "aurora";
-  const isPantryVertical = currentTemplateId === "pantry" || currentTemplateId === "food" || currentTemplateId === "bazaar";
+  const isBeautyVertical = currentTemplateId === "glow" || currentTemplateId === "beauty" || currentTemplateId === "luxe-glam" || currentTemplateId === "k-beauty" || currentTemplateId === "derma-rx" || currentTemplateId === "apothecary";
+  const isFootwearVertical = currentTemplateId === "artisan" || currentTemplateId === "shoes" || currentTemplateId === "velocity" || currentTemplateId === "street-hype" || currentTemplateId === "bespoke" || currentTemplateId === "alpine-trek";
+  const isTechVertical = currentTemplateId === "bold" || currentTemplateId === "cyber" || currentTemplateId === "tech" || currentTemplateId === "lumina" || currentTemplateId === "cyber-rgb" || currentTemplateId === "smart-home" || currentTemplateId === "studio-rig";
+  const isJewelryVertical = currentTemplateId === "maison" || currentTemplateId === "jewelry" || currentTemplateId === "aurora" || currentTemplateId === "solitaire" || currentTemplateId === "raw-silver" || currentTemplateId === "chronos";
+  const isPantryVertical = currentTemplateId === "pantry" || currentTemplateId === "food" || currentTemplateId === "bazaar" || currentTemplateId === "patisserie" || currentTemplateId === "matcha-zen" || currentTemplateId === "smokehouse";
 
   return (
     <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${template.classes.pageBg}`}>
@@ -420,7 +422,23 @@ export default function TenantStorefrontPage({
       />
 
       {/* ─── New Premium Templates (Reference-matched) ───────────────────── */}
-      {isClothingTemplate ? (
+      {isAthleisureTemplate ? (
+        <AthleisureStorefront
+          storeDisplayName={storeDisplayName}
+          tenantSlug={tenantSlug}
+          products={products}
+          cartItems={cartItems}
+          wishlist={wishlist}
+          finalTotal={finalTotal}
+          onAddToCart={handleAddToCart}
+          onToggleWishlist={toggleWishlist}
+          onOpenProduct={handleOpenProduct}
+          onOpenCart={() => setIsCartOpen(true)}
+          onOpenSearch={() => setIsSearchOpen(true)}
+          onOpenCheckout={() => setIsCheckoutOpen(true)}
+          onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
+        />
+      ) : isClothingTemplate ? (
         <ClothingStorefront
           storeDisplayName={storeDisplayName}
           tenantSlug={tenantSlug}
@@ -499,7 +517,7 @@ export default function TenantStorefrontPage({
         />
       ) : isBeautyVertical ? (
         <BeautyStorefront
-          variant={currentTemplateId === "luxe-glam" ? "luxe-glam" : "glow"}
+          variant={currentTemplateId}
           storeDisplayName={storeDisplayName}
           tenantSlug={tenantSlug}
           onOpenCheckout={() => setIsCheckoutOpen(true)}
@@ -529,7 +547,7 @@ export default function TenantStorefrontPage({
         />
       ) : isFootwearVertical ? (
         <FootwearStorefront
-          variant={currentTemplateId === "velocity" ? "velocity" : "artisan"}
+          variant={currentTemplateId}
           storeDisplayName={storeDisplayName}
           tenantSlug={tenantSlug}
           onOpenCheckout={() => setIsCheckoutOpen(true)}
@@ -559,7 +577,7 @@ export default function TenantStorefrontPage({
         />
       ) : isTechVertical ? (
         <TechStorefront
-          variant={currentTemplateId === "lumina" ? "lumina" : "bold"}
+          variant={currentTemplateId}
           storeDisplayName={storeDisplayName}
           tenantSlug={tenantSlug}
           onOpenCheckout={() => setIsCheckoutOpen(true)}
@@ -589,7 +607,7 @@ export default function TenantStorefrontPage({
         />
       ) : isJewelryVertical ? (
         <JewelryStorefront
-          variant={currentTemplateId === "aurora" ? "aurora" : "maison"}
+          variant={currentTemplateId}
           storeDisplayName={storeDisplayName}
           tenantSlug={tenantSlug}
           onOpenCheckout={() => setIsCheckoutOpen(true)}
@@ -619,7 +637,7 @@ export default function TenantStorefrontPage({
         />
       ) : isPantryVertical ? (
         <PantryStorefront
-          variant={currentTemplateId === "bazaar" ? "bazaar" : "pantry"}
+          variant={currentTemplateId}
           storeDisplayName={storeDisplayName}
           tenantSlug={tenantSlug}
           onOpenCheckout={() => setIsCheckoutOpen(true)}

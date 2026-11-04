@@ -25,6 +25,7 @@ export class TemplateFactory {
     this.registerAlias("fashion", "minimal");
     this.registerAlias("streetwear", "minimal");
     this.registerAlias("apparel", "minimal");
+    this.registerAlias("athleisure", "minimal");
 
     this.registerAlias("beauty", "glow");
     this.registerAlias("cosmetics", "glow");
@@ -32,12 +33,18 @@ export class TemplateFactory {
     this.registerAlias("skincare", "glow");
     this.registerAlias("luxe-glam", "glow");
     this.registerAlias("glam", "glow");
+    this.registerAlias("k-beauty", "glow");
+    this.registerAlias("derma-rx", "glow");
+    this.registerAlias("apothecary", "glow");
 
     this.registerAlias("cyber", "bold");
     this.registerAlias("tech", "bold");
     this.registerAlias("electronics", "bold");
     this.registerAlias("hardware", "bold");
     this.registerAlias("lumina", "bold");
+    this.registerAlias("cyber-rgb", "bold");
+    this.registerAlias("smart-home", "bold");
+    this.registerAlias("studio-rig", "bold");
 
     this.registerAlias("shoes", "artisan");
     this.registerAlias("footwear", "artisan");
@@ -45,12 +52,18 @@ export class TemplateFactory {
     this.registerAlias("heritage", "artisan");
     this.registerAlias("velocity", "artisan");
     this.registerAlias("sneaker", "artisan");
+    this.registerAlias("street-hype", "artisan");
+    this.registerAlias("bespoke", "artisan");
+    this.registerAlias("alpine-trek", "artisan");
 
     this.registerAlias("jewelry", "maison");
     this.registerAlias("watches", "maison");
     this.registerAlias("luxury", "maison");
     this.registerAlias("opulent", "maison");
     this.registerAlias("aurora", "maison");
+    this.registerAlias("solitaire", "maison");
+    this.registerAlias("raw-silver", "maison");
+    this.registerAlias("chronos", "maison");
 
     this.registerAlias("grocery_food", "pantry");
     this.registerAlias("food", "pantry");
@@ -59,6 +72,9 @@ export class TemplateFactory {
     this.registerAlias("organic", "pantry");
     this.registerAlias("bazaar", "pantry");
     this.registerAlias("market", "pantry");
+    this.registerAlias("patisserie", "pantry");
+    this.registerAlias("matcha-zen", "pantry");
+    this.registerAlias("smokehouse", "pantry");
   }
 
   /**

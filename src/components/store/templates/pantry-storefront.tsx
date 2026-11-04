@@ -61,7 +61,7 @@ export interface PantryStorefrontProps {
   onOpenSearch: () => void;
   onOpenCheckout?: () => void;
   onOpenTrackOrder?: () => void;
-  variant?: "pantry" | "bazaar" | string;
+  variant?: "pantry" | "bazaar" | "patisserie" | "matcha-zen" | "smokehouse" | string;
   // Demo Studio
   allCategories: string[];
   activeCategoryKey: string;
@@ -136,6 +136,58 @@ export function PantryStorefront({
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
 
   const isBazaar = variant === "bazaar";
+  const isPatisserie = variant === "patisserie";
+  const isMatchaZen = variant === "matcha-zen";
+  const isSmokehouse = variant === "smokehouse";
+
+  const themeConfig = {
+    tagline: isBazaar
+      ? "Fresh Daily Farmstead Provisions"
+      : isPatisserie
+      ? "Haute French Pâtisserie & Master Chocolatier"
+      : isMatchaZen
+      ? "Uji Ceremonial Matcha & Botanical Tea Ceremony"
+      : isSmokehouse
+      ? "Prime Cellar & Artisanal Smokehouse Reserve"
+      : "Regenerative Farmstead Provisions",
+    announcement: isBazaar
+      ? "Cold-Chain Same-Day Farm Delivery • Harvested Under 6 Hours Ago"
+      : isPatisserie
+      ? "Direct Single-Origin Criollo Cacao • Hand-Rolled Viennoiserie"
+      : isMatchaZen
+      ? "Single-Estate First Harvest Flush • Ceremonial Stone-Ground in Kyoto"
+      : isSmokehouse
+      ? "Dry-Aged BMS 9+ Reserve Beef • Cured in French Oak White Oak"
+      : "Single-Origin Direct Micro-Lots • Small-Batch Drum Roasted 48h",
+    pageBg: isBazaar
+      ? "bg-[#f5f9f2] text-stone-900 selection:bg-lime-600 selection:text-white"
+      : isPatisserie
+      ? "bg-[#21121b] text-rose-100 selection:bg-rose-500 selection:text-white"
+      : isMatchaZen
+      ? "bg-[#0d1710] text-emerald-100 selection:bg-emerald-500 selection:text-black"
+      : isSmokehouse
+      ? "bg-[#140b0b] text-amber-100 selection:bg-amber-600 selection:text-white"
+      : "bg-[#f8f9f5] text-stone-900 selection:bg-emerald-800 selection:text-white",
+    barBg: isBazaar
+      ? "bg-[#182613] text-lime-200 border-lime-900"
+      : isPatisserie
+      ? "bg-[#331b2b] text-rose-200 border-rose-900/60"
+      : isMatchaZen
+      ? "bg-[#152419] text-emerald-200 border-emerald-900"
+      : isSmokehouse
+      ? "bg-[#241313] text-amber-200 border-red-950"
+      : "bg-[#0f1f14] text-emerald-200 border-emerald-950/80",
+    headerBg: isBazaar
+      ? "bg-[#f5f9f2]/90 border-lime-200/80 text-stone-900"
+      : isPatisserie
+      ? "bg-[#21121b]/90 border-rose-900/40 text-rose-100"
+      : isMatchaZen
+      ? "bg-[#0d1710]/90 border-emerald-900/50 text-emerald-100"
+      : isSmokehouse
+      ? "bg-[#140b0b]/90 border-red-950/60 text-amber-100"
+      : "bg-[#f8f9f5]/90 border-stone-200/80 text-stone-900",
+    brandColor: isPatisserie || isMatchaZen || isSmokehouse ? "text-white" : "text-stone-950",
+  };
 
   // Filter products by pantry category
   const filteredProducts = products.filter((p) => {
@@ -178,13 +230,13 @@ export function PantryStorefront({
   };
 
   return (
-    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${isBazaar ? "bg-[#f5f9f2] text-stone-900 selection:bg-lime-600 selection:text-white" : "bg-[#f8f9f5] text-stone-900 selection:bg-emerald-800 selection:text-white"}`}>
+    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${themeConfig.pageBg}`}>
       {/* ─── 1. Farmstead Utility Bar ───────────────────────────────────────── */}
-      <div className={`py-2.5 px-4 text-xs font-mono tracking-wide border-b ${isBazaar ? "bg-[#112417] text-lime-200 border-lime-950" : "bg-[#111c16] text-emerald-200 border-emerald-950"}`}>
+      <div className={`py-2.5 px-4 text-xs font-mono tracking-wide border-b ${themeConfig.barBg}`}>
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="hidden sm:flex items-center space-x-2 text-[11px] text-emerald-300/80">
             <Leaf className="w-3.5 h-3.5 text-emerald-400" />
-            <span>{isBazaar ? "Fresh Daily Organic Market • Harvested Today, Delivered Same-Day" : "Regenerative Organic Farmstead • Direct-Trade Sourced"}</span>
+            <span>{themeConfig.announcement}</span>
           </div>
           <div className="mx-auto sm:mx-0 flex items-center space-x-2 text-xs font-semibold text-emerald-100">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -197,7 +249,7 @@ export function PantryStorefront({
       </div>
 
       {/* ─── 2. Clean Farmstead Brand Header ────────────────────────────────── */}
-      <header className={`sticky top-0 z-30 backdrop-blur-md border-b transition-colors ${isBazaar ? "bg-[#f5f9f2]/90 border-lime-200/80 text-stone-900" : "bg-[#f8f9f5]/90 border-stone-200/80 text-stone-900"}`}>
+      <header className={`sticky top-0 z-30 backdrop-blur-md border-b transition-colors ${themeConfig.headerBg}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-18 flex items-center justify-between gap-6">
           {/* Brand Logo & Farmstead Tag */}
           <Link href={`/store/${tenantSlug}`} className="flex items-center space-x-3 flex-shrink-0 group">
@@ -205,11 +257,11 @@ export function PantryStorefront({
               <Coffee className="w-5 h-5 text-emerald-300" />
             </div>
             <div>
-              <span className="font-extrabold tracking-tight text-base block leading-none font-sans text-stone-950">
+              <span className={`font-extrabold tracking-tight text-base block leading-none font-sans ${themeConfig.brandColor}`}>
                 {storeDisplayName}
               </span>
               <span className="text-[10px] text-emerald-800 font-semibold block mt-1 tracking-wider uppercase font-mono">
-                {isBazaar ? "Fresh Daily Farmstead Provisions" : "Regenerative Farmstead Provisions"}
+                {themeConfig.tagline}
               </span>
             </div>
           </Link>

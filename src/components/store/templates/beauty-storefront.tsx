@@ -59,7 +59,7 @@ export interface BeautyStorefrontProps {
   onOpenSearch: () => void;
   onOpenCheckout?: () => void;
   onOpenTrackOrder?: () => void;
-  variant?: "glow" | "luxe-glam" | string;
+  variant?: "glow" | "luxe-glam" | "k-beauty" | "derma-rx" | "apothecary" | string;
   // Demo Studio
   allCategories: string[];
   activeCategoryKey: string;
@@ -138,6 +138,75 @@ export function BeautyStorefront({
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
 
   const isGlam = variant === "luxe-glam";
+  const isKBeauty = variant === "k-beauty";
+  const isDermaRx = variant === "derma-rx";
+  const isApothecary = variant === "apothecary";
+
+  const themeConfig = {
+    tagline: isGlam
+      ? "Haute Parfumerie & Velvet Glamour"
+      : isKBeauty
+      ? "Seoul Glass Skin Dew & Ferment Labs"
+      : isDermaRx
+      ? "Dermacure Medical Rx & Barrier Labs"
+      : isApothecary
+      ? "Wildcrafted Botanical Herbal Apothecary"
+      : "Clinical Botanical Labs",
+    announcement: isGlam
+      ? "Complimentary Golden Elixir Decant on Orders ৳2,000+"
+      : isKBeauty
+      ? "10-Step K-Beauty Glass Skin Ritual Guide with Every Order"
+      : isDermaRx
+      ? "Dermatologically Certified Non-Comedogenic & Hypoallergenic"
+      : isApothecary
+      ? "Cold-Pressed Small Batch Seed Extracts • Pure Amber Glass Packaging"
+      : "Complimentary Deluxe Mini on Orders ৳1,500+",
+    pageBg: isGlam
+      ? "bg-[#0e0714] text-rose-100 selection:bg-amber-500"
+      : isKBeauty
+      ? "bg-[#f8f5fc] text-purple-950 selection:bg-purple-500 selection:text-white"
+      : isDermaRx
+      ? "bg-[#071322] text-sky-100 selection:bg-sky-500 selection:text-white"
+      : isApothecary
+      ? "bg-[#161009] text-amber-100 selection:bg-amber-600 selection:text-white"
+      : "bg-[#faf8f6] text-zinc-900 selection:bg-rose-500 selection:text-white",
+    barBg: isGlam
+      ? "bg-[#140a1c] text-amber-200 border-rose-950/80"
+      : isKBeauty
+      ? "bg-[#25103a] text-purple-200 border-purple-900/80"
+      : isDermaRx
+      ? "bg-[#0b1d36] text-sky-200 border-sky-900/80"
+      : isApothecary
+      ? "bg-[#22170d] text-amber-200 border-amber-950"
+      : "bg-[#1c0f13] text-rose-200 border-rose-950/80",
+    headerBg: isGlam
+      ? "bg-[#0e0714]/90 border-rose-950/80 text-rose-100"
+      : isKBeauty
+      ? "bg-[#f8f5fc]/90 border-purple-200 text-purple-950"
+      : isDermaRx
+      ? "bg-[#071322]/90 border-sky-900/80 text-sky-100"
+      : isApothecary
+      ? "bg-[#161009]/90 border-amber-900/40 text-amber-100"
+      : "bg-[#faf8f6]/85 border-rose-100/70 text-zinc-900",
+    brandColor: isGlam
+      ? "text-amber-100"
+      : isKBeauty
+      ? "text-purple-950"
+      : isDermaRx
+      ? "text-sky-100"
+      : isApothecary
+      ? "text-amber-100"
+      : "text-zinc-900",
+    taglineColor: isGlam
+      ? "text-amber-400"
+      : isKBeauty
+      ? "text-purple-600"
+      : isDermaRx
+      ? "text-sky-400"
+      : isApothecary
+      ? "text-amber-400"
+      : "text-rose-600",
+  };
 
   // Filter products by skin concern / category
   const filteredProducts = products.filter((p) => {
@@ -180,13 +249,13 @@ export function BeautyStorefront({
   };
 
   return (
-    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${isGlam ? "bg-[#0e0714] text-rose-100 selection:bg-amber-500" : "bg-[#faf8f6] text-zinc-900 selection:bg-rose-500 selection:text-white"}`}>
+    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${themeConfig.pageBg}`}>
       {/* ─── 1. Clinical Beauty Announcement Bar ────────────────────────────── */}
-      <div className={`py-2.5 px-4 text-xs font-medium tracking-wide border-b ${isGlam ? "bg-[#140a1c] text-amber-200 border-rose-950/80" : "bg-[#1c0f13] text-rose-200 border-rose-950/80"}`}>
+      <div className={`py-2.5 px-4 text-xs font-medium tracking-wide border-b ${themeConfig.barBg}`}>
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="hidden sm:flex items-center space-x-2 text-[11px] text-rose-300/80">
             <Sparkles className="w-3.5 h-3.5 text-rose-400" />
-            <span>{isGlam ? "Complimentary Golden Elixir Decant on Orders ৳2,000+" : "Complimentary Deluxe Mini on Orders ৳1,500+"}</span>
+            <span>{themeConfig.announcement}</span>
           </div>
           <div className="mx-auto sm:mx-0 flex items-center space-x-2 text-xs font-semibold text-rose-100">
             <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse" />
@@ -199,7 +268,7 @@ export function BeautyStorefront({
       </div>
 
       {/* ─── 2. Clean Luxe Glow Brand Header ────────────────────────────────── */}
-      <header className={`sticky top-0 z-30 backdrop-blur-md border-b transition-colors ${isGlam ? "bg-[#0e0714]/90 border-rose-950/80 text-rose-100" : "bg-[#faf8f6]/85 border-rose-100/70 text-zinc-900"}`}>
+      <header className={`sticky top-0 z-30 backdrop-blur-md border-b transition-colors ${themeConfig.headerBg}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-18 flex items-center justify-between gap-6">
           {/* Brand Logo & Tag */}
           <Link href={`/store/${tenantSlug}`} className="flex items-center space-x-3 flex-shrink-0 group">
@@ -207,11 +276,11 @@ export function BeautyStorefront({
               <Flower2 className="w-5 h-5" />
             </div>
             <div>
-              <span className={`font-extrabold tracking-tight text-base block leading-none ${isGlam ? "text-amber-100" : "text-zinc-900"}`}>
+              <span className={`font-extrabold tracking-tight text-base block leading-none ${themeConfig.brandColor}`}>
                 {storeDisplayName}
               </span>
               <span className="text-[10px] text-rose-600 font-semibold block mt-1 tracking-wider uppercase">
-                {isGlam ? "Haute Parfumerie & Velvet Glamour" : "Clinical Botanical Labs"}
+                {themeConfig.tagline}
               </span>
             </div>
           </Link>

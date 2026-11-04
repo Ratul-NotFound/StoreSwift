@@ -60,7 +60,7 @@ export interface FootwearStorefrontProps {
   onOpenSearch: () => void;
   onOpenCheckout?: () => void;
   onOpenTrackOrder?: () => void;
-  variant?: "artisan" | "velocity" | string;
+  variant?: "artisan" | "velocity" | "street-hype" | "bespoke" | "alpine-trek" | string;
   // Demo Studio
   allCategories: string[];
   activeCategoryKey: string;
@@ -146,6 +146,58 @@ export function FootwearStorefront({
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
 
   const isVelocity = variant === "velocity";
+  const isStreetHype = variant === "street-hype";
+  const isBespoke = variant === "bespoke";
+  const isAlpineTrek = variant === "alpine-trek";
+
+  const themeConfig = {
+    tagline: isVelocity
+      ? "Kinetic Streetwear & Runners"
+      : isStreetHype
+      ? "SoleStreet Deadstock & Sneaker Hype Vault"
+      : isBespoke
+      ? "Milano Bespoke Sartorial & Oxford Hand-Patina"
+      : isAlpineTrek
+      ? "Summit Alpine Trail & Technical Mountaineering"
+      : "Guild Bootmakers & Leathercraft",
+    announcement: isVelocity
+      ? "Kinetic Propulsion Labs • Carbon Torsion Plate Release"
+      : isStreetHype
+      ? "100% Verified Deadstock Authenticated • Live Drop Alerts"
+      : isBespoke
+      ? "Hand-Burnished Tuscan Calfskin • Bespoke Chisel-Toe Lasting"
+      : isAlpineTrek
+      ? "GORE-TEX Waterproof Membrane • Vibram Megagrip All-Terrain"
+      : "Master Hand-Lasted Benchcraft • Built to be Resoled",
+    pageBg: isVelocity
+      ? "bg-[#0b0c10] text-zinc-100 selection:bg-orange-500"
+      : isStreetHype
+      ? "bg-[#0d0f14] text-cyan-100 selection:bg-cyan-500 selection:text-black"
+      : isBespoke
+      ? "bg-[#140f0b] text-amber-100 selection:bg-amber-600 selection:text-white"
+      : isAlpineTrek
+      ? "bg-[#101511] text-stone-100 selection:bg-emerald-600 selection:text-white"
+      : "bg-[#faf7f2] text-stone-900 selection:bg-amber-900 selection:text-white",
+    barBg: isVelocity
+      ? "bg-[#10121a] text-orange-200 border-zinc-800"
+      : isStreetHype
+      ? "bg-[#09111c] text-cyan-300 border-cyan-950"
+      : isBespoke
+      ? "bg-[#1c140e] text-amber-200 border-amber-950"
+      : isAlpineTrek
+      ? "bg-[#141d16] text-emerald-200 border-emerald-950"
+      : "bg-[#1c1917] text-stone-300 border-stone-800",
+    headerBg: isVelocity
+      ? "bg-[#0b0c10]/90 border-zinc-800 text-zinc-100"
+      : isStreetHype
+      ? "bg-[#0d0f14]/90 border-cyan-950 text-cyan-100"
+      : isBespoke
+      ? "bg-[#140f0b]/90 border-amber-950 text-amber-100"
+      : isAlpineTrek
+      ? "bg-[#101511]/90 border-emerald-950 text-stone-100"
+      : "bg-[#faf7f2]/90 border-stone-200/80 text-stone-900",
+    brandColor: isVelocity || isStreetHype || isBespoke || isAlpineTrek ? "text-white" : "text-stone-950",
+  };
 
   // Filter products by silhouette
   const filteredProducts = products.filter((p) => {
@@ -193,13 +245,13 @@ export function FootwearStorefront({
   };
 
   return (
-    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${isVelocity ? "bg-[#0b0c10] text-zinc-100 selection:bg-orange-500" : "bg-[#faf7f2] text-stone-900 selection:bg-amber-900 selection:text-white"}`}>
+    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${themeConfig.pageBg}`}>
       {/* ─── 1. Heritage Guild Utility Bar ──────────────────────────────────── */}
-      <div className={`py-2.5 px-4 text-xs font-medium tracking-wide border-b ${isVelocity ? "bg-[#10121a] text-orange-200 border-zinc-800" : "bg-[#1c1917] text-stone-300 border-stone-800"}`}>
+      <div className={`py-2.5 px-4 text-xs font-medium tracking-wide border-b ${themeConfig.barBg}`}>
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="hidden sm:flex items-center space-x-2 text-[11px] text-stone-400">
             <Hammer className="w-3.5 h-3.5 text-amber-500" />
-            <span>{isVelocity ? "Kinetic Propulsion Labs • Carbon Torsion Plate Release" : "Master Hand-Lasted Benchcraft • Built to be Resoled"}</span>
+            <span>{themeConfig.announcement}</span>
           </div>
           <div className="mx-auto sm:mx-0 flex items-center space-x-2 text-xs font-semibold text-stone-100">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
@@ -212,7 +264,7 @@ export function FootwearStorefront({
       </div>
 
       {/* ─── 2. Clean Heritage Guild Brand Header ───────────────────────────── */}
-      <header className={`sticky top-0 z-30 backdrop-blur-md border-b transition-colors ${isVelocity ? "bg-[#0b0c10]/90 border-zinc-800 text-zinc-100" : "bg-[#faf7f2]/90 border-stone-200/80 text-stone-900"}`}>
+      <header className={`sticky top-0 z-30 backdrop-blur-md border-b transition-colors ${themeConfig.headerBg}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-18 flex items-center justify-between gap-6">
           {/* Brand Logo & Guild Tag */}
           <Link href={`/store/${tenantSlug}`} className="flex items-center space-x-3 flex-shrink-0 group">
@@ -220,11 +272,11 @@ export function FootwearStorefront({
               <Footprints className="w-5 h-5" />
             </div>
             <div>
-              <span className="font-extrabold tracking-tight text-base block leading-none font-serif text-stone-950">
+              <span className={`font-extrabold tracking-tight text-base block leading-none font-serif ${themeConfig.brandColor}`}>
                 {storeDisplayName}
               </span>
               <span className="text-[10px] text-amber-900 font-semibold block mt-1 tracking-wider uppercase font-mono">
-                {isVelocity ? "Kinetic Streetwear & Runners" : "Guild Bootmakers & Leathercraft"}
+                {themeConfig.tagline}
               </span>
             </div>
           </Link>

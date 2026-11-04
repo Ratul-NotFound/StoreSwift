@@ -5,27 +5,49 @@ import { GET as getSettings, PATCH as patchSettings } from "@/app/api/stores/[sl
 import { NextRequest } from "next/server";
 
 describe("Storefront Template Switcher & Dynamic Catalog System", () => {
-  it("defines all 14 production-grade templates categorized across 6 retail industries", () => {
-    expect(ALL_TEMPLATE_CHOICES.length).toBe(14);
+  it("defines all 30 production-grade templates categorized with exactly 5 per retail industry", () => {
+    expect(ALL_TEMPLATE_CHOICES.length).toBe(30);
     const ids = ALL_TEMPLATE_CHOICES.map((t) => t.id);
     const uniqueIds = new Set(ids);
-    expect(uniqueIds.size).toBe(14);
+    expect(uniqueIds.size).toBe(30);
 
     const expectedTemplates = [
+      // Fashion (5)
       "minimal",
       "clothing",
       "milano",
       "nickelfox",
+      "athleisure",
+      // Beauty (5)
       "glow",
       "luxe-glam",
+      "k-beauty",
+      "derma-rx",
+      "apothecary",
+      // Footwear (5)
       "artisan",
       "velocity",
+      "street-hype",
+      "bespoke",
+      "alpine-trek",
+      // Electronics (5)
       "bold",
       "lumina",
+      "cyber-rgb",
+      "smart-home",
+      "studio-rig",
+      // Jewelry (5)
       "maison",
       "aurora",
+      "solitaire",
+      "raw-silver",
+      "chronos",
+      // Food (5)
       "pantry",
       "bazaar",
+      "patisserie",
+      "matcha-zen",
+      "smokehouse",
     ];
 
     expectedTemplates.forEach((expectedId) => {
@@ -39,11 +61,11 @@ describe("Storefront Template Switcher & Dynamic Catalog System", () => {
       expect(tmpl?.categoryName.length).toBeGreaterThan(0);
     });
 
-    // Verify all 6 categories have multiple templates
+    // Verify all 6 categories have exactly 5 templates
     const categories = ["fashion", "beauty_cosmetics", "shoes", "electronics", "jewelry", "grocery_food"];
     categories.forEach((cat) => {
       const catTemplates = ALL_TEMPLATE_CHOICES.filter((t) => t.category === cat);
-      expect(catTemplates.length).toBeGreaterThanOrEqual(2);
+      expect(catTemplates.length).toBe(5);
     });
   });
 
@@ -146,12 +168,24 @@ describe("Storefront Template Switcher & Dynamic Catalog System", () => {
     expect(FashionStorefront).toBe(MinimalStorefront);
   });
 
-  it("verifies category configuration has multiple assigned templates per category", async () => {
+  it("verifies category configuration has exactly 5 assigned templates per category", async () => {
     const { CATEGORIES_MAP } = await import("@/config/categories");
     Object.values(CATEGORIES_MAP).forEach((cat) => {
       expect(cat.availableTemplates).toBeDefined();
-      expect(cat.availableTemplates?.length).toBeGreaterThanOrEqual(2);
+      expect(cat.availableTemplates?.length).toBe(5);
       expect(cat.availableTemplates).toContain(cat.recommendedTemplate);
+    });
+  });
+
+  it("verifies TemplateFactory resolves all 30 template aliases with fallback protection", async () => {
+    const { TemplateFactory } = await import("@/templates/template.factory");
+    const { ALL_TEMPLATE_CHOICES } = await import("@/components/store/template-switcher-bar");
+    
+    ALL_TEMPLATE_CHOICES.forEach((tmpl) => {
+      const resolved = TemplateFactory.getTemplate(tmpl.id);
+      expect(resolved).toBeDefined();
+      expect(resolved.id).toBeDefined();
+      expect(resolved.classes).toBeDefined();
     });
   });
 });

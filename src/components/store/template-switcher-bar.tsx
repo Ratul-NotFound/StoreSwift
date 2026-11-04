@@ -22,17 +22,17 @@ export interface TemplateChoice {
 }
 
 export const CATEGORY_FILTERS = [
-  { id: "all", label: "All Themes", icon: "✨" },
-  { id: "fashion", label: "Fashion (4)", icon: "👗" },
-  { id: "beauty_cosmetics", label: "Beauty (2)", icon: "🌸" },
-  { id: "shoes", label: "Footwear (2)", icon: "👞" },
-  { id: "electronics", label: "Tech (2)", icon: "⚡" },
-  { id: "jewelry", label: "Jewelry (2)", icon: "💎" },
-  { id: "grocery_food", label: "Food (2)", icon: "☕" },
+  { id: "all", label: "All Themes (30)", icon: "✨" },
+  { id: "fashion", label: "Fashion (5)", icon: "👗" },
+  { id: "beauty_cosmetics", label: "Beauty (5)", icon: "🌸" },
+  { id: "shoes", label: "Footwear (5)", icon: "👞" },
+  { id: "electronics", label: "Tech (5)", icon: "⚡" },
+  { id: "jewelry", label: "Jewelry (5)", icon: "💎" },
+  { id: "grocery_food", label: "Food (5)", icon: "☕" },
 ] as const;
 
 export const ALL_TEMPLATE_CHOICES: TemplateChoice[] = [
-  // ─── 👗 Fashion & Apparel (4 Templates) ───
+  // ─── 👗 Fashion & Apparel (5 Templates) ───
   {
     id: "minimal",
     name: "Minimal Atelier",
@@ -73,8 +73,18 @@ export const ALL_TEMPLATE_CHOICES: TemplateChoice[] = [
     color: "bg-[#f7f500] text-black border-black",
     badge: "🟡 NickelFox",
   },
+  {
+    id: "athleisure",
+    name: "Aero Athleisure",
+    category: "fashion",
+    categoryName: "Fashion & Apparel",
+    tag: "Kinetic Sportswear",
+    desc: "Moisture-wicking index, 4-way active stretch & sweatproof rating",
+    color: "bg-slate-900 text-lime-400 border-lime-500/40",
+    badge: "🏃 Athleisure",
+  },
 
-  // ─── 🌸 Beauty & Cosmetics (2 Templates) ───
+  // ─── 🌸 Beauty & Cosmetics (5 Templates) ───
   {
     id: "glow",
     name: "Clinical Botanical",
@@ -95,8 +105,38 @@ export const ALL_TEMPLATE_CHOICES: TemplateChoice[] = [
     color: "bg-[#180a1c] text-rose-200 border-rose-900/60",
     badge: "💄 Velvet Glam",
   },
+  {
+    id: "k-beauty",
+    name: "Seoul Dew K-Beauty",
+    category: "beauty_cosmetics",
+    categoryName: "Beauty & Cosmetics",
+    tag: "Glass Skin Dew",
+    desc: "Centella & fermented rice % badges with 10-step routine guide",
+    color: "bg-[#f5eefc] text-purple-950 border-purple-200",
+    badge: "✨ Seoul Dew",
+  },
+  {
+    id: "derma-rx",
+    name: "Dermacure Lab Rx",
+    category: "beauty_cosmetics",
+    categoryName: "Beauty & Cosmetics",
+    tag: "Medical Dermatology",
+    desc: "Prescription sterile layout, ceramide NP matrix & clinical pH indicator",
+    color: "bg-[#0b192c] text-sky-200 border-sky-600/40",
+    badge: "🔬 Derma Rx",
+  },
+  {
+    id: "apothecary",
+    name: "Herbal Apothecary",
+    category: "beauty_cosmetics",
+    categoryName: "Beauty & Cosmetics",
+    tag: "Organic Herbalism",
+    desc: "Amber glass apothecary, wildcrafted extraction notes & cold-pressed oils",
+    color: "bg-[#2a1d13] text-amber-200 border-amber-800",
+    badge: "🌿 Apothecary",
+  },
 
-  // ─── 👞 Footwear & Shoes (2 Templates) ───
+  // ─── 👞 Footwear & Shoes (5 Templates) ───
   {
     id: "artisan",
     name: "Warm Heritage Guild",
@@ -117,8 +157,38 @@ export const ALL_TEMPLATE_CHOICES: TemplateChoice[] = [
     color: "bg-[#0c0d14] text-orange-400 border-orange-500/40",
     badge: "⚡ Velocity Kicks",
   },
+  {
+    id: "street-hype",
+    name: "SoleStreet Hype",
+    category: "shoes",
+    categoryName: "Footwear & Shoes",
+    tag: "Sneaker Culture",
+    desc: "Verified deadstock authentication, raffle alerts & price index",
+    color: "bg-neutral-900 text-cyan-400 border-cyan-500/40",
+    badge: "👟 Street Hype",
+  },
+  {
+    id: "bespoke",
+    name: "Milano Bespoke Oxford",
+    category: "shoes",
+    categoryName: "Footwear & Shoes",
+    tag: "Bespoke Sartorial",
+    desc: "Hand-patina calfskin finish guide & Goodyear chisel-toe specs",
+    color: "bg-[#1a120c] text-amber-300 border-amber-700/50",
+    badge: "👞 Bespoke",
+  },
+  {
+    id: "alpine-trek",
+    name: "Summit Alpine Trail",
+    category: "shoes",
+    categoryName: "Footwear & Shoes",
+    tag: "Technical Mountaineering",
+    desc: "GORE-TEX waterproof ratings, terrain grip meter & Cordura upper",
+    color: "bg-stone-900 text-orange-400 border-orange-600/40",
+    badge: "🏔️ Alpine Trek",
+  },
 
-  // ─── ⚡ Electronics & Tech (2 Templates) ───
+  // ─── ⚡ Electronics & Tech (5 Templates) ───
   {
     id: "bold",
     name: "Acoustic Cyber",
@@ -139,8 +209,38 @@ export const ALL_TEMPLATE_CHOICES: TemplateChoice[] = [
     color: "bg-zinc-50 text-zinc-900 border-zinc-300",
     badge: "💻 Zen Silicon",
   },
+  {
+    id: "cyber-rgb",
+    name: "CyberForge RGB Esports",
+    category: "electronics",
+    categoryName: "Electronics & Tech",
+    tag: "Competitive Gaming",
+    desc: "240Hz latency telemetry, hot-swap actuation curves & RGB preview",
+    color: "bg-[#0a0a12] text-fuchsia-400 border-fuchsia-500/40",
+    badge: "🎮 Cyber RGB",
+  },
+  {
+    id: "smart-home",
+    name: "Aura IoT Smart Home",
+    category: "electronics",
+    categoryName: "Electronics & Tech",
+    tag: "Connected Home",
+    desc: "Matter & Zigbee compatibility matrix with low-power wattage stats",
+    color: "bg-slate-100 text-slate-900 border-slate-300",
+    badge: "🏠 Smart Home",
+  },
+  {
+    id: "studio-rig",
+    name: "Studio Rig Pro Creator",
+    category: "electronics",
+    categoryName: "Electronics & Tech",
+    tag: "Cinema & Streaming",
+    desc: "4K/60fps bitrate specs, thermal cooling metrics & modular rigging",
+    color: "bg-[#18181b] text-amber-400 border-zinc-700",
+    badge: "🎥 Studio Rig",
+  },
 
-  // ─── 💎 Jewelry & Luxury (2 Templates) ───
+  // ─── 💎 Jewelry & Luxury (5 Templates) ───
   {
     id: "maison",
     name: "Opulent Royal Maison",
@@ -161,8 +261,38 @@ export const ALL_TEMPLATE_CHOICES: TemplateChoice[] = [
     color: "bg-[#faf6f0] text-amber-950 border-amber-200",
     badge: "✨ Aurora Atelier",
   },
+  {
+    id: "solitaire",
+    name: "GIA Solitaire Lounge",
+    category: "jewelry",
+    categoryName: "Jewelry & Luxury",
+    tag: "Haute Diamantaire",
+    desc: "Interactive 4Cs diamond loupe (Cut, Color, Clarity, Carat) & GIA certs",
+    color: "bg-[#070b14] text-sky-100 border-sky-400/40",
+    badge: "💍 Solitaire",
+  },
+  {
+    id: "raw-silver",
+    name: "Nordic Silver Craft",
+    category: "jewelry",
+    categoryName: "Jewelry & Luxury",
+    tag: "Raw Artisanal Silver",
+    desc: "Oxidized 925 raw sterling silver, hand-hammered textures & Nordic runes",
+    color: "bg-zinc-800 text-zinc-100 border-zinc-600",
+    badge: "⚒️ Nordic Silver",
+  },
+  {
+    id: "chronos",
+    name: "Chronos Complication",
+    category: "jewelry",
+    categoryName: "Jewelry & Luxury",
+    tag: "Grand Horlogerie",
+    desc: "Skeleton movement tourbillon exhibition display & 28,800 vph caliber",
+    color: "bg-[#121214] text-rose-300 border-rose-900/40",
+    badge: "⏱️ Chronos",
+  },
 
-  // ─── ☕ Food & Grocery (2 Templates) ───
+  // ─── ☕ Food & Grocery (5 Templates) ───
   {
     id: "pantry",
     name: "Artisan Pantry",
@@ -182,6 +312,36 @@ export const ALL_TEMPLATE_CHOICES: TemplateChoice[] = [
     desc: "Same-day cold-chain farm delivery, harvest bundles & pesticide-free",
     color: "bg-lime-950 text-lime-200 border-lime-800",
     badge: "🥬 Fresh Bazaar",
+  },
+  {
+    id: "patisserie",
+    name: "Haute French Pâtisserie",
+    category: "grocery_food",
+    categoryName: "Food & Grocery",
+    tag: "Artisan Chocolatier",
+    desc: "Single-origin cacao %, multi-layer ganache schematics & macaron boxes",
+    color: "bg-[#2b1722] text-rose-200 border-rose-800/50",
+    badge: "🥐 Pâtisserie",
+  },
+  {
+    id: "matcha-zen",
+    name: "Zen Matcha Ceremony",
+    category: "grocery_food",
+    categoryName: "Food & Grocery",
+    tag: "Uji Ceremonial Tea",
+    desc: "First-harvest ceremonial flush rating, whisk guide & optimal water temp",
+    color: "bg-[#122315] text-emerald-300 border-emerald-800",
+    badge: "🍵 Matcha Zen",
+  },
+  {
+    id: "smokehouse",
+    name: "Prime Cellar & Smokehouse",
+    category: "grocery_food",
+    categoryName: "Food & Grocery",
+    tag: "Reserve Butchery",
+    desc: "Dry-aged A5 Wagyu marbling BMS 1-12 & oak barrel aging years",
+    color: "bg-[#1c0d0d] text-amber-200 border-red-900/50",
+    badge: "🥩 Smokehouse",
   },
 ];
 
@@ -226,7 +386,7 @@ export function TemplateSwitcherBar({
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-violet-600" />
               <p className="text-xs font-bold text-zinc-900 dark:text-white uppercase tracking-wider">
-                Industry Design System (14 Templates)
+                Industry Design System (30 Templates)
               </p>
             </div>
             <div className="flex items-center gap-2">

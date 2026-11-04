@@ -61,7 +61,7 @@ export interface TechStorefrontProps {
   onOpenSearch: () => void;
   onOpenCheckout?: () => void;
   onOpenTrackOrder?: () => void;
-  variant?: "bold" | "lumina" | string;
+  variant?: "bold" | "lumina" | "cyber-rgb" | "smart-home" | "studio-rig" | string;
   // Demo Studio
   allCategories: string[];
   activeCategoryKey: string;
@@ -140,6 +140,59 @@ export function TechStorefront({
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
 
   const isLumina = variant === "lumina";
+  const isCyberRGB = variant === "cyber-rgb";
+  const isSmartHome = variant === "smart-home";
+  const isStudioRig = variant === "studio-rig";
+
+  const themeConfig = {
+    tagline: isLumina
+      ? "Zen Minimal Silicon Architecture"
+      : isCyberRGB
+      ? "CyberForge Esports // 240Hz Battlestation"
+      : isSmartHome
+      ? "Aura IoT // Connected Smart Home Infrastructure"
+      : isStudioRig
+      ? "Studio Rig Pro // Cinema & Broadcast Systems"
+      : "Precision Hardware Telemetry",
+    announcement: isLumina
+      ? "Pristine Minimal Silicon • 100% Recycled Aluminum Enclosure"
+      : isCyberRGB
+      ? "0.5ms Low-Latency Optical Switches • 8000Hz Ultra-Polling Active"
+      : isSmartHome
+      ? "Matter & Zigbee 3.0 Unified Compatibility • Local Thread Mesh"
+      : isStudioRig
+      ? "4K/60p Lossless Streaming • Active Thermoelectric Liquid Cooling"
+      : "Mil-Spec QC Calibrated • Factory Sealed Direct",
+    pageBg: isLumina
+      ? "bg-[#fbfbfd] text-zinc-950 selection:bg-zinc-800 selection:text-white"
+      : isCyberRGB
+      ? "bg-[#08080f] text-fuchsia-100 selection:bg-fuchsia-500 selection:text-black"
+      : isSmartHome
+      ? "bg-[#f4f7fa] text-slate-900 selection:bg-blue-600 selection:text-white"
+      : isStudioRig
+      ? "bg-[#111215] text-amber-100 selection:bg-amber-500 selection:text-black"
+      : "bg-[#090a0f] text-zinc-100 selection:bg-sky-500 selection:text-black",
+    barBg: isLumina
+      ? "bg-zinc-100 text-zinc-800 border-zinc-200"
+      : isCyberRGB
+      ? "bg-[#100b1a] text-fuchsia-300 border-fuchsia-950"
+      : isSmartHome
+      ? "bg-[#e2eaf2] text-slate-700 border-slate-300"
+      : isStudioRig
+      ? "bg-[#1c1917] text-amber-200 border-zinc-800"
+      : "bg-[#0e1017] text-zinc-300 border-zinc-800/80",
+    headerBg: isLumina
+      ? "bg-[#fbfbfd]/90 border-zinc-200 text-zinc-950"
+      : isCyberRGB
+      ? "bg-[#08080f]/90 border-fuchsia-950 text-fuchsia-100"
+      : isSmartHome
+      ? "bg-[#f4f7fa]/90 border-slate-200 text-slate-900"
+      : isStudioRig
+      ? "bg-[#111215]/90 border-zinc-800 text-amber-100"
+      : "bg-[#0c0d12]/90 border-zinc-800/80 text-zinc-100",
+    brandColor: isLumina || isSmartHome ? "text-slate-950" : "text-white",
+    taglineColor: isCyberRGB ? "text-fuchsia-400" : isStudioRig ? "text-amber-400" : isSmartHome ? "text-blue-600" : "text-sky-400",
+  };
 
   // Filter products by tech category
   const filteredProducts = products.filter((p) => {
@@ -182,13 +235,13 @@ export function TechStorefront({
   };
 
   return (
-    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${isLumina ? "bg-[#fbfbfd] text-zinc-950 selection:bg-zinc-900 selection:text-white" : "bg-[#0c0d12] text-zinc-100 selection:bg-sky-500 selection:text-black"}`}>
+    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${themeConfig.pageBg}`}>
       {/* ─── 1. Cyber Hardware Utility Bar ──────────────────────────────────── */}
-      <div className={`py-2.5 px-4 text-xs font-mono tracking-wide border-b ${isLumina ? "bg-zinc-100 text-zinc-700 border-zinc-200" : "bg-black text-sky-400 border-zinc-900"}`}>
+      <div className={`py-2.5 px-4 text-xs font-mono tracking-wide border-b ${themeConfig.barBg}`}>
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="hidden sm:flex items-center space-x-2 text-[11px] text-zinc-400">
             <Cpu className="w-3.5 h-3.5 text-sky-400" />
-            <span>{isLumina ? "Pristine Minimal Silicon • 100% Recycled Aluminum Enclosure" : "Mil-Spec QC Calibrated • Factory Sealed Direct"}</span>
+            <span>{themeConfig.announcement}</span>
           </div>
           <div className="mx-auto sm:mx-0 flex items-center space-x-2 text-xs font-semibold text-zinc-200">
             <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse" />
@@ -201,7 +254,7 @@ export function TechStorefront({
       </div>
 
       {/* ─── 2. Clean Precision Hardware Brand Header ───────────────────────── */}
-      <header className={`sticky top-0 z-30 backdrop-blur-md border-b transition-colors ${isLumina ? "bg-[#fbfbfd]/90 border-zinc-200 text-zinc-950" : "bg-[#0c0d12]/90 border-zinc-800/80 text-zinc-100"}`}>
+      <header className={`sticky top-0 z-30 backdrop-blur-md border-b transition-colors ${themeConfig.headerBg}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-18 flex items-center justify-between gap-6">
           {/* Brand Logo & Telemetry Tag */}
           <Link href={`/store/${tenantSlug}`} className="flex items-center space-x-3 flex-shrink-0 group">
@@ -209,11 +262,11 @@ export function TechStorefront({
               <Cpu className="w-5 h-5 text-black" />
             </div>
             <div>
-              <span className="font-extrabold tracking-tight text-base block leading-none font-mono text-white">
+              <span className={`font-extrabold tracking-tight text-base block leading-none font-mono ${themeConfig.brandColor}`}>
                 {storeDisplayName}
               </span>
               <span className="text-[10px] text-sky-400 font-semibold block mt-1 tracking-wider uppercase font-mono">
-                {isLumina ? "Zen Minimal Silicon Architecture" : "Precision Hardware Telemetry"}
+                {themeConfig.tagline}
               </span>
             </div>
           </Link>

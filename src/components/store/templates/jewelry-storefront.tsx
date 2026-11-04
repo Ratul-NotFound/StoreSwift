@@ -61,7 +61,7 @@ export interface JewelryStorefrontProps {
   onOpenSearch: () => void;
   onOpenCheckout?: () => void;
   onOpenTrackOrder?: () => void;
-  variant?: "maison" | "aurora" | string;
+  variant?: "maison" | "aurora" | "solitaire" | "raw-silver" | "chronos" | string;
   // Demo Studio
   allCategories: string[];
   activeCategoryKey: string;
@@ -136,6 +136,58 @@ export function JewelryStorefront({
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
 
   const isAurora = variant === "aurora";
+  const isSolitaire = variant === "solitaire";
+  const isRawSilver = variant === "raw-silver";
+  const isChronos = variant === "chronos";
+
+  const themeConfig = {
+    tagline: isAurora
+      ? "Aurora Atelier Fine Pearls & Bridal"
+      : isSolitaire
+      ? "GIA Solitaire Diamantaire Lounge"
+      : isRawSilver
+      ? "Nordic Hand-Forged 925 Raw Silver"
+      : isChronos
+      ? "Chronos Grand Complication Tourbillon"
+      : "Royal Horology & Atelier High Jewelry",
+    announcement: isAurora
+      ? "Bridal Suite Consultation • Velvet Box Packaging Included"
+      : isSolitaire
+      ? "GIA Certified Triple Excellent Cut • 360° Diamond Sparkle Guarantee"
+      : isRawSilver
+      ? "Solid 925 Sterling Silver • Individually Hand-Hammered Artisanal Run"
+      : isChronos
+      ? "Skeleton Automatic Caliber • 28,800 VPH Swiss Regulated"
+      : "Official Assay Office 750 Hallmark • Doorstep Loupe Inspection (COD)",
+    pageBg: isAurora
+      ? "bg-[#faf6f0] text-amber-950 selection:bg-amber-300 selection:text-amber-950"
+      : isSolitaire
+      ? "bg-[#060911] text-sky-100 selection:bg-sky-400 selection:text-black"
+      : isRawSilver
+      ? "bg-[#18181b] text-zinc-100 selection:bg-zinc-600 selection:text-white"
+      : isChronos
+      ? "bg-[#0d0d10] text-rose-100 selection:bg-rose-500 selection:text-black"
+      : "bg-[#0b0c10] text-amber-100 selection:bg-amber-500 selection:text-black",
+    barBg: isAurora
+      ? "bg-[#f2eae0] text-amber-900 border-amber-200"
+      : isSolitaire
+      ? "bg-[#0b101c] text-sky-200 border-sky-950"
+      : isRawSilver
+      ? "bg-[#27272a] text-zinc-300 border-zinc-700"
+      : isChronos
+      ? "bg-[#16141a] text-rose-200 border-zinc-800"
+      : "bg-[#14151b] text-amber-300 border-amber-950/60",
+    headerBg: isAurora
+      ? "bg-[#faf6f0]/90 border-amber-200/80 text-amber-950"
+      : isSolitaire
+      ? "bg-[#060911]/90 border-sky-950 text-sky-100"
+      : isRawSilver
+      ? "bg-[#18181b]/90 border-zinc-700 text-zinc-100"
+      : isChronos
+      ? "bg-[#0d0d10]/90 border-zinc-800 text-rose-100"
+      : "bg-[#0b0c10]/90 border-amber-950/40 text-amber-100",
+    brandColor: isAurora ? "text-amber-950" : "text-white",
+  };
 
   // Filter products by collection
   const filteredProducts = products.filter((p) => {
@@ -178,13 +230,13 @@ export function JewelryStorefront({
   };
 
   return (
-    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${isAurora ? "bg-[#faf8f5] text-stone-900 selection:bg-amber-600 selection:text-white" : "bg-[#0b0c0e] text-zinc-100 selection:bg-amber-500 selection:text-black"}`}>
+    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${themeConfig.pageBg}`}>
       {/* ─── 1. Maison Fine Jewelry Utility Bar ─────────────────────────────── */}
-      <div className={`py-2.5 px-4 text-xs font-serif tracking-wide border-b ${isAurora ? "bg-[#f5efe6] text-amber-900 border-amber-200" : "bg-black text-amber-300/90 border-neutral-900"}`}>
+      <div className={`py-2.5 px-4 text-xs font-serif tracking-wide border-b ${themeConfig.barBg}`}>
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="hidden sm:flex items-center space-x-2 text-[11px] text-zinc-400">
             <Crown className="w-3.5 h-3.5 text-amber-400" />
-            <span>{isAurora ? "Contemporary Fine Atelier • Stackable Ring Studio & Bridal Suite" : "Assay Office Hallmarked • GIA Certified Stones"}</span>
+            <span>{themeConfig.announcement}</span>
           </div>
           <div className="mx-auto sm:mx-0 flex items-center space-x-2 text-xs font-semibold text-amber-200">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
@@ -197,7 +249,7 @@ export function JewelryStorefront({
       </div>
 
       {/* ─── 2. Clean Maison Brand Header ───────────────────────────────────── */}
-      <header className={`sticky top-0 z-30 backdrop-blur-md border-b transition-colors ${isAurora ? "bg-[#faf8f5]/90 border-amber-200/80 text-stone-900" : "bg-[#0b0c0e]/90 border-neutral-800/80 text-zinc-100"}`}>
+      <header className={`sticky top-0 z-30 backdrop-blur-md border-b transition-colors ${themeConfig.headerBg}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-18 flex items-center justify-between gap-6">
           {/* Brand Logo & Maison Tag */}
           <Link href={`/store/${tenantSlug}`} className="flex items-center space-x-3 flex-shrink-0 group">
@@ -205,11 +257,11 @@ export function JewelryStorefront({
               <Crown className="w-5 h-5 text-black" />
             </div>
             <div>
-              <span className="font-bold tracking-tight text-base block leading-none font-serif text-white">
+              <span className={`font-bold tracking-tight text-base block leading-none font-serif ${themeConfig.brandColor}`}>
                 {storeDisplayName}
               </span>
               <span className="text-[10px] text-amber-400/90 font-semibold block mt-1 tracking-wider uppercase font-mono">
-                {isAurora ? "Modern Fine Atelier & Bridal" : "Haute Horology & Fine Jewelry"}
+                {themeConfig.tagline}
               </span>
             </div>
           </Link>
