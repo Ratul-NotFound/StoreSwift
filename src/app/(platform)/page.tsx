@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -38,6 +39,7 @@ import {
 } from "lucide-react";
 import { PlatformFooter, DEMO_STORES_LIST } from "@/components/platform-footer";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
 
 interface TemplateDetail {
   id: string;
@@ -431,6 +433,14 @@ export default function PlatformLandingPage() {
   const [hasMouseMoved, setHasMouseMoved] = useState(false);
   const canvasRef = useRef<HTMLDivElement>(null);
 
+  // High-performance scroll tracking for top progress indicator
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
   useEffect(() => {
     const el = canvasRef.current;
     if (!el) return;
@@ -517,6 +527,12 @@ export default function PlatformLandingPage() {
 
       {/* Global Micro-Matte Grain Texture Overlay */}
       <div className="fixed inset-0 bg-noise-grain pointer-events-none z-30" />
+
+      {/* ─── Global Scroll Progress Indicator (GPU-Accelerated) ─────────────── */}
+      <motion.div
+        style={{ scaleX }}
+        className="fixed top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-300 z-[60] origin-left pointer-events-none"
+      />
 
       {/* ─── 1. Platform Navigation Bar ─────────────────────────────────────── */}
       <header className="border-b border-zinc-200/80 dark:border-white/[0.08] bg-white/85 dark:bg-[#06070a]/85 backdrop-blur-2xl sticky top-0 z-50 transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
@@ -675,53 +691,87 @@ export default function PlatformLandingPage() {
         <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] lg:w-[1200px] h-[480px] bg-gradient-to-b from-emerald-500/[0.08] to-transparent rounded-full blur-[100px] pointer-events-none" />
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 sm:space-y-7 my-auto">
-          {/* Status Capsule Badge */}
-          <div className="inline-flex items-center space-x-2.5 px-3.5 py-1.5 rounded-full bg-zinc-100/90 dark:bg-white/[0.04] border border-zinc-200/90 dark:border-white/[0.08] text-xs font-medium shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
+          {/* Status Capsule Badge with Radar Beacon */}
+          <motion.div
+            initial={{ opacity: 0, y: -16, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="inline-flex items-center space-x-2.5 px-3.5 py-1.5 rounded-full bg-zinc-100/90 dark:bg-white/[0.04] border border-zinc-200/90 dark:border-white/[0.08] text-xs font-medium shadow-sm hover:border-emerald-500/40 transition-colors"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.9)]" />
+            </span>
             <span className="font-bold text-emerald-600 dark:text-emerald-400">StoreSwift 2.0</span>
             <span className="text-zinc-300 dark:text-zinc-700">•</span>
             <span className="text-zinc-600 dark:text-zinc-400">30 Curated Templates • 1-Page Checkout • Platform Dropshipping</span>
-          </div>
+          </motion.div>
 
-          {/* Master Headline */}
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.035em] max-w-5xl mx-auto leading-[1.08] text-zinc-950 dark:text-white">
+          {/* Master Headline with Smooth Typography Reveal */}
+          <motion.h1
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+            className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.035em] max-w-5xl mx-auto leading-[1.08] text-zinc-950 dark:text-white"
+          >
             Build your online store. <br className="hidden sm:inline" />
             <span>Sell faster with </span>
             <span className="text-emerald-500 dark:text-emerald-400">1-page checkout.</span>
-          </h1>
+          </motion.h1>
 
           {/* Subtitle */}
-          <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed font-normal">
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
+            className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed font-normal"
+          >
             30 turnkey category templates, 20-second frictionless checkout, automated Steadfast & Pathao courier dispatch, built-in dropshipping with warehouse fulfillment, and 0% commission on Pro.
-          </p>
+          </motion.p>
 
-          {/* Primary Action Row */}
-          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5 flex-wrap">
-            <Link
-              href="/register"
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-bold px-7 py-3.5 rounded-xl btn-glass-primary transition btn-press group"
-            >
-              <span>Start Free Store (৳0 Upfront)</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link
-              href="/store/apex-fashion/dashboard"
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-semibold bg-white hover:bg-zinc-50 text-zinc-800 border border-zinc-200/90 dark:bg-zinc-900/80 dark:hover:bg-zinc-800 dark:text-zinc-200 dark:border-white/[0.08] px-6 py-3.5 rounded-xl transition shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
-            >
-              <Store className="w-4 h-4 text-emerald-500" />
-              <span>Merchant Dashboard</span>
-            </Link>
-            <Link
-              href="/super-admin"
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-semibold bg-violet-50 hover:bg-violet-100 text-violet-900 border border-violet-200 dark:bg-violet-950/40 dark:hover:bg-violet-900/50 dark:text-violet-300 dark:border-violet-800/40 px-5 py-3.5 rounded-xl transition shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
-            >
-              <Zap className="w-4 h-4 text-amber-500" />
-              <span>SaaS Super Admin</span>
-            </Link>
-          </div>
+          {/* Primary Action Row with Spring Hover States */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
+            className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5 flex-wrap"
+          >
+            <motion.div whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.98 }}>
+              <Link
+                href="/register"
+                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-bold px-7 py-3.5 rounded-xl btn-glass-primary transition btn-press group"
+              >
+                <span>Start Free Store (৳0 Upfront)</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.98 }}>
+              <Link
+                href="/store/apex-fashion/dashboard"
+                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-semibold bg-white hover:bg-zinc-50 text-zinc-800 border border-zinc-200/90 dark:bg-zinc-900/80 dark:hover:bg-zinc-800 dark:text-zinc-200 dark:border-white/[0.08] px-6 py-3.5 rounded-xl transition shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
+              >
+                <Store className="w-4 h-4 text-emerald-500" />
+                <span>Merchant Dashboard</span>
+              </Link>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.98 }}>
+              <Link
+                href="/super-admin"
+                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-semibold bg-violet-50 hover:bg-violet-100 text-violet-900 border border-violet-200 dark:bg-violet-950/40 dark:hover:bg-violet-900/50 dark:text-violet-300 dark:border-violet-800/40 px-5 py-3.5 rounded-xl transition shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
+              >
+                <Zap className="w-4 h-4 text-amber-500" />
+                <span>SaaS Super Admin</span>
+              </Link>
+            </motion.div>
+          </motion.div>
 
           {/* Trust Indicators Strip */}
-          <div className="pt-3 flex flex-wrap items-center justify-center gap-5 sm:gap-8 text-xs text-zinc-600 dark:text-zinc-400 font-medium">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.32, ease: [0.16, 1, 0.3, 1] }}
+            className="pt-3 flex flex-wrap items-center justify-center gap-5 sm:gap-8 text-xs text-zinc-600 dark:text-zinc-400 font-medium"
+          >
             <div className="flex items-center space-x-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)]" />
               <span>30 Industry Category Templates</span>
@@ -738,11 +788,15 @@ export default function PlatformLandingPage() {
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)]" />
               <span>0% Commission on Pro Plan</span>
             </div>
-          </div>
+          </motion.div>
         </div>
 
-        {/* Scroll Down Prompt */}
-        <div className="relative pt-6 pb-2 flex justify-center">
+        {/* Scroll Down Prompt with Gentle Bobbing Motion */}
+        <motion.div
+          animate={{ y: [0, 4, 0] }}
+          transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+          className="relative pt-6 pb-2 flex justify-center"
+        >
           <a
             href="#features"
             className="inline-flex items-center space-x-1.5 text-xs font-mono font-medium text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300 transition group"
@@ -750,14 +804,20 @@ export default function PlatformLandingPage() {
             <span>Explore enterprise capabilities</span>
             <ChevronDown className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" />
           </a>
-        </div>
+        </motion.div>
       </section>
 
       {/* ─── 4. Core Platform Capabilities (6 High-Velocity Hardware Cards) ────────── */}
       <section id="features" className="relative overflow-hidden py-16 sm:py-20 lg:py-20 border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 transition-colors">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] lg:w-[1150px] h-[440px] bg-gradient-to-b from-emerald-500/[0.06] to-transparent rounded-full blur-[100px] pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12 w-full my-auto">
-          <div className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3"
+          >
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-500 dark:text-emerald-400">
               Core Platform Engines
             </span>
@@ -767,17 +827,24 @@ export default function PlatformLandingPage() {
             <p className="text-xs sm:text-sm lg:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
               StoreSwift replaces fragile plugins with 6 deeply integrated, high-conversion eCommerce engines built for maximum profitability.
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {/* Card 01: 20-Second Checkout */}
-            <div className="luxury-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 transition-transform duration-200 hover:-translate-y-1">
+            <SpotlightCard
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -5 }}
+              className="rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6"
+            >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm">
+                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm">
                     <Zap className="w-5 h-5" />
-                  </div>
-                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20">
+                  </motion.div>
+                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20 animate-float-subtle">
                     &lt; 20s Flow
                   </span>
                 </div>
@@ -811,16 +878,23 @@ export default function PlatformLandingPage() {
                 <span>Speed Benchmark:</span>
                 <span className="text-emerald-500 dark:text-emerald-400 font-mono font-bold">+42.8% Conversion Lift</span>
               </div>
-            </div>
+            </SpotlightCard>
 
             {/* Card 02: Automated Logistics & Courier */}
-            <div className="luxury-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 transition-transform duration-200 hover:-translate-y-1">
+            <SpotlightCard
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -5 }}
+              className="rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6"
+            >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm">
+                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm">
                     <Truck className="w-5 h-5" />
-                  </div>
-                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20">
+                  </motion.div>
+                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20 animate-float-subtle">
                     Steadfast & Pathao
                   </span>
                 </div>
@@ -854,16 +928,23 @@ export default function PlatformLandingPage() {
                 <span>Logistics Partners:</span>
                 <span className="text-emerald-500 dark:text-emerald-400 font-mono font-bold">1-Click Dispatch Active</span>
               </div>
-            </div>
+            </SpotlightCard>
 
             {/* Card 03: Platform Dropshipping */}
-            <div className="luxury-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 transition-transform duration-200 hover:-translate-y-1">
+            <SpotlightCard
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: 0.19, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -5 }}
+              className="rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6"
+            >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm">
+                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm">
                     <ShoppingBag className="w-5 h-5" />
-                  </div>
-                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20">
+                  </motion.div>
+                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20 animate-float-subtle">
                     All Plans
                   </span>
                 </div>
@@ -897,16 +978,23 @@ export default function PlatformLandingPage() {
                 <span>Inventory Risk:</span>
                 <span className="text-emerald-500 dark:text-emerald-400 font-mono font-bold">Zero Stock Risk</span>
               </div>
-            </div>
+            </SpotlightCard>
 
             {/* Card 04: Margin Protection & Anti-Fraud */}
-            <div className="luxury-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 transition-transform duration-200 hover:-translate-y-1">
+            <SpotlightCard
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: 0.26, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -5 }}
+              className="rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6"
+            >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm">
+                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm">
                     <ShieldCheck className="w-5 h-5" />
-                  </div>
-                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 px-2.5 py-1 rounded-full border border-emerald-500/20">
+                  </motion.div>
+                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 px-2.5 py-1 rounded-full border border-emerald-500/20 animate-float-subtle">
                     COD Defense
                   </span>
                 </div>
@@ -940,16 +1028,23 @@ export default function PlatformLandingPage() {
                 <span>RTO Protection:</span>
                 <span className="text-emerald-500 dark:text-emerald-400 font-mono font-bold">Saves ৳130/Return</span>
               </div>
-            </div>
+            </SpotlightCard>
 
             {/* Card 05: Abandoned Cart WhatsApp Recovery */}
-            <div className="luxury-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 transition-transform duration-200 hover:-translate-y-1">
+            <SpotlightCard
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: 0.33, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -5 }}
+              className="rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6"
+            >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm">
+                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm">
                     <MessageSquare className="w-5 h-5" />
-                  </div>
-                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20">
+                  </motion.div>
+                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20 animate-float-subtle">
                     WhatsApp CRM
                   </span>
                 </div>
@@ -983,16 +1078,23 @@ export default function PlatformLandingPage() {
                 <span>Recovery Lift:</span>
                 <span className="text-emerald-500 dark:text-emerald-400 font-mono font-bold">+28% Recovered GMV</span>
               </div>
-            </div>
+            </SpotlightCard>
 
             {/* Card 06: Staff RBAC & Bulk CSV Engine */}
-            <div className="luxury-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 transition-transform duration-200 hover:-translate-y-1">
+            <SpotlightCard
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: 0.40, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -5 }}
+              className="rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6"
+            >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm">
+                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm">
                     <Users className="w-5 h-5" />
-                  </div>
-                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20">
+                  </motion.div>
+                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20 animate-float-subtle">
                     Enterprise RBAC
                   </span>
                 </div>
@@ -1026,7 +1128,7 @@ export default function PlatformLandingPage() {
                 <span>Team Collaboration:</span>
                 <span className="text-emerald-500 dark:text-emerald-400 font-mono font-bold">Secure Multi-User</span>
               </div>
-            </div>
+            </SpotlightCard>
           </div>
         </div>
       </section>
@@ -1035,7 +1137,13 @@ export default function PlatformLandingPage() {
       <section id="how-it-works" className="relative overflow-hidden py-16 sm:py-20 lg:py-20 border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 transition-colors">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] lg:w-[1000px] h-[360px] bg-gradient-to-b from-emerald-500/[0.05] to-transparent rounded-full blur-[100px] pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-14 w-full my-auto">
-          <div className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3"
+          >
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-500 dark:text-emerald-400">
               Onboarding Velocity
             </span>
@@ -1045,19 +1153,26 @@ export default function PlatformLandingPage() {
             <p className="text-xs sm:text-sm lg:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
               No developer hiring, no complex agency retainers, and zero plugin maintenance. Launch your online store in under 3 minutes.
             </p>
-          </div>
+          </motion.div>
 
           <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-8 lg:gap-12">
-            <div className="hidden md:block absolute top-8 left-[16.6%] right-[16.6%] h-[1px] border-t border-dashed border-emerald-500/20 dark:border-emerald-500/20 pointer-events-none" />
+            <div className="hidden md:block absolute top-8 left-[16.6%] right-[16.6%] h-[1px] border-t border-dashed border-emerald-500/25 dark:border-emerald-500/25 pointer-events-none" />
 
             {/* Step 01 */}
-            <div className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group">
-              <div className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-emerald-500/20 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform flex-shrink-0">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -4 }}
+              className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group"
+            >
+              <motion.div whileHover={{ scale: 1.12, rotate: 4 }} className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-emerald-500/20 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm transition-transform flex-shrink-0">
                 <Store className="w-6 h-6 md:w-7 md:h-7 text-emerald-500 dark:text-emerald-400" />
                 <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500 text-zinc-950 shadow-md shadow-emerald-500/25">
                   01
                 </span>
-              </div>
+              </motion.div>
               <div className="space-y-1.5 md:space-y-2">
                 <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-500 dark:text-emerald-400 font-bold block">
                   Step 01 • Template Setup
@@ -1079,16 +1194,23 @@ export default function PlatformLandingPage() {
                   <span>Pre-loaded catalog or 1-click dropshipping</span>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Step 02 */}
-            <div className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group">
-              <div className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-emerald-500/20 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform flex-shrink-0">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.55, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -4 }}
+              className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group"
+            >
+              <motion.div whileHover={{ scale: 1.12, rotate: 4 }} className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-emerald-500/20 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm transition-transform flex-shrink-0">
                 <Truck className="w-6 h-6 md:w-7 md:h-7 text-emerald-500 dark:text-emerald-400" />
                 <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500 text-zinc-950 shadow-md shadow-emerald-500/25">
                   02
                 </span>
-              </div>
+              </motion.div>
               <div className="space-y-1.5 md:space-y-2">
                 <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-500 dark:text-emerald-400 font-bold block">
                   Step 02 • Local Integrations
@@ -1110,16 +1232,23 @@ export default function PlatformLandingPage() {
                   <span>Automated ৳60 / ৳130 district rates</span>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Step 03 */}
-            <div className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group">
-              <div className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-emerald-500/25 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform flex-shrink-0">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.55, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -4 }}
+              className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group"
+            >
+              <motion.div whileHover={{ scale: 1.12, rotate: 4 }} className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-emerald-500/25 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm transition-transform flex-shrink-0">
                 <Rocket className="w-6 h-6 md:w-7 md:h-7 text-emerald-500 dark:text-emerald-400" />
                 <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500 text-zinc-950 font-bold shadow-md shadow-emerald-500/25">
                   03
                 </span>
-              </div>
+              </motion.div>
               <div className="space-y-1.5 md:space-y-2">
                 <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-500 dark:text-emerald-400 font-bold block">
                   Step 03 • High-Speed Selling
@@ -1141,7 +1270,7 @@ export default function PlatformLandingPage() {
                   <span>0% Commission on Pro Plan</span>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -1150,7 +1279,13 @@ export default function PlatformLandingPage() {
       <section id="storefronts" className="relative overflow-hidden py-16 sm:py-20 lg:py-20 border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 transition-colors">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[950px] lg:w-[1200px] h-[480px] bg-gradient-to-b from-emerald-500/[0.06] to-transparent rounded-full blur-[110px] pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 w-full my-auto">
-          <div className="text-center max-w-2xl mx-auto space-y-3">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center max-w-2xl mx-auto space-y-3"
+          >
             <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-zinc-100/90 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-white/[0.08] text-xs shadow-sm">
               <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
               <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-700 dark:text-zinc-300 font-medium">
@@ -1163,10 +1298,16 @@ export default function PlatformLandingPage() {
             <p className="text-xs sm:text-sm lg:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-xl mx-auto">
               Every retail vertical has distinct buyer psychology. Select an industry to preview its flagship live store and 5 specialized theme aesthetics.
             </p>
-          </div>
+          </motion.div>
 
           {/* Minimalist Category Selector Track with Template Counts */}
-          <div className="flex justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="flex justify-center"
+          >
             <div className="inline-flex items-center p-1.5 rounded-2xl sm:rounded-full bg-zinc-100/90 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-white/[0.08] backdrop-blur-xl shadow-inner gap-1 max-w-full overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {INDUSTRY_STOREFRONTS.map((store) => {
                 const isSelected = selectedStoreSlug === store.slug;
@@ -1192,10 +1333,16 @@ export default function PlatformLandingPage() {
                 );
               })}
             </div>
-          </div>
+          </motion.div>
 
           {/* Featured Store Showcase: Studio Frame & Blueprint Cockpit */}
-          <div className="luxury-card rounded-3xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 items-stretch border border-zinc-200/80 dark:border-white/[0.08] shadow-2xl">
+          <motion.div
+            initial={{ opacity: 0, y: 32, scale: 0.99 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+            className="luxury-card rounded-3xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 items-stretch border border-zinc-200/80 dark:border-white/[0.08] shadow-2xl"
+          >
             {/* Left Column: High-Fidelity Browser Window Frame */}
             <div className="lg:col-span-7 flex flex-col bg-zinc-950 border-b lg:border-b-0 lg:border-r border-zinc-200/80 dark:border-white/[0.08] overflow-hidden group">
               {/* Sleek Browser Navigation Header */}
@@ -1570,7 +1717,7 @@ export default function PlatformLandingPage() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -1578,7 +1725,13 @@ export default function PlatformLandingPage() {
       <section id="pricing" className="relative overflow-hidden py-16 sm:py-20 lg:py-20 border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 transition-colors">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] lg:w-[950px] h-[400px] bg-gradient-to-b from-emerald-500/[0.06] to-transparent rounded-full blur-[90px] pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 w-full my-auto">
-          <div className="text-center max-w-xl mx-auto space-y-2.5 sm:space-y-3">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center max-w-xl mx-auto space-y-2.5 sm:space-y-3"
+          >
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-500 dark:text-emerald-400">
               Transparent Subscription Tiers
             </span>
@@ -1619,11 +1772,18 @@ export default function PlatformLandingPage() {
                 </button>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch pt-2">
             {/* Starter Plan */}
-            <div className="luxury-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between">
+            <SpotlightCard
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -5 }}
+              className="rounded-3xl p-6 sm:p-8 flex flex-col justify-between"
+            >
               <div className="space-y-4">
                 <div>
                   <h3 className="text-lg font-bold text-zinc-950 dark:text-white">Starter (Free)</h3>
@@ -1649,10 +1809,17 @@ export default function PlatformLandingPage() {
               <Link href="/register?plan=free" className="mt-6 w-full py-3 bg-zinc-100 hover:bg-zinc-200 border border-zinc-200/90 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 text-zinc-900 dark:text-white font-bold text-xs rounded-xl transition text-center btn-press">
                 Start Free Store
               </Link>
-            </div>
+            </SpotlightCard>
 
             {/* Growth Plan (Popular - Radiant Emerald Ring Elevation) */}
-            <div className="luxury-card ring-1 ring-emerald-500/60 dark:ring-emerald-500/50 rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative shadow-2xl shadow-emerald-500/10">
+            <SpotlightCard
+              initial={{ opacity: 0, y: 34, scale: 0.98 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.55, delay: 0.14, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -6 }}
+              className="ring-1 ring-emerald-500/60 dark:ring-emerald-500/50 rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative shadow-2xl shadow-emerald-500/10"
+            >
               <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-emerald-500 text-zinc-950 text-[10px] font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-md shadow-emerald-500/20">
                 Most Popular
               </div>
@@ -1685,10 +1852,17 @@ export default function PlatformLandingPage() {
               <Link href="/register?plan=medium" className="mt-6 w-full py-3.5 btn-glass-primary font-bold text-xs rounded-xl transition text-center btn-press">
                 Choose Growth Plan
               </Link>
-            </div>
+            </SpotlightCard>
 
             {/* Pro Enterprise Plan */}
-            <div className="luxury-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between">
+            <SpotlightCard
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -5 }}
+              className="rounded-3xl p-6 sm:p-8 flex flex-col justify-between"
+            >
               <div className="space-y-4">
                 <div>
                   <h3 className="text-lg font-bold text-zinc-950 dark:text-white">Pro Enterprise</h3>
@@ -1717,11 +1891,17 @@ export default function PlatformLandingPage() {
               <Link href="/register?plan=pro" className="mt-6 w-full py-3 bg-zinc-100 hover:bg-zinc-200 border border-zinc-200/90 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 text-zinc-900 dark:text-white font-bold text-xs rounded-xl transition text-center btn-press">
                 Choose Pro Enterprise
               </Link>
-            </div>
+            </SpotlightCard>
           </div>
 
           {/* ─── Detailed Plan & Dropshipping Feature Comparison Table ─── */}
-          <div className="pt-12 sm:pt-16 border-t border-zinc-200/80 dark:border-white/[0.08] space-y-6">
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="pt-12 sm:pt-16 border-t border-zinc-200/80 dark:border-white/[0.08] space-y-6"
+          >
             <div className="text-center space-y-2 max-w-xl mx-auto">
               <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-500 dark:text-emerald-400">
                 Side-by-Side Comparison
@@ -1934,14 +2114,20 @@ export default function PlatformLandingPage() {
                 </tbody>
               </table>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* ─── 8. Frequently Asked Questions (FAQ) ────────────────────────────── */}
       <section id="faq" className="relative overflow-hidden py-16 sm:py-20 lg:py-20 border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 transition-colors">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 w-full my-auto">
-          <div className="text-center max-w-xl mx-auto space-y-2.5 sm:space-y-3">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center max-w-xl mx-auto space-y-2.5 sm:space-y-3"
+          >
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-500 dark:text-emerald-400">
               Questions & Answers
             </span>
@@ -1951,9 +2137,15 @@ export default function PlatformLandingPage() {
             <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
               Everything you need to know about setting up, launching, and operating your store.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="luxury-card rounded-3xl p-5 sm:p-8 divide-y divide-zinc-200 dark:divide-white/[0.08]">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.55, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="luxury-card rounded-3xl p-5 sm:p-8 divide-y divide-zinc-200 dark:divide-white/[0.08]"
+          >
             {faqs.map((faq, index) => {
               const isOpen = activeFaq === index;
               return (
@@ -1971,22 +2163,38 @@ export default function PlatformLandingPage() {
                       }`}
                     />
                   </button>
-                  {isOpen && (
-                    <p className="mt-2.5 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                      {faq.a}
-                    </p>
-                  )}
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                        className="overflow-hidden"
+                      >
+                        <p className="mt-2.5 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                          {faq.a}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               );
             })}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* ─── 9. Final Call to Action ────────────────────────────────────────── */}
       <section className="relative overflow-hidden py-16 sm:py-20 lg:py-20 border-b border-zinc-200/80 dark:border-white/[0.08] transition-colors">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto">
-          <div className="luxury-card rounded-3xl p-8 sm:p-14 text-center space-y-6 relative overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, y: 28, scale: 0.98 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="luxury-card rounded-3xl p-8 sm:p-14 text-center space-y-6 relative overflow-hidden"
+          >
             <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[750px] h-[280px] bg-gradient-to-b from-emerald-500/[0.10] to-transparent rounded-full blur-3xl pointer-events-none" />
             <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight relative leading-tight text-zinc-950 dark:text-white">
               Ready to{" "}
@@ -1998,22 +2206,26 @@ export default function PlatformLandingPage() {
               Start selling in minutes with 30 curated templates, 1-page checkout, automated courier dispatch, and platform dropshipping.
             </p>
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5 relative">
-              <Link
-                href="/register"
-                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-xs font-bold px-7 py-3.5 rounded-xl btn-glass-primary transition btn-press"
-              >
-                <span>Start Free Store (৳0 Upfront)</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
-                href="/store/apex-fashion/dashboard"
-                className="w-full sm:w-auto inline-flex items-center justify-center space-x-1.5 text-xs font-semibold bg-white hover:bg-zinc-50 border border-zinc-200/90 text-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/[0.08] dark:text-zinc-200 px-6 py-3.5 rounded-xl transition shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
-              >
-                <span>Explore Merchant Dashboard</span>
-                <ExternalLink className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500" />
-              </Link>
+              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
+                <Link
+                  href="/register"
+                  className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-xs font-bold px-7 py-3.5 rounded-xl btn-glass-primary transition btn-press"
+                >
+                  <span>Start Free Store (৳0 Upfront)</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Link
+                  href="/store/apex-fashion/dashboard"
+                  className="w-full sm:w-auto inline-flex items-center justify-center space-x-1.5 text-xs font-semibold bg-white hover:bg-zinc-50 border border-zinc-200/90 text-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/[0.08] dark:text-zinc-200 px-6 py-3.5 rounded-xl transition shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
+                >
+                  <span>Explore Merchant Dashboard</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500" />
+                </Link>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
