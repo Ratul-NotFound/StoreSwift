@@ -104,8 +104,9 @@ class FastLRUCache {
   /**
    * Invalidate all keys matching a prefix (e.g. "store:apex-fashion:").
    * Call whenever products or store settings are mutated.
+   * Automatically broadcasts cache invalidation to sibling cluster workers via IPC.
    */
-  deletePrefix(prefix: string): number {
+  deletePrefix(prefix: string, broadcast: boolean = true): number {
     let deleted = 0;
     for (const key of Array.from(this.cache.keys())) {
       if (key.startsWith(prefix)) {
@@ -113,6 +114,22 @@ class FastLRUCache {
         deleted++;
       }
     }
+
+    const isClusterWorker = Boolean(
+      typeof process !== "undefined" &&
+      process.env.WORKER_ID &&
+      !process.env.VITEST &&
+      typeof process.send === "function"
+    );
+
+    if (broadcast && isClusterWorker) {
+      try {
+        process.send!({ type: "CACHE_INVALIDATE", prefix });
+      } catch {
+        // Non-fatal if IPC channel is closed
+      }
+    }
+
     return deleted;
   }
 
@@ -161,5 +178,19 @@ export const fastCache = globalForCache.fastCache || new FastLRUCache(10000, 300
 
 if (process.env.NODE_ENV !== "production") {
   globalForCache.fastCache = fastCache;
+}
+
+// Listen for cluster IPC invalidation broadcasts from sibling workers (only in cluster worker runtime)
+if (
+  typeof process !== "undefined" &&
+  process.env.WORKER_ID &&
+  !process.env.VITEST &&
+  typeof process.on === "function"
+) {
+  process.on("message", (msg: any) => {
+    if (msg && msg.type === "CACHE_INVALIDATE" && typeof msg.prefix === "string") {
+      fastCache.deletePrefix(msg.prefix, false);
+    }
+  });
 }
 

@@ -105,7 +105,7 @@ describe("Bank-Grade Security Audit & Armor Verification", () => {
         description: "Pure mulberry silk with hand-rolled hems",
         price: 2400,
         comparePrice: 3200,
-        inventory: 20,
+        stock: 20,
         status: "active"
       });
       const genuinePrice = targetProduct.price; // Authentic server price: 2400

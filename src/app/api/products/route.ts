@@ -27,10 +27,11 @@ const productCreateSchema = z.object({
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const storeSlug = url.searchParams.get("storeSlug");
+  const searchQuery = url.searchParams.get("search") || url.searchParams.get("q");
   const session = getSessionFromRequest(request);
 
   const targetSlug = storeSlug || session?.storeId || "apex-fashion";
-  const cacheKey = `products:${targetSlug}`;
+  const cacheKey = searchQuery ? `products:${targetSlug}:q:${searchQuery}` : `products:${targetSlug}`;
   const clientEtag = request.headers.get("if-none-match");
 
   // 1. Check in-memory fastCache (sub-millisecond retrieval)
@@ -100,7 +101,9 @@ export async function GET(request: Request) {
   }
 
   if (finalProducts.length === 0) {
-    finalProducts = devStore.getProducts(targetSlug);
+    finalProducts = searchQuery
+      ? devStore.searchProducts(targetSlug, searchQuery)
+      : devStore.getProducts(targetSlug);
   }
 
   const payload = { ok: true, products: finalProducts };

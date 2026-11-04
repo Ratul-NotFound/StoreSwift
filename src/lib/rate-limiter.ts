@@ -96,16 +96,23 @@ export class SlidingWindowRateLimiter {
 
   /**
    * Helper to extract client IP from incoming standard Request headers.
+   * Prioritizes tamper-resistant edge headers (cf-connecting-ip, x-real-ip)
+   * over user-controllable forwarded headers.
    */
   static getClientIp(request: Request): string {
-    const forwarded = request.headers.get("x-forwarded-for");
-    if (forwarded) {
-      return forwarded.split(",")[0].trim();
-    }
-    const realIp = request.headers.get("x-real-ip");
-    if (realIp) return realIp.trim();
     const cfConnectingIp = request.headers.get("cf-connecting-ip");
     if (cfConnectingIp) return cfConnectingIp.trim();
+
+    const realIp = request.headers.get("x-real-ip");
+    if (realIp) return realIp.trim();
+
+    const forwarded = request.headers.get("x-forwarded-for");
+    if (forwarded) {
+      // First IP in chain is client IP
+      const clientIp = forwarded.split(",")[0].trim();
+      if (clientIp) return clientIp;
+    }
+
     return "127.0.0.1";
   }
 }

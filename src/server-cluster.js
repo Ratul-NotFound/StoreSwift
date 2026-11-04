@@ -37,6 +37,22 @@ if (cluster.isPrimary || cluster.isMaster) {
     console.log(`✅ [Cluster] Worker #${worker.id} (PID: ${worker.process.pid}) is active and listening for traffic.`);
   });
 
+  // Cross-worker IPC relay for instant distributed cache invalidation
+  cluster.on("message", (worker, message) => {
+    if (message && message.type === "CACHE_INVALIDATE") {
+      for (const id in cluster.workers) {
+        const target = cluster.workers[id];
+        if (target && target.id !== worker.id) {
+          try {
+            target.send(message);
+          } catch {
+            // Non-fatal if worker is recycling
+          }
+        }
+      }
+    }
+  });
+
   cluster.on("exit", (worker, code, signal) => {
     const uptimeSec = Math.floor((Date.now() - (workerUptimes.get(worker.id) || Date.now())) / 1000);
     console.warn(

@@ -13,6 +13,7 @@
  */
 
 import { verifyAndDeductStock } from "./stock";
+import { searchTrie } from "./search-trie";
 
 export type PlanId = "free" | "medium" | "pro";
 
@@ -612,15 +613,30 @@ class DevStoreManager {
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
-  addProduct(product: Omit<DevProduct, "id" | "createdAt" | "salesCount">): DevProduct {
+  addProduct(product: Partial<DevProduct> & { storeId: string; title: string; price: number }): DevProduct {
     const id = `prod-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    const finalSlug = product.slug || product.title.toLowerCase().replace(/[^a-z0-9]/g, "-").slice(0, 50);
     const newProd: DevProduct = {
+      sku: product.sku || `SKU-${Math.floor(1000 + Math.random() * 9000)}`,
+      category: product.category || "General",
+      imageUrl: product.imageUrl || "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800",
+      stock: product.stock ?? 10,
+      status: product.status || "active",
+      storeSlug: product.storeSlug || product.storeId,
       ...product,
+      slug: finalSlug,
       id,
       salesCount: 0,
       createdAt: new Date().toISOString(),
     };
     this.products.set(id, newProd);
+
+    // Index into O(L) Prefix Search Trie
+    const targetSlug = newProd.storeSlug || newProd.storeId;
+    if (targetSlug) {
+      searchTrie.indexProduct(targetSlug, newProd);
+    }
+
     return newProd;
   }
 
@@ -628,11 +644,49 @@ class DevStoreManager {
     const prod = this.products.get(id);
     if (!prod) return null;
     Object.assign(prod, updates);
+
+    // Re-index into Search Trie
+    const targetSlug = prod.storeSlug || prod.storeId;
+    if (targetSlug) {
+      searchTrie.indexProduct(targetSlug, prod);
+    }
+
     return prod;
   }
 
   deleteProduct(id: string): boolean {
+    const prod = this.products.get(id);
+    if (prod) {
+      const targetSlug = prod.storeSlug || prod.storeId;
+      if (targetSlug) {
+        searchTrie.removeProduct(targetSlug, id);
+      }
+    }
     return this.products.delete(id);
+  }
+
+  /**
+   * High-speed prefix trie search for instant sub-millisecond retrieval.
+   * Falls back to getProducts() if query is empty.
+   */
+  searchProducts(slugOrId: string, query?: string, limit: number = 20): DevProduct[] {
+    const store = this.getStore(slugOrId);
+    const targetSlug = store ? store.slug : slugOrId;
+
+    if (!query || !query.trim()) {
+      return this.getProducts(targetSlug).slice(0, limit);
+    }
+
+    const trieMatches = searchTrie.search(targetSlug, query, limit);
+    if (trieMatches.length > 0) {
+      return trieMatches.map((m) => m.item as DevProduct);
+    }
+
+    // Defensive fallback: linear substring search if trie has not yet warm-started
+    const q = query.toLowerCase().trim();
+    return this.getProducts(targetSlug)
+      .filter((p) => p.title.toLowerCase().includes(q) || (p.sku && p.sku.toLowerCase().includes(q)) || (p.description && p.description.toLowerCase().includes(q)))
+      .slice(0, limit);
   }
 
   // ─── ORDERS ─────────────────────────────────────────────────────────────────
