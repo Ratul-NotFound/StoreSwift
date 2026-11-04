@@ -55,6 +55,10 @@ import { FootwearStorefront } from "@/components/store/templates/footwear-storef
 import { TechStorefront } from "@/components/store/templates/tech-storefront";
 import { JewelryStorefront } from "@/components/store/templates/jewelry-storefront";
 import { PantryStorefront } from "@/components/store/templates/pantry-storefront";
+import { ClothingStorefront } from "@/components/store/templates/clothing-storefront";
+import { MilanoStorefront } from "@/components/store/templates/milano-storefront";
+import { NickelFoxStorefront } from "@/components/store/templates/nickelfox-storefront";
+import { TemplateSwitcherBar } from "@/components/store/template-switcher-bar";
 import { trackEvent } from "@/lib/analytics";
 
 // Visual Category Collections per Department
@@ -323,6 +327,14 @@ export default function TenantStorefrontPage({
   const isJewelryVertical = activeCategoryKey === "jewelry" || templateKey === "maison";
   const isPantryVertical = activeCategoryKey === "grocery_food" || templateKey === "pantry";
 
+  // ─── New Template Detection ───────────────────────────────────────────────
+  // "clothing" slug → ClothingStorefront (warm brown/cream, Clothing.co style)
+  // "milano"   slug → MilanoStorefront (dark editorial)
+  // "nickelfox" / "nfox" slug → NickelFoxStorefront (yellow/black bold)
+  const isClothingTemplate = tenantSlug.includes("clothing") || tenantSlug.includes("cloth");
+  const isMilanoTemplate = tenantSlug.includes("milano") || tenantSlug.includes("street") || tenantSlug.includes("urban");
+  const isNickelFoxTemplate = tenantSlug.includes("nfox") || tenantSlug.includes("nickelfox") || tenantSlug.includes("bold-fashion") || tenantSlug.includes("yellow");
+
   return (
     <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${template.classes.pageBg}`}>
       {/* ─── Top Demo Store Preview Bar ──────────────────────────────────── */}
@@ -335,7 +347,56 @@ export default function TenantStorefrontPage({
         defaultDismissed={isFashionVertical}
       />
 
-      {isFashionVertical ? (
+      {/* ─── New Premium Templates (Reference-matched) ───────────────────── */}
+      {isClothingTemplate ? (
+        <ClothingStorefront
+          storeDisplayName={storeDisplayName}
+          tenantSlug={tenantSlug}
+          products={products}
+          cartItems={cartItems}
+          wishlist={wishlist}
+          finalTotal={finalTotal}
+          onAddToCart={handleAddToCart}
+          onToggleWishlist={toggleWishlist}
+          onOpenProduct={handleOpenProduct}
+          onOpenCart={() => setIsCartOpen(true)}
+          onOpenSearch={() => setIsSearchOpen(true)}
+          onOpenCheckout={() => setIsCheckoutOpen(true)}
+          onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
+        />
+      ) : isMilanoTemplate ? (
+        <MilanoStorefront
+          storeDisplayName={storeDisplayName}
+          tenantSlug={tenantSlug}
+          products={products}
+          cartItems={cartItems}
+          wishlist={wishlist}
+          finalTotal={finalTotal}
+          onAddToCart={handleAddToCart}
+          onToggleWishlist={toggleWishlist}
+          onOpenProduct={handleOpenProduct}
+          onOpenCart={() => setIsCartOpen(true)}
+          onOpenSearch={() => setIsSearchOpen(true)}
+          onOpenCheckout={() => setIsCheckoutOpen(true)}
+          onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
+        />
+      ) : isNickelFoxTemplate ? (
+        <NickelFoxStorefront
+          storeDisplayName={storeDisplayName}
+          tenantSlug={tenantSlug}
+          products={products}
+          cartItems={cartItems}
+          wishlist={wishlist}
+          finalTotal={finalTotal}
+          onAddToCart={handleAddToCart}
+          onToggleWishlist={toggleWishlist}
+          onOpenProduct={handleOpenProduct}
+          onOpenCart={() => setIsCartOpen(true)}
+          onOpenSearch={() => setIsSearchOpen(true)}
+          onOpenCheckout={() => setIsCheckoutOpen(true)}
+          onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
+        />
+      ) : isFashionVertical ? (
         <FashionStorefront
           storeDisplayName={storeDisplayName}
           tenantSlug={tenantSlug}
@@ -540,7 +601,10 @@ export default function TenantStorefrontPage({
         />
       )}
 
-      {/* ─── Search Modal      {/* ─── Search Modal ─────────────────────────────────────────────────── */}
+      {/* ─── Template Switcher Preview Bar ──────────────────────────────── */}
+      <TemplateSwitcherBar currentSlug={tenantSlug} />
+
+      {/* ─── Search Modal ─────────────────────────────────────────────────── */}
       <SearchModal
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
