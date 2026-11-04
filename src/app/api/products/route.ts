@@ -33,10 +33,13 @@ export async function GET(request: Request) {
   try {
     let storeId = session?.storeId;
     if (storeSlug) {
-      const s = await db.query.stores.findFirst({
-        where: eq(stores.slug, storeSlug),
-        columns: { id: true }
-      });
+      const s = await Promise.race([
+        db.query.stores.findFirst({
+          where: eq(stores.slug, storeSlug),
+          columns: { id: true }
+        }),
+        new Promise<any>((_, reject) => setTimeout(() => reject(new Error("DB timeout")), 800))
+      ]);
       if (s) storeId = s.id;
     }
 

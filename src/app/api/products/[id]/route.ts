@@ -46,10 +46,10 @@ export async function PATCH(
       if (numPrice !== undefined) dbUpdates.basePrice = String(numPrice);
       if (numCompare !== undefined) dbUpdates.compareAtPrice = String(numCompare);
 
-      await db
-        .update(products)
-        .set(dbUpdates)
-        .where(eq(products.id, id));
+      await Promise.race([
+        db.update(products).set(dbUpdates).where(eq(products.id, id)),
+        new Promise((_, reject) => setTimeout(() => reject(new Error("DB timeout")), 800))
+      ]);
     } catch {
       // Non-fatal DB update
     }
@@ -82,10 +82,10 @@ export async function DELETE(
 
     // 2. Try DB soft delete
     try {
-      await db
-        .update(products)
-        .set({ isPublished: false, updatedAt: new Date() })
-        .where(eq(products.id, id));
+      await Promise.race([
+        db.update(products).set({ isPublished: false, updatedAt: new Date() }).where(eq(products.id, id)),
+        new Promise((_, reject) => setTimeout(() => reject(new Error("DB timeout")), 800))
+      ]);
     } catch {
       // Non-fatal
     }

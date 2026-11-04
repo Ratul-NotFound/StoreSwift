@@ -12,6 +12,8 @@
  *  - Super Admin Panel (/super-admin)
  */
 
+import { verifyAndDeductStock } from "./stock";
+
 export type PlanId = "free" | "medium" | "pro";
 
 export interface DevStoreRecord {
@@ -762,6 +764,27 @@ class DevStoreManager {
           fulfillmentStatus: "pending",
           createdAt: newOrder.createdAt,
         });
+      }
+    }
+
+    // 4. Atomic inventory deduction for matching products
+    for (const item of data.items) {
+      for (const [, prod] of this.products.entries()) {
+        if (
+          prod &&
+          prod.storeSlug === store.slug &&
+          (
+            (item.title && prod.title && prod.title.toLowerCase() === item.title.toLowerCase()) ||
+            (item.variantId && (prod.id === item.variantId || prod.sku === item.variantId))
+          )
+        ) {
+          const deduction = verifyAndDeductStock(prod.id, prod.stock, item.quantity);
+          if (deduction.success) {
+            prod.stock = deduction.newStock;
+            if (prod.stock === 0) prod.status = "out_of_stock";
+          }
+          break;
+        }
       }
     }
 
