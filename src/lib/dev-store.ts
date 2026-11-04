@@ -25,6 +25,7 @@ export interface DevStoreRecord {
   phone: string;
   email: string;
   address: string;
+  template?: string;
   facebookPixel?: string;
   googleAnalytics?: string;
   domain?: {
@@ -187,6 +188,7 @@ class DevStoreManager {
         category: "fashion",
         currency: "BDT",
         plan: "free",
+        template: "minimal",
         storeStatus: "active",
         phone: "01711002233",
         email: "contact@apexfashion.bd",
@@ -200,6 +202,7 @@ class DevStoreManager {
         category: "clothing",
         currency: "BDT",
         plan: "medium",
+        template: "clothing",
         storeStatus: "active",
         phone: "01812998877",
         email: "shop@clothingco.bd",
@@ -219,6 +222,7 @@ class DevStoreManager {
         category: "milano",
         currency: "BDT",
         plan: "pro",
+        template: "milano",
         storeStatus: "active",
         phone: "01911445566",
         email: "hello@milanourban.com",
@@ -232,6 +236,7 @@ class DevStoreManager {
         category: "shoes",
         currency: "BDT",
         plan: "medium",
+        template: "artisan",
         storeStatus: "active",
         phone: "01611778899",
         email: "info@craftshoes.bd",
@@ -545,6 +550,16 @@ class DevStoreManager {
     const existing = this.getStore(slug);
     if (existing) return existing;
 
+    const defaultTemplate =
+      slug.includes("clothing") || slug.includes("cloth") ? "clothing" :
+      slug.includes("milano") || slug.includes("street") || slug.includes("urban") ? "milano" :
+      slug.includes("nfox") || slug.includes("nickelfox") || slug.includes("yellow") ? "nickelfox" :
+      category === "beauty_cosmetics" || category === "beauty" || category === "cosmetics" ? "glow" :
+      category === "shoes" || category === "leather" || category === "footwear" ? "artisan" :
+      category === "electronics" || category === "tech" || category === "gadgets" ? "bold" :
+      category === "jewelry" || category === "luxury" || category === "watches" ? "maison" :
+      category === "grocery_food" || category === "grocery" || category === "pantry" || category === "food" ? "pantry" : "minimal";
+
     const newStore: DevStoreRecord = {
       id: `store-${slug}`,
       name: name || slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
@@ -552,6 +567,7 @@ class DevStoreManager {
       category,
       currency: "BDT",
       plan: "free",
+      template: defaultTemplate,
       storeStatus: "active",
       phone: "01700000000",
       email: `${slug}@storeswift.app`,

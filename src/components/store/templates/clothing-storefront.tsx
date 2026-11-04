@@ -142,7 +142,33 @@ export function ClothingStorefront({
 
   const cartCount = cartItems.reduce((s, i) => s + i.quantity, 0);
 
-  const filteredShop = shopCat === "All" ? SHOP_ITEMS : SHOP_ITEMS.filter(p => p.cat === shopCat);
+  const catalogItems = React.useMemo(() => {
+    if (products && products.length > 0) {
+      return products.map((p, idx) => ({
+        id: p.id,
+        title: p.title,
+        cat: (p as any).category || (idx % 2 === 0 ? "Coats" : "Dresses"),
+        price: p.price,
+        compare: p.comparePrice || Math.round(p.price * 1.3),
+        rating: p.rating || 4.9,
+        reviews: 24 + (idx * 5),
+        badge: p.badge || (idx === 0 ? "Bestseller" : idx === 1 ? "Trending" : "New"),
+        img: p.imageUrl || "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=600&auto=format&fit=crop&q=80",
+        description: p.description,
+        variants: p.variants || [],
+        rawProduct: p
+      }));
+    }
+    return SHOP_ITEMS.map((item) => ({ ...item, variants: [], rawProduct: null }));
+  }, [products]);
+
+  const activeCategories = React.useMemo(() => {
+    const set = new Set<string>();
+    catalogItems.forEach(i => { if (i.cat) set.add(i.cat); });
+    return ["All", ...Array.from(set)];
+  }, [catalogItems]);
+
+  const filteredShop = shopCat === "All" ? catalogItems : catalogItems.filter(p => p.cat === shopCat);
   const sortedShop = [...filteredShop].sort((a, b) => {
     if (sortBy === "price-asc") return a.price - b.price;
     if (sortBy === "price-desc") return b.price - a.price;
@@ -159,13 +185,18 @@ export function ClothingStorefront({
     onToggleWishlist(id);
   };
 
-  const handleAddItem = (item: typeof SHOP_ITEMS[0]) => {
-    const prod = {
+  const handleAddItem = (item: any) => {
+    const prod = item.rawProduct || {
       id: item.id, title: item.title, slug: item.id, description: item.title,
       price: item.price, comparePrice: item.compare, imageUrl: item.img,
-      badge: item.badge, rating: item.rating, variants: []
+      badge: item.badge, rating: item.rating, variants: item.variants || []
     };
-    onAddToCart(prod, { sku: `${item.id}-default`, title: "One Size", price: item.price });
+    const defaultVariant = (prod.variants && prod.variants[0]) || {
+      sku: `${item.id}-default`,
+      title: "Standard",
+      price: item.price
+    };
+    onAddToCart(prod, defaultVariant);
     setAddedId(item.id);
     setTimeout(() => setAddedId(null), 1400);
   };
@@ -222,6 +253,17 @@ export function ClothingStorefront({
             <button className="p-2 rounded-full hover:bg-stone-100 text-stone-600 transition hidden sm:flex">
               <Heart className="w-4.5 h-4.5" />
             </button>
+            {onOpenTrackOrder && (
+              <button onClick={onOpenTrackOrder} className="hidden lg:flex items-center gap-1 text-xs text-stone-600 hover:text-[#3d2d1e] transition font-medium mr-1">
+                <span>Track Order</span>
+              </button>
+            )}
+            {onOpenCheckout && (
+              <button onClick={onOpenCheckout} className="hidden sm:flex items-center gap-1.5 bg-[#3d2d1e] hover:bg-[#2a1e12] text-white text-xs font-bold px-3.5 py-1.5 rounded-full transition shadow-sm">
+                <Truck className="w-3.5 h-3.5" />
+                <span>Express Checkout</span>
+              </button>
+            )}
             <button onClick={onOpenCart}
               className="relative p-2 rounded-full hover:bg-stone-100 text-stone-600 transition">
               <ShoppingBag className="w-4.5 h-4.5" />
@@ -354,7 +396,7 @@ export function ClothingStorefront({
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
-                {SHOP_ITEMS.slice(0, 8).map(item => (
+                {catalogItems.slice(0, 8).map(item => (
                   <ProductCard
                     key={item.id}
                     item={item}
@@ -436,7 +478,7 @@ export function ClothingStorefront({
               <div className="bg-stone-50 rounded-2xl p-5 sticky top-24">
                 <h3 className="font-bold text-[#1a1209] mb-4 text-sm uppercase tracking-wider">Categories</h3>
                 <ul className="space-y-1">
-                  {SHOP_CATS.map(c => (
+                  {activeCategories.map(c => (
                     <li key={c}>
                       <button onClick={() => setShopCat(c)}
                         className={`w-full text-left px-3 py-2 rounded-xl text-sm font-medium transition ${shopCat === c ? "bg-[#3d2d1e] text-white" : "text-stone-600 hover:bg-stone-200 hover:text-[#3d2d1e]"}`}>
@@ -629,9 +671,9 @@ function ProductCard({
         </div>
         <div className="flex items-center justify-between">
           <div>
-            <span className="font-bold text-[#1a1209] text-sm">${item.price}</span>
+            <span className="font-bold text-[#1a1209] text-sm">৳{item.price.toLocaleString("en-BD")}</span>
             {item.compare > item.price && (
-              <span className="text-xs text-stone-400 line-through ml-1">${item.compare}</span>
+              <span className="text-xs text-stone-400 line-through ml-1">৳{item.compare.toLocaleString("en-BD")}</span>
             )}
           </div>
           <button onClick={onAdd}

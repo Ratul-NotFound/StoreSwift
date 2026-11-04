@@ -161,15 +161,34 @@ export function NickelFoxStorefront({
     onToggleWishlist(id);
   };
 
-  const handleAdd = (item: (typeof PRODUCTS)[0]) => {
-    const prod = { id: item.id, title: item.title, slug: item.id, description: item.title, price: item.price, comparePrice: item.compare, imageUrl: item.img, badge: item.badge, variants: [] };
-    onAddToCart(prod, { sku: `${item.id}-default`, title: "One Size", price: item.price });
+  const handleAdd = (item: any) => {
+    const prod = item.rawProduct || { id: item.id, title: item.title, slug: item.id, description: item.title, price: item.price, comparePrice: item.compare, imageUrl: item.img, badge: item.badge, variants: [] };
+    const defaultVariant = (prod.variants && prod.variants[0]) || { sku: `${item.id}-default`, title: "Standard", price: item.price };
+    onAddToCart(prod, defaultVariant);
     setAddedId(item.id);
     setTimeout(() => setAddedId(null), 1400);
   };
 
-  const NAV_CATS = ["All", ...Array.from(new Set(PRODUCTS.map(p => p.cat)))];
-  const filteredProducts = activeCat === "All" ? PRODUCTS : PRODUCTS.filter(p => p.cat === activeCat);
+  const catalogItems = React.useMemo(() => {
+    if (products && products.length > 0) {
+      return products.map((p, idx) => ({
+        id: p.id,
+        title: p.title,
+        cat: (p as any).category || (idx % 2 === 0 ? "Tops" : "Outerwear"),
+        price: p.price,
+        compare: p.comparePrice || Math.round(p.price * 1.3),
+        rating: p.rating || 4.8,
+        reviews: 32 + (idx * 6),
+        badge: p.badge || (idx === 0 ? "Hot" : idx === 1 ? "Trending" : "New"),
+        img: p.imageUrl || "https://images.unsplash.com/photo-1594938298603-c8148c4b5571?w=600&auto=format&fit=crop&q=80",
+        rawProduct: p
+      }));
+    }
+    return PRODUCTS.map((item) => ({ ...item, rawProduct: null }));
+  }, [products]);
+
+  const NAV_CATS = ["All", ...Array.from(new Set(catalogItems.map(p => p.cat)))];
+  const filteredProducts = activeCat === "All" ? catalogItems : catalogItems.filter(p => p.cat === activeCat);
 
   return (
     <div className="min-h-screen bg-[#f7f500] text-black font-sans antialiased">
@@ -204,6 +223,17 @@ export function NickelFoxStorefront({
 
           {/* Actions */}
           <div className="flex items-center gap-2">
+            {onOpenTrackOrder && (
+              <button onClick={onOpenTrackOrder} className="hidden lg:flex items-center text-xs font-black uppercase text-black hover:opacity-75 transition px-2 py-1">
+                Track Order
+              </button>
+            )}
+            {onOpenCheckout && (
+              <button onClick={onOpenCheckout} className="hidden sm:flex items-center gap-1.5 bg-black text-[#f7f500] text-xs font-black px-4 py-2 rounded-full hover:bg-neutral-800 transition shadow-[2px_2px_0_0_#000]">
+                <Truck className="w-3.5 h-3.5" />
+                <span>Express Checkout</span>
+              </button>
+            )}
             <button onClick={onOpenSearch} className="p-2 rounded-full hover:bg-black/10 transition">
               <Search className="w-4.5 h-4.5" />
             </button>

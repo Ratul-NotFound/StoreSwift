@@ -125,7 +125,44 @@ export default function TenantStorefrontPage({
   const categoryConfig = getCategoryConfig(activeCategoryKey);
 
   const [templateKey, setTemplateKey] = useState<string>(categoryConfig.recommendedTemplate || "minimal");
+  const [currentTemplateId, setCurrentTemplateId] = useState<string>(() => {
+    const slug = tenantSlug.toLowerCase();
+    if (slug.includes("clothing") || slug.includes("cloth")) return "clothing";
+    if (slug.includes("milano") || slug.includes("street") || slug.includes("urban")) return "milano";
+    if (slug.includes("nfox") || slug.includes("nickelfox") || slug.includes("yellow")) return "nickelfox";
+    if (slug.includes("beauty") || slug.includes("cosmetic") || slug.includes("glow") || slug.includes("skin")) return "glow";
+    if (slug.includes("shoe") || slug.includes("sneaker") || slug.includes("boot")) return "artisan";
+    if (slug.includes("tech") || slug.includes("byte") || slug.includes("gadget") || slug.includes("audio")) return "bold";
+    if (slug.includes("jewel") || slug.includes("watch") || slug.includes("gold")) return "maison";
+    if (slug.includes("coffee") || slug.includes("honey") || slug.includes("food")) return "pantry";
+    return categoryConfig.recommendedTemplate || "minimal";
+  });
   const template = getTemplateConfig(templateKey);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const sp = new URLSearchParams(window.location.search);
+      const qTmpl = sp.get("template");
+      if (qTmpl) {
+        setCurrentTemplateId(qTmpl);
+        setTemplateKey(qTmpl);
+      }
+    }
+    fetch(`/api/stores/${tenantSlug}/settings`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.settings?.template) {
+          if (typeof window !== "undefined") {
+            const sp = new URLSearchParams(window.location.search);
+            if (!sp.get("template")) {
+              setCurrentTemplateId(d.settings.template);
+              setTemplateKey(d.settings.template);
+            }
+          }
+        }
+      })
+      .catch(() => {});
+  }, [tenantSlug]);
 
   // Floating Theme Menu Toggle
   const seed = useMemo(() => {
@@ -358,20 +395,16 @@ export default function TenantStorefrontPage({
   const psych = template.getCategoryPsychology();
   const philosophy = template.getDesignPhilosophy();
   const collections = CATEGORY_COLLECTIONS[activeCategoryKey] || CATEGORY_COLLECTIONS.fashion;
-  const isFashionVertical = activeCategoryKey === "fashion" || templateKey === "minimal";
-  const isBeautyVertical = activeCategoryKey === "beauty_cosmetics" || templateKey === "glow";
-  const isFootwearVertical = activeCategoryKey === "shoes" || templateKey === "artisan";
-  const isTechVertical = activeCategoryKey === "electronics" || templateKey === "bold";
-  const isJewelryVertical = activeCategoryKey === "jewelry" || templateKey === "maison";
-  const isPantryVertical = activeCategoryKey === "grocery_food" || templateKey === "pantry";
-
-  // ─── New Template Detection ───────────────────────────────────────────────
-  // "clothing" slug → ClothingStorefront (warm brown/cream, Clothing.co style)
-  // "milano"   slug → MilanoStorefront (dark editorial)
-  // "nickelfox" / "nfox" slug → NickelFoxStorefront (yellow/black bold)
-  const isClothingTemplate = tenantSlug.includes("clothing") || tenantSlug.includes("cloth");
-  const isMilanoTemplate = tenantSlug.includes("milano") || tenantSlug.includes("street") || tenantSlug.includes("urban");
-  const isNickelFoxTemplate = tenantSlug.includes("nfox") || tenantSlug.includes("nickelfox") || tenantSlug.includes("bold-fashion") || tenantSlug.includes("yellow");
+  // Dynamic Template Architecture (Priority: URL query > Store Settings > Category default)
+  const isClothingTemplate = currentTemplateId === "clothing";
+  const isMilanoTemplate = currentTemplateId === "milano";
+  const isNickelFoxTemplate = currentTemplateId === "nickelfox";
+  const isBeautyVertical = currentTemplateId === "glow" || currentTemplateId === "beauty";
+  const isFootwearVertical = currentTemplateId === "artisan" || currentTemplateId === "shoes";
+  const isTechVertical = currentTemplateId === "bold" || currentTemplateId === "cyber" || currentTemplateId === "tech";
+  const isJewelryVertical = currentTemplateId === "maison" || currentTemplateId === "jewelry";
+  const isPantryVertical = currentTemplateId === "pantry" || currentTemplateId === "food";
+  const isFashionVertical = !isClothingTemplate && !isMilanoTemplate && !isNickelFoxTemplate && !isBeautyVertical && !isFootwearVertical && !isTechVertical && !isJewelryVertical && !isPantryVertical;
 
   return (
     <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${template.classes.pageBg}`}>
@@ -927,6 +960,16 @@ export default function TenantStorefrontPage({
         onClose={() => setIsTrackOrderOpen(false)}
         storeDisplayName={storeDisplayName}
         tenantSlug={tenantSlug}
+      />
+
+      {/* ─── Floating Dynamic Template Switcher ─────────────── */}
+      <TemplateSwitcherBar
+        currentSlug={tenantSlug}
+        activeTemplateId={currentTemplateId}
+        onSelectTemplate={(t) => {
+          setCurrentTemplateId(t);
+          setTemplateKey(t);
+        }}
       />
 
     </div>

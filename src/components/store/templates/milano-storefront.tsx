@@ -129,6 +129,23 @@ export function MilanoStorefront({
 
   const cartCount = cartItems.reduce((s, i) => s + i.quantity, 0);
 
+  const catalogItems = React.useMemo(() => {
+    if (products && products.length > 0) {
+      return products.map((p, idx) => ({
+        id: p.id,
+        label: p.badge || (idx === 0 ? "NEW DROP" : idx === 1 ? "COLLAB" : "ESSENTIALS"),
+        title: p.title,
+        subtitle: p.description ? (p.description.length > 35 ? p.description.slice(0, 35) + "..." : p.description) : "400 GSM French Terry",
+        price: p.price,
+        compare: p.comparePrice || Math.round(p.price * 1.3),
+        tag: idx === 0 ? "Limited" : "In Stock",
+        img: p.imageUrl || "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=700&auto=format&fit=crop&q=85",
+        rawProduct: p
+      }));
+    }
+    return PRODUCT_DROPS.map((item) => ({ ...item, rawProduct: null }));
+  }, [products]);
+
   // Cycle hero text
   const heroLines = ["RIGHT GEAR", "BEST LOOK", "YOUR STYLE", "NEXT LEVEL"];
   useEffect(() => {
@@ -141,9 +158,10 @@ export function MilanoStorefront({
     onToggleWishlist(id);
   };
 
-  const handleAdd = (item: typeof PRODUCT_DROPS[0]) => {
-    const prod = { id: item.id, title: item.title, slug: item.id, description: item.subtitle, price: item.price, comparePrice: item.compare, imageUrl: item.img, badge: item.tag, variants: [] };
-    onAddToCart(prod, { sku: `${item.id}-default`, title: "One Size", price: item.price });
+  const handleAdd = (item: any) => {
+    const prod = item.rawProduct || { id: item.id, title: item.title, slug: item.id, description: item.subtitle, price: item.price, comparePrice: item.compare, imageUrl: item.img, badge: item.tag, variants: [] };
+    const defaultVariant = (prod.variants && prod.variants[0]) || { sku: `${item.id}-default`, title: "Standard", price: item.price };
+    onAddToCart(prod, defaultVariant);
     setAddedId(item.id);
     setTimeout(() => setAddedId(null), 1400);
   };
@@ -173,6 +191,17 @@ export function MilanoStorefront({
 
           {/* Actions */}
           <div className="flex items-center gap-4">
+            {onOpenTrackOrder && (
+              <button onClick={onOpenTrackOrder} className="hidden lg:flex items-center text-[10px] uppercase font-bold tracking-widest text-white/60 hover:text-white transition">
+                Track Order
+              </button>
+            )}
+            {onOpenCheckout && (
+              <button onClick={onOpenCheckout} className="hidden sm:flex items-center gap-1.5 bg-[#c9a96e] hover:bg-[#b8955a] text-black text-[10px] uppercase font-bold tracking-widest px-3.5 py-1.5 rounded-sm transition">
+                <Truck className="w-3 h-3" />
+                <span>Checkout</span>
+              </button>
+            )}
             <button onClick={onOpenSearch} className="text-white/60 hover:text-white transition">
               <Search className="w-4 h-4" />
             </button>
@@ -278,7 +307,7 @@ export function MilanoStorefront({
               </button>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/5">
-              {PRODUCT_DROPS.map(item => (
+              {catalogItems.map(item => (
                 <div key={item.id} className="group bg-[#0e0e0e] overflow-hidden relative">
                   <div className="aspect-[3/4] overflow-hidden relative bg-[#1a1a1a] cursor-pointer" onClick={() => {
                     const p = { id: item.id, title: item.title, slug: item.id, description: item.subtitle, price: item.price, comparePrice: item.compare, imageUrl: item.img, badge: item.tag, variants: [] };
@@ -307,9 +336,9 @@ export function MilanoStorefront({
                     <h3 className="text-sm font-bold text-white mb-2 leading-tight">{item.title}</h3>
                     <div className="flex items-center justify-between">
                       <div>
-                        <span className="font-black text-white text-sm">${item.price}</span>
+                        <span className="font-black text-white text-sm">৳{item.price.toLocaleString("en-BD")}</span>
                         {item.compare > item.price && (
-                          <span className="text-xs text-white/30 line-through ml-2">${item.compare}</span>
+                          <span className="text-xs text-white/30 line-through ml-2">৳{item.compare.toLocaleString("en-BD")}</span>
                         )}
                       </div>
                       <span className="text-[9px] font-mono uppercase tracking-widest px-2 py-0.5 border border-white/20 text-white/50">{item.tag}</span>
@@ -382,7 +411,7 @@ export function MilanoStorefront({
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-px bg-white/5">
-              {PRODUCT_DROPS.map(item => (
+              {catalogItems.map(item => (
                 <div key={item.id} className="group bg-[#0e0e0e] overflow-hidden">
                   <div className="aspect-[3/4] overflow-hidden relative bg-[#1a1a1a] cursor-pointer" onClick={() => {
                     const p = { id: item.id, title: item.title, slug: item.id, description: item.subtitle, price: item.price, comparePrice: item.compare, imageUrl: item.img, badge: item.tag, variants: [] };
@@ -400,8 +429,8 @@ export function MilanoStorefront({
                   <div className="p-3 border-t border-white/5">
                     <h3 className="text-xs font-bold text-white mb-1 line-clamp-1">{item.title}</h3>
                     <div className="flex items-center justify-between">
-                      <span className="font-black text-white text-sm">${item.price}</span>
-                      {item.compare > item.price && <span className="text-xs text-white/30 line-through">${item.compare}</span>}
+                      <span className="font-black text-white text-sm">৳{item.price.toLocaleString("en-BD")}</span>
+                      {item.compare > item.price && <span className="text-xs text-white/30 line-through">৳{item.compare.toLocaleString("en-BD")}</span>}
                     </div>
                   </div>
                 </div>

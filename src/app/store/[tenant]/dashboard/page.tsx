@@ -1,5 +1,7 @@
 "use client";
 
+import { ALL_TEMPLATE_CHOICES } from "@/components/store/template-switcher-bar";
+
 import { useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
@@ -12,7 +14,7 @@ import {
   Star, MapPin, Phone, Mail, Calendar, Layers,
   Activity, Award, Target, X, Check, Menu,
   LogOut, Edit, Save, Tag, ArrowRight, Copy, CheckCheck,
-  Info, Sparkles, Package2,
+  Info, Sparkles, Package2, Palette,
 } from "lucide-react";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -881,7 +883,7 @@ function DropshipTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
 // ─── SETTINGS ─────────────────────────────────────────────────────────────────
 
 function SettingsTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
-  const [settings, setSettings] = useState({ name: "", description: "", phone: "", email: "", address: "", facebookPixel: "", googleAnalytics: "" });
+  const [settings, setSettings] = useState({ name: "", description: "", phone: "", email: "", address: "", facebookPixel: "", googleAnalytics: "", template: "minimal" });
   const [domain, setDomain] = useState({ domain: "", cnameTarget: "", isVerified: false });
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -934,6 +936,68 @@ function SettingsTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
         </div>
         <button onClick={save} disabled={saving} className="mt-5 flex items-center gap-2 bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition">
           {saved ? <><CheckCheck className="w-4 h-4" />Saved!</> : <><Save className="w-4 h-4" />{saving ? "Saving..." : "Save Changes"}</>}
+        </button>
+      </div>
+
+      {/* Storefront Design Template Picker */}
+      <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm p-6">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="font-bold text-zinc-900 flex items-center gap-2">
+            <Palette className="w-4 h-4 text-violet-600" />
+            Storefront Design Template
+          </h3>
+          <a
+            href={`/store/${tenant}`}
+            target="_blank"
+            className="text-xs font-semibold text-violet-700 hover:text-violet-900 flex items-center gap-1"
+          >
+            <span>Preview Live Store</span>
+            <ExternalLink className="w-3 h-3" />
+          </a>
+        </div>
+        <p className="text-xs text-zinc-500 mb-5">
+          Select a production template tailored for your industry. Products, cart, and orders stay 100% synced.
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
+          {ALL_TEMPLATE_CHOICES.map((tmpl) => {
+            const isSelected = (settings.template || "minimal") === tmpl.id;
+            return (
+              <button
+                key={tmpl.id}
+                type="button"
+                onClick={() => setSettings((s) => ({ ...s, template: tmpl.id }))}
+                className={`p-3.5 rounded-xl border text-left transition relative flex flex-col justify-between ${
+                  isSelected
+                    ? "border-violet-600 ring-2 ring-violet-500/20 bg-violet-50/40"
+                    : "border-zinc-200 hover:border-zinc-300 bg-white"
+                }`}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs font-black text-zinc-900">{tmpl.badge}</span>
+                    {isSelected ? (
+                      <span className="w-4 h-4 rounded-full bg-violet-600 text-white flex items-center justify-center">
+                        <Check className="w-2.5 h-2.5" />
+                      </span>
+                    ) : (
+                      <span className="text-[10px] font-mono uppercase text-zinc-400">{tmpl.tag}</span>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-zinc-500 leading-snug">{tmpl.desc}</p>
+                </div>
+                <div className="mt-3 pt-2 border-t border-zinc-100 flex items-center justify-between text-[10px]">
+                  <span className={`font-semibold ${isSelected ? "text-violet-700 font-bold" : "text-zinc-400"}`}>
+                    {isSelected ? "✓ Active Template" : "Select Theme"}
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        <button onClick={save} disabled={saving} className="flex items-center gap-2 bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition">
+          {saved ? <><CheckCheck className="w-4 h-4" />Template Saved!</> : <><Save className="w-4 h-4" />{saving ? "Saving..." : "Apply Template"}</>}
         </button>
       </div>
 

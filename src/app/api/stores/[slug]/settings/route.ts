@@ -11,6 +11,7 @@ const settingsSchema = z.object({
   phone:             z.string().max(50).optional(),
   email:             z.string().email().optional().or(z.literal("")),
   address:           z.string().max(500).optional(),
+  template:          z.string().optional(),
   facebookPixel:     z.string().max(100).optional(),
   googleAnalytics:   z.string().max(100).optional(),
   announcementText:  z.string().max(500).optional(),
@@ -44,6 +45,7 @@ export async function GET(
         phone: ds.phone,
         email: ds.email,
         address: ds.address,
+        template: (store.themeConfig as any)?.template || ds.template || "minimal",
         facebookPixel: ds.facebookPixel || "",
         googleAnalytics: ds.googleAnalytics || "",
         announcementText: store.announcementText || "",
@@ -75,6 +77,7 @@ export async function GET(
     phone: ds.phone,
     email: ds.email,
     address: ds.address,
+    template: ds.template || "minimal",
     facebookPixel: ds.facebookPixel || "",
     googleAnalytics: ds.googleAnalytics || "",
     announcementText: "",
@@ -116,6 +119,7 @@ export async function PATCH(
         metaTitle: parse.data.metaTitle || undefined,
         metaDescription: parse.data.metaDescription || parse.data.description || undefined,
         primaryColor: parse.data.primaryColor || undefined,
+        themeConfig: parse.data.template ? { template: parse.data.template } : (parse.data.themeConfig || undefined),
         updatedAt: new Date()
       })
       .where(eq(stores.slug, slug));
