@@ -74,7 +74,9 @@ export function PlatformFooter() {
 
           {/* Column 4: Live Storefronts */}
           <div className="space-y-3">
-            <p className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-950 dark:text-white">Live Storefronts</p>
+            <p className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-950 dark:text-white">
+              Live Stores (30 Themes)
+            </p>
             <ul className="space-y-2.5 text-xs text-zinc-600 dark:text-zinc-400">
               {DEMO_STORES_LIST.map((s) => (
                 <li key={s.slug}>
@@ -83,9 +85,13 @@ export function PlatformFooter() {
                     className="hover:text-zinc-950 dark:hover:text-white transition flex items-center justify-between group"
                   >
                     <span>{s.name}</span>
+                    <span className="text-[10px] text-zinc-400">5 Themes</span>
                   </Link>
                 </li>
               ))}
+              <li className="pt-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
+                ✨ 30 Total Category Presets
+              </li>
             </ul>
           </div>
 
