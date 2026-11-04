@@ -171,6 +171,54 @@ export interface DevDropshipOrder {
   createdAt: string;
 }
 
+export interface DevStoreStaff {
+  id: string;
+  storeId: string;
+  storeSlug: string;
+  email: string;
+  name: string;
+  phone?: string;
+  role: "owner" | "manager" | "fulfillment" | "catalog_editor";
+  status: "active" | "invited";
+  invitedAt: string;
+  lastActiveAt?: string;
+}
+
+export interface DevAbandonedCart {
+  id: string;
+  storeSlug: string;
+  customerName: string;
+  customerPhone: string;
+  customerEmail?: string;
+  items: { title: string; price: number; quantity: number; imageUrl?: string }[];
+  totalAmount: number;
+  district?: string;
+  status: "abandoned" | "converted";
+  createdAt: string;
+}
+
+export interface DevAuditEvent {
+  id: string;
+  storeSlug: string;
+  action: string;
+  actorEmail: string;
+  actorRole: string;
+  details: string;
+  ipAddress?: string;
+  timestamp: string;
+}
+
+export interface DevStoreNotification {
+  id: string;
+  storeSlug: string;
+  channel: "sms" | "whatsapp" | "email";
+  recipient: string;
+  template: "order_confirmed" | "order_dispatched" | "low_stock";
+  payload: Record<string, any>;
+  status: "queued" | "sent" | "failed";
+  createdAt: string;
+}
+
 class DevStoreManager {
   private stores: Map<string, DevStoreRecord> = new Map();
   private products: Map<string, DevProduct> = new Map();
@@ -180,6 +228,10 @@ class DevStoreManager {
   private coupons: Map<string, DevCoupon> = new Map();
   private platformProducts: Map<string, DevPlatformProduct> = new Map();
   private dropshipOrders: Map<string, DevDropshipOrder> = new Map();
+  private staff: Map<string, DevStoreStaff> = new Map();
+  private abandonedCarts: Map<string, DevAbandonedCart> = new Map();
+  private auditEvents: DevAuditEvent[] = [];
+  private notifications: DevStoreNotification[] = [];
 
   constructor() {
     this.seedDefaultState();
@@ -589,6 +641,44 @@ class DevStoreManager {
       isActive: true,
       createdAt: new Date("2024-03-01").toISOString(),
     });
+
+    // 6. Default Staff Members (Owner for apex-fashion)
+    this.staff.set("staff-apex-owner", {
+      id: "staff-apex-owner",
+      storeId: "store-apex-fashion",
+      storeSlug: "apex-fashion",
+      email: "merchant@storeswift.app",
+      name: "Apex Fashion Admin",
+      phone: "01700000000",
+      role: "owner",
+      status: "active",
+      invitedAt: new Date(Date.now() - 3600 * 1000 * 120).toISOString(),
+    });
+
+    // 7. Default Abandoned Cart Lead
+    this.abandonedCarts.set("cart-apex-101", {
+      id: "cart-apex-101",
+      storeSlug: "apex-fashion",
+      customerName: "Kamrul Hasan",
+      customerPhone: "01788990011",
+      customerEmail: "kamrul@example.com",
+      items: [{ title: "Signature Pima Cotton Polo", price: 1250, quantity: 1 }],
+      totalAmount: 1310,
+      district: "Dhaka",
+      status: "abandoned",
+      createdAt: new Date(Date.now() - 3600 * 1000 * 4).toISOString(),
+    });
+
+    // 8. Default Security Audit Trail
+    this.auditEvents.push({
+      id: "audit-init-1",
+      storeSlug: "apex-fashion",
+      action: "store_created",
+      actorEmail: "merchant@storeswift.app",
+      actorRole: "owner",
+      details: "Store Apex Fashion Ltd provisioned on StoreSwift",
+      timestamp: new Date("2024-01-10").toISOString(),
+    });
   }
 
   // ─── STORES ─────────────────────────────────────────────────────────────────
@@ -931,6 +1021,9 @@ class DevStoreManager {
       }
     }
 
+    // 5. Auto-mark any abandoned cart from this phone as converted
+    this.markAbandonedCartConverted(store.slug, data.customerPhone);
+
     return newOrder;
   }
 
@@ -1271,6 +1364,144 @@ class DevStoreManager {
       gmvGrowth: 34,
       storeGrowth: 19,
     };
+  }
+
+  // ─── STAFF & RBAC ──────────────────────────────────────────────────────────
+
+  getStaff(storeSlug: string): DevStoreStaff[] {
+    return Array.from(this.staff.values()).filter((s) => s.storeSlug === storeSlug);
+  }
+
+  addStaff(
+    storeSlug: string,
+    data: Omit<DevStoreStaff, "id" | "storeId" | "storeSlug" | "invitedAt">
+  ): DevStoreStaff {
+    const store = this.ensureStore(storeSlug);
+    const id = `staff-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+    const newStaff: DevStoreStaff = {
+      id,
+      storeId: store.id,
+      storeSlug,
+      email: data.email,
+      name: data.name,
+      phone: data.phone,
+      role: data.role,
+      status: data.status || "active",
+      invitedAt: new Date().toISOString(),
+      lastActiveAt: data.lastActiveAt,
+    };
+    this.staff.set(id, newStaff);
+    return newStaff;
+  }
+
+  deleteStaff(storeSlug: string, staffId: string): boolean {
+    const s = this.staff.get(staffId);
+    if (!s || s.storeSlug !== storeSlug || s.role === "owner") return false;
+    return this.staff.delete(staffId);
+  }
+
+  // ─── ABANDONED CARTS ───────────────────────────────────────────────────────
+
+  recordAbandonedCart(
+    storeSlug: string,
+    data: Omit<DevAbandonedCart, "id" | "storeSlug" | "createdAt" | "status">
+  ): DevAbandonedCart {
+    const existing = Array.from(this.abandonedCarts.values()).find(
+      (c) => c.storeSlug === storeSlug && c.customerPhone === data.customerPhone && c.status === "abandoned"
+    );
+    if (existing) {
+      existing.items = data.items;
+      existing.totalAmount = data.totalAmount;
+      existing.customerName = data.customerName;
+      if (data.customerEmail) existing.customerEmail = data.customerEmail;
+      if (data.district) existing.district = data.district;
+      return existing;
+    }
+
+    const id = `cart-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+    const newCart: DevAbandonedCart = {
+      id,
+      storeSlug,
+      customerName: data.customerName,
+      customerPhone: data.customerPhone,
+      customerEmail: data.customerEmail,
+      items: data.items,
+      totalAmount: data.totalAmount,
+      district: data.district,
+      status: "abandoned",
+      createdAt: new Date().toISOString(),
+    };
+    this.abandonedCarts.set(id, newCart);
+    return newCart;
+  }
+
+  getAbandonedCarts(storeSlug: string): DevAbandonedCart[] {
+    return Array.from(this.abandonedCarts.values())
+      .filter((c) => c.storeSlug === storeSlug)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  markAbandonedCartConverted(storeSlug: string, customerPhone: string): boolean {
+    let matched = false;
+    for (const c of this.abandonedCarts.values()) {
+      if (c.storeSlug === storeSlug && c.customerPhone === customerPhone) {
+        c.status = "converted";
+        matched = true;
+      }
+    }
+    return matched;
+  }
+
+  // ─── SECURITY AUDIT EVENTS ────────────────────────────────────────────────
+
+  logAuditEvent(
+    storeSlug: string,
+    event: Omit<DevAuditEvent, "id" | "storeSlug" | "timestamp">
+  ): DevAuditEvent {
+    const id = `audit-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+    const newEvent: DevAuditEvent = {
+      id,
+      storeSlug,
+      action: event.action,
+      actorEmail: event.actorEmail,
+      actorRole: event.actorRole,
+      details: event.details,
+      ipAddress: event.ipAddress,
+      timestamp: new Date().toISOString(),
+    };
+    this.auditEvents.unshift(newEvent);
+    if (this.auditEvents.length > 200) this.auditEvents.pop();
+    return newEvent;
+  }
+
+  getAuditEvents(storeSlug: string): DevAuditEvent[] {
+    return this.auditEvents.filter((e) => e.storeSlug === storeSlug);
+  }
+
+  // ─── TRANSACTIONAL NOTIFICATIONS ──────────────────────────────────────────
+
+  queueNotification(
+    storeSlug: string,
+    notification: Omit<DevStoreNotification, "id" | "storeSlug" | "createdAt">
+  ): DevStoreNotification {
+    const id = `notif-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+    const newNotif: DevStoreNotification = {
+      id,
+      storeSlug,
+      channel: notification.channel,
+      recipient: notification.recipient,
+      template: notification.template,
+      payload: notification.payload,
+      status: notification.status || "queued",
+      createdAt: new Date().toISOString(),
+    };
+    this.notifications.unshift(newNotif);
+    if (this.notifications.length > 200) this.notifications.pop();
+    return newNotif;
+  }
+
+  getNotifications(storeSlug: string): DevStoreNotification[] {
+    return this.notifications.filter((n) => n.storeSlug === storeSlug);
   }
 }
 

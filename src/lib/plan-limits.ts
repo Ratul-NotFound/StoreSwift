@@ -117,6 +117,22 @@ export function checkProductLimit(
 }
 
 /**
+ * Check if a store can add more staff accounts given their plan.
+ * Returns { allowed: boolean, limit: number, current: number }
+ */
+export function checkStaffLimit(
+  plan: PlanId,
+  currentStaffCount: number
+): { allowed: boolean; limit: number; current: number } {
+  const config = PLAN_LIMITS[plan] ?? PLAN_LIMITS.free;
+  return {
+    allowed: currentStaffCount < config.maxStaff,
+    limit: config.maxStaff,
+    current: currentStaffCount,
+  };
+}
+
+/**
  * Check if a feature is available for a given plan.
  * Throws a descriptive error if not.
  */
