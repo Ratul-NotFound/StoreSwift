@@ -3,6 +3,7 @@ import { z } from "zod";
 import { db, users, stores } from "@/db";
 import { eq } from "drizzle-orm";
 import { comparePassword, signSessionToken } from "@/lib/auth";
+import { devStore } from "@/lib/dev-store";
 
 // In-memory rate limiter: Map of IP/identifier -> { count, resetAt }
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -46,17 +47,20 @@ export async function POST(request: Request) {
 
     // ─── Instant Demo Access ───────────────────────────────────────────
     if (demo) {
+      const demoStore = devStore.getStore("apex-fashion") || devStore.ensureStore("apex-fashion", "Apex Fashion Ltd", "fashion");
       const demoToken = signSessionToken({
         userId: "demo-merchant-id",
         email: "demo@storeswift.com",
-        storeId: "demo-store-id",
-        role: "merchant_owner"
+        storeId: demoStore.id,
+        storeName: demoStore.name,
+        role: "merchant_owner",
+        plan: demoStore.plan
       });
 
       const response = NextResponse.json({
         ok: true,
-        storeId: "demo-store-id",
-        slug: "apex-fashion"
+        storeId: demoStore.id,
+        slug: demoStore.slug
       });
 
       response.cookies.set("ss_session", demoToken, {
@@ -101,14 +105,18 @@ export async function POST(request: Request) {
         await db.select().from(stores).where(eq(stores.ownerId, existingUser.id)).limit(1)
       )[0];
 
-      const storeId = userStore?.id || "default-store";
-      const slug = userStore?.slug || email.split("@")[0].toLowerCase().replace(/[^a-z0-9]/g, "-");
+      const slug = userStore?.slug || email.split("@")[0].toLowerCase().replace(/[^a-z0-9]/g, "-") || "apex-fashion";
+      const storeId = userStore?.id || `store-${slug}`;
+      const storePlan = (userStore?.plan || devStore.getStore(slug)?.plan || "free") as "free" | "medium" | "pro";
+      const storeName = userStore?.name || devStore.getStore(slug)?.name || "My Store";
 
       const token = signSessionToken({
         userId: existingUser.id,
         email: existingUser.email,
         storeId,
-        role: existingUser.role
+        storeName,
+        role: existingUser.role,
+        plan: storePlan
       });
 
       const response = NextResponse.json({
@@ -130,17 +138,21 @@ export async function POST(request: Request) {
       console.error("[Login API DB Fallback]", dbErr);
       // Fallback for offline dev environment
       const slug = email.split("@")[0].toLowerCase().replace(/[^a-z0-9]/g, "-") || "apex-fashion";
+      const store = devStore.getStore(slug) || devStore.ensureStore(slug);
+
       const token = signSessionToken({
         userId: "local-dev-user",
         email,
-        storeId: `store-${slug}`,
-        role: "merchant_owner"
+        storeId: store.id,
+        storeName: store.name,
+        role: "merchant_owner",
+        plan: store.plan
       });
 
       const response = NextResponse.json({
         ok: true,
-        storeId: `store-${slug}`,
-        slug
+        storeId: store.id,
+        slug: store.slug
       });
 
       response.cookies.set("ss_session", token, {

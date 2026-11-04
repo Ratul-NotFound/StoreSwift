@@ -4,6 +4,7 @@ import { db, users, stores } from "@/db";
 import { eq } from "drizzle-orm";
 import { hashPassword, signSessionToken } from "@/lib/auth";
 import { isReservedSlug } from "@/config/reserved-slugs";
+import { devStore } from "@/lib/dev-store";
 
 const registerSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters").max(100),
@@ -93,11 +94,15 @@ export async function POST(request: Request) {
         })
         .returning();
 
+      devStore.ensureStore(newStore.slug, newStore.name, newStore.category);
+
       const token = signSessionToken({
         userId: newUser.id,
         email: newUser.email,
         storeId: newStore.id,
-        role: newUser.role
+        storeName: newStore.name,
+        role: newUser.role,
+        plan: "free"
       });
 
       const response = NextResponse.json({
@@ -119,13 +124,16 @@ export async function POST(request: Request) {
     } catch (dbError) {
       console.error("[Register API DB error]", dbError);
       // If DB is not available in mock/local dev mode, provide fallback session
-      const fallbackStoreId = `store-${Date.now()}`;
+      const registeredStore = devStore.ensureStore(finalSlug, storeName.trim(), category);
+      const fallbackStoreId = registeredStore.id;
       const fallbackUserId = `user-${Date.now()}`;
       const token = signSessionToken({
         userId: fallbackUserId,
         email,
         storeId: fallbackStoreId,
-        role: "merchant_owner"
+        storeName: registeredStore.name,
+        role: "merchant_owner",
+        plan: "free"
       });
 
       const response = NextResponse.json({

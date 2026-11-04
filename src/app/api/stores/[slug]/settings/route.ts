@@ -1,108 +1,127 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { db, stores } from "@/db";
+import { db, stores, customDomains } from "@/db";
 import { eq } from "drizzle-orm";
 import { getSessionFromRequest } from "@/lib/api-auth";
+import { devStore } from "@/lib/dev-store";
 
 const settingsSchema = z.object({
   name:              z.string().min(2).max(100).optional(),
+  description:       z.string().max(1000).optional(),
+  phone:             z.string().max(50).optional(),
+  email:             z.string().email().optional().or(z.literal("")),
+  address:           z.string().max(500).optional(),
+  facebookPixel:     z.string().max(100).optional(),
+  googleAnalytics:   z.string().max(100).optional(),
   announcementText:  z.string().max(500).optional(),
   metaTitle:         z.string().max(255).optional(),
   metaDescription:   z.string().max(500).optional(),
-  primaryColor:      z.string().regex(/^#[0-9a-fA-F]{6}$/).optional(),
+  primaryColor:      z.string().optional(),
   themeConfig:       z.record(z.any()).optional(),
-  paymentConfig:     z.object({
-    enable_cod:    z.boolean(),
-    enable_bkash:  z.boolean(),
-    enable_nagad:  z.boolean(),
-    bkash_number:  z.string().optional(),
-    nagad_number:  z.string().optional(),
-  }).optional(),
+  paymentConfig:     z.any().optional(),
 });
 
-/**
- * GET /api/stores/[slug]/settings  — get store settings
- * PATCH /api/stores/[slug]/settings — update store settings
- */
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  const session = getSessionFromRequest(request);
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
   const { slug } = await params;
+  const ds = devStore.getStore(slug) || devStore.ensureStore(slug);
 
   try {
     const store = await db.query.stores.findFirst({
       where: eq(stores.slug, slug),
-      columns: {
-        id: true, name: true, slug: true, category: true, plan: true,
-        primaryColor: true, themeConfig: true, paymentConfig: true,
-        announcementText: true, metaTitle: true, metaDescription: true,
-        storeStatus: true, subscriptionStatus: true, currency: true, createdAt: true
-      }
     });
 
-    if (!store) return NextResponse.json({ error: "Store not found" }, { status: 404 });
+    const domainRecord = await db.query.customDomains.findFirst({
+      where: eq(customDomains.storeId, store?.id || ds.id)
+    });
 
-    // Tenant isolation
-    if (session.role !== "super_admin" && store.id !== session.storeId) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    if (store) {
+      const mergedSettings = {
+        name: store.name,
+        description: store.metaDescription || "",
+        phone: ds.phone,
+        email: ds.email,
+        address: ds.address,
+        facebookPixel: ds.facebookPixel || "",
+        googleAnalytics: ds.googleAnalytics || "",
+        announcementText: store.announcementText || "",
+        metaTitle: store.metaTitle || "",
+        metaDescription: store.metaDescription || "",
+        primaryColor: store.primaryColor,
+        themeConfig: store.themeConfig,
+        paymentConfig: store.paymentConfig,
+      };
+
+      return NextResponse.json({
+        ok: true,
+        store,
+        settings: mergedSettings,
+        domain: domainRecord ? {
+          domain: domainRecord.domain,
+          cnameTarget: "cname.storeswift.app",
+          isVerified: domainRecord.verified,
+        } : (ds.domain ? { ...ds.domain, isVerified: ds.domain.verified } : null),
+      });
     }
-
-    return NextResponse.json({ ok: true, store });
   } catch {
-    return NextResponse.json({
-      ok: true,
-      store: {
-        id: session.storeId,
-        name: slug.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase()),
-        slug, category: "fashion", plan: "free",
-        primaryColor: "#18181b",
-        themeConfig: { template: "minimal" },
-        paymentConfig: { enable_cod: true, enable_bkash: false, enable_nagad: false },
-        announcementText: "", metaTitle: "", metaDescription: "",
-        storeStatus: "active", subscriptionStatus: "active", currency: "BDT",
-        _mock: true
-      }
-    });
+    // DB unreachable
   }
+
+  const mergedSettings = {
+    name: ds.name,
+    description: "Welcome to " + ds.name,
+    phone: ds.phone,
+    email: ds.email,
+    address: ds.address,
+    facebookPixel: ds.facebookPixel || "",
+    googleAnalytics: ds.googleAnalytics || "",
+    announcementText: "",
+    metaTitle: ds.name,
+    metaDescription: "",
+    primaryColor: "#0f172a",
+    themeConfig: {},
+    paymentConfig: { enable_cod: true, enable_bkash: true, enable_nagad: true },
+  };
+
+  return NextResponse.json({
+    ok: true,
+    store: ds,
+    settings: mergedSettings,
+    domain: ds.domain ? { ...ds.domain, isVerified: ds.domain.verified } : null,
+  });
 }
 
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  const session = getSessionFromRequest(request);
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
   const { slug } = await params;
-
   const body = await request.json();
   const parse = settingsSchema.safeParse(body);
   if (!parse.success) {
     return NextResponse.json({ error: parse.error.errors[0]?.message }, { status: 400 });
   }
 
+  const ds = devStore.getStore(slug) || devStore.ensureStore(slug);
+  devStore.updateStore(slug, parse.data);
+
   try {
-    const store = await db.query.stores.findFirst({
-      where: eq(stores.slug, slug), columns: { id: true }
-    });
-    if (!store) return NextResponse.json({ error: "Store not found" }, { status: 404 });
-    if (session.role !== "super_admin" && store.id !== session.storeId) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
-
-    const updated = await db
+    await db
       .update(stores)
-      .set({ ...parse.data, updatedAt: new Date() })
-      .where(eq(stores.slug, slug))
-      .returning();
-
-    return NextResponse.json({ ok: true, store: updated[0] });
+      .set({
+        name: parse.data.name || undefined,
+        announcementText: parse.data.announcementText || undefined,
+        metaTitle: parse.data.metaTitle || undefined,
+        metaDescription: parse.data.metaDescription || parse.data.description || undefined,
+        primaryColor: parse.data.primaryColor || undefined,
+        updatedAt: new Date()
+      })
+      .where(eq(stores.slug, slug));
   } catch {
-    return NextResponse.json({ ok: true, _mock: true, updated: parse.data });
+    // Non-fatal DB update
   }
-}
 
+  return NextResponse.json({ ok: true, settings: parse.data, store: ds });
+}

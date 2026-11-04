@@ -41,7 +41,9 @@ export function verifySessionToken(token: string, secret?: string): SessionPaylo
         userId: decoded.userId,
         email: decoded.email,
         storeId: decoded.storeId,
-        role: decoded.role
+        storeName: decoded.storeName,
+        role: decoded.role,
+        plan: decoded.plan || "free"
       };
     }
     return null;

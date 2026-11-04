@@ -149,23 +149,61 @@ export default function TenantStorefrontPage({
   );
 
   useEffect(() => {
-    setProducts(
-      seed.products.map((p, idx) => ({
-        id: `prod-${activeCategoryKey}-${idx + 1}`,
-        title: p.title,
-        slug: p.slug,
-        description: p.description,
-        price: parseFloat(p.basePrice),
-        comparePrice: parseFloat(p.basePrice) * 1.35,
-        imageUrl: p.imageUrl || "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=1000&auto=format&fit=crop&q=85",
-        secondaryImage: p.secondaryImage || p.imageUrl || "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=1000&auto=format&fit=crop&q=85",
-        badge: p.badge || (idx === 0 ? "Best Seller" : idx === 1 ? "Trending" : "New"),
-        rating: p.rating || 4.9,
-        variants: seed.variants.filter((v) => v.productSlug === p.slug)
-      }))
-    );
+    // 1. Initialize from seed products for instant rendering
+    const initialSeedProds = seed.products.map((p, idx) => ({
+      id: `prod-${activeCategoryKey}-${idx + 1}`,
+      title: p.title,
+      slug: p.slug,
+      description: p.description,
+      price: parseFloat(p.basePrice),
+      comparePrice: parseFloat(p.basePrice) * 1.35,
+      imageUrl: p.imageUrl || "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=1000&auto=format&fit=crop&q=85",
+      secondaryImage: p.secondaryImage || p.imageUrl || "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=1000&auto=format&fit=crop&q=85",
+      badge: p.badge || (idx === 0 ? "Best Seller" : idx === 1 ? "Trending" : "New"),
+      rating: p.rating || 4.9,
+      variants: seed.variants.filter((v) => v.productSlug === p.slug)
+    }));
+
+    // 2. Fetch live store products from API (custom items + dropship listings)
+    fetch(`/api/products?storeSlug=${tenantSlug}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.products && Array.isArray(data.products) && data.products.length > 0) {
+          const liveProds = data.products.map((p: any, idx: number) => ({
+            id: p.id,
+            title: p.title,
+            slug: p.slug || `prod-${idx}`,
+            description: p.description || "",
+            price: typeof p.price === "number" ? p.price : parseFloat(p.price || "0"),
+            comparePrice: p.comparePrice ? (typeof p.comparePrice === "number" ? p.comparePrice : parseFloat(p.comparePrice)) : (p.price * 1.3),
+            imageUrl: p.imageUrl || "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=1000&auto=format&fit=crop&q=85",
+            secondaryImage: p.imageUrl || "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=1000&auto=format&fit=crop&q=85",
+            badge: p.isDropship ? "Dropship" : idx === 0 ? "Best Seller" : "Trending",
+            rating: 4.9,
+            variants: [
+              {
+                id: `var-${p.id}`,
+                sku: p.sku || `SKU-${p.id}`,
+                title: "Standard",
+                price: String(p.price),
+                inventoryQuantity: p.stock || 25,
+                productSlug: p.slug
+              }
+            ]
+          }));
+
+          // Merge live custom/dropship products first, then fill with template items
+          setProducts(liveProds);
+        } else {
+          setProducts(initialSeedProds);
+        }
+      })
+      .catch(() => {
+        setProducts(initialSeedProds);
+      });
+
     setTemplateKey(categoryConfig.recommendedTemplate || "minimal");
-  }, [seed, activeCategoryKey, categoryConfig.recommendedTemplate]);
+  }, [seed, activeCategoryKey, categoryConfig.recommendedTemplate, tenantSlug]);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);

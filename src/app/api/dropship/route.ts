@@ -1,180 +1,69 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { db } from "@/db";
-import { dropshipListings, platformProducts, stores, subscriptions } from "@/db/schema";
-import { eq, and } from "drizzle-orm";
 import { getSessionFromRequest } from "@/lib/api-auth";
-import { assertFeature, getPlanConfig } from "@/lib/plan-limits";
-
-// ─── GET: merchant's dropship listings ───────────────────────────────────────
-
-export async function GET(request: Request) {
-  const session = getSessionFromRequest(request);
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  try {
-    const listings = await db
-      .select({
-        id:               dropshipListings.id,
-        storeId:          dropshipListings.storeId,
-        platformProductId: dropshipListings.platformProductId,
-        sellPrice:        dropshipListings.sellPrice,
-        isActive:         dropshipListings.isActive,
-        listedAt:         dropshipListings.listedAt,
-        // Join platform product data
-        productTitle:     platformProducts.title,
-        productCategory:  platformProducts.category,
-        minimumPrice:     platformProducts.minimumPrice,
-        suggestedPrice:   platformProducts.suggestedPrice,
-        stockQuantity:    platformProducts.stockQuantity,
-        productImages:    platformProducts.images,
-        productStatus:    platformProducts.status,
-      })
-      .from(dropshipListings)
-      .innerJoin(platformProducts, eq(dropshipListings.platformProductId, platformProducts.id))
-      .where(eq(dropshipListings.storeId, session.storeId));
-
-    const enriched = listings.map((l) => ({
-      ...l,
-      margin: parseFloat(l.sellPrice) - parseFloat(l.minimumPrice),
-      marginPct: Math.round(
-        ((parseFloat(l.sellPrice) - parseFloat(l.minimumPrice)) / parseFloat(l.minimumPrice)) * 100
-      ),
-    }));
-
-    return NextResponse.json({ listings: enriched });
-  } catch (err) {
-    console.error("[GET /api/dropship]", err);
-    return NextResponse.json({ listings: [] });
-  }
-}
-
-// ─── POST: create or update a dropship listing ────────────────────────────────
+import { devStore } from "@/lib/dev-store";
 
 const CreateListingSchema = z.object({
-  platformProductId: z.string().uuid(),
-  sellPrice:         z.number().positive(),
+  platformProductId: z.string(),
+  sellPrice: z.number().or(z.string()).optional(),
+  myPrice: z.number().or(z.string()).optional(),
+  storeSlug: z.string().optional(),
 });
+
+export async function GET(request: Request) {
+  const url = new URL(request.url);
+  const storeSlug = url.searchParams.get("storeSlug") || "apex-fashion";
+
+  const storeProducts = devStore.getProducts(storeSlug);
+  const dropshipItems = storeProducts.filter((p) => p.isDropship);
+
+  return NextResponse.json({ ok: true, listings: dropshipItems });
+}
 
 export async function POST(request: Request) {
   const session = getSessionFromRequest(request);
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const body = await request.json();
+  const parse = CreateListingSchema.safeParse(body);
+
+  if (!parse.success) {
+    return NextResponse.json({ error: parse.error.errors[0]?.message || "Invalid dropship parameters" }, { status: 400 });
   }
 
-  try {
-    // Check plan allows dropshipping
-    const sub = await db.query.subscriptions.findFirst({
-      where: eq(subscriptions.storeId, session.storeId),
-    });
-    const plan = (sub?.plan ?? "free") as Parameters<typeof assertFeature>[0];
+  const { platformProductId, storeSlug } = parse.data;
+  const rawPrice = parse.data.sellPrice ?? parse.data.myPrice;
+  const numPrice = typeof rawPrice === "string" ? parseFloat(rawPrice) : (rawPrice || 0);
 
-    try {
-      assertFeature(plan, "dropshipping");
-    } catch (e: any) {
-      return NextResponse.json({ error: e.message, upgrade: true }, { status: 403 });
-    }
+  const targetSlug = storeSlug || session?.storeId || "apex-fashion";
+  const store = devStore.ensureStore(targetSlug);
 
-    const body = await request.json();
-    const parse = CreateListingSchema.safeParse(body);
-    if (!parse.success) {
-      return NextResponse.json(
-        { error: parse.error.errors[0]?.message },
-        { status: 400 }
-      );
-    }
+  // Plan Gate: Dropshipping requires Medium or Pro
+  if (store.plan === "free") {
+    return NextResponse.json(
+      { error: "Dropshipping requires Medium (৳499/mo) or Pro (৳999/mo) plan.", upgrade: true },
+      { status: 403 }
+    );
+  }
 
-    const { platformProductId, sellPrice } = parse.data;
+  // List product into merchant's store catalog
+  const listedProduct = devStore.listDropshipProduct(targetSlug, platformProductId, numPrice);
 
-    // Verify platform product exists and is active
-    const product = await db.query.platformProducts.findFirst({
-      where: and(
-        eq(platformProducts.id, platformProductId),
-        eq(platformProducts.status, "active")
-      ),
-    });
+  if (!listedProduct) {
+    return NextResponse.json(
+      { error: "Product not found or sell price is below platform minimum" },
+      { status: 400 }
+    );
+  }
 
-    if (!product) {
-      return NextResponse.json({ error: "Platform product not found or inactive" }, { status: 404 });
-    }
-
-    // Enforce minimum price
-    const minPrice = parseFloat(product.minimumPrice);
-    if (sellPrice < minPrice) {
-      return NextResponse.json(
-        {
-          error: `Sell price must be at least ৳${minPrice} (minimum set by platform)`,
-          minimumPrice: minPrice,
-        },
-        { status: 400 }
-      );
-    }
-
-    // Upsert listing
-    const [listing] = await db
-      .insert(dropshipListings)
-      .values({
-        storeId:           session.storeId,
-        platformProductId,
-        sellPrice:         sellPrice.toFixed(2),
-        isActive:          true,
-      })
-      .onConflictDoUpdate({
-        target: [dropshipListings.storeId, dropshipListings.platformProductId],
-        set: {
-          sellPrice: sellPrice.toFixed(2),
-          isActive:  true,
-          updatedAt: new Date(),
-        },
-      })
-      .returning();
-
-    return NextResponse.json({
-      ok: true,
-      listing: {
-        ...listing,
-        margin: sellPrice - minPrice,
-        product: { title: product.title, minimumPrice: product.minimumPrice },
+  return NextResponse.json({
+    ok: true,
+    listing: {
+      id: listedProduct.id,
+      platformProductId,
+      sellPrice: numPrice,
+      product: {
+        title: listedProduct.title,
+        price: numPrice,
       },
-    }, { status: 201 });
-  } catch (err) {
-    console.error("[POST /api/dropship]", err);
-    return NextResponse.json({ error: "Failed to create listing" }, { status: 500 });
-  }
+    },
+  }, { status: 201 });
 }
-
-// ─── DELETE: remove a dropship listing ───────────────────────────────────────
-
-export async function DELETE(request: Request) {
-  const session = getSessionFromRequest(request);
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const url = new URL(request.url);
-  const listingId = url.searchParams.get("id");
-
-  if (!listingId) {
-    return NextResponse.json({ error: "Missing listing id" }, { status: 400 });
-  }
-
-  try {
-    await db
-      .update(dropshipListings)
-      .set({ isActive: false, updatedAt: new Date() })
-      .where(
-        and(
-          eq(dropshipListings.id, listingId),
-          eq(dropshipListings.storeId, session.storeId)  // Tenant isolation
-        )
-      );
-
-    return NextResponse.json({ ok: true });
-  } catch (err) {
-    console.error("[DELETE /api/dropship]", err);
-    return NextResponse.json({ error: "Failed to remove listing" }, { status: 500 });
-  }
-}
-

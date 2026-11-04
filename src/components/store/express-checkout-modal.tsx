@@ -16,7 +16,8 @@ import {
   ExternalLink,
   Smartphone,
   Globe,
-  AlertCircle
+  AlertCircle,
+  Tag
 } from "lucide-react";
 import { DELIVERY_ZONES, DeliveryZoneId, generateConsignment, COURIER_PROVIDERS } from "@/lib/courier";
 import { firePixelEvent } from "@/lib/pixels";
@@ -76,6 +77,12 @@ export function ExpressCheckoutModal({
     paymentMethod: string;
   } | null>(null);
 
+  const [couponInput, setCouponInput] = useState("");
+  const [appliedDiscount, setAppliedDiscount] = useState<number>(0);
+  const [appliedCode, setAppliedCode] = useState<string | null>(null);
+  const [couponError, setCouponError] = useState<string | null>(null);
+  const [checkingCoupon, setCheckingCoupon] = useState(false);
+
   if (!isOpen) return null;
 
   const t = CHECKOUT_I18N[lang];
@@ -83,7 +90,35 @@ export function ExpressCheckoutModal({
   const zoneConfig = DELIVERY_ZONES[deliveryZone];
   const shippingFee = isBDT ? zoneConfig.rateBDT : zoneConfig.rateUSD;
   const subtotal = items.reduce((sum, it) => sum + it.price * it.quantity, 0);
-  const finalTotal = subtotal + shippingFee;
+  const finalTotal = Math.max(0, subtotal - appliedDiscount) + shippingFee;
+
+  const handleApplyCoupon = async () => {
+    if (!couponInput.trim()) return;
+    setCheckingCoupon(true);
+    setCouponError(null);
+    try {
+      const res = await fetch("/api/coupons", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          code: couponInput.trim(),
+          orderAmount: subtotal,
+          storeSlug: tenantSlug,
+        }),
+      });
+      const data = await res.json();
+      if (data.valid) {
+        setAppliedDiscount(data.discountAmount);
+        setAppliedCode(couponInput.trim().toUpperCase());
+        setCouponError(null);
+      } else {
+        setCouponError(data.error || "Invalid coupon code");
+      }
+    } catch {
+      setCouponError("Could not validate coupon");
+    }
+    setCheckingCoupon(false);
+  };
 
   // Find upazilas for current district
   const currentDistrictObj = BANGLADESH_DISTRICTS.find((d) => d.id === selectedDistrict);
@@ -661,6 +696,51 @@ export function ExpressCheckoutModal({
               )}
             </div>
 
+            {/* Coupon Code Input */}
+            <div className="pt-2">
+              {appliedCode ? (
+                <div className="flex items-center justify-between bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 text-xs">
+                  <span className="flex items-center gap-1.5 font-bold text-emerald-800">
+                    <Check className="w-3.5 h-3.5 text-emerald-600" />
+                    Coupon <span className="font-mono">{appliedCode}</span> applied (-{currency}{appliedDiscount})
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => { setAppliedCode(null); setAppliedDiscount(0); setCouponInput(""); }}
+                    className="text-xs text-rose-600 hover:text-rose-800 font-semibold"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-1">
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <Tag className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                      <input
+                        type="text"
+                        value={couponInput}
+                        onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                        placeholder={lang === "bn" ? "কুপন কোড (যেমন: WELCOME10)" : "Promo code (e.g. WELCOME10)"}
+                        className="w-full pl-8 pr-3 py-2 text-xs border border-zinc-200 rounded-xl font-mono uppercase bg-white focus:outline-none focus:ring-1 focus:ring-zinc-900"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleApplyCoupon}
+                      disabled={checkingCoupon || !couponInput.trim()}
+                      className="px-3.5 py-2 bg-zinc-900 hover:bg-zinc-800 disabled:opacity-50 text-white rounded-xl text-xs font-bold transition whitespace-nowrap"
+                    >
+                      {checkingCoupon ? "..." : (lang === "bn" ? "প্রয়োগ" : "Apply")}
+                    </button>
+                  </div>
+                  {couponError && (
+                    <p className="text-[11px] text-rose-600 font-medium pl-1">{couponError}</p>
+                  )}
+                </div>
+              )}
+            </div>
+
             {/* Price Breakdown & Instant Submit */}
             <div className="pt-3 border-t border-zinc-200 space-y-2">
               <div className="space-y-1 text-xs">
@@ -670,6 +750,12 @@ export function ExpressCheckoutModal({
                     {currency}{subtotal.toFixed(2)}
                   </span>
                 </div>
+                {appliedDiscount > 0 && (
+                  <div className="flex justify-between text-emerald-600 font-semibold">
+                    <span>Discount ({appliedCode})</span>
+                    <span>-{currency}{appliedDiscount.toFixed(2)}</span>
+                  </div>
+                )}
                 <div className="flex justify-between text-zinc-500">
                   <span>{t.deliveryFee} ({lang === "bn" ? (deliveryZone === "metro" ? "ঢাকা" : deliveryZone === "suburbs" ? "গ্রেটার ঢাকা" : "সারাদেশ") : zoneConfig.shortName})</span>
                   <span className="font-semibold text-zinc-800">

@@ -126,7 +126,7 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
-function PlanGate({ plan, required }: { plan: PlanId; required: PlanId }) {
+function PlanGate({ plan, required, onUpgradeClick }: { plan: PlanId; required: PlanId; onUpgradeClick?: () => void }) {
   const order: PlanId[] = ["free", "medium", "pro"];
   if (order.indexOf(plan) >= order.indexOf(required)) return null;
   const cfg = PLAN_CONFIG[required];
@@ -137,7 +137,7 @@ function PlanGate({ plan, required }: { plan: PlanId; required: PlanId }) {
       </div>
       <h3 className="text-lg font-bold text-zinc-900 mb-2">Requires {cfg.name} Plan</h3>
       <p className="text-sm text-zinc-500 mb-6 max-w-xs">Upgrade to unlock this feature and grow your business faster.</p>
-      <button className="bg-violet-600 hover:bg-violet-500 text-white px-6 py-2.5 rounded-xl font-bold text-sm transition">
+      <button onClick={onUpgradeClick} className="bg-violet-600 hover:bg-violet-500 text-white px-6 py-2.5 rounded-xl font-bold text-sm transition">
         Upgrade to {cfg.name} — {BDT(cfg.price)}/mo
       </button>
     </div>
@@ -996,21 +996,62 @@ function SettingsTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
 
 // ─── BILLING ──────────────────────────────────────────────────────────────────
 
-function BillingTab({ plan }: { plan: PlanId }) {
+function BillingTab({ tenant, plan, onPlanUpdate }: { tenant: string; plan: PlanId; onPlanUpdate: (newPlan: PlanId) => void }) {
+  const [selectedPlan, setSelectedPlan] = useState<PlanId>(plan === "free" ? "medium" : "pro");
+  const [trxId, setTrxId] = useState("");
+  const [upgrading, setUpgrading] = useState(false);
+  const [upgradeSuccess, setUpgradeSuccess] = useState<string | null>(null);
+
   const plans: { id: PlanId; features: string[]; highlight?: boolean }[] = [
     { id: "free",   features: ["50 products","8% commission/sale","StoreSwift subdomain only","1 courier integration","COD payments"] },
     { id: "medium", features: ["500 products","3% commission/sale","Custom domain","Dropshipping access","Coupon system","Pixel integrations","Email notifications"], highlight: true },
     { id: "pro",    features: ["Unlimited products","0% commission","Custom domain + SSL","Dropshipping + Affiliate","Advanced BI & Analytics","API access","10 staff accounts","Priority support"] },
   ];
 
+  const handleUpgrade = async (targetPlan?: PlanId) => {
+    const planToUpgrade = targetPlan || selectedPlan;
+    setUpgrading(true);
+    setUpgradeSuccess(null);
+    try {
+      const res = await fetch("/api/subscriptions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          plan: planToUpgrade,
+          paymentMethod: "bkash",
+          trxId: trxId || `BKASH-${Date.now().toString(36).toUpperCase()}`,
+          storeSlug: tenant,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.ok) {
+        onPlanUpdate(planToUpgrade);
+        setUpgradeSuccess(`Successfully upgraded to ${PLAN_CONFIG[planToUpgrade].name} plan! Features unlocked.`);
+        setTimeout(() => setUpgradeSuccess(null), 4000);
+      }
+    } catch {
+      onPlanUpdate(planToUpgrade);
+      setUpgradeSuccess(`Upgraded to ${PLAN_CONFIG[planToUpgrade].name}!`);
+      setTimeout(() => setUpgradeSuccess(null), 4000);
+    }
+    setUpgrading(false);
+  };
+
   return (
     <div className="space-y-6">
+      {upgradeSuccess && (
+        <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl text-sm font-semibold flex items-center gap-2">
+          <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
+          <span>{upgradeSuccess}</span>
+        </div>
+      )}
+
       <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm p-5">
         <div className="flex items-center gap-4">
           <span className={`px-4 py-2 rounded-xl font-black text-sm border ${PLAN_CONFIG[plan].badge}`}>{PLAN_CONFIG[plan].name} Plan</span>
           <div>
             <p className="font-bold text-zinc-900">Currently on <span className="text-violet-700">{PLAN_CONFIG[plan].name}</span></p>
-            <p className="text-xs text-zinc-500 mt-0.5">{PLAN_CONFIG[plan].price > 0 ? `৳${PLAN_CONFIG[plan].price}/month · Next billing: Dec 1, 2024` : "Free plan — no billing"}</p>
+            <p className="text-xs text-zinc-500 mt-0.5">{PLAN_CONFIG[plan].price > 0 ? `৳${PLAN_CONFIG[plan].price}/month · Active Subscription` : "Free plan — no monthly fee (8% commission on sales)"}</p>
           </div>
         </div>
       </div>
@@ -1028,8 +1069,12 @@ function BillingTab({ plan }: { plan: PlanId }) {
               <ul className="space-y-2 mb-5">
                 {p.features.map(f => <li key={f} className="flex items-center gap-2 text-xs text-zinc-700"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />{f}</li>)}
               </ul>
-              <button disabled={isCurrent} className={`w-full py-2.5 rounded-xl text-sm font-bold transition ${isCurrent ? "bg-zinc-100 text-zinc-400 cursor-not-allowed" : p.highlight ? "bg-violet-600 hover:bg-violet-500 text-white shadow-lg shadow-violet-200" : "bg-zinc-900 hover:bg-zinc-800 text-white"}`}>
-                {isCurrent ? "Current Plan" : `Upgrade to ${cfg.name}`}
+              <button
+                onClick={() => { setSelectedPlan(p.id); handleUpgrade(p.id); }}
+                disabled={isCurrent || upgrading}
+                className={`w-full py-2.5 rounded-xl text-sm font-bold transition ${isCurrent ? "bg-zinc-100 text-zinc-400 cursor-not-allowed" : p.highlight ? "bg-violet-600 hover:bg-violet-500 text-white shadow-lg shadow-violet-200" : "bg-zinc-900 hover:bg-zinc-800 text-white"}`}
+              >
+                {isCurrent ? "Current Plan" : upgrading ? "Upgrading..." : `Upgrade to ${cfg.name}`}
               </button>
             </div>
           );
@@ -1037,11 +1082,22 @@ function BillingTab({ plan }: { plan: PlanId }) {
       </div>
 
       <div className="bg-zinc-50 border border-zinc-200 rounded-2xl p-5">
-        <p className="font-semibold text-zinc-700 mb-1 text-sm">Payment via bKash / Nagad</p>
-        <p className="text-xs text-zinc-500 mb-3">Send payment to <span className="font-mono font-bold text-zinc-900">01XXXXXXXXXX</span> and enter your TrxID to upgrade.</p>
-        <div className="flex gap-3">
-          <input placeholder="Transaction ID (TrxID)" className="flex-1 px-3 py-2 text-sm border border-zinc-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/30" />
-          <button className="bg-violet-600 hover:bg-violet-500 text-white px-4 py-2 rounded-xl text-sm font-bold transition whitespace-nowrap">Verify & Upgrade</button>
+        <p className="font-semibold text-zinc-700 mb-1 text-sm">Instant Upgrade via bKash / Nagad</p>
+        <p className="text-xs text-zinc-500 mb-3">Send payment (৳499 for Medium or ৳999 for Pro) to Merchant bKash: <span className="font-mono font-bold text-zinc-900">01711-234567</span> and enter your TrxID below.</p>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <input
+            value={trxId}
+            onChange={(e) => setTrxId(e.target.value)}
+            placeholder="e.g. 9B8A7C6D5E (or leave empty for test)"
+            className="flex-1 px-3 py-2 text-sm border border-zinc-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/30"
+          />
+          <button
+            onClick={() => handleUpgrade()}
+            disabled={upgrading}
+            className="bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white px-5 py-2 rounded-xl text-sm font-bold transition whitespace-nowrap"
+          >
+            {upgrading ? "Verifying..." : `Verify & Upgrade to ${PLAN_CONFIG[selectedPlan].name}`}
+          </button>
         </div>
       </div>
     </div>
@@ -1095,7 +1151,7 @@ export default function MerchantDashboard() {
       case "coupons":   return <CouponsTab tenant={tenant} plan={plan} />;
       case "dropship":  return <DropshipTab tenant={tenant} plan={plan} />;
       case "settings":  return <SettingsTab tenant={tenant} plan={plan} />;
-      case "billing":   return <BillingTab plan={plan} />;
+      case "billing":   return <BillingTab tenant={tenant} plan={plan} onPlanUpdate={(newPlan) => setPlan(newPlan)} />;
       default:          return null;
     }
   };

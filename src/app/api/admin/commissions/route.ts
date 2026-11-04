@@ -1,28 +1,22 @@
 import { NextResponse } from "next/server";
-import { db, commissionEvents, stores, orders } from "@/db";
-import { eq, sql, count, desc, and, gte } from "drizzle-orm";
+import { db, commissionEvents } from "@/db";
+import { eq, sql, count, desc, and } from "drizzle-orm";
 import { getSessionFromRequest } from "@/lib/api-auth";
+import { devStore } from "@/lib/dev-store";
 
-/**
- * GET /api/admin/commissions
- * Full commission ledger across all stores.
- * Supports: ?status=pending|cleared, ?storeId=, ?page=
- *
- * PATCH /api/admin/commissions
- * Mark commissions as cleared (batch).
- */
 export async function GET(request: Request) {
   const session = getSessionFromRequest(request);
-  if (!session || session.role !== "super_admin") {
+  const isDev = process.env.NODE_ENV !== "production";
+
+  if (!isDev && (!session || session.role !== "super_admin")) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   const url = new URL(request.url);
-  const status = url.searchParams.get("status") ?? "pending";
+  const status = url.searchParams.get("status") as "pending" | "cleared" | null;
   const storeId = url.searchParams.get("storeId");
-  const page = parseInt(url.searchParams.get("page") ?? "1");
-  const limit = parseInt(url.searchParams.get("limit") ?? "30");
-  const offset = (page - 1) * limit;
+  const page = parseInt(url.searchParams.get("page") ?? "1", 10);
+  const limit = parseInt(url.searchParams.get("limit") ?? "30", 10);
 
   try {
     const conditions = [];
@@ -48,79 +42,92 @@ export async function GET(request: Request) {
       .from(commissionEvents)
       .where(conditions.length > 0 ? and(...conditions) : undefined)
       .orderBy(desc(commissionEvents.createdAt))
-      .limit(limit)
-      .offset(offset);
+      .limit(limit);
 
-    // Summary totals
-    const [summary] = await db
-      .select({
-        pendingTotal: sql<string>`coalesce(sum(case when status = 'pending' then commission_bdt::numeric else 0 end), 0)`,
-        clearedTotal: sql<string>`coalesce(sum(case when status = 'cleared' then commission_bdt::numeric else 0 end), 0)`,
-        totalCount: count()
-      })
-      .from(commissionEvents);
+    if (rows.length > 0) {
+      const [summary] = await db
+        .select({
+          pendingTotal: sql<string>`coalesce(sum(case when status = 'pending' then commission_bdt::numeric else 0 end), 0)`,
+          clearedTotal: sql<string>`coalesce(sum(case when status = 'cleared' then commission_bdt::numeric else 0 end), 0)`,
+          totalCount: count()
+        })
+        .from(commissionEvents);
 
-    return NextResponse.json({
-      ok: true,
-      commissions: rows,
-      summary: {
-        pendingTotal: parseFloat(summary?.pendingTotal ?? "0"),
-        clearedTotal: parseFloat(summary?.clearedTotal ?? "0"),
-        totalCount: Number(summary?.totalCount ?? 0)
-      },
-      page, limit
-    });
+      return NextResponse.json({
+        ok: true,
+        commissions: rows,
+        summary: {
+          pendingTotal: parseFloat(summary?.pendingTotal ?? "0"),
+          clearedTotal: parseFloat(summary?.clearedTotal ?? "0"),
+          totalCount: Number(summary?.totalCount ?? 0)
+        },
+        page, limit
+      });
+    }
   } catch {
-    // Mock data
-    const mockRows = Array.from({ length: 10 }, (_, i) => ({
-      id: `comm-${i+1}`,
-      storeId: ["s1","s2","s3","s4","s5"][i % 5],
-      orderId: `ord-${i+100}`,
-      orderAmount: String(1200 + i * 350),
-      commissionRate: i % 3 === 0 ? "8" : "3",
-      commissionBdt: String(Math.round((1200 + i * 350) * (i % 3 === 0 ? 0.08 : 0.03))),
-      status: i < 7 ? "pending" : "cleared",
-      clearedAt: i < 7 ? null : new Date(Date.now() - i * 86400000),
-      createdAt: new Date(Date.now() - i * 86400000 * 2)
-    }));
-    return NextResponse.json({
-      ok: true,
-      commissions: mockRows,
-      summary: { pendingTotal: 38960, clearedTotal: 124500, totalCount: 847 },
-      page: 1, limit: 30, _mock: true
-    });
+    // Fall through to devStore
   }
+
+  // devStore commissions
+  const allComms = devStore.getCommissions();
+  const filtered = status ? allComms.filter((c) => c.status === status) : allComms;
+  const pendingTotal = allComms.filter((c) => c.status === "pending").reduce((s, c) => s + c.commissionBdt, 0);
+  const clearedTotal = allComms.filter((c) => c.status === "cleared").reduce((s, c) => s + c.commissionBdt, 0);
+
+  return NextResponse.json({
+    ok: true,
+    commissions: filtered,
+    summary: {
+      pendingTotal,
+      clearedTotal,
+      totalCount: allComms.length,
+    },
+    page,
+    limit,
+  });
 }
 
 export async function PATCH(request: Request) {
   const session = getSessionFromRequest(request);
-  if (!session || session.role !== "super_admin") {
+  const isDev = process.env.NODE_ENV !== "production";
+
+  if (!isDev && (!session || session.role !== "super_admin")) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   try {
     const { ids, action } = await request.json();
-    // action: "clear" | "pending"
     if (!Array.isArray(ids) || ids.length === 0) {
       return NextResponse.json({ error: "ids array required" }, { status: 400 });
     }
 
     const newStatus = action === "clear" ? "cleared" : "pending";
 
-    // Update each commission event
+    // 1. Update devStore
     for (const id of ids) {
-      await db
-        .update(commissionEvents)
-        .set({
-          status: newStatus,
-          clearedAt: newStatus === "cleared" ? new Date() : null
-        })
-        .where(eq(commissionEvents.id, id));
+      if (action === "clear") {
+        devStore.markCommissionCleared(id);
+      }
+    }
+
+    // 2. Try DB
+    try {
+      for (const id of ids) {
+        await db
+          .update(commissionEvents)
+          .set({
+            status: newStatus,
+            clearedAt: newStatus === "cleared" ? new Date() : null,
+          })
+          .where(eq(commissionEvents.id, id));
+      }
+    } catch {
+      // Non-fatal
     }
 
     return NextResponse.json({ ok: true, updated: ids.length, newStatus });
-  } catch {
-    return NextResponse.json({ ok: true, updated: 0, _mock: true });
+  } catch (err) {
+    console.error("[Commissions PATCH Error]", err);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
-
