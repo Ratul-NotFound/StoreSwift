@@ -27,23 +27,33 @@ import {
   MessageSquare,
   FileSpreadsheet,
   Printer,
-  ShoppingBag
+  ShoppingBag,
+  Monitor,
+  Smartphone,
+  Copy,
+  CheckCheck
 } from "lucide-react";
 import { PlatformFooter, DEMO_STORES_LIST } from "@/components/platform-footer";
 import { ThemeToggle } from "@/components/theme-toggle";
+
+interface TemplateDetail {
+  id: string;
+  name: string;
+  tag: string;
+  badge: string;
+  headline: string;
+  description: string;
+  image: string;
+  highlights: string[];
+}
 
 interface IndustryStorefront {
   slug: string;
   name: string;
   category: string;
-  template: string;
-  headline: string;
-  description: string;
-  image: string;
-  highlights: string[];
   categoryParam: string;
   templatesCount: number;
-  availableTemplates: { id: string; name: string; tag: string }[];
+  templates: TemplateDetail[];
 }
 
 const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
@@ -51,120 +61,363 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
     slug: "apex-fashion",
     name: "Apex Fashion Hub",
     category: "Fashion & Apparel",
-    template: "Minimal Atelier",
-    headline: "Textile-focused apparel architecture with editorial lookbooks",
-    description: "Designed for fashion labels with fabric weight badges (GSM), studio and on-model angle switchers, and lookbook ensemble bundles.",
-    image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1200&auto=format&fit=crop&q=85",
-    highlights: ["Textile GSM weight badges", "Studio angle switcher", "Curated outfits lookbook", "Doorstep fit inspection guarantee"],
     categoryParam: "fashion",
     templatesCount: 5,
-    availableTemplates: [
-      { id: "minimal", name: "Minimal Atelier", tag: "High Fashion" },
-      { id: "clothing", name: "Clothing.co Boutique", tag: "Warm Boutique" },
-      { id: "milano", name: "Milano Streetwear", tag: "Dark Editorial" },
-      { id: "nickelfox", name: "NickelFox Bold", tag: "AvantGarde Street" },
-      { id: "athleisure", name: "Athleisure Pro", tag: "Sport & Linen" },
+    templates: [
+      {
+        id: "minimal",
+        name: "Minimal Atelier",
+        tag: "High Fashion",
+        badge: "🤍 Atelier",
+        headline: "Textile GSM badges, editorial lookbooks, and high-fashion aesthetics",
+        description: "Clean editorial architecture built for luxury apparel labels with fabric weight metrics (GSM), studio angle switchers, and lookbook ensemble bundles.",
+        image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["Fabric GSM weight badges", "Studio angle switcher", "Curated lookbook bundles", "Doorstep fit inspection guarantee"]
+      },
+      {
+        id: "clothing",
+        name: "Clothing.co Boutique",
+        tag: "Warm Boutique",
+        badge: "🟤 Boutique",
+        headline: "Warm earth tones, curated rack collections, and artisanal lifestyle",
+        description: "Designed for contemporary boutique retailers featuring warm tactile neutrals, seasonal capsule collections, and automated size fit recommendation engine.",
+        image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["Warm earth-tone aesthetic", "Seasonal capsule grids", "Interactive size fit assistant", "Doorstep courier returns"]
+      },
+      {
+        id: "milano",
+        name: "Milano Streetwear",
+        tag: "Dark Editorial",
+        badge: "⚫ Milano",
+        headline: "Full-bleed dark editorial, limited drop timers, and oversized cuts",
+        description: "High-impact dark luxury aesthetic engineered for hype streetwear brands with limited drop countdowns, oversized silhouette guides, and anti-counterfeit tags.",
+        image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["Full-bleed dark editorial mode", "Limited drop countdown timer", "Oversized silhouette cutaway", "NFC authenticity certificate"]
+      },
+      {
+        id: "nickelfox",
+        name: "NickelFox Bold",
+        tag: "Avant-Garde Street",
+        badge: "🟡 NickelFox",
+        headline: "High-energy acid yellow & black catalog with bold pill navigation",
+        description: "Vibrant, high-contrast retail template designed for youth streetwear and athletic apparel with urgent stock indicators and rapid 1-click cart addition.",
+        image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["High-energy yellow/black style", "Dynamic pill navigation tabs", "Live inventory urgency indicators", "Sub-second 1-click checkout"]
+      },
+      {
+        id: "athleisure",
+        name: "Aero Athleisure Pro",
+        tag: "Sport & Performance",
+        badge: "🏃 Athleisure",
+        headline: "Moisture-wicking telemetry, 4-way active stretch & gym performance",
+        description: "Engineered for activewear and performance labels with fabric breathability gauges, athlete sizing benchmarks, and compression gradient specs.",
+        image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["Moisture-wicking GSM index", "4-way active stretch metrics", "Sweatproof breathability ratings", "Athlete sizing benchmarks"]
+      }
     ]
   },
   {
     slug: "luxe-glow-beauty",
     name: "Luxe Glow Beauty",
     category: "Beauty & Skincare",
-    template: "Clinical Botanical",
-    headline: "Clinical botanical formulations with ingredient bio-active percentages",
-    description: "Tailored for skincare and beauty brands with a 3-step routine builder, skin-type concern filters, and tamper seal inspection protocols.",
-    image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1200&auto=format&fit=crop&q=85",
-    highlights: ["Active ingredient % badges", "3-Step glass skin ritual", "Tamper seal inspection protocol", "Skin concern filter"],
     categoryParam: "beauty_cosmetics",
     templatesCount: 5,
-    availableTemplates: [
-      { id: "glow", name: "Clinical Botanical", tag: "Glass Skin Ritual" },
-      { id: "luxe-glam", name: "Luxe Glamour", tag: "Red Carpet Glam" },
-      { id: "k-beauty", name: "K-Beauty Pure", tag: "Hydration Dew" },
-      { id: "derma-rx", name: "Derma RX", tag: "Clinical Science" },
-      { id: "apothecary", name: "Organic Apothecary", tag: "Herbal Remedies" },
+    templates: [
+      {
+        id: "glow",
+        name: "Clinical Botanical",
+        tag: "Glass Skin Ritual",
+        badge: "🌸 Botanical",
+        headline: "Clinical botanical formulations with bio-active ingredient percentages",
+        description: "Purpose-built for clean beauty and derma skincare brands with a step-by-step glass skin routine builder, skin-type concern filters, and tamper seal guarantees.",
+        image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["Active ingredient % badges", "3-Step glass skin ritual builder", "Tamper seal inspection protocol", "Skin concern diagnostic filter"]
+      },
+      {
+        id: "luxe-glam",
+        name: "Velvet Glam Parfumerie",
+        tag: "Haute Parfumerie",
+        badge: "💄 Velvet Glam",
+        headline: "Midnight plum, golden olfactory pyramids & rich velvet pigments",
+        description: "Opulent luxury cosmetics and haute fragrance layout featuring interactive scent notes (top/heart/base), velvet pigment swatches, and luxury travel add-on sets.",
+        image: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["Olfactory top/heart/base pyramid", "Midnight velvet aesthetic", "Travel atomizer add-on bundle", "Certified fragrance concentration"]
+      },
+      {
+        id: "k-beauty",
+        name: "Seoul Dew K-Beauty",
+        tag: "Glass Skin Dew",
+        badge: "✨ Seoul Dew",
+        headline: "Centella & fermented rice % badges with 10-step hydration routine guide",
+        description: "Pastel, hyper-clean aesthetic inspired by Seoul skincare pioneers, with ingredient concentration disclosures, barrier repair badges, and patch-test proofs.",
+        image: "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["Centella & fermented rice % badges", "10-Step Korean skincare guide", "Dewy skin hydration index", "Hypoallergenic patch-test verified"]
+      },
+      {
+        id: "derma-rx",
+        name: "Dermacure Lab Rx",
+        tag: "Clinical Dermatology",
+        badge: "🔬 Derma Rx",
+        headline: "Prescription sterile layout, ceramide NP matrix & clinical pH indicator",
+        description: "Medical-grade skincare storefront with clinical trial results, active acid percentages (AHA/BHA/Retinol), and dermatologist verification badges.",
+        image: "https://images.unsplash.com/photo-1608248597359-455b5502a5c4?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["Prescription sterile layout", "Ceramide NP lipid matrix", "Clinical pH balance indicator", "Dermatologist approval seal"]
+      },
+      {
+        id: "apothecary",
+        name: "Herbal Apothecary",
+        tag: "Organic Herbalism",
+        badge: "🌿 Apothecary",
+        headline: "Amber glass apothecary, wildcrafted extraction notes & cold-pressed oils",
+        description: "Warm vintage apothecary storefront showcasing botanical tinctures, cold-pressed seed oils, UV-protective glass packaging, and batch harvest stamps.",
+        image: "https://images.unsplash.com/photo-1617897903246-719242758050?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["Wildcrafted extraction notes", "Cold-pressed unrefined oils", "Amber glass UV protection", "100% compostable packaging"]
+      }
     ]
   },
   {
     slug: "craft-shoes",
     name: "Craft Bench Shoes",
     category: "Footwear & Leather",
-    template: "Warm Heritage",
-    headline: "Heritage leathercraft, welted construction and outsole specs",
-    description: "Crafted for footwear and leather goods makers with anatomical cutaway visuals, tannery provenance, and Vibram lug depth specs.",
-    image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=1200&auto=format&fit=crop&q=85",
-    highlights: ["Anatomical sole cutaway", "Leather tannery provenance", "Heel-to-toe drop specs", "Doorstep fitting check"],
     categoryParam: "shoes",
     templatesCount: 5,
-    availableTemplates: [
-      { id: "artisan", name: "Warm Heritage", tag: "Welted Craft" },
-      { id: "velocity", name: "Velocity Runner", tag: "Athletic Sneaker" },
-      { id: "street-hype", name: "Street Hype", tag: "Urban Sneaker" },
-      { id: "bespoke", name: "Bespoke Bootmaker", tag: "Handmade Goodyear" },
-      { id: "alpine-trek", name: "Alpine Trekker", tag: "Outdoor & Trail" },
+    templates: [
+      {
+        id: "artisan",
+        name: "Warm Heritage Guild",
+        tag: "Welted Craft",
+        badge: "👞 Heritage",
+        headline: "Heritage leathercraft, Goodyear welted construction, and Vibram lug depth",
+        description: "Crafted for footwear and leather goods makers with anatomical cutaway visuals, tannery provenance, and Vibram lug depth specifications.",
+        image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["Anatomical sole cutaway visuals", "Horween tannery provenance", "Vibram lug depth specifications", "Doorstep fitting check guarantee"]
+      },
+      {
+        id: "velocity",
+        name: "Velocity Sneaker Vault",
+        tag: "Kinetic Runners",
+        badge: "⚡ Velocity Kicks",
+        headline: "Carbon torsion plates, drop countdowns & dynamic live size runs",
+        description: "High-octane sneaker performance storefront featuring real-time size inventory runs, energy return data, and nitrogen foam cushioning breakdown.",
+        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1200&auto=format&fit=crop&q=80",
+        highlights: ["Carbon fiber torsion plate telemetry", "Drop launch countdown timer", "Dynamic real-time size run", "Nitrogen-infused foam cushioning"]
+      },
+      {
+        id: "street-hype",
+        name: "SoleStreet Hype",
+        tag: "Urban Sneaker",
+        badge: "👟 Street Hype",
+        headline: "Verified deadstock authentication, raffle alerts & secondary price index",
+        description: "Sneakerhead marketplace layout with NFC chip verification badges, instant lottery raffle entries, and verified market price fluctuations.",
+        image: "https://images.unsplash.com/photo-1552346154-21d32810aba3?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["Deadstock authentication NFC badge", "Limited raffle reservation alerts", "Secondary market price index", "Tamper-evident holographic tags"]
+      },
+      {
+        id: "bespoke",
+        name: "Milano Bespoke Oxford",
+        tag: "Handmade Goodyear",
+        badge: "👞 Bespoke",
+        headline: "Hand-patina calfskin finish guide & Goodyear chisel-toe specifications",
+        description: "Sartorial elegance for custom dress shoes, featuring French calfskin leather swatches, wooden last cutaway diagrams, and monogram engraving.",
+        image: "https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["Hand-patina calfskin finish guide", "Goodyear chisel-toe welt specs", "Custom monogramming preview", "Cedar shoe tree inclusion"]
+      },
+      {
+        id: "alpine-trek",
+        name: "Summit Alpine Trail",
+        tag: "Outdoor & Trail",
+        badge: "🏔️ Alpine Trek",
+        headline: "GORE-TEX waterproof ratings, terrain grip meter & Cordura upper",
+        description: "Technical outdoor boot showcase with 28,000mm hydrostatic head waterproof meters, sub-zero insulation ratings, and Vibram Megagrip traction charts.",
+        image: "https://images.unsplash.com/photo-1520639888713-7851133b1ed0?w=1200&auto=format&fit=crop&q=80",
+        highlights: ["GORE-TEX waterproof rating (28k)", "Terrain grip traction meter", "Abrasion-resistant Cordura upper", "Sub-zero thermal insulation rating"]
+      }
     ]
   },
   {
     slug: "cyber-tech",
     name: "CyberTech Audio",
     category: "Consumer Tech & Audio",
-    template: "Acoustic Cyber",
-    headline: "Frequency curves, titanium driver specs and hardware telemetry",
-    description: "Optimized for consumer electronics and audio gear with acoustic frequency visualizers, IPX7 ratings, and low-latency gaming mode.",
-    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1200&auto=format&fit=crop&q=85",
-    highlights: ["Frequency curve visualizer", "Low-latency gaming mode", "IPX7 waterproof ratings", "Anti-tamper seal protocol"],
     categoryParam: "electronics",
     templatesCount: 5,
-    availableTemplates: [
-      { id: "bold", name: "Acoustic Cyber", tag: "Frequency Curves" },
-      { id: "lumina", name: "Lumina Pro Studio", tag: "Studio Monitors" },
-      { id: "cyber-rgb", name: "Cyber Neon RGB", tag: "Gaming Hardware" },
-      { id: "smart-home", name: "Smart Home IoT", tag: "Home Automation" },
-      { id: "studio-rig", name: "Studio Rig Audio", tag: "Audiophile Ref" },
+    templates: [
+      {
+        id: "bold",
+        name: "Acoustic Cyber",
+        tag: "Frequency Curves",
+        badge: "🎧 Cyber Tech",
+        headline: "Frequency curves, titanium driver specs, and CNC hardware telemetry",
+        description: "Optimized for audiophiles and premium hardware with acoustic frequency visualizers, IPX7 waterproof ratings, and low-latency gaming mode.",
+        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["Frequency curve visualizer", "Low-latency gaming mode", "IPX7 waterproof ratings", "Anti-tamper seal protocol"]
+      },
+      {
+        id: "lumina",
+        name: "Lumina Zen Silicon",
+        tag: "Studio Monitors",
+        badge: "💻 Zen Silicon",
+        headline: "Pristine anodized aluminum, battery benchmarks & magnetic snap specs",
+        description: "Monolithic minimalist hardware layout featuring CNC anodized chassis cutaways, battery life benchmarks, and silent magnetic connection details.",
+        image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["CNC 6063 anodized aluminum", "Battery benchmark telemetry", "Magnetic snap quick disconnect", "Pristine minimalist layout"]
+      },
+      {
+        id: "cyber-rgb",
+        name: "Cyber Neon RGB",
+        tag: "Gaming Hardware",
+        badge: "🎮 Cyber RGB",
+        headline: "240Hz latency telemetry, hot-swap actuation curves & RGB preview",
+        description: "Esports battlestation storefront with mechanical switch actuation force curves, polling rate telemetry, and dynamic RGB lighting zone configurator.",
+        image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["240Hz latency telemetry HUD", "Hot-swap actuation force curves", "Chroma RGB sync presets", "Tournament-grade zero debounce"]
+      },
+      {
+        id: "smart-home",
+        name: "Smart Home IoT",
+        tag: "Home Automation",
+        badge: "🏠 Smart Home",
+        headline: "Matter & Zigbee compatibility matrix with low-power wattage stats",
+        description: "Clean IoT connected-home storefront displaying wireless protocol matrices (Matter/Thread/Zigbee), standby power stats, and ecosystem badges.",
+        image: "https://images.unsplash.com/photo-1558002038-1055907df827?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["Matter & Zigbee 3.0 matrix", "Ultra low-power standby stats", "End-to-end local encryption", "Voice assistant compatibility"]
+      },
+      {
+        id: "studio-rig",
+        name: "Studio Rig Audio",
+        tag: "Audiophile Ref",
+        badge: "🎥 Studio Rig",
+        headline: "4K/60fps bitrate specs, thermal cooling metrics & modular rigging",
+        description: "Professional creator equipment catalog showing cold-shoe and NATO rail modular rigging, active thermal fan dissipation, and broadcast XLR audio specs.",
+        image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["4K/60fps ProRes bitrate specs", "Thermal dissipation cooling data", "Modular NATO rail mounting", "Phantom power XLR audio preamps"]
+      }
     ]
   },
   {
     slug: "maison-jewelry",
     name: "Maison Opulente",
     category: "Fine Jewelry & Watches",
-    template: "Opulent Maison",
-    headline: "Hallmarked 18K/24K gold, certified diamonds and unboxing seals",
-    description: "Designed for fine jewelry and luxury watches with 40x loupe inspection guarantee, GIA clarity certifications, and velvet unboxing.",
-    image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=1200&auto=format&fit=crop&q=85",
-    highlights: ["Gold purity hallmarks (750)", "GIA clarity certifications", "Velvet unboxing guarantee", "Insured doorstep handover"],
     categoryParam: "jewelry",
     templatesCount: 5,
-    availableTemplates: [
-      { id: "maison", name: "Opulent Maison", tag: "18K/24K Gold" },
-      { id: "aurora", name: "Aurora Gemstones", tag: "Sapphire & Emerald" },
-      { id: "solitaire", name: "Solitaire Bridal", tag: "Engagement Rings" },
-      { id: "raw-silver", name: "Raw Artisan Silver", tag: "Statement Silver" },
-      { id: "chronos", name: "Chronos Horology", tag: "Swiss Luxury" },
+    templates: [
+      {
+        id: "maison",
+        name: "Opulent Maison",
+        tag: "18K/24K Gold",
+        badge: "💎 Royal Maison",
+        headline: "Hallmarked 18K/24K gold, certified diamonds and unboxing seals",
+        description: "Designed for fine jewelry and luxury horology with 40x loupe inspection guarantee, GIA clarity certifications, and velvet unboxing presentation.",
+        image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["Gold purity hallmarks (750)", "GIA clarity certifications", "Velvet unboxing guarantee", "Insured doorstep handover"]
+      },
+      {
+        id: "aurora",
+        name: "Aurora Gemstones",
+        tag: "Sapphire & Emerald",
+        badge: "✨ Aurora Atelier",
+        headline: "Champagne pearl, stackable ring layering studio & bridal provenance",
+        description: "Modern fine jewelry aesthetic featuring interactive pearl luster grades, bridal diamond provenance, and an interactive ring stack customizer.",
+        image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["Champagne Akoya pearl grading", "Stackable ring layering studio", "Conflict-free Kimberly process", "Bespoke bridal ring customizer"]
+      },
+      {
+        id: "solitaire",
+        name: "Solitaire Bridal",
+        tag: "Engagement Rings",
+        badge: "💍 Solitaire",
+        headline: "Interactive 4Cs diamond loupe (Cut, Color, Clarity, Carat) & GIA certs",
+        description: "High-precision bridal salon featuring an interactive 4Cs diamond comparison loupe, platinum 950 prong specs, and laser-inscribed cert match.",
+        image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["Interactive 4Cs loupe (Cut/Color)", "Laser inscribed GIA serial match", "Platinum 950 prong settings", "Lifetime ultrasonic cleaning"]
+      },
+      {
+        id: "raw-silver",
+        name: "Raw Artisan Silver",
+        tag: "Statement Silver",
+        badge: "⚒️ Nordic Silver",
+        headline: "Oxidized 925 raw sterling silver, hand-hammered textures & Nordic runes",
+        description: "Bold artisanal metalcraft showcase featuring hand-forged 925 silver cuffs, antique black patinas, and heavy gauge solid silver weight metrics.",
+        image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["925 oxidised raw sterling silver", "Hand-hammered anvil textures", "Nordic rune engraving preview", "Non-reactive hypoallergenic finish"]
+      },
+      {
+        id: "chronos",
+        name: "Chronos Horology",
+        tag: "Swiss Luxury",
+        badge: "⏱️ Chronos",
+        headline: "Skeleton movement tourbillon exhibition display & 28,800 vph caliber",
+        description: "Grand horlogerie watch boutique showcasing open-heart mechanical calibers, sapphire casebacks, power reserve meters, and COSC chronometer certs.",
+        image: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["Skeleton tourbillon exhibition back", "28,800 vph Swiss mechanical caliber", "Anti-reflective sapphire crystal", "5-Year chronometer warranty"]
+      }
     ]
   },
   {
     slug: "artisan-food",
     name: "Artisan Pantry",
     category: "Gourmet Food & Coffee",
-    template: "Organic Farmstead",
-    headline: "Farmstead provisions, raw alpine honey, and small-batch micro-lots",
-    description: "Purpose-built for specialty coffee, raw honey, and gourmet provisions with harvest altitude metrics, roast freshness tracking, and harvest dates.",
-    image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&auto=format&fit=crop&q=85",
-    highlights: ["48h harvest & roast freshness", "100% raw unheated alpine honey", "Cold-pressed extra virgin olive oil", "Tamper-evident airtight seal protocol"],
     categoryParam: "grocery_food",
     templatesCount: 5,
-    availableTemplates: [
-      { id: "pantry", name: "Organic Farmstead", tag: "Fresh Farmstead" },
-      { id: "bazaar", name: "Spice Bazaar", tag: "Direct-Trade Spices" },
-      { id: "patisserie", name: "Artisan Patisserie", tag: "French Delicacies" },
-      { id: "matcha-zen", name: "Matcha Zen", tag: "Ceremonial Matcha" },
-      { id: "roastery", name: "Specialty Roastery", tag: "Micro-Lot Coffee" },
+    templates: [
+      {
+        id: "pantry",
+        name: "Organic Farmstead",
+        tag: "Fresh Farmstead",
+        badge: "☕ Artisan Pantry",
+        headline: "Farmstead provisions, raw alpine honey, and small-batch micro-lots",
+        description: "Specialty coffee, raw honey, and gourmet provisions with harvest altitude metrics, roast freshness tracking (within 48 hours), and airtight seal protocol.",
+        image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["48h harvest & roast freshness", "100% raw unheated alpine honey", "Cold-pressed extra virgin olive oil", "Tamper-evident airtight seal protocol"]
+      },
+      {
+        id: "bazaar",
+        name: "Spice Bazaar",
+        tag: "Direct-Trade Spices",
+        badge: "🥬 Fresh Bazaar",
+        headline: "Same-day refrigerated cold-chain farm delivery, harvest bundles & pesticide-free",
+        description: "Farm-to-table organic produce and heirloom spices featuring harvest date freshness badges, laboratory pesticide-free seals, and recyclable crates.",
+        image: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["Same-day refrigerated cold-chain", "Pesticide-free laboratory tested", "Zero-waste compostable crates", "Morning harvest delivery route"]
+      },
+      {
+        id: "patisserie",
+        name: "Artisan Patisserie",
+        tag: "French Delicacies",
+        badge: "🥐 Pâtisserie",
+        headline: "Single-origin cacao %, multi-layer ganache schematics & fresh macaron boxes",
+        description: "Fine French pastry and bean-to-bar chocolatier storefront with cacao origin terroir charts, butter lamination layers, and same-morning baking guarantees.",
+        image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["AOP Charentes-Poitou butter", "Single-origin 72% Valrhona cacao", "Multi-layer laminated crumb gauge", "Same-morning baking guarantee"]
+      },
+      {
+        id: "matcha-zen",
+        name: "Matcha Zen",
+        tag: "Ceremonial Matcha",
+        badge: "🍵 Matcha Zen",
+        headline: "First-harvest ceremonial flush rating, whisk guide & optimal water temp",
+        description: "Japanese tea ceremony and ceremonial grade matcha storefront with stone-ground harvest certifications, chlorophyll hue indexes, and bamboo whisking guides.",
+        image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["First-flush Uji Kyoto harvest", "Granite stone-ground powder", "Zero astringency umami score", "Bamboo whisk ritual companion"]
+      },
+      {
+        id: "smokehouse",
+        name: "Prime Smokehouse & Roastery",
+        tag: "Micro-Lot & Aged",
+        badge: "🥩 Smokehouse",
+        headline: "45-day Himalayan salt dry aging, A5 Japanese Wagyu BMS 11+ & cryovac chilled",
+        description: "Artisanal craft butchery and reserve roastery featuring pasture-to-plate traceability, marbling score certificates (BMS 1-12), and temperature-controlled insulated shipping.",
+        image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=1200&auto=format&fit=crop&q=85",
+        highlights: ["45-day Himalayan salt dry aging", "A5 Japanese Wagyu BMS 11+", "Vacuum-sealed cryovac chilled", "Traceable pasture RFID tags"]
+      }
     ]
   }
 ];
 
 export default function PlatformLandingPage() {
   const [selectedStoreSlug, setSelectedStoreSlug] = useState("apex-fashion");
+  const [selectedTemplateId, setSelectedTemplateId] = useState("minimal");
+  const [previewDevice, setPreviewDevice] = useState<"desktop" | "mobile">("desktop");
+  const [hasCopiedUrl, setHasCopiedUrl] = useState(false);
   const [pricingBilling, setPricingBilling] = useState<"monthly" | "annual">("monthly");
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [isNavDropdownOpen, setIsNavDropdownOpen] = useState(false);
@@ -194,6 +447,17 @@ export default function PlatformLandingPage() {
   }, [hasMouseMoved]);
 
   const activeStore = INDUSTRY_STOREFRONTS.find((s) => s.slug === selectedStoreSlug) || INDUSTRY_STOREFRONTS[0];
+  const activeTemplate = activeStore.templates.find((t) => t.id === selectedTemplateId) || activeStore.templates[0];
+
+  const handleCopyUrl = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const url = `https://${activeStore.slug}.storeswift.app?template=${activeTemplate.id}`;
+    if (typeof window !== "undefined" && navigator?.clipboard) {
+      navigator.clipboard.writeText(url);
+      setHasCopiedUrl(true);
+      setTimeout(() => setHasCopiedUrl(false), 2000);
+    }
+  };
 
   const faqs = [
     {
@@ -897,7 +1161,10 @@ export default function PlatformLandingPage() {
                 return (
                   <button
                     key={store.slug}
-                    onClick={() => setSelectedStoreSlug(store.slug)}
+                    onClick={() => {
+                      setSelectedStoreSlug(store.slug);
+                      setSelectedTemplateId(store.templates[0].id);
+                    }}
                     className={`px-4 py-2 rounded-xl sm:rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center space-x-2 ${
                       isSelected
                         ? "bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white shadow-sm border border-zinc-200/90 dark:border-white/10"
@@ -920,53 +1187,170 @@ export default function PlatformLandingPage() {
             {/* Left Column: High-Fidelity Browser Window Frame */}
             <div className="lg:col-span-7 flex flex-col bg-zinc-950 border-b lg:border-b-0 lg:border-r border-zinc-200/80 dark:border-white/[0.08] overflow-hidden group">
               {/* Sleek Browser Navigation Header */}
-              <div className="h-10 px-4 flex items-center justify-between border-b border-white/[0.08] bg-zinc-900/90 backdrop-blur-md flex-shrink-0">
-                <div className="flex items-center space-x-1.5">
+              <div className="h-11 px-4 flex items-center justify-between border-b border-white/[0.08] bg-zinc-900/90 backdrop-blur-md flex-shrink-0 gap-2">
+                <div className="flex items-center space-x-1.5 flex-shrink-0">
                   <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
                   <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
                 </div>
 
-                <div className="flex items-center space-x-1.5 px-3 py-1 rounded-md bg-zinc-950/80 border border-white/[0.06] text-[11px] font-mono text-zinc-400">
-                  <Lock className="w-2.5 h-2.5 text-emerald-400" />
-                  <span className="text-zinc-300 font-medium">{activeStore.slug}.storeswift.app</span>
+                {/* Dynamic Address Bar with Direct Copy Link */}
+                <div className="flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-zinc-950/90 border border-white/[0.08] text-[11px] font-mono text-zinc-400 max-w-[340px] flex-1 justify-between shadow-inner">
+                  <div className="flex items-center space-x-1.5 truncate">
+                    <Lock className="w-2.5 h-2.5 text-emerald-400 flex-shrink-0" />
+                    <span className="text-zinc-300 font-medium truncate">
+                      {activeStore.slug}.storeswift.app<span className="text-emerald-400">?template={activeTemplate.id}</span>
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleCopyUrl}
+                    title="Copy store URL"
+                    className="text-zinc-400 hover:text-white p-0.5 rounded transition flex-shrink-0 hover:bg-white/10"
+                  >
+                    {hasCopiedUrl ? (
+                      <CheckCheck className="w-3 h-3 text-emerald-400" />
+                    ) : (
+                      <Copy className="w-3 h-3" />
+                    )}
+                  </button>
                 </div>
 
-                <div className="flex items-center space-x-1.5 text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="hidden sm:inline font-bold">200 OK</span>
+                {/* Device Viewport Toggle & HTTP Status */}
+                <div className="flex items-center space-x-2 flex-shrink-0">
+                  <div className="flex items-center p-0.5 rounded-lg bg-zinc-950/80 border border-white/[0.08]">
+                    <button
+                      type="button"
+                      onClick={() => setPreviewDevice("desktop")}
+                      className={`p-1 rounded text-xs transition ${
+                        previewDevice === "desktop"
+                          ? "bg-white/20 text-white"
+                          : "text-zinc-500 hover:text-zinc-300"
+                      }`}
+                      title="Desktop preview"
+                    >
+                      <Monitor className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPreviewDevice("mobile")}
+                      className={`p-1 rounded text-xs transition ${
+                        previewDevice === "mobile"
+                          ? "bg-white/20 text-white"
+                          : "text-zinc-500 hover:text-zinc-300"
+                      }`}
+                      title="Mobile preview"
+                    >
+                      <Smartphone className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
+                  <div className="hidden sm:flex items-center space-x-1.5 text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="font-bold">200 OK</span>
+                  </div>
                 </div>
               </div>
 
               {/* Viewport Preview Stage */}
-              <div className="relative flex-1 min-h-[280px] sm:min-h-[360px] lg:min-h-[420px] overflow-hidden">
-                <img
-                  src={activeStore.image}
-                  alt={activeStore.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/20 to-transparent pointer-events-none" />
+              <div className={`relative flex-1 min-h-[340px] sm:min-h-[420px] lg:min-h-[480px] overflow-hidden flex items-center justify-center transition-all ${
+                previewDevice === "mobile" ? "p-4 sm:p-6 bg-zinc-950/95" : ""
+              }`}>
+                {previewDevice === "desktop" ? (
+                  <>
+                    <img
+                      key={activeTemplate.id}
+                      src={activeTemplate.image}
+                      alt={activeTemplate.name}
+                      className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 animate-fade-in"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/95 via-zinc-950/25 to-transparent pointer-events-none" />
 
-                <div className="absolute top-4 left-4 backdrop-blur-md bg-zinc-950/80 text-white text-[11px] font-medium px-3.5 py-1.5 rounded-full border border-white/10 shadow-lg flex items-center space-x-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                  <span>{activeStore.template} • {activeStore.category}</span>
-                </div>
+                    <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
+                      <div className="backdrop-blur-md bg-zinc-950/85 text-white text-[11px] font-medium px-3.5 py-1.5 rounded-full border border-white/10 shadow-lg flex items-center space-x-2">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+                        <span className="font-semibold">{activeTemplate.name}</span>
+                        <span className="text-zinc-400">• {activeTemplate.tag}</span>
+                      </div>
 
-                <div className="absolute bottom-4 left-4 right-4 text-left">
-                  <div className="backdrop-blur-md bg-zinc-950/75 border border-white/10 rounded-xl p-3 sm:p-3.5 shadow-xl flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 block font-semibold">
-                        Core Industry Value Prop
-                      </span>
-                      <p className="text-xs sm:text-sm text-zinc-200 line-clamp-1 font-medium mt-0.5">
-                        {activeStore.headline}
-                      </p>
+                      <div className="hidden sm:flex items-center space-x-1.5 backdrop-blur-md bg-zinc-950/70 border border-white/10 text-zinc-300 text-[10px] font-mono px-2.5 py-1 rounded-full">
+                        <Sparkles className="w-2.5 h-2.5 text-amber-400" />
+                        <span>SSR Hydrated</span>
+                      </div>
                     </div>
-                    <span className="hidden sm:inline-block text-[10px] font-mono text-zinc-400 bg-white/[0.06] px-2 py-1 rounded border border-white/[0.08] flex-shrink-0 ml-3">
-                      App Router
-                    </span>
+
+                    <div className="absolute bottom-4 left-4 right-4 text-left">
+                      <div className="backdrop-blur-md bg-zinc-950/85 border border-white/10 rounded-2xl p-3.5 sm:p-4 shadow-2xl flex items-center justify-between">
+                        <div className="min-w-0 pr-3">
+                          <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 block font-bold">
+                            Tailored Buyer Experience • {activeStore.category}
+                          </span>
+                          <p className="text-xs sm:text-sm text-zinc-100 font-medium mt-0.5 line-clamp-1">
+                            {activeTemplate.headline}
+                          </p>
+                        </div>
+                        <Link
+                          href={`/store/${activeStore.slug}?template=${activeTemplate.id}`}
+                          target="_blank"
+                          className="hidden sm:inline-flex items-center space-x-1.5 text-[11px] font-bold text-white bg-emerald-600 hover:bg-emerald-500 px-3 py-1.5 rounded-xl transition shadow flex-shrink-0"
+                        >
+                          <span>Preview Live</span>
+                          <ArrowUpRight className="w-3.5 h-3.5" />
+                        </Link>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  /* Mobile Mockup Viewport */
+                  <div className="w-[260px] sm:w-[280px] h-[440px] sm:h-[460px] rounded-[38px] border-4 border-zinc-700 bg-zinc-950 shadow-2xl overflow-hidden flex flex-col relative animate-fade-in ring-1 ring-white/10">
+                    {/* Dynamic Island */}
+                    <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-20 h-4 bg-zinc-900 rounded-full z-20 flex items-center justify-end px-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-zinc-800" />
+                    </div>
+
+                    {/* Mobile Header Bar */}
+                    <div className="pt-8 pb-1.5 px-3 bg-zinc-900/90 border-b border-white/[0.08] flex items-center justify-between text-[9px] font-mono text-zinc-400">
+                      <div className="flex items-center space-x-1 truncate max-w-[140px]">
+                        <Lock className="w-2 h-2 text-emerald-400 flex-shrink-0" />
+                        <span className="truncate text-zinc-200">{activeStore.slug}.storeswift.app</span>
+                      </div>
+                      <span className="text-emerald-400 font-bold">200 OK</span>
+                    </div>
+
+                    {/* Mobile Screen Image */}
+                    <div className="relative flex-1 overflow-hidden">
+                      <img
+                        key={activeTemplate.id}
+                        src={activeTemplate.image}
+                        alt={activeTemplate.name}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-transparent to-transparent" />
+
+                      <div className="absolute top-2.5 left-2.5 right-2.5">
+                        <span className="text-[9px] font-medium px-2 py-0.5 rounded-full bg-zinc-950/80 border border-white/10 text-white backdrop-blur-md inline-block">
+                          {activeTemplate.name}
+                        </span>
+                      </div>
+
+                      <div className="absolute bottom-3 left-2.5 right-2.5">
+                        <div className="backdrop-blur-md bg-zinc-950/85 border border-white/10 rounded-xl p-2 text-left">
+                          <span className="text-[8.5px] font-mono text-emerald-400 font-bold uppercase block">
+                            Mobile UX Ready
+                          </span>
+                          <p className="text-[10px] text-zinc-200 font-medium line-clamp-1">
+                            {activeTemplate.tag}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Home Indicator */}
+                    <div className="h-4 bg-zinc-950 flex items-center justify-center">
+                      <div className="w-20 h-1 bg-zinc-700 rounded-full" />
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
 
@@ -975,37 +1359,76 @@ export default function PlatformLandingPage() {
               <div className="space-y-5">
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                      5 Pre-Configured Themes
+                    <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 flex items-center space-x-1.5">
+                      <Sparkles className="w-3 h-3 text-emerald-500" />
+                      <span>Theme {activeStore.templates.findIndex((t) => t.id === activeTemplate.id) + 1} of 5</span>
                     </span>
                     <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                       {activeStore.category}
                     </span>
                   </div>
                   <h3 className="text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white tracking-tight">
-                    {activeStore.name}
+                    {activeTemplate.name}
                   </h3>
+                  <div className="mt-1">
+                    <span className="inline-block text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200/80 dark:border-white/10">
+                      {activeTemplate.tag}
+                    </span>
+                  </div>
                   <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2.5">
-                    {activeStore.description}
+                    {activeTemplate.description}
                   </p>
                 </div>
 
-                {/* Vertical Template Pills */}
+                {/* Interactive 5-Theme Switcher Grid */}
                 <div className="space-y-2 pt-2">
-                  <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block">
-                    Available Themes in This Industry:
-                  </span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {activeStore.availableTemplates.map((tmpl) => (
-                      <span
-                        key={tmpl.id}
-                        className="text-[11px] font-medium px-2.5 py-1 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200/90 dark:border-white/10 text-zinc-700 dark:text-zinc-300 flex items-center space-x-1"
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                        <span>{tmpl.name}</span>
-                        <span className="text-[9px] text-zinc-400">({tmpl.tag})</span>
-                      </span>
-                    ))}
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block">
+                      Available Themes in This Industry:
+                    </span>
+                    <span className="text-[10px] font-mono text-zinc-400">Click to switch</span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {activeStore.templates.map((tmpl) => {
+                      const isSelected = activeTemplate.id === tmpl.id;
+                      return (
+                        <button
+                          key={tmpl.id}
+                          type="button"
+                          onClick={() => setSelectedTemplateId(tmpl.id)}
+                          className={`text-left px-3 py-2.5 rounded-xl border text-xs font-medium transition-all flex items-center justify-between group ${
+                            isSelected
+                              ? "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500 dark:border-emerald-500/80 text-zinc-950 dark:text-white shadow-sm ring-1 ring-emerald-500/30"
+                              : "bg-white dark:bg-zinc-900 border-zinc-200/90 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-white/20 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800/60"
+                          }`}
+                        >
+                          <div className="flex items-center space-x-2 min-w-0 pr-1">
+                            <span
+                              className={`w-2 h-2 rounded-full flex-shrink-0 transition-transform ${
+                                isSelected
+                                  ? "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.9)] scale-110"
+                                  : "bg-zinc-300 dark:bg-zinc-600 group-hover:bg-zinc-400"
+                              }`}
+                            />
+                            <div className="truncate">
+                              <span className="block truncate font-semibold text-[11px]">{tmpl.name}</span>
+                              <span className="block text-[9.5px] text-zinc-400 dark:text-zinc-500 font-mono truncate">
+                                {tmpl.tag}
+                              </span>
+                            </div>
+                          </div>
+                          {isSelected ? (
+                            <span className="flex-shrink-0 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[9px] font-bold">
+                              ✓
+                            </span>
+                          ) : (
+                            <span className="text-[10px] text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                              →
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -1014,13 +1437,15 @@ export default function PlatformLandingPage() {
                   <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block mb-1">
                     Engineered Conversion Features
                   </span>
-                  <div className="space-y-2">
-                    {activeStore.highlights.map((feat, idx) => (
-                      <div key={idx} className="flex items-center space-x-2.5 text-xs text-zinc-700 dark:text-zinc-300">
-                        <div className="w-5 h-5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 border border-emerald-500/20">
-                          <Check className="w-3 h-3" />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {activeTemplate.highlights.map((feat, idx) => (
+                      <div key={idx} className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300">
+                        <div className="w-4 h-4 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 border border-emerald-500/20">
+                          <Check className="w-2.5 h-2.5" />
                         </div>
-                        <span className="font-medium text-zinc-800 dark:text-zinc-200">{feat}</span>
+                        <span className="font-medium text-zinc-800 dark:text-zinc-200 text-[11.5px] truncate" title={feat}>
+                          {feat}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -1058,18 +1483,24 @@ export default function PlatformLandingPage() {
 
                 <div className="flex flex-col sm:flex-row gap-2.5">
                   <Link
-                    href={`/store/${activeStore.slug}`}
+                    href={`/store/${activeStore.slug}?template=${activeTemplate.id}`}
+                    target="_blank"
                     className="flex-1 py-3 px-4 btn-glass-primary text-xs font-bold rounded-xl transition text-center flex items-center justify-center space-x-2 shadow-lg shadow-emerald-500/20 btn-press group"
                   >
-                    <span>Open Live Storefront</span>
+                    <span>Launch {activeTemplate.name} Live</span>
                     <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </Link>
                   <Link
-                    href={`/register?category=${activeStore.categoryParam}`}
-                    className="py-3 px-5 bg-white hover:bg-zinc-50 border border-zinc-200/90 text-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 dark:text-zinc-200 dark:hover:text-white font-semibold text-xs rounded-xl transition text-center shadow-[0_1px_2px_rgba(0,0,0,0.02)] btn-press"
+                    href={`/register?category=${activeStore.categoryParam}&template=${activeTemplate.id}`}
+                    className="py-3 px-5 bg-white hover:bg-zinc-50 border border-zinc-200/90 text-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 dark:text-zinc-200 dark:hover:text-white font-semibold text-xs rounded-xl transition text-center shadow-[0_1px_2px_rgba(0,0,0,0.02)] btn-press flex items-center justify-center"
                   >
                     <span>Clone Template</span>
                   </Link>
+                </div>
+
+                <div className="flex items-center justify-center space-x-1.5 text-[10.5px] text-zinc-500 dark:text-zinc-400">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-500" />
+                  <span>100% Real-time database sync • Switch themes anytime with zero data loss</span>
                 </div>
               </div>
             </div>
