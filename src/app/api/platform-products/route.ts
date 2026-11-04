@@ -11,6 +11,8 @@ export async function GET(request: Request) {
   const category = url.searchParams.get("category");
   const search   = url.searchParams.get("q");
 
+  let rawList: any[] = [];
+
   try {
     const filters = [eq(platformProducts.status, "active")];
     if (category) filters.push(eq(platformProducts.category, category));
@@ -23,18 +25,42 @@ export async function GET(request: Request) {
       .orderBy(desc(platformProducts.createdAt));
 
     if (products.length > 0) {
-      return NextResponse.json({ ok: true, products, total: products.length });
+      rawList = products;
     }
   } catch {
     // Non-fatal
   }
 
-  // devStore platform products
-  let list = devStore.getPlatformProducts();
-  if (category) list = list.filter((p) => p.category.toLowerCase() === category.toLowerCase());
-  if (search) list = list.filter((p) => p.title.toLowerCase().includes(search.toLowerCase()));
+  if (rawList.length === 0) {
+    let list = devStore.getPlatformProducts();
+    if (category) list = list.filter((p) => p.category.toLowerCase() === category.toLowerCase());
+    if (search) list = list.filter((p) => p.title.toLowerCase().includes(search.toLowerCase()));
+    rawList = list;
+  }
 
-  return NextResponse.json({ ok: true, products: list, total: list.length });
+  const normalized = rawList.map((p: any) => {
+    const minVal = p.minPrice !== undefined ? Number(p.minPrice) : (p.minimumPrice ? parseFloat(p.minimumPrice) : 0);
+    const imgList = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.imageUrl ? [p.imageUrl] : []);
+    const mainImg = imgList[0] || p.imageUrl || "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800";
+
+    return {
+      id: p.id,
+      title: p.title,
+      description: p.description || "",
+      category: p.category,
+      minPrice: minVal,
+      minimumPrice: String(minVal),
+      suggestedPrice: p.suggestedPrice !== undefined ? Number(p.suggestedPrice) : Math.round(minVal * 1.5),
+      stockQuantity: p.stockQuantity ?? 100,
+      sku: p.sku || `DS-${String(p.id).slice(-6).toUpperCase()}`,
+      images: imgList.length > 0 ? imgList : [mainImg],
+      imageUrl: mainImg,
+      status: p.status || "active",
+      createdAt: p.createdAt || new Date().toISOString(),
+    };
+  });
+
+  return NextResponse.json({ ok: true, products: normalized, total: normalized.length });
 }
 
 const CreatePlatformProductSchema = z.object({
@@ -97,4 +123,29 @@ export async function POST(request: Request) {
     console.error("[POST /api/platform-products]", err);
     return NextResponse.json({ error: "Failed to create platform product" }, { status: 500 });
   }
+}
+
+export async function DELETE(request: Request) {
+  const session = getSessionFromRequest(request);
+
+  if (!session || session.role !== "super_admin") {
+    return NextResponse.json({ error: "Forbidden: Super admin authentication required." }, { status: 403 });
+  }
+
+  const url = new URL(request.url);
+  const id = url.searchParams.get("id");
+
+  if (!id) {
+    return NextResponse.json({ error: "Product id is required" }, { status: 400 });
+  }
+
+  devStore.deletePlatformProduct(id);
+
+  try {
+    await db.delete(platformProducts).where(eq(platformProducts.id, id));
+  } catch {
+    // Non-fatal
+  }
+
+  return NextResponse.json({ ok: true, id });
 }

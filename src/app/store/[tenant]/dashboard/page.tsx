@@ -930,6 +930,20 @@ function DropshipTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
     setListing(null);
   };
 
+  const handleUnlist = async (pp: PlatformProduct) => {
+    if (!confirm(`Unlist "${pp.title}" from your store?`)) return;
+    setListing(pp.id);
+    try {
+      const res = await fetch(`/api/dropship?storeSlug=${tenant}&platformProductId=${pp.id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        setProducts(prev => prev.map(p => p.id === pp.id ? { ...p, listed: false, myPrice: undefined } : p));
+      }
+    } catch { /* graceful */ }
+    setListing(null);
+  };
+
   return (
     <div className="space-y-5">
       <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-5">
@@ -957,8 +971,19 @@ function DropshipTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
               {pp.listed && pp.myPrice && <div className="text-right"><p className="text-xs text-emerald-600 font-semibold">Your Profit</p><p className="font-black text-emerald-700">{BDT(pp.myPrice - pp.minPrice)}</p></div>}
             </div>
             {pp.listed ? (
-              <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" /><span className="text-sm font-semibold text-emerald-700">Listed at {BDT(pp.myPrice ?? 0)}</span>
+              <div className="flex items-center justify-between bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <span className="text-sm font-semibold text-emerald-700">Listed at {BDT(pp.myPrice ?? 0)}</span>
+                </div>
+                <button
+                  onClick={() => handleUnlist(pp)}
+                  disabled={listing === pp.id}
+                  className="text-xs font-bold text-red-500 hover:text-red-700 hover:bg-red-50 px-2 py-1 rounded transition"
+                  title="Remove from store"
+                >
+                  {listing === pp.id ? "..." : "Unlist"}
+                </button>
               </div>
             ) : (
               <div className="flex gap-2">

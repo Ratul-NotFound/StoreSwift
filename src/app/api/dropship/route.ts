@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSessionFromRequest, canAccessStore } from "@/lib/api-auth";
 import { devStore } from "@/lib/dev-store";
+import { fastCache } from "@/lib/cache";
 
 const CreateListingSchema = z.object({
   platformProductId: z.string(),
@@ -79,4 +80,28 @@ export async function POST(request: Request) {
       },
     },
   }, { status: 201 });
+}
+
+export async function DELETE(request: Request) {
+  const session = getSessionFromRequest(request);
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized: Session required." }, { status: 401 });
+  }
+
+  const url = new URL(request.url);
+  const platformProductId = url.searchParams.get("platformProductId");
+  const storeSlug = url.searchParams.get("storeSlug") || session.slug || session.storeId || "apex-fashion";
+
+  if (!platformProductId) {
+    return NextResponse.json({ error: "platformProductId required" }, { status: 400 });
+  }
+
+  if (!canAccessStore(session, storeSlug)) {
+    return NextResponse.json({ error: "Forbidden: You do not have permission for this store." }, { status: 403 });
+  }
+
+  devStore.unlistDropshipProduct(storeSlug, platformProductId);
+  fastCache.deletePrefix(`products:${storeSlug}`);
+
+  return NextResponse.json({ ok: true, unlisted: platformProductId });
 }

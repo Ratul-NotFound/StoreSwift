@@ -236,7 +236,7 @@ export async function POST(request: Request) {
         price: verifiedPrice,
         quantity: safeQuantity,
         isDropship: it.isDropship || matched?.isDropship,
-        platformProductId: it.platformProductId,
+        platformProductId: it.platformProductId || matched?.platformProductId,
       };
     });
 

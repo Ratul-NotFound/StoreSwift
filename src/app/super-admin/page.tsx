@@ -908,20 +908,20 @@ function OrdersTab({ addToast }: { addToast: (type: ToastMessage["type"], msg: s
 
               <div className="pt-2 flex flex-col gap-2">
                 <Link
-                  href="/store/apex-fashion/dashboard"
+                  href={`/store/${(selectedOrder as any).storeSlug || (selectedOrder as any).storeId || "apex-fashion"}/dashboard`}
                   target="_blank"
                   className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-violet-600 text-white font-semibold text-xs hover:bg-violet-700 transition"
                 >
                   <Store className="w-3.5 h-3.5" />
-                  <span>Open in Merchant Orders Panel</span>
+                  <span>Open in Merchant Dashboard</span>
                 </Link>
                 <Link
-                  href="/store/apex-fashion"
+                  href={`/store/${(selectedOrder as any).storeSlug || (selectedOrder as any).storeId || "apex-fashion"}`}
                   target="_blank"
                   className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl border border-zinc-200 bg-white text-zinc-700 font-semibold text-xs hover:bg-zinc-50 transition"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
-                  <span>Visit Apex Fashion Storefront</span>
+                  <span>Visit Storefront</span>
                 </Link>
               </div>
             </div>
@@ -1250,6 +1250,21 @@ function DropshipCatalogTab({ addToast }: { addToast: (type: ToastMessage["type"
     }
   };
 
+  const handleDeleteProduct = async (id: string, title: string) => {
+    if (!confirm(`Are you sure you want to remove "${title}" from the platform catalog?`)) return;
+    try {
+      const res = await fetch(`/api/platform-products?id=${id}`, { method: "DELETE" });
+      if (res.ok) {
+        addToast("success", "Product removed from catalog");
+        setProducts(prev => prev.filter(p => p.id !== id));
+      } else {
+        addToast("error", "Failed to remove product");
+      }
+    } catch {
+      addToast("error", "Failed to remove product");
+    }
+  };
+
   const categories = Array.from(new Set(products.map((p) => p.category))).filter(Boolean);
 
   return (
@@ -1295,7 +1310,16 @@ function DropshipCatalogTab({ addToast }: { addToast: (type: ToastMessage["type"
                     <div className={`font-semibold ${p.stockQuantity < 50 ? "text-red-600" : "text-green-600"}`}>{p.stockQuantity}</div>
                   </div>
                 </div>
-                {p.sku && <div className="text-xs text-zinc-400 mt-1">SKU: {p.sku}</div>}
+                <div className="mt-3 pt-2 border-t border-zinc-100 flex items-center justify-between text-xs text-zinc-400">
+                  <span>{p.sku ? `SKU: ${p.sku}` : `ID: ${p.id.slice(-6)}`}</span>
+                  <button
+                    onClick={() => handleDeleteProduct(p.id, p.title)}
+                    className="p-1 rounded text-red-500 hover:bg-red-50 hover:text-red-700 transition"
+                    title="Delete product"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
             </div>
           ))}

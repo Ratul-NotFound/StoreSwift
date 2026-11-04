@@ -158,6 +158,7 @@ export interface DevDropshipOrder {
   customerName: string;
   customerPhone: string;
   shippingAddress: string;
+  quantity?: number;
   sellPrice: number;
   minimumPrice: number;
   merchantMargin: number;
@@ -799,7 +800,8 @@ class DevStoreManager {
       if (item.isDropship && item.platformProductId) {
         const pp = this.platformProducts.get(item.platformProductId);
         const minPrice = pp ? pp.minPrice : item.price * 0.6;
-        const margin = Math.max(0, item.price - minPrice);
+        const qty = item.quantity || 1;
+        const margin = Math.max(0, item.price - minPrice) * qty;
         const dropshipOrderId = `ds-ord-${orderId}-${Math.floor(Math.random() * 1000)}`;
 
         this.dropshipOrders.set(dropshipOrderId, {
@@ -813,6 +815,7 @@ class DevStoreManager {
           customerName: data.customerName,
           customerPhone: data.customerPhone,
           shippingAddress: data.shippingAddress,
+          quantity: qty,
           sellPrice: item.price,
           minimumPrice: minPrice,
           merchantMargin: margin,
@@ -1013,6 +1016,22 @@ class DevStoreManager {
     return item;
   }
 
+  deletePlatformProduct(id: string): boolean {
+    return this.platformProducts.delete(id);
+  }
+
+  unlistDropshipProduct(storeSlug: string, platformProductId: string): boolean {
+    const store = this.getStore(storeSlug);
+    if (!store) return false;
+    for (const [id, prod] of this.products.entries()) {
+      if (prod.storeSlug === store.slug && prod.platformProductId === platformProductId) {
+        this.products.delete(id);
+        return true;
+      }
+    }
+    return false;
+  }
+
   listDropshipProduct(storeSlug: string, platformProductId: string, sellPrice: number): DevProduct | null {
     const store = this.ensureStore(storeSlug);
     const pp = this.platformProducts.get(platformProductId);
@@ -1062,11 +1081,27 @@ class DevStoreManager {
     trackingCode?: string,
     courierName?: string
   ): boolean {
-    const order = this.dropshipOrders.get(id);
+    const order =
+      this.dropshipOrders.get(id) ||
+      Array.from(this.dropshipOrders.values()).find(
+        (o) => o.id === id || o.orderId === id || o.orderNumber === id
+      );
     if (!order) return false;
     order.fulfillmentStatus = status;
     if (trackingCode) order.trackingCode = trackingCode;
     if (courierName) order.courierName = courierName;
+
+    // Synchronize updates directly back to merchant's store order
+    if (order.orderId) {
+      const storeOrder = this.orders.get(order.orderId);
+      if (storeOrder) {
+        storeOrder.status = status;
+        if (trackingCode) storeOrder.consignmentId = trackingCode;
+        if (courierName) storeOrder.courierName = courierName;
+        if (status === "delivered") storeOrder.paymentStatus = "paid";
+      }
+    }
+
     return true;
   }
 

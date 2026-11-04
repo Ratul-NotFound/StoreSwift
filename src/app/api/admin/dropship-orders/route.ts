@@ -29,7 +29,7 @@ export async function GET(request: Request) {
       variant: "Standard",
       platformProductId: o.platformProductId,
     },
-    quantity: 1,
+    quantity: o.quantity || 1,
     minPrice: o.minimumPrice,
     soldPrice: o.sellPrice,
     merchantEarns: o.merchantMargin,
