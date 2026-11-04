@@ -21,7 +21,8 @@ import {
   Clock,
   ExternalLink,
   ChevronRight,
-  SlidersHorizontal
+  SlidersHorizontal,
+  UserCheck
 } from "lucide-react";
 import { CartItem } from "@/lib/cart";
 
@@ -278,6 +279,15 @@ export function MinimalStorefront({
                 <span className="hidden md:inline font-medium">Track Order</span>
               </button>
             )}
+
+            <a
+              href={`/store/${tenantSlug}/account`}
+              className="hidden sm:flex items-center gap-1 text-xs text-zinc-600 hover:text-black px-2.5 py-1.5 rounded-lg hover:bg-zinc-50 transition"
+              title="Customer Account & Order History"
+            >
+              <UserCheck className="w-3.5 h-3.5 text-zinc-500" />
+              <span className="hidden md:inline font-medium">Account</span>
+            </a>
 
             {onOpenCheckout && (
               <button
