@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { devStore } from "@/lib/dev-store";
 import { ALL_TEMPLATE_CHOICES } from "@/components/store/template-switcher-bar";
 import { GET as getSettings, PATCH as patchSettings } from "@/app/api/stores/[slug]/settings/route";
+import { signSessionToken } from "@/lib/auth";
 import { NextRequest } from "next/server";
 
 describe("Storefront Template Switcher & Dynamic Catalog System", () => {
@@ -111,11 +112,22 @@ describe("Storefront Template Switcher & Dynamic Catalog System", () => {
 
   it("handles settings API GET & PATCH requests with template persistence", async () => {
     const slug = "apex-fashion";
+    const token = signSessionToken({
+      userId: "usr-apex-owner",
+      email: "owner@apexfashion.bd",
+      storeId: "store-apex-fashion",
+      slug: "apex-fashion",
+      role: "merchant_owner",
+      plan: "free",
+    });
 
     // 1. PATCH template to 'nickelfox'
     const patchReq = new NextRequest("http://localhost:3000/api/stores/apex-fashion/settings", {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({
         template: "nickelfox",
         description: "Updated description for testing",

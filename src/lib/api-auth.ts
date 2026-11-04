@@ -31,19 +31,20 @@ export function getSessionFromRequest(request: Request): SessionPayload | null {
  */
 export function canAccessStore(session: SessionPayload | null, storeSlugOrId: string): boolean {
   if (!session) {
-    // In dev mode with no active session, allow local testing
-    return process.env.NODE_ENV !== "production";
+    return false;
   }
 
   if (session.role === "super_admin") {
     return true;
   }
 
-  if (session.slug && session.slug.toLowerCase() === storeSlugOrId.toLowerCase()) {
+  const target = (storeSlugOrId || "").toLowerCase();
+
+  if (session.slug && session.slug.toLowerCase() === target) {
     return true;
   }
 
-  if (session.storeId && session.storeId.toLowerCase() === storeSlugOrId.toLowerCase()) {
+  if (session.storeId && session.storeId.toLowerCase() === target) {
     return true;
   }
 

@@ -140,7 +140,14 @@ export async function PATCH(
   fastCache.deletePrefix(`settings:${slug}`);
   const session = getSessionFromRequest(request);
 
-  if (session && !canAccessStore(session, slug)) {
+  if (!session) {
+    return NextResponse.json(
+      { error: "Unauthorized: Session required to modify store settings." },
+      { status: 401 }
+    );
+  }
+
+  if (!canAccessStore(session, slug)) {
     return NextResponse.json(
       { error: "Forbidden: You do not have permission to modify settings for this store." },
       { status: 403 }

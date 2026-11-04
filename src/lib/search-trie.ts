@@ -246,3 +246,4 @@ export const searchTrie = globalForTrie.productSearchTrie || new ProductSearchTr
 if (process.env.NODE_ENV !== "production") {
   globalForTrie.productSearchTrie = searchTrie;
 }
+

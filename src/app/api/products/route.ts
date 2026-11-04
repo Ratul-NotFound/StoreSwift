@@ -121,6 +121,13 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const session = getSessionFromRequest(request);
+  if (!session) {
+    return NextResponse.json(
+      { error: "Unauthorized: Session required to add products." },
+      { status: 401 }
+    );
+  }
+
   const body = await request.json();
   const parse = productCreateSchema.safeParse(body);
 
@@ -134,18 +141,29 @@ export async function POST(request: Request) {
   const data = parse.data;
   const rawPrice = data.price ?? data.basePrice ?? 100;
   const numPrice = typeof rawPrice === "string" ? parseFloat(rawPrice) : rawPrice;
+  if (isNaN(numPrice) || numPrice < 0) {
+    return NextResponse.json({ error: "Product price cannot be negative" }, { status: 400 });
+  }
+
   const rawCompare = data.comparePrice ?? data.compareAtPrice;
   const numCompare = rawCompare ? (typeof rawCompare === "string" ? parseFloat(rawCompare) : rawCompare) : undefined;
-  const numStock = typeof data.stock === "string" ? parseInt(data.stock, 10) || 0 : data.stock;
+  if (numCompare !== undefined && (isNaN(numCompare) || numCompare < 0)) {
+    return NextResponse.json({ error: "Compare price cannot be negative" }, { status: 400 });
+  }
 
-  const requestedSlug = data.storeSlug || session?.slug || session?.storeId || "apex-fashion";
-  if (session && !canAccessStore(session, requestedSlug)) {
+  const numStock = typeof data.stock === "string" ? parseInt(data.stock, 10) || 0 : data.stock;
+  if (numStock < 0) {
+    return NextResponse.json({ error: "Stock cannot be negative" }, { status: 400 });
+  }
+
+  const requestedSlug = data.storeSlug || session.slug || session.storeId || "apex-fashion";
+  if (!canAccessStore(session, requestedSlug)) {
     return NextResponse.json(
       { error: "Forbidden: You do not have permission to manage products for this store." },
       { status: 403 }
     );
   }
-  const storeSlug = (session && session.role !== "super_admin") ? (session.slug || session.storeId || requestedSlug) : requestedSlug;
+  const storeSlug = session.role !== "super_admin" ? (session.slug || session.storeId || requestedSlug) : requestedSlug;
   const targetStore = devStore.ensureStore(storeSlug);
 
   // ── Plan Limit Enforcement ──

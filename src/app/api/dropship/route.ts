@@ -22,6 +22,10 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const session = getSessionFromRequest(request);
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized: Session required." }, { status: 401 });
+  }
+
   const body = await request.json();
   const parse = CreateListingSchema.safeParse(body);
 
@@ -33,16 +37,16 @@ export async function POST(request: Request) {
   const rawPrice = parse.data.sellPrice ?? parse.data.myPrice;
   const numPrice = typeof rawPrice === "string" ? parseFloat(rawPrice) : (rawPrice || 0);
 
-  const requestedSlug = storeSlug || session?.slug || session?.storeId || "apex-fashion";
+  const requestedSlug = storeSlug || session.slug || session.storeId || "apex-fashion";
 
-  if (session && !canAccessStore(session, requestedSlug)) {
+  if (!canAccessStore(session, requestedSlug)) {
     return NextResponse.json(
       { error: "Forbidden: You do not have permission to list dropship items for this store." },
       { status: 403 }
     );
   }
 
-  const targetSlug = (session && session.role !== "super_admin") ? (session.slug || session.storeId || requestedSlug) : requestedSlug;
+  const targetSlug = session.role !== "super_admin" ? (session.slug || session.storeId || requestedSlug) : requestedSlug;
   const store = devStore.ensureStore(targetSlug);
 
   // Plan Gate: Dropshipping requires Medium or Pro

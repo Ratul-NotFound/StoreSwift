@@ -23,13 +23,25 @@ export async function GET(request: Request) {
   const storeSlug = url.searchParams.get("storeSlug");
   const session = getSessionFromRequest(request);
 
-  const targetSlug = storeSlug || session?.storeId || "apex-fashion";
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized: Session required." }, { status: 401 });
+  }
+
+  const targetSlug = storeSlug || session.slug || session.storeId || "apex-fashion";
+  if (!canAccessStore(session, targetSlug)) {
+    return NextResponse.json({ error: "Forbidden: Access denied." }, { status: 403 });
+  }
+
   const list = devStore.getCoupons(targetSlug);
   return NextResponse.json({ ok: true, coupons: list });
 }
 
 export async function POST(request: Request) {
   const session = getSessionFromRequest(request);
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized: Session required." }, { status: 401 });
+  }
+
   const body = await request.json();
   const parse = couponCreateSchema.safeParse(body);
 
@@ -38,16 +50,16 @@ export async function POST(request: Request) {
   }
 
   const data = parse.data;
-  const requestedSlug = data.storeSlug || session?.slug || session?.storeId || "apex-fashion";
+  const requestedSlug = data.storeSlug || session.slug || session.storeId || "apex-fashion";
 
-  if (session && !canAccessStore(session, requestedSlug)) {
+  if (!canAccessStore(session, requestedSlug)) {
     return NextResponse.json(
       { error: "Forbidden: You do not have permission to manage coupons for this store." },
       { status: 403 }
     );
   }
 
-  const storeSlug = (session && session.role !== "super_admin") ? (session.slug || session.storeId || requestedSlug) : requestedSlug;
+  const storeSlug = session.role !== "super_admin" ? (session.slug || session.storeId || requestedSlug) : requestedSlug;
   const store = devStore.ensureStore(storeSlug);
 
   // Plan Gate
@@ -68,6 +80,13 @@ export async function POST(request: Request) {
 
   const finalType = (data.type === "fixed" ? "flat" : data.type) as "flat" | "percent";
 
+  if (finalType === "percent" && (numVal <= 0 || numVal > 100)) {
+    return NextResponse.json({ error: "Percentage discount must be between 1% and 100%." }, { status: 400 });
+  }
+  if (finalType === "flat" && numVal <= 0) {
+    return NextResponse.json({ error: "Discount value must be greater than 0." }, { status: 400 });
+  }
+
   const coupon = devStore.addCoupon({
     storeId: store.id,
     storeSlug: store.slug,
@@ -86,7 +105,7 @@ export async function POST(request: Request) {
 export async function PATCH(request: Request) {
   const body = await request.json();
 
-  // Mode 1: Validate coupon at checkout
+  // Mode 1: Validate coupon at checkout (Public)
   if (body.validate || body.code) {
     const storeSlug = body.storeSlug || body.storeId || "apex-fashion";
     const code = String(body.code || "");
@@ -96,8 +115,12 @@ export async function PATCH(request: Request) {
     return NextResponse.json(result);
   }
 
-  // Mode 2: Toggle coupon active/inactive
+  // Mode 2: Toggle coupon active/inactive (Requires Authentication)
   if (body.id && typeof body.isActive === "boolean") {
+    const session = getSessionFromRequest(request);
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized: Session required." }, { status: 401 });
+    }
     devStore.toggleCoupon(body.id, body.isActive);
     return NextResponse.json({ ok: true });
   }
@@ -106,6 +129,11 @@ export async function PATCH(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  const session = getSessionFromRequest(request);
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized: Session required." }, { status: 401 });
+  }
+
   const url = new URL(request.url);
   const id = url.searchParams.get("id");
   if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });

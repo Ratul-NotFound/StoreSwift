@@ -9,15 +9,29 @@ import { GET as getCouponsHandler, POST as postCouponsHandler, PATCH as patchCou
 import { ALL_TEMPLATE_CHOICES } from "../../src/components/store/template-switcher-bar";
 import { TemplateFactory } from "../../src/templates/template.factory";
 import { devStore } from "../../src/lib/dev-store";
+import { signSessionToken } from "../../src/lib/auth";
 
 describe("Deep End-to-End System Audit: 30 Templates, Shop Admin Panels, CRUD, & Dynamic Sync", () => {
   const testTenant = `audit-store-${Date.now()}`;
   let createdProductId = "";
   let createdOrderId = "";
   let createdCouponId = "";
+  let merchantAuthHeader: { Authorization: string };
 
   beforeAll(() => {
-    process.env.AUTH_SECRET = "super-secret-key-that-is-at-least-32-chars-long!";
+    const secret = "super-secret-key-that-is-at-least-32-chars-long!";
+    process.env.AUTH_SECRET = secret;
+
+    const token = signSessionToken({
+      userId: "usr-audit-merchant",
+      email: "audit@storeswift.app",
+      storeId: `store-${testTenant}`,
+      slug: testTenant,
+      role: "merchant_owner",
+      plan: "pro",
+    }, secret);
+
+    merchantAuthHeader = { Authorization: `Bearer ${token}` };
   });
 
   // ─── 1. 30 TEMPLATES INTEGRITY AUDIT ──────────────────────────────────────────
@@ -76,7 +90,7 @@ describe("Deep End-to-End System Audit: 30 Templates, Shop Admin Panels, CRUD, &
   it("updates store settings and switches active storefront theme dynamically", async () => {
     const patchReq = new Request(`http://localhost:3000/api/stores/${testTenant}/settings`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...merchantAuthHeader },
       body: JSON.stringify({
         name: "Seoul Glow Studio Luxury",
         template: "derma-rx",
@@ -103,7 +117,7 @@ describe("Deep End-to-End System Audit: 30 Templates, Shop Admin Panels, CRUD, &
     // 4.1 CREATE product
     const createReq = new Request("http://localhost:3000/api/products", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...merchantAuthHeader },
       body: JSON.stringify({
         storeSlug: testTenant,
         title: "Centella Asiatica Barrier Cream",
@@ -137,7 +151,7 @@ describe("Deep End-to-End System Audit: 30 Templates, Shop Admin Panels, CRUD, &
     // 4.3 UPDATE (PATCH) product
     const editReq = new Request(`http://localhost:3000/api/products/${createdProductId}`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...merchantAuthHeader },
       body: JSON.stringify({
         price: 1950,
         stock: 25,
@@ -201,7 +215,9 @@ describe("Deep End-to-End System Audit: 30 Templates, Shop Admin Panels, CRUD, &
   // ─── 6. MERCHANT ORDERS DASHBOARD & STATUS TRANSITIONS ────────────────────────
   it("retrieves store orders and updates status through fulfillment lifecycle", async () => {
     // 6.1 GET merchant orders
-    const getOrdersReq = new Request(`http://localhost:3000/api/orders?storeSlug=${testTenant}`);
+    const getOrdersReq = new Request(`http://localhost:3000/api/orders?storeSlug=${testTenant}`, {
+      headers: { ...merchantAuthHeader },
+    });
     const getOrdersRes = await getOrdersHandler(getOrdersReq);
     expect(getOrdersRes.status).toBe(200);
     const ordersData = await getOrdersRes.json();
@@ -213,7 +229,7 @@ describe("Deep End-to-End System Audit: 30 Templates, Shop Admin Panels, CRUD, &
     // 6.2 Advance status: pending -> processing
     const procReq = new Request(`http://localhost:3000/api/orders/${createdOrderId}/status`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...merchantAuthHeader },
       body: JSON.stringify({ status: "processing" }),
     });
     const procRes = await patchOrderStatusHandler(procReq, { params: Promise.resolve({ id: createdOrderId }) });
@@ -222,7 +238,7 @@ describe("Deep End-to-End System Audit: 30 Templates, Shop Admin Panels, CRUD, &
     // 6.3 Advance status: processing -> shipped
     const shipReq = new Request(`http://localhost:3000/api/orders/${createdOrderId}/status`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...merchantAuthHeader },
       body: JSON.stringify({ status: "shipped" }),
     });
     const shipRes = await patchOrderStatusHandler(shipReq, { params: Promise.resolve({ id: createdOrderId }) });
@@ -231,7 +247,7 @@ describe("Deep End-to-End System Audit: 30 Templates, Shop Admin Panels, CRUD, &
     // 6.4 Advance status: shipped -> delivered (payment marked as paid)
     const deliverReq = new Request(`http://localhost:3000/api/orders/${createdOrderId}/status`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...merchantAuthHeader },
       body: JSON.stringify({ status: "delivered" }),
     });
     const deliverRes = await patchOrderStatusHandler(deliverReq, { params: Promise.resolve({ id: createdOrderId }) });
@@ -252,7 +268,7 @@ describe("Deep End-to-End System Audit: 30 Templates, Shop Admin Panels, CRUD, &
     // 7.1 CREATE coupon
     const createCouponReq = new Request("http://localhost:3000/api/coupons", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...merchantAuthHeader },
       body: JSON.stringify({
         storeSlug: testTenant,
         code: "DEEPGLOW20",
@@ -270,7 +286,9 @@ describe("Deep End-to-End System Audit: 30 Templates, Shop Admin Panels, CRUD, &
     createdCouponId = couponData.coupon.id;
 
     // 7.2 LIST coupons
-    const listCouponsReq = new Request(`http://localhost:3000/api/coupons?storeSlug=${testTenant}`);
+    const listCouponsReq = new Request(`http://localhost:3000/api/coupons?storeSlug=${testTenant}`, {
+      headers: { ...merchantAuthHeader },
+    });
     const listCouponsRes = await getCouponsHandler(listCouponsReq);
     expect(listCouponsRes.status).toBe(200);
     const listCouponsData = await listCouponsRes.json();
@@ -280,7 +298,7 @@ describe("Deep End-to-End System Audit: 30 Templates, Shop Admin Panels, CRUD, &
     // 7.3 TOGGLE active status
     const toggleReq = new Request("http://localhost:3000/api/coupons", {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...merchantAuthHeader },
       body: JSON.stringify({ id: createdCouponId, isActive: false }),
     });
     const toggleRes = await patchCouponsHandler(toggleReq);
@@ -289,6 +307,7 @@ describe("Deep End-to-End System Audit: 30 Templates, Shop Admin Panels, CRUD, &
     // 7.4 DELETE coupon
     const deleteCouponReq = new Request(`http://localhost:3000/api/coupons?id=${createdCouponId}`, {
       method: "DELETE",
+      headers: { ...merchantAuthHeader },
     });
     const deleteCouponRes = await deleteCouponsHandler(deleteCouponReq);
     expect(deleteCouponRes.status).toBe(200);
@@ -298,6 +317,7 @@ describe("Deep End-to-End System Audit: 30 Templates, Shop Admin Panels, CRUD, &
   it("deletes products cleanly from the store catalog", async () => {
     const deleteReq = new Request(`http://localhost:3000/api/products/${createdProductId}`, {
       method: "DELETE",
+      headers: { ...merchantAuthHeader },
     });
     const deleteRes = await deleteProductHandler(deleteReq, { params: Promise.resolve({ id: createdProductId }) });
     expect(deleteRes.status).toBe(200);

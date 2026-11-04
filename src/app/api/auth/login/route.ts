@@ -157,7 +157,7 @@ export async function POST(request: Request) {
       const storeId = userStore?.id || `store-${slug}`;
       const storePlan = (userStore?.plan || devStore.getStore(slug)?.plan || "free") as "free" | "medium" | "pro";
       const storeName = userStore?.name || devStore.getStore(slug)?.name || "My Store";
-      const resolvedRole = existingUser.role === "super_admin" || email.toLowerCase().includes("superadmin") ? "super_admin" : (existingUser.role || "merchant_owner");
+      const resolvedRole = existingUser.role === "super_admin" ? "super_admin" : (existingUser.role || "merchant_owner");
 
       const token = signSessionToken({
         userId: existingUser.id,
@@ -197,7 +197,8 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
       }
 
-      const isSuper = email.toLowerCase().includes("superadmin") || email.toLowerCase().includes("admin@storeswift");
+      const cleanEmail = email.toLowerCase().trim();
+      const isSuper = cleanEmail === "superadmin@storeswift.com" || cleanEmail === "admin@storeswift.com" || cleanEmail === (process.env.SUPER_ADMIN_EMAIL?.toLowerCase().trim());
       if (isSuper && password !== "SuperAdmin2026!" && password !== (process.env.SUPER_ADMIN_PASSWORD || "SuperAdmin2026!")) {
         return NextResponse.json({ error: "Invalid super admin credentials." }, { status: 401 });
       }

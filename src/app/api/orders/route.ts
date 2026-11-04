@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db, orders, orderItems, stores, commissionEvents, storeCustomers } from "@/db";
 import { eq, desc, sql } from "drizzle-orm";
-import { getSessionFromRequest } from "@/lib/api-auth";
+import { getSessionFromRequest, canAccessStore } from "@/lib/api-auth";
 import { generateConsignment } from "@/lib/courier";
 import { fireServerSidePixelEvent } from "@/lib/pixels";
 import { calculateCommission, PLAN_LIMITS, isValidPlan, type PlanId } from "@/lib/plan-limits";
@@ -29,8 +29,8 @@ const orderCreateSchema = z.object({
       id: z.string().optional(),
       variantId: z.string().optional(),
       title: z.string().optional(),
-      price: z.number().or(z.string()),
-      quantity: z.number().min(1),
+      price: z.number().min(0).or(z.string()),
+      quantity: z.number().int().min(1, "Quantity must be at least 1").max(99),
       isDropship: z.boolean().optional(),
       platformProductId: z.string().optional(),
     })
@@ -38,7 +38,7 @@ const orderCreateSchema = z.object({
   paymentMethod: z.enum(["cod", "bkash", "nagad", "stripe", "manual"]).default("cod"),
   deliveryZone: z.enum(["metro", "suburbs", "national"]).optional().default("metro"),
   trxId: z.string().optional(),
-  shippingFee: z.number().optional().default(0),
+  shippingFee: z.number().min(0, "Shipping fee cannot be negative").max(10000).optional().default(0),
 });
 
 function isValidUuid(id?: string | null): boolean {
@@ -51,8 +51,15 @@ export async function GET(request: Request) {
   const storeSlug = url.searchParams.get("storeSlug");
   const session = getSessionFromRequest(request);
 
+  if (!session) {
+    return NextResponse.json(
+      { error: "Unauthorized: Authentication required to view store orders." },
+      { status: 401 }
+    );
+  }
+
   // Super admin scope: return all platform orders
-  if (session?.role === "super_admin" && !storeSlug) {
+  if (session.role === "super_admin" && !storeSlug) {
     try {
       const list = await db
         .select()
@@ -68,8 +75,15 @@ export async function GET(request: Request) {
     return NextResponse.json({ ok: true, orders: devStore.getOrders() });
   }
 
-  // Merchant or Storefront scope
-  const targetSlug = storeSlug || session?.storeId || "apex-fashion";
+  // Merchant scope: check multi-tenant isolation
+  const targetSlug = storeSlug || session.slug || session.storeId || "apex-fashion";
+
+  if (!canAccessStore(session, targetSlug)) {
+    return NextResponse.json(
+      { error: "Forbidden: You do not have permission to view orders for this store." },
+      { status: 403 }
+    );
+  }
 
   try {
     let targetStoreId: string | undefined;

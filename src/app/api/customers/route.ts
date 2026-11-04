@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { storeCustomers, stores } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
-import { getSessionFromRequest } from "@/lib/api-auth";
+import { getSessionFromRequest, canAccessStore } from "@/lib/api-auth";
 import { devStore } from "@/lib/dev-store";
 
 export async function GET(request: Request) {
@@ -10,7 +10,21 @@ export async function GET(request: Request) {
   const storeSlug = url.searchParams.get("storeSlug");
   const session = getSessionFromRequest(request);
 
-  const targetSlug = storeSlug || session?.storeId || "apex-fashion";
+  if (!session) {
+    return NextResponse.json(
+      { error: "Unauthorized: Session required to view customer data." },
+      { status: 401 }
+    );
+  }
+
+  const targetSlug = storeSlug || session.slug || session.storeId || "apex-fashion";
+
+  if (!canAccessStore(session, targetSlug)) {
+    return NextResponse.json(
+      { error: "Forbidden: You do not have permission to view customer data for this store." },
+      { status: 403 }
+    );
+  }
 
   try {
     let storeId: string | undefined;

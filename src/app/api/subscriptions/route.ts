@@ -59,6 +59,9 @@ const UpgradeSchema = z.object({
 
 export async function POST(request: Request) {
   const session = getSessionFromRequest(request);
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized: Please log in to manage subscriptions." }, { status: 401 });
+  }
 
   try {
     const body = await request.json();
@@ -74,16 +77,16 @@ export async function POST(request: Request) {
     const finalTrxId = transactionId || trxId || `TRX-${Date.now().toString(36).toUpperCase()}`;
     const priceBdt = PLAN_PRICES[plan];
 
-    const requestedSlug = storeSlug || session?.slug || session?.storeId || "apex-fashion";
+    const requestedSlug = storeSlug || session.slug || session.storeId || "apex-fashion";
 
-    if (session && !canAccessStore(session, requestedSlug)) {
+    if (!canAccessStore(session, requestedSlug)) {
       return NextResponse.json(
         { error: "Forbidden: You do not have permission to upgrade another merchant's subscription." },
         { status: 403 }
       );
     }
 
-    const targetSlug = (session && session.role !== "super_admin") ? (session.slug || session.storeId || requestedSlug) : requestedSlug;
+    const targetSlug = session.role !== "super_admin" ? (session.slug || session.storeId || requestedSlug) : requestedSlug;
 
     // 1. Upgrade in devStore immediately
     devStore.upgradeStore(targetSlug, plan, finalTrxId);

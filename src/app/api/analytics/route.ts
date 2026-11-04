@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { analyticsSnapshots, orders, stores } from "@/db/schema";
 import { eq, gte, lte, desc, count, and, sql } from "drizzle-orm";
-import { getSessionFromRequest } from "@/lib/api-auth";
+import { getSessionFromRequest, canAccessStore } from "@/lib/api-auth";
 import { devStore } from "@/lib/dev-store";
 
 export async function GET(request: Request) {
@@ -11,7 +11,21 @@ export async function GET(request: Request) {
   const period = url.searchParams.get("period") ?? "30d";
   const session = getSessionFromRequest(request);
 
-  const targetSlug = storeSlug || session?.storeId || "apex-fashion";
+  if (!session) {
+    return NextResponse.json(
+      { error: "Unauthorized: Session required to view analytics." },
+      { status: 401 }
+    );
+  }
+
+  const targetSlug = storeSlug || session.slug || session.storeId || "apex-fashion";
+
+  if (!canAccessStore(session, targetSlug)) {
+    return NextResponse.json(
+      { error: "Forbidden: You do not have permission to view this store's analytics." },
+      { status: 403 }
+    );
+  }
 
   // Calculate live overview from devStore
   const overview = devStore.getStoreOverview(targetSlug);

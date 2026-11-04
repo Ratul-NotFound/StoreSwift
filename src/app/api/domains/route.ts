@@ -27,6 +27,10 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const session = getSessionFromRequest(request);
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized: Session required." }, { status: 401 });
+  }
+
   const body = await request.json();
   const parse = domainSchema.safeParse(body);
 
@@ -34,16 +38,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: parse.error.errors[0]?.message }, { status: 400 });
   }
 
-  const requestedSlug = parse.data.storeSlug || session?.slug || session?.storeId || "apex-fashion";
+  const requestedSlug = parse.data.storeSlug || session.slug || session.storeId || "apex-fashion";
 
-  if (session && !canAccessStore(session, requestedSlug)) {
+  if (!canAccessStore(session, requestedSlug)) {
     return NextResponse.json(
       { error: "Forbidden: You do not have permission to manage domains for this store." },
       { status: 403 }
     );
   }
 
-  const targetSlug = (session && session.role !== "super_admin") ? (session.slug || session.storeId || requestedSlug) : requestedSlug;
+  const targetSlug = session.role !== "super_admin" ? (session.slug || session.storeId || requestedSlug) : requestedSlug;
   const store = devStore.ensureStore(targetSlug);
 
   // Plan Gate: Custom domain requires Medium or Pro
@@ -99,8 +103,20 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  const session = getSessionFromRequest(request);
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized: Session required." }, { status: 401 });
+  }
+
   const url = new URL(request.url);
-  const storeSlug = url.searchParams.get("storeSlug") || "apex-fashion";
+  const storeSlug = url.searchParams.get("storeSlug") || session.slug || session.storeId || "apex-fashion";
+
+  if (!canAccessStore(session, storeSlug)) {
+    return NextResponse.json(
+      { error: "Forbidden: You do not have permission to manage domains for this store." },
+      { status: 403 }
+    );
+  }
 
   devStore.updateStore(storeSlug, { domain: undefined });
   return NextResponse.json({ ok: true });

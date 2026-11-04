@@ -34,14 +34,14 @@ export async function comparePassword(password: string, hash: string): Promise<b
 }
 
 export function signSessionToken(payload: SessionPayload, secret?: string): string {
-  return jwt.sign(payload, getSecret(secret), { expiresIn: "7d" });
+  return jwt.sign(payload, getSecret(secret), { algorithm: "HS256", expiresIn: "7d" });
 }
 
 export function verifySessionToken(token: string, secret?: string): SessionPayload | null {
   try {
     const key = secret || process.env.AUTH_SECRET || (process.env.NODE_ENV !== "production" ? DEV_FALLBACK_SECRET : undefined);
     if (!key) return null;
-    const decoded = jwt.verify(token, key) as SessionPayload;
+    const decoded = jwt.verify(token, key, { algorithms: ["HS256"] }) as SessionPayload;
     if (decoded && decoded.userId && (decoded.storeId || decoded.role === "super_admin")) {
       return {
         userId: decoded.userId,

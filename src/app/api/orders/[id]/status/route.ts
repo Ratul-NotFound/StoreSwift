@@ -18,9 +18,17 @@ export async function PATCH(
   try {
     const { id } = await props.params;
     const session = getSessionFromRequest(request);
+
+    if (!session) {
+      return NextResponse.json(
+        { error: "Unauthorized: Session required to modify order status." },
+        { status: 401 }
+      );
+    }
+
     const existingOrder = devStore.getOrder(id);
 
-    if (existingOrder && session && !canAccessStore(session, existingOrder.storeSlug)) {
+    if (existingOrder && !canAccessStore(session, existingOrder.storeSlug)) {
       return NextResponse.json(
         { error: "Forbidden: You do not have permission to modify this order." },
         { status: 403 }
