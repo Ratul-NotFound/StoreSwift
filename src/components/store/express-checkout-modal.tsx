@@ -83,6 +83,27 @@ export function ExpressCheckoutModal({
   const [couponError, setCouponError] = useState<string | null>(null);
   const [checkingCoupon, setCheckingCoupon] = useState(false);
 
+  // Debounced abandoned cart lead capture when customer fills phone
+  useEffect(() => {
+    if (customerPhone.trim().length >= 11 && items.length > 0 && !orderConfirmed) {
+      const handler = setTimeout(() => {
+        fetch(`/api/stores/${tenantSlug}/abandoned-carts`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            customerName,
+            customerPhone,
+            customerEmail,
+            items,
+            totalAmount: finalTotal,
+            district: selectedDistrict,
+          }),
+        }).catch(() => {});
+      }, 800);
+      return () => clearTimeout(handler);
+    }
+  }, [customerPhone, customerName, customerEmail, items, finalTotal, tenantSlug, selectedDistrict, orderConfirmed]);
+
   if (!isOpen) return null;
 
   const t = CHECKOUT_I18N[lang];
