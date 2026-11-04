@@ -3,7 +3,7 @@ import { z } from "zod";
 import { db } from "@/db";
 import { subscriptions, stores, invoices, auditLogs } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { getSessionFromRequest } from "@/lib/api-auth";
+import { getSessionFromRequest, canAccessStore } from "@/lib/api-auth";
 import { signSessionToken } from "@/lib/auth";
 import { PLAN_LIMITS, PLAN_PRICES, isValidPlan, type PlanId } from "@/lib/plan-limits";
 import { devStore } from "@/lib/dev-store";
@@ -74,7 +74,16 @@ export async function POST(request: Request) {
     const finalTrxId = transactionId || trxId || `TRX-${Date.now().toString(36).toUpperCase()}`;
     const priceBdt = PLAN_PRICES[plan];
 
-    const targetSlug = storeSlug || session?.storeId || "apex-fashion";
+    const requestedSlug = storeSlug || session?.slug || session?.storeId || "apex-fashion";
+
+    if (session && !canAccessStore(session, requestedSlug)) {
+      return NextResponse.json(
+        { error: "Forbidden: You do not have permission to upgrade another merchant's subscription." },
+        { status: 403 }
+      );
+    }
+
+    const targetSlug = (session && session.role !== "super_admin") ? (session.slug || session.storeId || requestedSlug) : requestedSlug;
 
     // 1. Upgrade in devStore immediately
     devStore.upgradeStore(targetSlug, plan, finalTrxId);

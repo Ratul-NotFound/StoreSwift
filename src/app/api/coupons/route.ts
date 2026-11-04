@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { getSessionFromRequest } from "@/lib/api-auth";
+import { getSessionFromRequest, canAccessStore } from "@/lib/api-auth";
 import { assertFeature, isValidPlan, type PlanId } from "@/lib/plan-limits";
 import { devStore } from "@/lib/dev-store";
 
@@ -38,7 +38,16 @@ export async function POST(request: Request) {
   }
 
   const data = parse.data;
-  const storeSlug = data.storeSlug || session?.storeId || "apex-fashion";
+  const requestedSlug = data.storeSlug || session?.slug || session?.storeId || "apex-fashion";
+
+  if (session && !canAccessStore(session, requestedSlug)) {
+    return NextResponse.json(
+      { error: "Forbidden: You do not have permission to manage coupons for this store." },
+      { status: 403 }
+    );
+  }
+
+  const storeSlug = (session && session.role !== "super_admin") ? (session.slug || session.storeId || requestedSlug) : requestedSlug;
   const store = devStore.ensureStore(storeSlug);
 
   // Plan Gate

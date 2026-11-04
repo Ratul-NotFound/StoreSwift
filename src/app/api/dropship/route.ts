@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { getSessionFromRequest } from "@/lib/api-auth";
+import { getSessionFromRequest, canAccessStore } from "@/lib/api-auth";
 import { devStore } from "@/lib/dev-store";
 
 const CreateListingSchema = z.object({
@@ -33,7 +33,16 @@ export async function POST(request: Request) {
   const rawPrice = parse.data.sellPrice ?? parse.data.myPrice;
   const numPrice = typeof rawPrice === "string" ? parseFloat(rawPrice) : (rawPrice || 0);
 
-  const targetSlug = storeSlug || session?.storeId || "apex-fashion";
+  const requestedSlug = storeSlug || session?.slug || session?.storeId || "apex-fashion";
+
+  if (session && !canAccessStore(session, requestedSlug)) {
+    return NextResponse.json(
+      { error: "Forbidden: You do not have permission to list dropship items for this store." },
+      { status: 403 }
+    );
+  }
+
+  const targetSlug = (session && session.role !== "super_admin") ? (session.slug || session.storeId || requestedSlug) : requestedSlug;
   const store = devStore.ensureStore(targetSlug);
 
   // Plan Gate: Dropshipping requires Medium or Pro

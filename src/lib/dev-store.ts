@@ -554,11 +554,11 @@ class DevStoreManager {
       slug.includes("clothing") || slug.includes("cloth") ? "clothing" :
       slug.includes("milano") || slug.includes("street") || slug.includes("urban") ? "milano" :
       slug.includes("nfox") || slug.includes("nickelfox") || slug.includes("yellow") ? "nickelfox" :
-      category === "beauty_cosmetics" || category === "beauty" || category === "cosmetics" ? "glow" :
-      category === "shoes" || category === "leather" || category === "footwear" ? "artisan" :
-      category === "electronics" || category === "tech" || category === "gadgets" ? "bold" :
-      category === "jewelry" || category === "luxury" || category === "watches" ? "maison" :
-      category === "grocery_food" || category === "grocery" || category === "pantry" || category === "food" ? "pantry" : "minimal";
+      slug.includes("glow") || slug.includes("beauty") || category === "beauty_cosmetics" || category === "beauty" || category === "cosmetics" ? "glow" :
+      slug.includes("shoe") || slug.includes("craft") || slug.includes("leather") || category === "shoes" || category === "leather" || category === "footwear" ? "artisan" :
+      slug.includes("tech") || slug.includes("cyber") || slug.includes("audio") || category === "electronics" || category === "tech" || category === "gadgets" ? "bold" :
+      slug.includes("maison") || slug.includes("jewelry") || slug.includes("luxury") || category === "jewelry" || category === "luxury" || category === "watches" ? "maison" :
+      slug.includes("food") || slug.includes("pantry") || slug.includes("organic") || slug.includes("grocery") || category === "grocery_food" || category === "grocery" || category === "pantry" || category === "food" ? "pantry" : "minimal";
 
     const newStore: DevStoreRecord = {
       id: `store-${slug}`,
@@ -596,6 +596,10 @@ class DevStoreManager {
 
   // ─── PRODUCTS ───────────────────────────────────────────────────────────────
 
+  getProduct(id: string): DevProduct | null {
+    return this.products.get(id) || null;
+  }
+
   getProducts(slugOrId: string): DevProduct[] {
     const store = this.getStore(slugOrId);
     const targetSlug = store ? store.slug : slugOrId;
@@ -630,6 +634,10 @@ class DevStoreManager {
   }
 
   // ─── ORDERS ─────────────────────────────────────────────────────────────────
+
+  getOrder(id: string): DevOrder | null {
+    return this.orders.get(id) || null;
+  }
 
   getOrders(slugOrId?: string): DevOrder[] {
     const all = Array.from(this.orders.values()).sort(

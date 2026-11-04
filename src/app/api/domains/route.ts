@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db, customDomains, stores } from "@/db";
 import { eq } from "drizzle-orm";
-import { getSessionFromRequest } from "@/lib/api-auth";
+import { getSessionFromRequest, canAccessStore } from "@/lib/api-auth";
 import { devStore } from "@/lib/dev-store";
 
 const domainSchema = z.object({
@@ -34,7 +34,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: parse.error.errors[0]?.message }, { status: 400 });
   }
 
-  const targetSlug = parse.data.storeSlug || session?.storeId || "apex-fashion";
+  const requestedSlug = parse.data.storeSlug || session?.slug || session?.storeId || "apex-fashion";
+
+  if (session && !canAccessStore(session, requestedSlug)) {
+    return NextResponse.json(
+      { error: "Forbidden: You do not have permission to manage domains for this store." },
+      { status: 403 }
+    );
+  }
+
+  const targetSlug = (session && session.role !== "super_admin") ? (session.slug || session.storeId || requestedSlug) : requestedSlug;
   const store = devStore.ensureStore(targetSlug);
 
   // Plan Gate: Custom domain requires Medium or Pro

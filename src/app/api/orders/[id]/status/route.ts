@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db, orders } from "@/db";
 import { eq } from "drizzle-orm";
-import { getSessionFromRequest } from "@/lib/api-auth";
+import { getSessionFromRequest, canAccessStore } from "@/lib/api-auth";
 import { devStore } from "@/lib/dev-store";
 import { z } from "zod";
 
@@ -17,6 +17,16 @@ export async function PATCH(
 ) {
   try {
     const { id } = await props.params;
+    const session = getSessionFromRequest(request);
+    const existingOrder = devStore.getOrder(id);
+
+    if (existingOrder && session && !canAccessStore(session, existingOrder.storeSlug)) {
+      return NextResponse.json(
+        { error: "Forbidden: You do not have permission to modify this order." },
+        { status: 403 }
+      );
+    }
+
     const body = await request.json();
     const parse = statusUpdateSchema.safeParse(body);
 

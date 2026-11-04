@@ -45,18 +45,32 @@ export async function middleware(request: NextRequest) {
   const isStoreDashboardRoute = /\/store\/[^/]+\/dashboard/.test(url.pathname);
   const isProtected = isSuperAdminRoute || isAdminRoute || isStoreDashboardRoute;
 
-  if (isProtected && process.env.NODE_ENV === "production") {
-    const token = request.cookies.get("ss_session")?.value;
-    const session = token ? await verifySessionTokenEdge(token) : null;
+  const token = request.cookies.get("ss_session")?.value;
+  const session = token ? await verifySessionTokenEdge(token) : null;
 
-    if (!session) {
+  if (isProtected) {
+    if (process.env.NODE_ENV === "production" && !session) {
       const loginUrl = new URL("/login", request.url);
       loginUrl.searchParams.set("redirect", url.pathname);
       return NextResponse.redirect(loginUrl);
     }
 
-    if (isSuperAdminRoute && session.role !== "super_admin") {
-      return NextResponse.redirect(new URL("/", request.url));
+    if (session) {
+      // 1. Super admin route requires super_admin role
+      if (isSuperAdminRoute && session.role !== "super_admin") {
+        const dest = session.slug ? `/store/${session.slug}/dashboard` : "/login?error=super_admin_required";
+        return NextResponse.redirect(new URL(dest, request.url));
+      }
+
+      // 2. Multi-tenant isolation: prevent cross-store dashboard access for regular merchants
+      if (isStoreDashboardRoute && session.role !== "super_admin") {
+        const match = url.pathname.match(/\/store\/([^/]+)\/dashboard/);
+        const requestedTenant = match ? match[1] : null;
+        if (requestedTenant && session.slug && session.slug.toLowerCase() !== requestedTenant.toLowerCase()) {
+          // Merchant attempted to access another store's dashboard -> redirect to their own store dashboard
+          return NextResponse.redirect(new URL(`/store/${session.slug}/dashboard`, request.url));
+        }
+      }
     }
   }
 
@@ -66,7 +80,10 @@ export async function middleware(request: NextRequest) {
   // Rewriting internal routes for admin subdomain
   if (resolved.type === "admin" && !url.pathname.startsWith("/admin")) {
     url.pathname = `/admin${url.pathname === "/" ? "" : url.pathname}`;
-    return NextResponse.rewrite(url);
+    const response = NextResponse.rewrite(url);
+    response.headers.set("X-Content-Type-Options", "nosniff");
+    response.headers.set("X-Frame-Options", "SAMEORIGIN");
+    return response;
   }
 
   // Rewriting internal routes for store subdomains & custom domains
@@ -77,11 +94,17 @@ export async function middleware(request: NextRequest) {
       !url.pathname.startsWith("/api")
     ) {
       url.pathname = `/store/${resolved.tenantSlug}${url.pathname === "/" ? "" : url.pathname}`;
-      return NextResponse.rewrite(url);
+      const response = NextResponse.rewrite(url);
+      response.headers.set("X-Content-Type-Options", "nosniff");
+      response.headers.set("X-Frame-Options", "SAMEORIGIN");
+      return response;
     }
   }
 
-  return NextResponse.next();
+  const response = NextResponse.next();
+  response.headers.set("X-Content-Type-Options", "nosniff");
+  response.headers.set("X-Frame-Options", "SAMEORIGIN");
+  return response;
 }
 
 export const config = {

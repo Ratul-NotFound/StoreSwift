@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db, products } from "@/db";
-import { and, eq } from "drizzle-orm";
-import { getSessionFromRequest } from "@/lib/api-auth";
+import { eq } from "drizzle-orm";
+import { getSessionFromRequest, canAccessStore } from "@/lib/api-auth";
 import { devStore } from "@/lib/dev-store";
 
 export async function PATCH(
@@ -10,6 +10,16 @@ export async function PATCH(
 ) {
   try {
     const { id } = await props.params;
+    const session = getSessionFromRequest(request);
+    const existing = devStore.getProduct(id);
+
+    if (existing && session && !canAccessStore(session, existing.storeSlug)) {
+      return NextResponse.json(
+        { error: "Forbidden: You do not have permission to modify this product." },
+        { status: 403 }
+      );
+    }
+
     const body = await request.json();
 
     const rawPrice = body.price ?? body.basePrice;
@@ -57,6 +67,15 @@ export async function DELETE(
 ) {
   try {
     const { id } = await props.params;
+    const session = getSessionFromRequest(request);
+    const existing = devStore.getProduct(id);
+
+    if (existing && session && !canAccessStore(session, existing.storeSlug)) {
+      return NextResponse.json(
+        { error: "Forbidden: You do not have permission to delete this product." },
+        { status: 403 }
+      );
+    }
 
     // 1. Delete from devStore
     devStore.deleteProduct(id);

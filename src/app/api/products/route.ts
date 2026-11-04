@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db, products, productVariants, stores } from "@/db";
 import { eq, desc, count } from "drizzle-orm";
-import { getSessionFromRequest } from "@/lib/api-auth";
+import { getSessionFromRequest, canAccessStore } from "@/lib/api-auth";
 import { checkProductLimit, isValidPlan, type PlanId } from "@/lib/plan-limits";
 import { devStore } from "@/lib/dev-store";
 
@@ -94,7 +94,14 @@ export async function POST(request: Request) {
   const numCompare = rawCompare ? (typeof rawCompare === "string" ? parseFloat(rawCompare) : rawCompare) : undefined;
   const numStock = typeof data.stock === "string" ? parseInt(data.stock, 10) || 0 : data.stock;
 
-  const storeSlug = data.storeSlug || session?.storeId || "apex-fashion";
+  const requestedSlug = data.storeSlug || session?.slug || session?.storeId || "apex-fashion";
+  if (session && !canAccessStore(session, requestedSlug)) {
+    return NextResponse.json(
+      { error: "Forbidden: You do not have permission to manage products for this store." },
+      { status: 403 }
+    );
+  }
+  const storeSlug = (session && session.role !== "super_admin") ? (session.slug || session.storeId || requestedSlug) : requestedSlug;
   const targetStore = devStore.ensureStore(storeSlug);
 
   // ── Plan Limit Enforcement ──

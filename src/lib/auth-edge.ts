@@ -12,9 +12,11 @@ export interface SessionPayload {
   slug?: string;
 }
 
+const DEV_FALLBACK_SECRET = "storeswift-dev-fallback-secret-key-32-chars-long";
+
 export async function verifySessionTokenEdge(token: string): Promise<SessionPayload | null> {
   try {
-    const secret = process.env.AUTH_SECRET;
+    const secret = process.env.AUTH_SECRET || (process.env.NODE_ENV !== "production" ? DEV_FALLBACK_SECRET : undefined);
     if (!secret) return null;
     const encoder = new TextEncoder();
     const { payload } = await jwtVerify(token, encoder.encode(secret));

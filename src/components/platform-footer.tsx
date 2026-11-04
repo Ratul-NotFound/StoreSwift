@@ -95,16 +95,16 @@ export function PlatformFooter() {
             <ul className="space-y-2.5 text-xs text-zinc-600 dark:text-zinc-400">
               <li>
                 <Link
-                  href="/admin?store=apex-fashion"
+                  href="/store/apex-fashion/dashboard"
                   className="hover:text-emerald-400 transition inline-flex items-center space-x-1.5 text-emerald-600 dark:text-emerald-400 font-semibold"
                 >
-                  <span>Merchant Admin Demo</span>
+                  <span>Merchant Dashboard</span>
                   <ExternalLink className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                 </Link>
               </li>
               <li>
-                <Link href="/onboarding" className="hover:text-zinc-950 dark:hover:text-white transition">
-                  Start 14-Day Free Trial
+                <Link href="/register" className="hover:text-zinc-950 dark:hover:text-white transition">
+                  Create Free Store
                 </Link>
               </li>
               <li>

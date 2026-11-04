@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db, stores, customDomains } from "@/db";
 import { eq } from "drizzle-orm";
-import { getSessionFromRequest } from "@/lib/api-auth";
+import { getSessionFromRequest, canAccessStore } from "@/lib/api-auth";
 import { devStore } from "@/lib/dev-store";
 
 const settingsSchema = z.object({
@@ -101,6 +101,15 @@ export async function PATCH(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
+  const session = getSessionFromRequest(request);
+
+  if (session && !canAccessStore(session, slug)) {
+    return NextResponse.json(
+      { error: "Forbidden: You do not have permission to modify settings for this store." },
+      { status: 403 }
+    );
+  }
+
   const body = await request.json();
   const parse = settingsSchema.safeParse(body);
   if (!parse.success) {

@@ -101,6 +101,7 @@ export async function POST(request: Request) {
         email: newUser.email,
         storeId: newStore.id,
         storeName: newStore.name,
+        slug: newStore.slug,
         role: newUser.role,
         plan: "free"
       });
@@ -132,6 +133,7 @@ export async function POST(request: Request) {
         email,
         storeId: fallbackStoreId,
         storeName: registeredStore.name,
+        slug: finalSlug,
         role: "merchant_owner",
         plan: "free"
       });

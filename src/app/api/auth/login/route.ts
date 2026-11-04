@@ -54,6 +54,7 @@ export async function POST(request: Request) {
           email: "superadmin@storeswift.com",
           storeId: "platform-root",
           storeName: "StoreSwift Super Admin",
+          slug: "platform-root",
           role: "super_admin",
           plan: "pro"
         });
@@ -83,6 +84,7 @@ export async function POST(request: Request) {
         email: "demo@storeswift.com",
         storeId: demoStore.id,
         storeName: demoStore.name,
+        slug: demoStore.slug,
         role: "merchant_owner",
         plan: demoStore.plan
       });
@@ -148,6 +150,7 @@ export async function POST(request: Request) {
         email: existingUser.email,
         storeId,
         storeName,
+        slug,
         role: resolvedRole,
         plan: storePlan
       });
@@ -182,6 +185,7 @@ export async function POST(request: Request) {
         email,
         storeId: store.id,
         storeName: store.name,
+        slug: store.slug,
         role: fallbackRole,
         plan: store.plan
       });
