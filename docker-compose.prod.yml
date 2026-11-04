@@ -1,0 +1,170 @@
+version: "3.8"
+
+services:
+  # ───────────────────────────────────────────────────────────────────────────
+  # Nginx Load Balancer (Reverse Proxy with Least-Connections Routing)
+  # ───────────────────────────────────────────────────────────────────────────
+  nginx:
+    image: nginx:alpine
+    container_name: storeswift_lb
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./deploy/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - nginx_cache:/var/cache/nginx/storeswift
+    depends_on:
+      app1:
+        condition: service_healthy
+      app2:
+        condition: service_healthy
+      app3:
+        condition: service_healthy
+    networks:
+      - frontend-net
+      - backend-net
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # StoreSwift Application Node 1
+  # ───────────────────────────────────────────────────────────────────────────
+  app1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: storeswift_app1
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - WORKER_ID=app-node-1
+      - DATABASE_URL=postgresql://storeswift_user:storeswift_secret@postgres:5432/storeswift
+      - REDIS_URL=redis://redis:6379
+      - AUTH_SECRET=storeswift-production-cluster-secret-key-64bytes-minimum-security
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 15s
+    networks:
+      - backend-net
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # StoreSwift Application Node 2
+  # ───────────────────────────────────────────────────────────────────────────
+  app2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: storeswift_app2
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - WORKER_ID=app-node-2
+      - DATABASE_URL=postgresql://storeswift_user:storeswift_secret@postgres:5432/storeswift
+      - REDIS_URL=redis://redis:6379
+      - AUTH_SECRET=storeswift-production-cluster-secret-key-64bytes-minimum-security
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 15s
+    networks:
+      - backend-net
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # StoreSwift Application Node 3
+  # ───────────────────────────────────────────────────────────────────────────
+  app3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: storeswift_app3
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - WORKER_ID=app-node-3
+      - DATABASE_URL=postgresql://storeswift_user:storeswift_secret@postgres:5432/storeswift
+      - REDIS_URL=redis://redis:6379
+      - AUTH_SECRET=storeswift-production-cluster-secret-key-64bytes-minimum-security
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 15s
+    networks:
+      - backend-net
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # Distributed Cache Layer (Redis 7)
+  # ───────────────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: storeswift_redis
+    restart: always
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "512mb", "--maxmemory-policy", "allkeys-lru"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - backend-net
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # Persistent Relational Database (PostgreSQL 16)
+  # ───────────────────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: storeswift_db
+    restart: always
+    environment:
+      - POSTGRES_USER=storeswift_user
+      - POSTGRES_PASSWORD=storeswift_secret
+      - POSTGRES_DB=storeswift
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U storeswift_user -d storeswift"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - backend-net
+
+volumes:
+  pgdata:
+    driver: local
+  redis_data:
+    driver: local
+  nginx_cache:
+    driver: local
+
+networks:
+  frontend-net:
+    driver: bridge
+  backend-net:
+    driver: bridge

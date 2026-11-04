@@ -3,6 +3,7 @@ import { db, products } from "@/db";
 import { eq } from "drizzle-orm";
 import { getSessionFromRequest, canAccessStore } from "@/lib/api-auth";
 import { devStore } from "@/lib/dev-store";
+import { fastCache } from "@/lib/cache";
 
 export async function PATCH(
   request: Request,
@@ -54,6 +55,8 @@ export async function PATCH(
       // Non-fatal DB update
     }
 
+    fastCache.deletePrefix("products:");
+
     return NextResponse.json({ ok: true, product: updated || { id, ...body } });
   } catch (err) {
     console.error("[Product PATCH Error]", err);
@@ -89,6 +92,8 @@ export async function DELETE(
     } catch {
       // Non-fatal
     }
+
+    fastCache.deletePrefix("products:");
 
     return NextResponse.json({ ok: true, message: "Product deleted successfully." });
   } catch (err) {

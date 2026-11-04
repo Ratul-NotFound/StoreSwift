@@ -5,6 +5,7 @@ import { eq, desc, count } from "drizzle-orm";
 import { getSessionFromRequest, canAccessStore } from "@/lib/api-auth";
 import { checkProductLimit, isValidPlan, type PlanId } from "@/lib/plan-limits";
 import { devStore } from "@/lib/dev-store";
+import { fastCache } from "@/lib/cache";
 
 const productCreateSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
@@ -29,6 +30,32 @@ export async function GET(request: Request) {
   const session = getSessionFromRequest(request);
 
   const targetSlug = storeSlug || session?.storeId || "apex-fashion";
+  const cacheKey = `products:${targetSlug}`;
+  const clientEtag = request.headers.get("if-none-match");
+
+  // 1. Check in-memory fastCache (sub-millisecond retrieval)
+  const cached = fastCache.getWithETag<{ ok: boolean; products: any[] }>(cacheKey);
+  if (cached) {
+    if (clientEtag && clientEtag === cached.etag) {
+      return new NextResponse(null, {
+        status: 304,
+        headers: {
+          ETag: cached.etag,
+          "Cache-Control": "public, s-maxage=15, stale-while-revalidate=59",
+          "X-Cache": "HIT",
+        },
+      });
+    }
+    return NextResponse.json(cached.value, {
+      headers: {
+        ETag: cached.etag,
+        "Cache-Control": "public, s-maxage=15, stale-while-revalidate=59",
+        "X-Cache": "HIT",
+      },
+    });
+  }
+
+  let finalProducts: any[] = [];
 
   try {
     let storeId = session?.storeId;
@@ -51,7 +78,7 @@ export async function GET(request: Request) {
         .orderBy(desc(products.createdAt));
 
       if (list.length > 0) {
-        const enriched = list.map((p) => ({
+        finalProducts = list.map((p) => ({
           id: p.id,
           title: p.title,
           slug: p.slug,
@@ -66,16 +93,27 @@ export async function GET(request: Request) {
           createdAt: p.createdAt ? new Date(p.createdAt).toISOString() : new Date().toISOString(),
           isDropship: p.isDropship,
         }));
-        return NextResponse.json({ ok: true, products: enriched });
       }
     }
   } catch {
     // DB unreachable — fall through to devStore
   }
 
-  // devStore products
-  const dsProducts = devStore.getProducts(targetSlug);
-  return NextResponse.json({ ok: true, products: dsProducts });
+  if (finalProducts.length === 0) {
+    finalProducts = devStore.getProducts(targetSlug);
+  }
+
+  const payload = { ok: true, products: finalProducts };
+  fastCache.set(cacheKey, payload, 25000); // 25s TTL
+  const entry = fastCache.getWithETag(cacheKey);
+
+  return NextResponse.json(payload, {
+    headers: {
+      ETag: entry?.etag || "W/default",
+      "Cache-Control": "public, s-maxage=15, stale-while-revalidate=59",
+      "X-Cache": "MISS",
+    },
+  });
 }
 
 export async function POST(request: Request) {
@@ -184,6 +222,9 @@ export async function POST(request: Request) {
   } catch {
     // Non-fatal if DB not running
   }
+
+  // Invalidate cached product catalogs for this store
+  fastCache.deletePrefix(`products:${storeSlug}`);
 
   return NextResponse.json({ ok: true, product: newProduct }, { status: 201 });
 }

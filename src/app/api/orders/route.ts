@@ -7,6 +7,8 @@ import { generateConsignment } from "@/lib/courier";
 import { fireServerSidePixelEvent } from "@/lib/pixels";
 import { calculateCommission, PLAN_LIMITS, isValidPlan, type PlanId } from "@/lib/plan-limits";
 import { devStore } from "@/lib/dev-store";
+import { trafficLimiter, SlidingWindowRateLimiter } from "@/lib/rate-limiter";
+import { fastCache } from "@/lib/cache";
 
 const orderCreateSchema = z.object({
   storeSlug: z.string().optional(),
@@ -112,6 +114,23 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    const ip = SlidingWindowRateLimiter.getClientIp(request);
+    const rate = trafficLimiter.check(`checkout:${ip}`, 30, 60);
+    if (!rate.allowed) {
+      return NextResponse.json(
+        { error: "Too many checkout requests. Please wait a moment before trying again." },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": String(rate.resetSec),
+            "X-RateLimit-Limit": String(rate.limit),
+            "X-RateLimit-Remaining": String(rate.remaining),
+            "X-RateLimit-Reset": String(rate.resetSec),
+          },
+        }
+      );
+    }
+
     const body = await request.json();
     const parse = orderCreateSchema.safeParse(body);
 
@@ -155,6 +174,9 @@ export async function POST(request: Request) {
       shippingFee: data.shippingFee ?? 0,
       trxId: data.trxId,
     });
+
+    // Invalidate product catalog cache so inventory decrements show immediately
+    fastCache.deletePrefix(`products:${storeSlug}`);
 
     // 2. Try DB insert if PostgreSQL is available
     try {

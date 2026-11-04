@@ -4,6 +4,7 @@ import { db, stores, customDomains } from "@/db";
 import { eq } from "drizzle-orm";
 import { getSessionFromRequest, canAccessStore } from "@/lib/api-auth";
 import { devStore } from "@/lib/dev-store";
+import { fastCache } from "@/lib/cache";
 
 const settingsSchema = z.object({
   name:              z.string().min(2).max(100).optional(),
@@ -27,6 +28,31 @@ export async function GET(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
+  const cacheKey = `settings:${slug}`;
+  const clientEtag = request.headers.get("if-none-match");
+
+  // Sub-millisecond cache check
+  const cached = fastCache.getWithETag<any>(cacheKey);
+  if (cached) {
+    if (clientEtag && clientEtag === cached.etag) {
+      return new NextResponse(null, {
+        status: 304,
+        headers: {
+          ETag: cached.etag,
+          "Cache-Control": "public, s-maxage=20, stale-while-revalidate=59",
+          "X-Cache": "HIT",
+        },
+      });
+    }
+    return NextResponse.json(cached.value, {
+      headers: {
+        ETag: cached.etag,
+        "Cache-Control": "public, s-maxage=20, stale-while-revalidate=59",
+        "X-Cache": "HIT",
+      },
+    });
+  }
+
   const ds = devStore.getStore(slug) || devStore.ensureStore(slug);
 
   try {
@@ -88,11 +114,21 @@ export async function GET(
     paymentConfig: { enable_cod: true, enable_bkash: true, enable_nagad: true },
   };
 
-  return NextResponse.json({
+  const responseData = {
     ok: true,
     store: ds,
     settings: mergedSettings,
     domain: ds.domain ? { ...ds.domain, isVerified: ds.domain.verified } : null,
+  };
+  fastCache.set(cacheKey, responseData, 20000);
+  const entry = fastCache.getWithETag(cacheKey);
+
+  return NextResponse.json(responseData, {
+    headers: {
+      ETag: entry?.etag || "W/default",
+      "Cache-Control": "public, s-maxage=20, stale-while-revalidate=59",
+      "X-Cache": "MISS",
+    },
   });
 }
 
@@ -101,6 +137,7 @@ export async function PATCH(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
+  fastCache.deletePrefix(`settings:${slug}`);
   const session = getSessionFromRequest(request);
 
   if (session && !canAccessStore(session, slug)) {
