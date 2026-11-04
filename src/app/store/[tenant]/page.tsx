@@ -108,12 +108,13 @@ export default function TenantStorefrontPage({
   searchParams
 }: {
   params: Promise<{ tenant: string }>;
-  searchParams?: Promise<{ template?: string; category?: string }>;
+  searchParams?: Promise<{ template?: string; category?: string; embed?: string }>;
 }) {
   const resolvedParams = use(params);
   const resolvedSearchParams = searchParams ? use(searchParams) : undefined;
   const tenantSlug = resolvedParams.tenant || "apex-fashion";
   const urlTemplate = resolvedSearchParams?.template;
+  const isEmbed = resolvedSearchParams?.embed === "1" || resolvedSearchParams?.embed === "true";
 
   const { success, error: toastError } = useToast();
 
@@ -994,26 +995,28 @@ export default function TenantStorefrontPage({
         tenantSlug={tenantSlug}
       />
 
-      {/* ─── Floating Dynamic Template Switcher ─────────────── */}
-      <TemplateSwitcherBar
-        currentSlug={tenantSlug}
-        activeTemplateId={currentTemplateId}
-        storeCategory={activeCategoryKey}
-        onSelectTemplate={(t) => {
-          setCurrentTemplateId(t);
-          setTemplateKey(t);
-          if (typeof window !== "undefined") {
-            const url = new URL(window.location.href);
-            url.searchParams.set("template", t);
-            window.history.replaceState({}, "", url.toString());
-          }
-          fetch(`/api/stores/${tenantSlug}/settings`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ template: t })
-          }).catch(() => {});
-        }}
-      />
+      {/* ─── Floating Dynamic Template Switcher (Hidden in embedded previews) ─────────────── */}
+      {!isEmbed && (
+        <TemplateSwitcherBar
+          currentSlug={tenantSlug}
+          activeTemplateId={currentTemplateId}
+          storeCategory={activeCategoryKey}
+          onSelectTemplate={(t) => {
+            setCurrentTemplateId(t);
+            setTemplateKey(t);
+            if (typeof window !== "undefined") {
+              const url = new URL(window.location.href);
+              url.searchParams.set("template", t);
+              window.history.replaceState({}, "", url.toString());
+            }
+            fetch(`/api/stores/${tenantSlug}/settings`, {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ template: t })
+            }).catch(() => {});
+          }}
+        />
+      )}
 
     </div>
   );

@@ -30,8 +30,11 @@ import {
   ShoppingBag,
   Monitor,
   Smartphone,
+  Tablet,
   Copy,
-  CheckCheck
+  CheckCheck,
+  RotateCcw,
+  Eye
 } from "lucide-react";
 import { PlatformFooter, DEMO_STORES_LIST } from "@/components/platform-footer";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -416,7 +419,10 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
 export default function PlatformLandingPage() {
   const [selectedStoreSlug, setSelectedStoreSlug] = useState("apex-fashion");
   const [selectedTemplateId, setSelectedTemplateId] = useState("minimal");
-  const [previewDevice, setPreviewDevice] = useState<"desktop" | "mobile">("desktop");
+  const [previewDevice, setPreviewDevice] = useState<"desktop" | "tablet" | "mobile">("desktop");
+  const [previewMode, setPreviewMode] = useState<"live" | "snapshot">("live");
+  const [isIframeLoading, setIsIframeLoading] = useState(true);
+  const [iframeKey, setIframeKey] = useState(0);
   const [hasCopiedUrl, setHasCopiedUrl] = useState(false);
   const [pricingBilling, setPricingBilling] = useState<"monthly" | "annual">("monthly");
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
@@ -457,6 +463,12 @@ export default function PlatformLandingPage() {
       setHasCopiedUrl(true);
       setTimeout(() => setHasCopiedUrl(false), 2000);
     }
+  };
+
+  const handleReloadPreview = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setIsIframeLoading(true);
+    setIframeKey((k) => k + 1);
   };
 
   const faqs = [
@@ -1187,167 +1199,218 @@ export default function PlatformLandingPage() {
             {/* Left Column: High-Fidelity Browser Window Frame */}
             <div className="lg:col-span-7 flex flex-col bg-zinc-950 border-b lg:border-b-0 lg:border-r border-zinc-200/80 dark:border-white/[0.08] overflow-hidden group">
               {/* Sleek Browser Navigation Header */}
-              <div className="h-11 px-4 flex items-center justify-between border-b border-white/[0.08] bg-zinc-900/90 backdrop-blur-md flex-shrink-0 gap-2">
+              <div className="py-2.5 px-3 sm:px-4 flex flex-wrap items-center justify-between border-b border-white/[0.08] bg-zinc-900/95 backdrop-blur-md flex-shrink-0 gap-2">
                 <div className="flex items-center space-x-1.5 flex-shrink-0">
-                  <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-500/80 hover:opacity-100 transition-opacity" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 hover:opacity-100 transition-opacity" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 hover:opacity-100 transition-opacity" />
                 </div>
 
-                {/* Dynamic Address Bar with Direct Copy Link */}
-                <div className="flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-zinc-950/90 border border-white/[0.08] text-[11px] font-mono text-zinc-400 max-w-[340px] flex-1 justify-between shadow-inner">
+                {/* Dynamic Address Bar with Direct Copy & Reload */}
+                <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-zinc-950 border border-white/[0.08] text-[11px] font-mono text-zinc-400 min-w-[200px] sm:min-w-[260px] max-w-[360px] flex-1 justify-between shadow-inner">
                   <div className="flex items-center space-x-1.5 truncate">
                     <Lock className="w-2.5 h-2.5 text-emerald-400 flex-shrink-0" />
                     <span className="text-zinc-300 font-medium truncate">
                       {activeStore.slug}.storeswift.app<span className="text-emerald-400">?template={activeTemplate.id}</span>
                     </span>
                   </div>
-                  <button
-                    type="button"
-                    onClick={handleCopyUrl}
-                    title="Copy store URL"
-                    className="text-zinc-400 hover:text-white p-0.5 rounded transition flex-shrink-0 hover:bg-white/10"
-                  >
-                    {hasCopiedUrl ? (
-                      <CheckCheck className="w-3 h-3 text-emerald-400" />
-                    ) : (
-                      <Copy className="w-3 h-3" />
-                    )}
-                  </button>
+                  <div className="flex items-center space-x-1 flex-shrink-0">
+                    <button
+                      type="button"
+                      onClick={handleReloadPreview}
+                      title="Reload preview"
+                      className="text-zinc-400 hover:text-white p-0.5 rounded transition hover:bg-white/10"
+                    >
+                      <RotateCcw className="w-3 h-3" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleCopyUrl}
+                      title="Copy store URL"
+                      className="text-zinc-400 hover:text-white p-0.5 rounded transition hover:bg-white/10"
+                    >
+                      {hasCopiedUrl ? (
+                        <CheckCheck className="w-3 h-3 text-emerald-400" />
+                      ) : (
+                        <Copy className="w-3 h-3" />
+                      )}
+                    </button>
+                    <a
+                      href={`/store/${activeStore.slug}?template=${activeTemplate.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Open full store in new tab"
+                      className="text-zinc-400 hover:text-white p-0.5 rounded transition hover:bg-white/10 hidden sm:inline-block"
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
                 </div>
 
-                {/* Device Viewport Toggle & HTTP Status */}
-                <div className="flex items-center space-x-2 flex-shrink-0">
-                  <div className="flex items-center p-0.5 rounded-lg bg-zinc-950/80 border border-white/[0.08]">
+                {/* Mode & Device Controls */}
+                <div className="flex items-center space-x-1.5 flex-shrink-0">
+                  {/* Mode Switcher: Live Interactive vs Clean Snapshot */}
+                  <div className="flex items-center p-0.5 rounded-lg bg-zinc-950 border border-white/[0.08]">
+                    <button
+                      type="button"
+                      onClick={() => setPreviewMode("live")}
+                      className={`px-2 py-0.5 rounded text-[10px] font-medium transition flex items-center space-x-1 ${
+                        previewMode === "live"
+                          ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                          : "text-zinc-400 hover:text-zinc-200"
+                      }`}
+                      title="Live interactive store"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <span>Live</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPreviewMode("snapshot")}
+                      className={`px-2 py-0.5 rounded text-[10px] font-medium transition flex items-center space-x-1 ${
+                        previewMode === "snapshot"
+                          ? "bg-white/20 text-white border border-white/20"
+                          : "text-zinc-400 hover:text-zinc-200"
+                      }`}
+                      title="Clean theme graphic"
+                    >
+                      <Eye className="w-2.5 h-2.5" />
+                      <span>Design</span>
+                    </button>
+                  </div>
+
+                  {/* Device Viewport Toggle (Desktop / Tablet / Mobile) */}
+                  <div className="flex items-center p-0.5 rounded-lg bg-zinc-950 border border-white/[0.08]">
                     <button
                       type="button"
                       onClick={() => setPreviewDevice("desktop")}
                       className={`p-1 rounded text-xs transition ${
                         previewDevice === "desktop"
-                          ? "bg-white/20 text-white"
+                          ? "bg-white/20 text-white shadow-xs"
                           : "text-zinc-500 hover:text-zinc-300"
                       }`}
-                      title="Desktop preview"
+                      title="Desktop view"
                     >
                       <Monitor className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPreviewDevice("tablet")}
+                      className={`p-1 rounded text-xs transition ${
+                        previewDevice === "tablet"
+                          ? "bg-white/20 text-white shadow-xs"
+                          : "text-zinc-500 hover:text-zinc-300"
+                      }`}
+                      title="Tablet view"
+                    >
+                      <Tablet className="w-3.5 h-3.5" />
                     </button>
                     <button
                       type="button"
                       onClick={() => setPreviewDevice("mobile")}
                       className={`p-1 rounded text-xs transition ${
                         previewDevice === "mobile"
-                          ? "bg-white/20 text-white"
+                          ? "bg-white/20 text-white shadow-xs"
                           : "text-zinc-500 hover:text-zinc-300"
                       }`}
-                      title="Mobile preview"
+                      title="Mobile view"
                     >
                       <Smartphone className="w-3.5 h-3.5" />
                     </button>
                   </div>
-
-                  <div className="hidden sm:flex items-center space-x-1.5 text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="font-bold">200 OK</span>
-                  </div>
                 </div>
               </div>
 
-              {/* Viewport Preview Stage */}
-              <div className={`relative flex-1 min-h-[340px] sm:min-h-[420px] lg:min-h-[480px] overflow-hidden flex items-center justify-center transition-all ${
-                previewDevice === "mobile" ? "p-4 sm:p-6 bg-zinc-950/95" : ""
+              {/* Viewport Preview Stage — Crystal Clear with ZERO Dark Tint */}
+              <div className={`relative flex-1 min-h-[500px] sm:min-h-[580px] lg:min-h-[640px] overflow-hidden flex items-center justify-center transition-all bg-zinc-950 ${
+                previewDevice !== "desktop" || previewMode === "snapshot" ? "p-3 sm:p-5" : ""
               }`}>
-                {previewDevice === "desktop" ? (
+                {previewMode === "live" ? (
+                  /* ─── LIVE INTERACTIVE STORE EMBED ─── */
                   <>
+                    {/* Subtle Loading Spinner while iframe renders */}
+                    {isIframeLoading && (
+                      <div className="absolute inset-0 bg-zinc-950/80 backdrop-blur-xs flex flex-col items-center justify-center space-y-2.5 z-20 transition-opacity">
+                        <div className="w-8 h-8 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin" />
+                        <span className="text-xs font-mono text-zinc-300 tracking-wider">
+                          Loading {activeTemplate.name}...
+                        </span>
+                      </div>
+                    )}
+
+                    {previewDevice === "desktop" ? (
+                      /* Full-Width Desktop Interactive Viewport */
+                      <div className="w-full h-full min-h-[500px] sm:min-h-[580px] lg:min-h-[640px] relative bg-white dark:bg-zinc-950 flex flex-col">
+                        <iframe
+                          key={`desktop-${activeStore.slug}-${activeTemplate.id}-${iframeKey}`}
+                          src={`/store/${activeStore.slug}?template=${activeTemplate.id}&embed=1`}
+                          title={`${activeStore.name} Live Storefront`}
+                          onLoad={() => setIsIframeLoading(false)}
+                          className="w-full h-full min-h-[500px] sm:min-h-[580px] lg:min-h-[640px] border-0 bg-white"
+                        />
+                        {/* Floating Interaction Hint Pill */}
+                        <div className="absolute bottom-3 right-4 z-10 pointer-events-none">
+                          <div className="backdrop-blur-md bg-zinc-950/80 border border-white/10 text-zinc-300 text-[10px] font-mono px-3 py-1.5 rounded-full shadow-lg flex items-center space-x-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                            <span>Interactive Preview • Scroll & Test Checkout</span>
+                          </div>
+                        </div>
+                      </div>
+                    ) : previewDevice === "tablet" ? (
+                      /* Centered Tablet Viewport */
+                      <div className="w-[580px] sm:w-[680px] max-w-full h-[500px] sm:h-[580px] rounded-2xl border-4 border-zinc-700 bg-white shadow-2xl overflow-hidden relative flex flex-col mx-auto ring-1 ring-white/10">
+                        <iframe
+                          key={`tablet-${activeStore.slug}-${activeTemplate.id}-${iframeKey}`}
+                          src={`/store/${activeStore.slug}?template=${activeTemplate.id}&embed=1`}
+                          title={`${activeStore.name} Tablet View`}
+                          onLoad={() => setIsIframeLoading(false)}
+                          className="w-full h-full border-0 bg-white"
+                        />
+                      </div>
+                    ) : (
+                      /* Centered Smartphone Viewport */
+                      <div className="w-[310px] sm:w-[340px] h-[520px] sm:h-[590px] rounded-[38px] border-4 border-zinc-700 bg-zinc-950 shadow-2xl overflow-hidden flex flex-col relative mx-auto ring-1 ring-white/10">
+                        {/* Dynamic Island */}
+                        <div className="h-5 bg-zinc-950 flex items-center justify-center pt-1.5">
+                          <div className="w-20 h-3.5 bg-zinc-800 rounded-full flex items-center justify-end px-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-zinc-900" />
+                          </div>
+                        </div>
+                        {/* Phone Screen Iframe */}
+                        <div className="flex-1 overflow-hidden relative bg-white">
+                          <iframe
+                            key={`mobile-${activeStore.slug}-${activeTemplate.id}-${iframeKey}`}
+                            src={`/store/${activeStore.slug}?template=${activeTemplate.id}&embed=1`}
+                            title={`${activeStore.name} Mobile View`}
+                            onLoad={() => setIsIframeLoading(false)}
+                            className="w-full h-full border-0 bg-white"
+                          />
+                        </div>
+                        {/* Home Indicator */}
+                        <div className="h-4 bg-zinc-950 flex items-center justify-center">
+                          <div className="w-20 h-1 bg-zinc-600 rounded-full" />
+                        </div>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  /* ─── CLEAN DESIGN SNAPSHOT (ZERO DARK TINTS) ─── */
+                  <div className="w-full h-full relative rounded-2xl overflow-hidden border border-white/10 bg-zinc-900 flex items-center justify-center group/img">
                     <img
                       key={activeTemplate.id}
                       src={activeTemplate.image}
                       alt={activeTemplate.name}
-                      className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 animate-fade-in"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover/img:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/95 via-zinc-950/25 to-transparent pointer-events-none" />
-
-                    <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
-                      <div className="backdrop-blur-md bg-zinc-950/85 text-white text-[11px] font-medium px-3.5 py-1.5 rounded-full border border-white/10 shadow-lg flex items-center space-x-2">
-                        <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-                        <span className="font-semibold">{activeTemplate.name}</span>
-                        <span className="text-zinc-400">• {activeTemplate.tag}</span>
-                      </div>
-
-                      <div className="hidden sm:flex items-center space-x-1.5 backdrop-blur-md bg-zinc-950/70 border border-white/10 text-zinc-300 text-[10px] font-mono px-2.5 py-1 rounded-full">
-                        <Sparkles className="w-2.5 h-2.5 text-amber-400" />
-                        <span>SSR Hydrated</span>
-                      </div>
+                    {/* Crisp Top Badge — NO DARK GRADIENT OVERLAY */}
+                    <div className="absolute top-4 left-4 backdrop-blur-md bg-zinc-950/85 text-white text-[11px] font-semibold px-3.5 py-1.5 rounded-full border border-white/10 shadow-lg flex items-center space-x-2">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+                      <span>{activeTemplate.name}</span>
+                      <span className="text-zinc-400">• {activeTemplate.tag}</span>
                     </div>
 
-                    <div className="absolute bottom-4 left-4 right-4 text-left">
-                      <div className="backdrop-blur-md bg-zinc-950/85 border border-white/10 rounded-2xl p-3.5 sm:p-4 shadow-2xl flex items-center justify-between">
-                        <div className="min-w-0 pr-3">
-                          <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 block font-bold">
-                            Tailored Buyer Experience • {activeStore.category}
-                          </span>
-                          <p className="text-xs sm:text-sm text-zinc-100 font-medium mt-0.5 line-clamp-1">
-                            {activeTemplate.headline}
-                          </p>
-                        </div>
-                        <Link
-                          href={`/store/${activeStore.slug}?template=${activeTemplate.id}`}
-                          target="_blank"
-                          className="hidden sm:inline-flex items-center space-x-1.5 text-[11px] font-bold text-white bg-emerald-600 hover:bg-emerald-500 px-3 py-1.5 rounded-xl transition shadow flex-shrink-0"
-                        >
-                          <span>Preview Live</span>
-                          <ArrowUpRight className="w-3.5 h-3.5" />
-                        </Link>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  /* Mobile Mockup Viewport */
-                  <div className="w-[260px] sm:w-[280px] h-[440px] sm:h-[460px] rounded-[38px] border-4 border-zinc-700 bg-zinc-950 shadow-2xl overflow-hidden flex flex-col relative animate-fade-in ring-1 ring-white/10">
-                    {/* Dynamic Island */}
-                    <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-20 h-4 bg-zinc-900 rounded-full z-20 flex items-center justify-end px-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-zinc-800" />
-                    </div>
-
-                    {/* Mobile Header Bar */}
-                    <div className="pt-8 pb-1.5 px-3 bg-zinc-900/90 border-b border-white/[0.08] flex items-center justify-between text-[9px] font-mono text-zinc-400">
-                      <div className="flex items-center space-x-1 truncate max-w-[140px]">
-                        <Lock className="w-2 h-2 text-emerald-400 flex-shrink-0" />
-                        <span className="truncate text-zinc-200">{activeStore.slug}.storeswift.app</span>
-                      </div>
-                      <span className="text-emerald-400 font-bold">200 OK</span>
-                    </div>
-
-                    {/* Mobile Screen Image */}
-                    <div className="relative flex-1 overflow-hidden">
-                      <img
-                        key={activeTemplate.id}
-                        src={activeTemplate.image}
-                        alt={activeTemplate.name}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-transparent to-transparent" />
-
-                      <div className="absolute top-2.5 left-2.5 right-2.5">
-                        <span className="text-[9px] font-medium px-2 py-0.5 rounded-full bg-zinc-950/80 border border-white/10 text-white backdrop-blur-md inline-block">
-                          {activeTemplate.name}
-                        </span>
-                      </div>
-
-                      <div className="absolute bottom-3 left-2.5 right-2.5">
-                        <div className="backdrop-blur-md bg-zinc-950/85 border border-white/10 rounded-xl p-2 text-left">
-                          <span className="text-[8.5px] font-mono text-emerald-400 font-bold uppercase block">
-                            Mobile UX Ready
-                          </span>
-                          <p className="text-[10px] text-zinc-200 font-medium line-clamp-1">
-                            {activeTemplate.tag}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Home Indicator */}
-                    <div className="h-4 bg-zinc-950 flex items-center justify-center">
-                      <div className="w-20 h-1 bg-zinc-700 rounded-full" />
+                    <div className="absolute bottom-4 right-4 backdrop-blur-md bg-zinc-950/85 text-zinc-300 text-[10px] font-mono px-3 py-1.5 rounded-full border border-white/10 shadow-lg flex items-center space-x-1.5">
+                      <span>Click &apos;Live&apos; above for interactive store</span>
                     </div>
                   </div>
                 )}
@@ -1395,7 +1458,10 @@ export default function PlatformLandingPage() {
                         <button
                           key={tmpl.id}
                           type="button"
-                          onClick={() => setSelectedTemplateId(tmpl.id)}
+                          onClick={() => {
+                            setSelectedTemplateId(tmpl.id);
+                            setIsIframeLoading(true);
+                          }}
                           className={`text-left px-3 py-2.5 rounded-xl border text-xs font-medium transition-all flex items-center justify-between group ${
                             isSelected
                               ? "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500 dark:border-emerald-500/80 text-zinc-950 dark:text-white shadow-sm ring-1 ring-emerald-500/30"
@@ -1439,14 +1505,14 @@ export default function PlatformLandingPage() {
                   </span>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {activeTemplate.highlights.map((feat, idx) => (
-                      <div key={idx} className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300">
-                        <div className="w-4 h-4 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 border border-emerald-500/20">
-                          <Check className="w-2.5 h-2.5" />
-                        </div>
-                        <span className="font-medium text-zinc-800 dark:text-zinc-200 text-[11.5px] truncate" title={feat}>
-                          {feat}
-                        </span>
-                      </div>
+          <div key={idx} className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300">
+            <div className="w-4 h-4 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 border border-emerald-500/20">
+              <Check className="w-2.5 h-2.5" />
+            </div>
+            <span className="font-medium text-zinc-800 dark:text-zinc-200 text-[11.5px] truncate" title={feat}>
+              {feat}
+            </span>
+          </div>
                     ))}
                   </div>
                 </div>
