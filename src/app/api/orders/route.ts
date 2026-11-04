@@ -377,6 +377,26 @@ export async function POST(request: Request) {
       customerEmail: data.customerEmail,
     });
 
+    // Queue transactional confirmation notification & record audit event
+    devStore.queueNotification(storeSlug, {
+      channel: "sms",
+      recipient: safeCustomerPhone,
+      template: "order_confirmed",
+      payload: {
+        orderNumber: newOrder.orderNumber,
+        amount: `৳${newOrder.totalAmount.toLocaleString()}`,
+        courier: newOrder.courierName,
+      },
+      status: "sent",
+    });
+
+    devStore.logAuditEvent(storeSlug, {
+      action: "order_placed",
+      actorEmail: safeCustomerEmail || "customer@storefront",
+      actorRole: "customer",
+      details: `New order ${newOrder.orderNumber} placed by ${safeCustomerName} (${safeCustomerPhone}) for ৳${newOrder.totalAmount.toLocaleString()}`,
+    });
+
     return NextResponse.json({
       ok: true,
       orderId: newOrder.id,
