@@ -1369,7 +1369,24 @@ class DevStoreManager {
   // ─── STAFF & RBAC ──────────────────────────────────────────────────────────
 
   getStaff(storeSlug: string): DevStoreStaff[] {
-    return Array.from(this.staff.values()).filter((s) => s.storeSlug === storeSlug);
+    const list = Array.from(this.staff.values()).filter((s) => s.storeSlug === storeSlug);
+    if (!list.some((s) => s.role === "owner")) {
+      const store = this.getStore(storeSlug);
+      const ownerId = `staff-${storeSlug}-owner`;
+      const ownerStaff: DevStoreStaff = {
+        id: ownerId,
+        storeId: store ? store.id : `store-${storeSlug}`,
+        storeSlug,
+        email: store?.email || `owner@${storeSlug}.bd`,
+        name: store ? `${store.name} Owner` : "Store Owner",
+        role: "owner",
+        status: "active",
+        invitedAt: store?.createdAt || new Date().toISOString(),
+      };
+      this.staff.set(ownerId, ownerStaff);
+      list.unshift(ownerStaff);
+    }
+    return list;
   }
 
   addStaff(
