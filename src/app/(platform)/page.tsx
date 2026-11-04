@@ -1360,57 +1360,59 @@ export default function PlatformLandingPage() {
           >
             {/* Left Column: High-Fidelity Browser Window Frame */}
             <div className="lg:col-span-7 flex flex-col bg-zinc-950 border-b lg:border-b-0 lg:border-r border-zinc-200/80 dark:border-white/[0.08] overflow-hidden group">
-              {/* Sleek Browser Navigation Header */}
-              <div className="py-2.5 px-3 sm:px-4 flex flex-wrap items-center justify-between border-b border-white/[0.08] bg-zinc-900/95 backdrop-blur-md flex-shrink-0 gap-2">
-                <div className="flex items-center space-x-1.5 flex-shrink-0">
-                  <span className="w-2.5 h-2.5 rounded-full bg-red-500/80 hover:opacity-100 transition-opacity" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 hover:opacity-100 transition-opacity" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 hover:opacity-100 transition-opacity" />
-                </div>
-
-                {/* Dynamic Address Bar with Direct Copy & Reload */}
-                <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-zinc-950 border border-white/[0.08] text-[11px] font-mono text-zinc-400 min-w-[200px] sm:min-w-[260px] max-w-[360px] flex-1 justify-between shadow-inner">
-                  <div className="flex items-center space-x-1.5 truncate">
-                    <Lock className="w-2.5 h-2.5 text-emerald-400 flex-shrink-0" />
-                    <span className="text-zinc-300 font-medium truncate">
-                      {activeStore.slug}.storeswift.app<span className="text-emerald-400">?template={activeTemplate.id}</span>
-                    </span>
+              {/* Sleek Browser Navigation Header - Responsive Mobile 1st */}
+              <div className="py-2 sm:py-2.5 px-3 sm:px-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between border-b border-white/[0.08] bg-zinc-900/95 backdrop-blur-md flex-shrink-0 gap-2">
+                <div className="flex items-center space-x-2 flex-1 min-w-0">
+                  <div className="flex items-center space-x-1.5 flex-shrink-0">
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-500/80 hover:opacity-100 transition-opacity" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 hover:opacity-100 transition-opacity" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 hover:opacity-100 transition-opacity" />
                   </div>
-                  <div className="flex items-center space-x-1 flex-shrink-0">
-                    <button
-                      type="button"
-                      onClick={handleReloadPreview}
-                      title="Reload preview"
-                      className="text-zinc-400 hover:text-white p-0.5 rounded transition hover:bg-white/10"
-                    >
-                      <RotateCcw className="w-3 h-3" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={handleCopyUrl}
-                      title="Copy store URL"
-                      className="text-zinc-400 hover:text-white p-0.5 rounded transition hover:bg-white/10"
-                    >
-                      {hasCopiedUrl ? (
-                        <CheckCheck className="w-3 h-3 text-emerald-400" />
-                      ) : (
-                        <Copy className="w-3 h-3" />
-                      )}
-                    </button>
-                    <a
-                      href={`/store/${activeStore.slug}?template=${activeTemplate.id}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      title="Open full store in new tab"
-                      className="text-zinc-400 hover:text-white p-0.5 rounded transition hover:bg-white/10 hidden sm:inline-block"
-                    >
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
+
+                  {/* Dynamic Address Bar with Direct Copy & Reload */}
+                  <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-zinc-950 border border-white/[0.08] text-[10.5px] sm:text-[11px] font-mono text-zinc-400 flex-1 justify-between shadow-inner min-w-0">
+                    <div className="flex items-center space-x-1.5 truncate">
+                      <Lock className="w-2.5 h-2.5 text-emerald-400 flex-shrink-0" />
+                      <span className="text-zinc-300 font-medium truncate">
+                        {activeStore.slug}.storeswift.app<span className="text-emerald-400">?template={activeTemplate.id}</span>
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-1 flex-shrink-0">
+                      <button
+                        type="button"
+                        onClick={handleReloadPreview}
+                        title="Reload preview"
+                        className="text-zinc-400 hover:text-white p-0.5 rounded transition hover:bg-white/10"
+                      >
+                        <RotateCcw className="w-3 h-3" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleCopyUrl}
+                        title="Copy store URL"
+                        className="text-zinc-400 hover:text-white p-0.5 rounded transition hover:bg-white/10"
+                      >
+                        {hasCopiedUrl ? (
+                          <CheckCheck className="w-3 h-3 text-emerald-400" />
+                        ) : (
+                          <Copy className="w-3 h-3" />
+                        )}
+                      </button>
+                      <a
+                        href={`/store/${activeStore.slug}?template=${activeTemplate.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Open full store in new tab"
+                        className="text-zinc-400 hover:text-white p-0.5 rounded transition hover:bg-white/10"
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    </div>
                   </div>
                 </div>
 
                 {/* Mode & Device Controls */}
-                <div className="flex items-center space-x-1.5 flex-shrink-0">
+                <div className="flex items-center justify-between sm:justify-end space-x-2 flex-shrink-0 pt-0.5 sm:pt-0 border-t sm:border-t-0 border-white/[0.05]">
                   {/* Mode Switcher: Live Interactive vs Clean Snapshot */}
                   <div className="flex items-center p-0.5 rounded-lg bg-zinc-950 border border-white/[0.08]">
                     <button

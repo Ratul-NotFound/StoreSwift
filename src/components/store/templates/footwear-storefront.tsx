@@ -428,7 +428,7 @@ export function FootwearStorefront({
                       <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-wider block">Signature Build</span>
                       <p className="text-xs font-bold font-serif">Horween Chromexcel Chelsea</p>
                     </div>
-                    <span className="text-xs font-mono font-bold text-amber-300">$210.00</span>
+                    <span className="text-xs font-mono font-bold text-amber-300">৳6,800</span>
                   </div>
                   <p className="text-[10px] text-stone-300 mt-1">360° storm welt, cork bed & Vibram lug outsole</p>
                 </div>
@@ -552,23 +552,23 @@ export function FootwearStorefront({
                 <div className="space-y-2 pt-2">
                   <div className="flex items-center space-x-2.5 text-xs text-stone-800 font-medium">
                     <span className="w-5 h-5 rounded-full bg-stone-900 text-amber-400 font-mono text-[10px] font-bold flex items-center justify-center">1</span>
-                    <span>Horween Chromexcel Chelsea Boot ($210.00)</span>
+                    <span>Horween Chromexcel Chelsea Boot (৳6,800)</span>
                   </div>
                   <div className="flex items-center space-x-2.5 text-xs text-stone-800 font-medium">
                     <span className="w-5 h-5 rounded-full bg-stone-900 text-amber-400 font-mono text-[10px] font-bold flex items-center justify-center">2</span>
-                    <span>Tuscan Suede Penny Loafer ($128.00)</span>
+                    <span>Tuscan Suede Penny Loafer (৳4,950)</span>
                   </div>
                   <div className="flex items-center space-x-2.5 text-xs text-stone-800 font-medium">
                     <span className="w-5 h-5 rounded-full bg-stone-900 text-amber-400 font-mono text-[10px] font-bold flex items-center justify-center">3</span>
-                    <span>Pro-Stride Nitrogen Running Sneaker ($145.00)</span>
+                    <span>Pro-Stride Nitrogen Running Sneaker (৳5,400)</span>
                   </div>
                 </div>
 
                 <div className="pt-4 flex items-baseline space-x-3">
-                  <span className="text-2xl font-black text-amber-950 font-mono">$429.00</span>
-                  <span className="text-sm text-stone-400 line-through font-mono">$483.00</span>
+                  <span className="text-2xl font-black text-amber-950 font-mono">৳14,990</span>
+                  <span className="text-sm text-stone-400 line-through font-mono">৳17,150</span>
                   <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                    Save $54.00 (11% Off)
+                    Save ৳2,160 (13% Off)
                   </span>
                 </div>
 
@@ -649,8 +649,8 @@ export function FootwearStorefront({
           </div>
         </div>
 
-        {/* Disciplined 4:3 Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-8">
+        {/* Disciplined 4:3 Product Grid - Mobile First 2-Col */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4 lg:gap-6 pt-6 sm:pt-8">
           {filteredProducts.map((p) => {
             const isHovered = hoveredCardId === p.id;
             const chosenSize = quickSizeMap[p.id] || "US 10";
@@ -663,11 +663,11 @@ export function FootwearStorefront({
                 onMouseEnter={() => setHoveredCardId(p.id)}
                 onMouseLeave={() => setHoveredCardId(null)}
                 onClick={() => onOpenProduct(p)}
-                className="group bg-white rounded-2xl border border-stone-200 hover:border-amber-800/40 transition-all duration-300 p-3.5 flex flex-col justify-between shadow-2xs hover:shadow-md cursor-pointer"
+                className="group bg-white rounded-2xl border border-stone-200 hover:border-amber-800/40 transition-all duration-300 p-2.5 sm:p-3.5 flex flex-col justify-between shadow-2xs hover:shadow-md cursor-pointer"
               >
                 {/* 4:3 Landscape Media Frame */}
                 <div>
-                  <div className="relative aspect-[4/3] w-full rounded-xl overflow-hidden bg-stone-100 border border-stone-200/80 mb-3.5">
+                  <div className="relative aspect-[4/3] w-full rounded-xl overflow-hidden bg-stone-100 border border-stone-200/80 mb-2.5 sm:mb-3.5">
                     <img
                       src={p.imageUrl}
                       alt={p.title}
@@ -686,9 +686,9 @@ export function FootwearStorefront({
                     )}
 
                     {/* Master Benchcraft Badge */}
-                    <div className="absolute top-2.5 left-2.5 z-10">
-                      <span className="px-2.5 py-1 bg-white/95 backdrop-blur-md rounded-full text-[10px] font-bold text-amber-950 border border-amber-300 shadow-2xs uppercase tracking-wider font-mono">
-                        {p.badge || "Goodyear Welt"}
+                    <div className="absolute top-2 sm:top-2.5 left-2 sm:left-2.5 z-10">
+                      <span className="px-1.5 sm:px-2.5 py-0.5 sm:py-1 bg-white/95 backdrop-blur-md rounded-full text-[8.5px] sm:text-[10px] font-bold text-amber-950 border border-amber-300 shadow-2xs uppercase tracking-wider font-mono">
+                        {p.badge || "Welted"}
                       </span>
                     </div>
 
@@ -698,7 +698,7 @@ export function FootwearStorefront({
                         e.stopPropagation();
                         onToggleWishlist(p.id);
                       }}
-                      className={`absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                      className={`absolute top-2 sm:top-2.5 right-2 sm:right-2.5 z-10 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all ${
                         isSaved
                           ? "bg-amber-600 text-white shadow-xs"
                           : "bg-white/90 text-stone-600 hover:bg-white hover:text-amber-900 shadow-2xs"
@@ -709,7 +709,7 @@ export function FootwearStorefront({
                     </button>
 
                     {/* Carpet Fitting Seal */}
-                    <div className="absolute bottom-2.5 left-2.5 z-10">
+                    <div className="absolute bottom-2 sm:bottom-2.5 left-2 sm:left-2.5 z-10 hidden sm:block">
                       <span className="px-2 py-0.5 bg-black/80 backdrop-blur-md text-amber-300 rounded text-[9px] font-mono tracking-wide">
                         Carpet Fitting Guarantee
                       </span>
@@ -717,19 +717,19 @@ export function FootwearStorefront({
                   </div>
 
                   {/* Quick US Shoe Size Selector Pills */}
-                  <div className="mb-3 space-y-1.5" onClick={(e) => e.stopPropagation()}>
-                    <div className="flex items-center justify-between text-[10px]">
-                      <span className="text-stone-500 font-medium">Select Brannock Size:</span>
-                      <span className="font-mono text-amber-900 font-bold">{chosenSize} • {chosenWidth}</span>
+                  <div className="mb-2 sm:mb-3 space-y-1 sm:space-y-1.5" onClick={(e) => e.stopPropagation()}>
+                    <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
+                      <span className="text-stone-500 font-medium">Size:</span>
+                      <span className="font-mono text-amber-900 font-bold">{chosenSize}</span>
                     </div>
                     <div className="flex flex-wrap gap-1">
-                      {["US 8", "US 8.5", "US 9", "US 9.5", "US 10", "US 10.5", "US 11", "US 12"].map((sz) => {
+                      {["US 8", "US 9", "US 10", "US 11"].map((sz) => {
                         const isSel = chosenSize.toLowerCase() === sz.toLowerCase();
                         return (
                           <button
                             key={sz}
                             onClick={(e) => handleQuickSizeSelect(p.id, sz, e)}
-                            className={`px-2 py-0.5 rounded text-[10px] font-mono font-semibold border transition ${
+                            className={`px-1.5 sm:px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-mono font-semibold border transition ${
                               isSel
                                 ? "bg-stone-900 text-amber-400 border-stone-900"
                                 : "bg-stone-50 hover:bg-stone-100 text-stone-700 border-stone-200"
@@ -743,44 +743,44 @@ export function FootwearStorefront({
                   </div>
 
                   {/* Rating & Reviews */}
-                  <div className="flex items-center space-x-1.5 mb-1.5">
+                  <div className="flex items-center space-x-1 mb-1">
                     <div className="flex text-amber-600">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-3 h-3 fill-current" />
+                        <Star key={i} className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current" />
                       ))}
                     </div>
-                    <span className="text-[11px] font-mono font-bold text-stone-800">5.0</span>
-                    <span className="text-[10px] text-stone-400 font-mono">(48 wearers)</span>
+                    <span className="text-[10px] sm:text-[11px] font-mono font-bold text-stone-800">5.0</span>
                   </div>
 
                   {/* Title & Description */}
-                  <h3 className="text-sm font-bold text-stone-900 group-hover:text-amber-900 transition leading-snug font-serif">
+                  <h3 className="text-xs sm:text-sm font-bold text-stone-900 group-hover:text-amber-900 transition leading-snug font-serif line-clamp-1 sm:line-clamp-2">
                     {p.title}
                   </h3>
-                  <p className="text-xs text-stone-500 line-clamp-2 mt-1 leading-relaxed">
+                  <p className="hidden sm:block text-xs text-stone-500 line-clamp-2 mt-1 leading-relaxed">
                     {p.description}
                   </p>
                 </div>
 
                 {/* Price & Add to Bag */}
-                <div className="pt-4 mt-3 border-t border-stone-200 flex items-center justify-between">
+                <div className="pt-2 sm:pt-3 mt-2 border-t border-stone-200 flex items-center justify-between gap-1">
                   <div>
-                    <span className="text-base font-black text-stone-950 font-mono">
-                      ${p.price.toFixed(2)}
+                    <span className="text-xs sm:text-base font-black text-stone-950 font-mono">
+                      ৳{p.price.toLocaleString("en-BD")}
                     </span>
                     {p.comparePrice > p.price && (
-                      <span className="text-xs text-stone-400 line-through font-mono ml-1.5">
-                        ${p.comparePrice.toFixed(2)}
+                      <span className="text-[10px] sm:text-xs text-stone-400 line-through font-mono ml-1">
+                        ৳{p.comparePrice.toLocaleString("en-BD")}
                       </span>
                     )}
                   </div>
 
                   <button
                     onClick={(e) => handleCardQuickAdd(p, e)}
-                    className="py-2 px-3.5 bg-stone-950 hover:bg-stone-800 text-amber-200 font-bold text-xs rounded-xl shadow-xs transition flex items-center space-x-1.5 btn-press"
+                    className="py-1.5 sm:py-2 px-2.5 sm:px-3.5 bg-stone-950 hover:bg-stone-800 text-amber-200 font-bold text-[10px] sm:text-xs rounded-lg sm:rounded-xl shadow-xs transition flex items-center space-x-1 sm:space-x-1.5 btn-press shrink-0 active:scale-95"
                   >
-                    <ShoppingBag className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Add to Bag</span>
+                    <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400" />
+                    <span className="hidden sm:inline">Add to Bag</span>
+                    <span className="sm:hidden">Add</span>
                   </button>
                 </div>
               </div>

@@ -339,8 +339,8 @@ export function AthleisureStorefront({
           </div>
         </div>
 
-        {/* Product Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Product Cards Grid - Mobile First 2-Col */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4 lg:gap-6">
           {filteredProducts.map((p, idx) => {
             const isWish = wishlist.includes(p.id);
             const currentSize = quickSizeMap[p.id] || "M";
@@ -348,7 +348,7 @@ export function AthleisureStorefront({
             return (
               <div
                 key={p.id}
-                className="group rounded-2xl bg-white/[0.03] border border-white/10 hover:border-[#ccff00]/50 transition-all duration-300 flex flex-col overflow-hidden"
+                className="group rounded-2xl bg-white/[0.03] border border-white/10 hover:border-[#ccff00]/50 transition-all duration-300 flex flex-col justify-between overflow-hidden"
               >
                 {/* Image Wrap */}
                 <div className="relative aspect-4/5 overflow-hidden bg-slate-900 cursor-pointer" onClick={() => onOpenProduct(p)}>
@@ -357,8 +357,8 @@ export function AthleisureStorefront({
                     alt={p.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-                    <span className="px-2.5 py-1 rounded-md bg-black/80 backdrop-blur-md text-[#ccff00] text-[10px] font-black uppercase tracking-wider border border-[#ccff00]/40">
+                  <div className="absolute top-2 sm:top-3 left-2 sm:left-3 flex flex-col gap-1.5">
+                    <span className="px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-black/80 backdrop-blur-md text-[#ccff00] text-[8.5px] sm:text-[10px] font-black uppercase tracking-wider border border-[#ccff00]/40">
                       {p.badge || (idx === 0 ? "⚡ Aero Pick" : "320% Stretch")}
                     </span>
                   </div>
@@ -367,45 +367,45 @@ export function AthleisureStorefront({
                       e.stopPropagation();
                       onToggleWishlist(p.id);
                     }}
-                    className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-md transition ${
+                    className={`absolute top-2 sm:top-3 right-2 sm:right-3 p-1.5 sm:p-2 rounded-full backdrop-blur-md transition ${
                       isWish ? "bg-[#ccff00] text-black" : "bg-black/60 text-white hover:bg-black/90"
                     }`}
                     aria-label="Wishlist toggle"
                   >
-                    <Heart className={`w-4 h-4 ${isWish ? "fill-black" : ""}`} />
+                    <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isWish ? "fill-black" : ""}`} />
                   </button>
                 </div>
 
                 {/* Details */}
-                <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                <div className="p-2.5 sm:p-5 flex-1 flex flex-col justify-between space-y-2.5 sm:space-y-4">
                   <div>
-                    <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 mb-1">
+                    <div className="flex items-center justify-between text-[9px] sm:text-[11px] font-mono text-slate-400 mb-1">
                       <span>AERO LAB // GEN-4</span>
-                      <span className="text-[#ccff00] font-bold">★ 4.9 (52 Reviews)</span>
+                      <span className="text-[#ccff00] font-bold">★ 4.9</span>
                     </div>
                     <h3
                       onClick={() => onOpenProduct(p)}
-                      className="text-base font-black text-white hover:text-[#ccff00] transition cursor-pointer line-clamp-1"
+                      className="text-xs sm:text-base font-black text-white hover:text-[#ccff00] transition cursor-pointer line-clamp-1"
                     >
                       {p.title}
                     </h3>
-                    <p className="text-xs text-slate-400 line-clamp-2 mt-1 leading-relaxed">
+                    <p className="hidden sm:block text-xs text-slate-400 line-clamp-2 mt-1 leading-relaxed">
                       {p.description}
                     </p>
                   </div>
 
                   {/* Quick Size Selection Chips */}
-                  <div className="space-y-2 pt-2 border-t border-white/10">
-                    <div className="flex items-center justify-between text-[10px] font-mono text-slate-400">
-                      <span>CHOOSE SIZE:</span>
-                      <span className="text-[#ccff00] font-bold">{currentSize} (Active Fit)</span>
+                  <div className="space-y-1 sm:space-y-2 pt-1.5 sm:pt-2 border-t border-white/10">
+                    <div className="flex items-center justify-between text-[8.5px] sm:text-[10px] font-mono text-slate-400">
+                      <span>SIZE:</span>
+                      <span className="text-[#ccff00] font-bold">{currentSize}</span>
                     </div>
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1">
                       {["S", "M", "L", "XL"].map((sz) => (
                         <button
                           key={sz}
                           onClick={() => handleSelectSize(p.id, sz)}
-                          className={`flex-1 py-1 text-xs font-bold rounded-lg border transition ${
+                          className={`flex-1 py-0.5 sm:py-1 text-[10px] sm:text-xs font-bold rounded-md sm:rounded-lg border transition ${
                             currentSize === sz
                               ? "bg-[#ccff00] text-black border-[#ccff00]"
                               : "bg-white/5 text-slate-300 border-white/10 hover:bg-white/10"
@@ -418,13 +418,13 @@ export function AthleisureStorefront({
                   </div>
 
                   {/* Price & Add to Cart */}
-                  <div className="flex items-center justify-between pt-2">
+                  <div className="flex items-center justify-between gap-1.5 pt-1.5 sm:pt-2">
                     <div>
-                      <div className="text-[10px] font-mono uppercase text-slate-400">PRICE COD</div>
-                      <div className="text-lg font-black text-white">
+                      <div className="text-[8.5px] sm:text-[10px] font-mono uppercase text-slate-400">PRICE COD</div>
+                      <div className="text-xs sm:text-lg font-black text-white">
                         ৳{p.price.toFixed(0)}
                         {p.comparePrice && p.comparePrice > p.price && (
-                          <span className="text-xs text-slate-500 line-through font-normal ml-1.5">
+                          <span className="text-[10px] sm:text-xs text-slate-500 line-through font-normal ml-1">
                             ৳{p.comparePrice.toFixed(0)}
                           </span>
                         )}
@@ -433,10 +433,11 @@ export function AthleisureStorefront({
 
                     <button
                       onClick={() => handleQuickAdd(p)}
-                      className="px-4 py-2 rounded-xl bg-[#ccff00] hover:bg-[#b8e600] text-black font-black text-xs uppercase tracking-wider transition flex items-center gap-1.5 shadow-md shadow-[#ccff00]/10"
+                      className="px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-[#ccff00] hover:bg-[#b8e600] text-black font-black text-[10px] sm:text-xs uppercase tracking-wider transition flex items-center justify-center gap-1 sm:gap-1.5 shadow-md shadow-[#ccff00]/10 shrink-0 active:scale-95"
                     >
-                      <ShoppingBag className="w-3.5 h-3.5" />
-                      <span>Add to Bag</span>
+                      <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                      <span className="hidden sm:inline">Add to Bag</span>
+                      <span className="sm:hidden">Add</span>
                     </button>
                   </div>
                 </div>

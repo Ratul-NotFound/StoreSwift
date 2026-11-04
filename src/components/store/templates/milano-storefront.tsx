@@ -247,8 +247,8 @@ export function MilanoStorefront({
             {/* Content */}
             <div className="relative z-10 h-full flex items-end pb-16 md:pb-24 max-w-7xl mx-auto px-5">
               <div className="max-w-xl">
-                <p className="text-[11px] font-mono uppercase tracking-[0.35em] text-white/50 mb-6">SS 2025 Collection</p>
-                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase leading-[0.92] mb-8">
+                <p className="text-[11px] font-mono uppercase tracking-[0.35em] text-white/50 mb-4 sm:mb-6">SS 2025 Collection</p>
+                <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase leading-[0.92] mb-6 sm:mb-8">
                   GET<br />
                   YOURSELF<br />
                   <span className="text-transparent" style={{ WebkitTextStroke: "2px rgba(255,255,255,0.7)" }}>
@@ -303,42 +303,52 @@ export function MilanoStorefront({
                 All Products <ArrowRight className="w-4 h-4" />
               </button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/5">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4">
               {catalogItems.map(item => (
-                <div key={item.id} className="group bg-[#0e0e0e] overflow-hidden relative">
+                <div key={item.id} className="group bg-[#121212] rounded-2xl border border-white/10 overflow-hidden relative flex flex-col justify-between">
                   <div className="aspect-[3/4] overflow-hidden relative bg-[#1a1a1a] cursor-pointer" onClick={() => {
                     const p = { id: item.id, title: item.title, slug: item.id, description: item.subtitle, price: item.price, comparePrice: item.compare, imageUrl: item.img, badge: item.tag, variants: [] };
                     onOpenProduct(p);
                   }}>
                     <img src={item.img} alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-107 transition duration-700 grayscale-[20%] group-hover:grayscale-0" />
+                      className="w-full h-full object-cover group-hover:scale-105 transition duration-700 grayscale-[20%] group-hover:grayscale-0" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition duration-300" />
-                    <div className="absolute top-4 left-4 text-[9px] font-mono uppercase tracking-[0.25em] bg-white text-black px-2 py-0.5 font-bold">
+                    <div className="absolute top-2.5 sm:top-4 left-2.5 sm:left-4 text-[8.5px] sm:text-[9px] font-mono uppercase tracking-[0.2em] bg-white text-black px-1.5 sm:px-2 py-0.5 font-bold rounded">
                       {item.label}
                     </div>
                     <button onClick={e => { e.stopPropagation(); handleWishlist(item.id); }}
-                      className={`absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center border transition ${wishlistLocal.has(item.id) ? "bg-rose-500 border-rose-500 text-white" : "bg-black/40 border-white/20 text-white/70 hover:border-white hover:text-white"}`}>
+                      className={`absolute top-2.5 sm:top-4 right-2.5 sm:right-4 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center border transition ${wishlistLocal.has(item.id) ? "bg-rose-500 border-rose-500 text-white" : "bg-black/40 border-white/20 text-white/70 hover:border-white hover:text-white"}`}>
                       <Heart className={`w-3.5 h-3.5 ${wishlistLocal.has(item.id) ? "fill-white" : ""}`} />
                     </button>
-                    {/* Quick add overlay */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition translate-y-2 group-hover:translate-y-0 duration-300">
+                    {/* Desktop Quick add overlay */}
+                    <div className="hidden sm:block absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition translate-y-2 group-hover:translate-y-0 duration-300">
                       <button onClick={e => { e.stopPropagation(); handleAdd(item); }}
-                        className={`w-full py-2.5 text-xs font-bold uppercase tracking-widest transition flex items-center justify-center gap-2 ${addedId === item.id ? "bg-emerald-500 text-white" : "bg-white text-black hover:bg-[#c9a96e]"}`}>
+                        className={`w-full py-2 text-xs font-bold uppercase tracking-widest transition flex items-center justify-center gap-2 rounded-lg ${addedId === item.id ? "bg-emerald-500 text-white" : "bg-white text-black hover:bg-[#c9a96e]"}`}>
                         {addedId === item.id ? <><Check className="w-3.5 h-3.5" /> Added</> : <><ShoppingBag className="w-3.5 h-3.5" /> Quick Add</>}
                       </button>
                     </div>
                   </div>
-                  <div className="p-4 border-t border-white/5">
-                    <p className="text-[9px] font-mono uppercase tracking-[0.25em] text-[#c9a96e] mb-1">{item.subtitle}</p>
-                    <h3 className="text-sm font-bold text-white mb-2 leading-tight">{item.title}</h3>
-                    <div className="flex items-center justify-between">
+                  <div className="p-2.5 sm:p-4 border-t border-white/5 flex flex-col justify-between flex-1">
+                    <div>
+                      <p className="text-[8px] sm:text-[9px] font-mono uppercase tracking-[0.2em] text-[#c9a96e] mb-1 line-clamp-1">{item.subtitle}</p>
+                      <h3 className="text-xs sm:text-sm font-bold text-white mb-2 leading-tight line-clamp-1 sm:line-clamp-2">{item.title}</h3>
+                    </div>
+                    <div className="flex items-center justify-between gap-1.5 pt-1">
                       <div>
-                        <span className="font-black text-white text-sm">৳{item.price.toLocaleString("en-BD")}</span>
+                        <span className="font-black text-white text-xs sm:text-sm">৳{item.price.toLocaleString("en-BD")}</span>
                         {item.compare > item.price && (
-                          <span className="text-xs text-white/30 line-through ml-2">৳{item.compare.toLocaleString("en-BD")}</span>
+                          <span className="text-[10px] sm:text-xs text-white/30 line-through ml-1 sm:ml-2">৳{item.compare.toLocaleString("en-BD")}</span>
                         )}
                       </div>
-                      <span className="text-[9px] font-mono uppercase tracking-widest px-2 py-0.5 border border-white/20 text-white/50">{item.tag}</span>
+                      <button
+                        onClick={e => { e.stopPropagation(); handleAdd(item); }}
+                        className="sm:hidden px-2 py-1 rounded bg-white text-black text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 active:scale-95 transition"
+                        aria-label="Add to bag"
+                      >
+                        {addedId === item.id ? <Check className="w-3 h-3 text-emerald-600" /> : <ShoppingBag className="w-3 h-3" />}
+                        <span>{addedId === item.id ? "Done" : "Add"}</span>
+                      </button>
+                      <span className="hidden sm:inline-block text-[9px] font-mono uppercase tracking-widest px-2 py-0.5 border border-white/20 text-white/50 rounded">{item.tag}</span>
                     </div>
                   </div>
                 </div>
@@ -364,14 +374,14 @@ export function MilanoStorefront({
 
           {/* ── Trust Row ─────────────────────────────────────────── */}
           <section className="border-t border-white/5 py-10">
-            <div className="max-w-7xl mx-auto px-5 grid grid-cols-1 sm:grid-cols-3 gap-8">
+            <div className="max-w-7xl mx-auto px-5 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
               {[
-                { icon: <Truck className="w-5 h-5" />, title: "Free Shipping", sub: "Orders above ৳2,000" },
-                { icon: <RotateCcw className="w-5 h-5" />, title: "30-Day Returns", sub: "Hassle-free exchanges" },
-                { icon: <ShieldCheck className="w-5 h-5" />, title: "Secure Checkout", sub: "256-bit SSL encryption" },
+                { icon: <Truck className="w-5 h-5" />, title: "Steadfast Courier 24h", sub: "Dhaka & 64 Districts express dispatch" },
+                { icon: <RotateCcw className="w-5 h-5" />, title: "Doorstep Inspection", sub: "Inspect fabric & fit before payment" },
+                { icon: <ShieldCheck className="w-5 h-5" />, title: "Cash on Delivery & bKash", sub: "100% secure verified payment gateways" },
               ].map(t => (
-                <div key={t.title} className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-[#c9a96e]">{t.icon}</div>
+                <div key={t.title} className="flex items-center gap-4 p-3 rounded-xl bg-white/[0.02] border border-white/5">
+                  <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-[#c9a96e] flex-shrink-0">{t.icon}</div>
                   <div>
                     <p className="text-sm font-bold text-white">{t.title}</p>
                     <p className="text-xs text-white/40 mt-0.5">{t.sub}</p>
@@ -396,38 +406,46 @@ export function MilanoStorefront({
               <span className="text-white/60">Shop All</span>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
-              <h1 className="text-4xl font-black uppercase tracking-tight">All Products</h1>
+              <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight">All Products</h1>
               <div className="flex flex-wrap gap-2">
                 {VERTICAL_CATEGORIES.map(c => (
                   <button key={c.id} onClick={() => setActiveCat(activeCat === c.id ? null : c.id)}
-                    className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition ${activeCat === c.id ? "bg-white text-black border-white" : "border-white/20 text-white/50 hover:border-white hover:text-white"}`}>
+                    className={`px-3 sm:px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border rounded-lg transition ${activeCat === c.id ? "bg-white text-black border-white" : "border-white/20 text-white/50 hover:border-white hover:text-white"}`}>
                     {c.label}
                   </button>
                 ))}
               </div>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-px bg-white/5">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4">
               {catalogItems.map(item => (
-                <div key={item.id} className="group bg-[#0e0e0e] overflow-hidden">
+                <div key={item.id} className="group bg-[#121212] rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between">
                   <div className="aspect-[3/4] overflow-hidden relative bg-[#1a1a1a] cursor-pointer" onClick={() => {
                     const p = { id: item.id, title: item.title, slug: item.id, description: item.subtitle, price: item.price, comparePrice: item.compare, imageUrl: item.img, badge: item.tag, variants: [] };
                     onOpenProduct(p);
                   }}>
                     <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-600" />
-                    <div className="absolute top-3 left-3 text-[9px] font-mono uppercase tracking-widest bg-white text-black px-2 py-0.5 font-bold">{item.label}</div>
-                    <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 opacity-0 group-hover:opacity-100 transition">
+                    <div className="absolute top-2.5 left-2.5 text-[8.5px] font-mono uppercase tracking-widest bg-white text-black px-1.5 py-0.5 font-bold rounded">{item.label}</div>
+                    <div className="hidden sm:block absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 opacity-0 group-hover:opacity-100 transition">
                       <button onClick={e => { e.stopPropagation(); handleAdd(item); }}
-                        className={`w-full py-2 text-xs font-bold uppercase tracking-widest transition ${addedId === item.id ? "bg-emerald-500 text-white" : "bg-white text-black hover:bg-[#c9a96e]"}`}>
+                        className={`w-full py-2 text-xs font-bold uppercase tracking-widest transition rounded-lg ${addedId === item.id ? "bg-emerald-500 text-white" : "bg-white text-black hover:bg-[#c9a96e]"}`}>
                         {addedId === item.id ? "Added ✓" : "Quick Add"}
                       </button>
                     </div>
                   </div>
-                  <div className="p-3 border-t border-white/5">
-                    <h3 className="text-xs font-bold text-white mb-1 line-clamp-1">{item.title}</h3>
-                    <div className="flex items-center justify-between">
-                      <span className="font-black text-white text-sm">৳{item.price.toLocaleString("en-BD")}</span>
-                      {item.compare > item.price && <span className="text-xs text-white/30 line-through">৳{item.compare.toLocaleString("en-BD")}</span>}
+                  <div className="p-2.5 sm:p-3.5 border-t border-white/5 flex flex-col justify-between flex-1">
+                    <h3 className="text-xs sm:text-sm font-bold text-white mb-1.5 line-clamp-1">{item.title}</h3>
+                    <div className="flex items-center justify-between gap-1.5">
+                      <span className="font-black text-white text-xs sm:text-sm">৳{item.price.toLocaleString("en-BD")}</span>
+                      {item.compare > item.price && <span className="text-[10px] sm:text-xs text-white/30 line-through">৳{item.compare.toLocaleString("en-BD")}</span>}
+                      <button
+                        onClick={e => { e.stopPropagation(); handleAdd(item); }}
+                        className="sm:hidden px-2 py-1 rounded bg-white text-black text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 active:scale-95 transition"
+                        aria-label="Add to bag"
+                      >
+                        {addedId === item.id ? <Check className="w-3 h-3 text-emerald-600" /> : <ShoppingBag className="w-3 h-3" />}
+                        <span>{addedId === item.id ? "Done" : "Add"}</span>
+                      </button>
                     </div>
                   </div>
                 </div>

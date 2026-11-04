@@ -46,7 +46,13 @@ interface NickelFoxStorefrontProps {
 // ─── Data ──────────────────────────────────────────────────────────────────
 const HERO_BRAND_NAV = ["Catalogue", "Fashion", "Favourite", "Lifestyle"];
 
-const BRAND_LOGOS = ["H&M", "OBEY", "Shopify", "LACOSTE", "Levi's", "amazon"];
+const LOCAL_TRUST_FEATURES = [
+  { label: "STEADFAST 24-48H", sub: "Nationwide Courier" },
+  { label: "PATHAO EXPRESS", sub: "Fast Dispatch" },
+  { label: "DOORSTEP TRIAL", sub: "100% Verified" },
+  { label: "BKASH & NAGAD", sub: "Instant Checkout" },
+  { label: "CASH ON DELIVERY", sub: "All 64 Districts" },
+];
 
 const CATEGORY_CARDS = [
   {
@@ -287,29 +293,29 @@ export function NickelFoxStorefront({
                   <span className="text-xs font-bold text-black ml-1">Live for influential fashion</span>
                 </div>
 
-                <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-[0.95] mb-6 text-black">
+                <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[0.95] mb-4 sm:mb-6 text-black">
                   LET'S<br />
                   EXPLORE<br />
                   <span className="bg-[#f7f500] border-b-4 border-black px-1">UNIQUE</span><br />
                   CLOTHES.
                 </h1>
-                <p className="text-sm text-neutral-600 mb-8 max-w-xs font-medium">
+                <p className="text-xs sm:text-sm text-neutral-600 mb-6 sm:mb-8 max-w-xs font-medium">
                   Live for influential and innovative fashion! Find your unique style from thousands of curated pieces.
                 </p>
-                <div className="flex gap-3 flex-wrap">
+                <div className="flex gap-2 sm:gap-3 flex-wrap">
                   <button onClick={() => setView("shop")}
-                    className="inline-flex items-center gap-2 bg-black text-[#f7f500] font-black text-sm px-8 py-3 rounded-full hover:bg-neutral-800 transition shadow-[4px_4px_0_0_#f7f500]">
+                    className="inline-flex items-center gap-2 bg-black text-[#f7f500] font-black text-xs sm:text-sm px-6 sm:px-8 py-2.5 sm:py-3 rounded-full hover:bg-neutral-800 transition shadow-[4px_4px_0_0_#f7f500]">
                     SHOP NOW <ArrowRight className="w-4 h-4" />
                   </button>
                   <button onClick={() => setView("favourite")}
-                    className="inline-flex items-center gap-2 border-2 border-black bg-white text-black font-black text-sm px-6 py-3 rounded-full hover:bg-[#f7f500] transition">
+                    className="inline-flex items-center gap-2 border-2 border-black bg-white text-black font-black text-xs sm:text-sm px-4 sm:px-6 py-2.5 sm:py-3 rounded-full hover:bg-[#f7f500] transition">
                     Favourites <Heart className="w-4 h-4" />
                   </button>
                 </div>
               </div>
 
               {/* Right: Hero Image */}
-              <div className="relative border-l-4 border-black min-h-[360px] md:min-h-auto overflow-hidden">
+              <div className="relative border-t-4 md:border-t-0 md:border-l-4 border-black min-h-[300px] sm:min-h-[360px] md:min-h-auto overflow-hidden">
                 <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=85"
                   alt="Hero model" className="w-full h-full object-cover object-top" />
                 {/* Floating star cluster */}
@@ -322,33 +328,37 @@ export function NickelFoxStorefront({
             </div>
           </section>
 
-          {/* ── Brand Logos Bar ───────────────────────────────────── */}
-          <section className="bg-[#f7f500] border-b-4 border-black py-5">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-2">
-              {BRAND_LOGOS.map(brand => (
-                <span key={brand} className="text-xl font-black text-black/30 hover:text-black transition cursor-default tracking-tight">{brand}</span>
+          {/* ── Authentic Trust Strip (Replaced Fake Multinational Logos) ────────────────── */}
+          <section className="bg-[#f7f500] border-b-4 border-black py-3 sm:py-4">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-10 gap-y-2">
+              {LOCAL_TRUST_FEATURES.map((item, idx) => (
+                <div key={idx} className="flex items-center gap-1.5 cursor-default">
+                  <span className="w-2 h-2 rounded-full bg-black flex-shrink-0" />
+                  <span className="text-xs sm:text-sm font-black text-black tracking-tight">{item.label}</span>
+                  <span className="hidden sm:inline-block text-[10px] font-mono text-black/60 font-semibold">• {item.sub}</span>
+                </div>
               ))}
             </div>
           </section>
 
           {/* ── New Arrivals Section ─────────────────────────────── */}
-          <section className="bg-white border-b-4 border-black py-12">
+          <section className="bg-white border-b-4 border-black py-10 sm:py-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
-              <div className="flex items-end justify-between mb-8">
+              <div className="flex items-end justify-between mb-6 sm:mb-8">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <Flame className="w-4 h-4 text-black" />
                     <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-black/40">Just In</span>
                   </div>
-                  <h2 className="text-4xl font-black text-black uppercase tracking-tight">NEW ARRIVALS</h2>
+                  <h2 className="text-2xl sm:text-4xl font-black text-black uppercase tracking-tight">NEW ARRIVALS</h2>
                 </div>
                 <button onClick={() => setView("shop")}
-                  className="flex items-center gap-2 text-sm font-black text-black border-b-2 border-black pb-0.5 hover:gap-3 transition-all">
+                  className="flex items-center gap-2 text-xs sm:text-sm font-black text-black border-b-2 border-black pb-0.5 hover:gap-3 transition-all">
                   View All <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-5">
                 {PRODUCTS.slice(0, 8).map(item => (
                   <NickelFoxCard
                     key={item.id}
@@ -549,14 +559,17 @@ export function NickelFoxStorefront({
             </ul>
           </div>
           <div>
-            <h4 className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#f7f500]/50 mb-4">Get the App</h4>
-            <p className="text-sm text-white/40 mb-4">Exclusive app deals inside. Download now.</p>
-            <div className="space-y-2">
-              {["App Store", "Google Play"].map(l => (
-                <button key={l} className="w-full text-left px-4 py-2.5 rounded-xl border border-white/10 text-sm font-bold text-white hover:border-[#f7f500]/40 hover:bg-[#f7f500]/5 transition">
-                  📱 {l}
-                </button>
-              ))}
+            <h4 className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#f7f500]/70 mb-4">Delivery & Verification</h4>
+            <p className="text-xs text-white/50 mb-3">Steadfast 24-48h express nationwide, Pathao Courier, COD + bKash/Nagad instant verification.</p>
+            <div className="space-y-1.5 text-xs text-white/80 font-mono">
+              <div className="flex items-center gap-2">
+                <Check className="w-3.5 h-3.5 text-[#f7f500]" />
+                <span>64 Districts Doorstep Inspection</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="w-3.5 h-3.5 text-[#f7f500]" />
+                <span>Original Textile Quality Guaranteed</span>
+              </div>
             </div>
           </div>
         </div>
@@ -584,39 +597,41 @@ function NickelFoxCard({
 }) {
   const disc = Math.round(((item.compare - item.price) / item.compare) * 100);
   return (
-    <div className="group bg-white rounded-2xl overflow-hidden border-4 border-black hover:shadow-[6px_6px_0_0_#000] transition duration-200">
+    <div className="group bg-white rounded-2xl overflow-hidden border-2 sm:border-4 border-black hover:shadow-[6px_6px_0_0_#000] transition duration-200 flex flex-col justify-between">
       <div className="relative aspect-[3/4] overflow-hidden bg-stone-100 cursor-pointer" onClick={onView}>
         <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-400" />
         {item.badge && (
-          <div className="absolute top-2 left-2 bg-[#f7f500] text-black text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border-2 border-black">
+          <div className="absolute top-2 left-2 bg-[#f7f500] text-black text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-1.5 sm:px-2 py-0.5 rounded-full border border-black sm:border-2">
             {item.badge}
           </div>
         )}
         {disc > 0 && (
-          <div className="absolute top-2 right-2 bg-black text-[#f7f500] text-[10px] font-black px-2 py-0.5 rounded-full">
+          <div className="absolute top-2 right-2 bg-black text-[#f7f500] text-[9px] sm:text-[10px] font-black px-1.5 sm:px-2 py-0.5 rounded-full">
             -{disc}%
           </div>
         )}
         <button onClick={e => { e.stopPropagation(); onWishlist(); }}
-          className={`absolute bottom-2 right-2 w-8 h-8 rounded-full flex items-center justify-center border-2 border-black transition shadow ${wishlisted ? "bg-rose-500 text-white border-rose-500" : "bg-white text-black hover:bg-[#f7f500]"}`}>
-          <Heart className={`w-4 h-4 ${wishlisted ? "fill-white" : ""}`} />
+          className={`absolute bottom-2 right-2 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center border-2 border-black transition shadow ${wishlisted ? "bg-rose-500 text-white border-rose-500" : "bg-white text-black hover:bg-[#f7f500]"}`}>
+          <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${wishlisted ? "fill-white" : ""}`} />
         </button>
       </div>
-      <div className="p-3">
-        <p className="text-[10px] font-mono uppercase tracking-wider text-black/30 mb-0.5">{item.cat}</p>
-        <h3 className="text-sm font-black text-black leading-snug line-clamp-2 mb-1.5 cursor-pointer hover:text-neutral-700" onClick={onView}>{item.title}</h3>
-        <div className="flex items-center gap-1 mb-2">
-          {[...Array(5)].map((_, i) => <Star key={i} className={`w-3 h-3 ${i < Math.floor(item.rating) ? "fill-[#f7f500] text-[#f7f500]" : "text-stone-200"}`} />)}
-          <span className="text-[10px] text-black/30 ml-1">({item.reviews})</span>
+      <div className="p-2 sm:p-3 flex-1 flex flex-col justify-between">
+        <div>
+          <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-black/40 mb-0.5">{item.cat}</p>
+          <h3 className="text-xs sm:text-sm font-black text-black leading-snug line-clamp-1 sm:line-clamp-2 mb-1 cursor-pointer hover:text-neutral-700" onClick={onView}>{item.title}</h3>
+          <div className="flex items-center gap-1 mb-2">
+            {[...Array(5)].map((_, i) => <Star key={i} className={`w-2.5 h-2.5 sm:w-3 sm:h-3 ${i < Math.floor(item.rating) ? "fill-[#f7f500] text-[#f7f500]" : "text-stone-200"}`} />)}
+            <span className="text-[9px] sm:text-[10px] text-black/40 ml-0.5">({item.reviews})</span>
+          </div>
         </div>
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center justify-between gap-1 pt-1 border-t border-stone-100">
           <div>
-            <span className="font-black text-black text-sm">${item.price}</span>
-            {item.compare > item.price && <span className="text-xs text-black/30 line-through ml-1">${item.compare}</span>}
+            <span className="font-black text-black text-xs sm:text-sm">৳{item.price.toLocaleString("en-BD")}</span>
+            {item.compare > item.price && <span className="text-[10px] sm:text-xs text-black/40 line-through ml-1">৳{item.compare.toLocaleString("en-BD")}</span>}
           </div>
           <button onClick={onAdd}
-            className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-black border-2 border-black transition ${added ? "bg-emerald-400 text-black" : "bg-[#f7f500] text-black hover:bg-black hover:text-[#f7f500]"}`}>
-            {added ? <><Check className="w-3 h-3" /> Added</> : <><ShoppingBag className="w-3 h-3" /> Add</>}
+            className={`flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-black border-2 border-black active:scale-95 transition ${added ? "bg-emerald-400 text-black" : "bg-[#f7f500] text-black hover:bg-black hover:text-[#f7f500]"}`}>
+            {added ? <><Check className="w-3 h-3" /> <span className="hidden sm:inline">Added</span></> : <><ShoppingBag className="w-3 h-3" /> <span>Add</span></>}
           </button>
         </div>
       </div>

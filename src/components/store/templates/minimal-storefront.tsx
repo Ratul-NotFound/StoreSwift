@@ -200,9 +200,9 @@ export function MinimalStorefront({
       className="min-h-screen bg-white text-zinc-900 font-sans selection:bg-zinc-900 selection:text-white flex flex-col"
     >
       {/* ─── 1. Atelier Top Announcement Bar ─────────────────────────────── */}
-      <div className="bg-zinc-950 text-zinc-300 py-2 px-4 text-center text-[11px] font-mono tracking-wider border-b border-zinc-900 flex items-center justify-center gap-3">
+      <div className="bg-zinc-950 text-zinc-300 py-2 px-4 text-center text-[10.5px] sm:text-[11px] font-mono tracking-wider border-b border-zinc-900 flex items-center justify-center gap-2 sm:gap-3">
         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-        <span>ATELIER EDIT 2026 // COMPLIMENTARY NATIONWIDE EXPRESS DELIVERY // COD &amp; BKASH ACTIVE</span>
+        <span>COMPLIMENTARY DELIVERY ACROSS DHAKA OVER ৳1,500 • CASH ON DELIVERY &amp; BKASH ACTIVE</span>
       </div>
 
       {/* ─── 2. Minimal Sticky Editorial Header ───────────────────────────── */}
@@ -468,13 +468,13 @@ export function MinimalStorefront({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 lg:gap-6">
           {filteredItems.map((prod) => {
             const isFav = wishlist.includes(prod.id);
             return (
               <div
                 key={prod.id}
-                className="group flex flex-col bg-white border border-zinc-200/90 rounded-2xl overflow-hidden hover:border-zinc-900 transition-all duration-300 shadow-xs hover:shadow-md"
+                className="group flex flex-col bg-white border border-zinc-200/90 rounded-xl sm:rounded-2xl overflow-hidden hover:border-zinc-900 transition-all duration-300 shadow-xs hover:shadow-md"
               >
                 {/* Image Aspect Container */}
                 <div className="relative aspect-[3/4] bg-zinc-100 overflow-hidden">
@@ -485,9 +485,9 @@ export function MinimalStorefront({
                   />
 
                   {/* Badges */}
-                  <div className="absolute top-3 left-3 flex flex-col gap-1">
+                  <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex flex-col gap-1">
                     {prod.badge && (
-                      <span className="bg-zinc-950 text-white text-[9px] font-mono uppercase tracking-widest px-2 py-0.5 rounded-md">
+                      <span className="bg-zinc-950 text-white text-[8px] sm:text-[9px] font-mono uppercase tracking-widest px-1.5 sm:px-2 py-0.5 rounded">
                         {prod.badge}
                       </span>
                     )}
@@ -496,7 +496,7 @@ export function MinimalStorefront({
                   {/* Wishlist Heart */}
                   <button
                     onClick={() => onToggleWishlist(prod.id)}
-                    className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-md transition ${
+                    className={`absolute top-2 right-2 sm:top-3 sm:right-3 p-1.5 sm:p-2 rounded-full backdrop-blur-md transition ${
                       isFav
                         ? "bg-red-50 text-red-600"
                         : "bg-white/80 hover:bg-white text-zinc-600"
@@ -506,8 +506,8 @@ export function MinimalStorefront({
                     <Heart className={`w-3.5 h-3.5 ${isFav ? "fill-current" : ""}`} />
                   </button>
 
-                  {/* Quick Action Overlay */}
-                  <div className="absolute inset-x-3 bottom-3 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+                  {/* Quick Action Overlay (Desktop Hover) */}
+                  <div className="absolute inset-x-3 bottom-3 opacity-0 group-hover:opacity-100 transition-opacity hidden lg:flex gap-2">
                     <button
                       onClick={() => setQuickViewProd(prod)}
                       className="flex-1 py-2 bg-white/95 hover:bg-white text-zinc-950 text-[11px] font-bold rounded-lg shadow-md transition"
@@ -525,33 +525,38 @@ export function MinimalStorefront({
                 </div>
 
                 {/* Card Meta */}
-                <div className="p-4 flex flex-col justify-between flex-1">
+                <div className="p-2.5 sm:p-4 flex flex-col justify-between flex-1">
                   <div>
-                    <span className="text-[10px] font-mono tracking-wider text-zinc-400 uppercase block">
+                    <span className="text-[9px] sm:text-[10px] font-mono tracking-wider text-zinc-400 uppercase block truncate">
                       {prod.category}
                     </span>
                     <h3
                       onClick={() => onOpenProduct(prod)}
-                      className="text-sm font-bold text-zinc-900 mt-1 cursor-pointer hover:underline line-clamp-1"
+                      className="text-xs sm:text-sm font-bold text-zinc-900 mt-0.5 sm:mt-1 cursor-pointer hover:underline line-clamp-1"
                     >
                       {prod.title}
                     </h3>
                   </div>
 
-                  <div className="mt-3 pt-3 border-t border-zinc-100 flex items-center justify-between">
+                  <div className="mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-zinc-100 flex items-center justify-between gap-1">
                     <div>
-                      <span className="text-sm font-black text-zinc-950">
+                      <span className="text-xs sm:text-sm font-black text-zinc-950">
                         ৳{prod.price.toLocaleString("en-BD")}
                       </span>
                       {prod.comparePrice && prod.comparePrice > prod.price && (
-                        <span className="text-[11px] text-zinc-400 line-through ml-2">
+                        <span className="text-[10px] sm:text-[11px] text-zinc-400 line-through block sm:inline sm:ml-1.5">
                           ৳{prod.comparePrice.toLocaleString("en-BD")}
                         </span>
                       )}
                     </div>
-                    <span className="text-[10px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
-                      In Stock
-                    </span>
+                    <button
+                      onClick={() => onAddToCart(prod, prod.variants?.[0])}
+                      className="p-1.5 sm:px-2.5 sm:py-1.5 bg-zinc-950 hover:bg-black text-white text-[10px] sm:text-[11px] font-bold rounded-lg transition flex items-center gap-1 active:scale-95 flex-shrink-0"
+                      title="Add to Bag"
+                    >
+                      <Plus className="w-3 h-3" />
+                      <span className="hidden sm:inline">Add</span>
+                    </button>
                   </div>
                 </div>
               </div>

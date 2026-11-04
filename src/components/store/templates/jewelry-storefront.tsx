@@ -413,7 +413,7 @@ export function JewelryStorefront({
                       <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider block font-mono">Haute Horology</span>
                       <p className="text-xs font-bold">Heritage 39mm Sapphire Automatic</p>
                     </div>
-                    <span className="text-xs font-bold text-amber-300 font-mono">$240.00</span>
+                    <span className="text-xs font-bold text-amber-300 font-mono">৳26,500</span>
                   </div>
                   <p className="text-[10px] text-zinc-400 mt-1 font-sans">28,800 vph caliber • Exhibition caseback • Italian leather</p>
                 </div>
@@ -534,23 +534,23 @@ export function JewelryStorefront({
                 <div className="space-y-2 pt-2 text-xs font-sans">
                   <div className="flex items-center space-x-2.5 text-zinc-200 font-medium">
                     <span className="w-5 h-5 rounded-full bg-amber-500 text-black font-mono text-[10px] font-bold flex items-center justify-center">1</span>
-                    <span>Heritage 39mm Automatic Sapphire Chronograph ($240.00)</span>
+                    <span>Heritage 39mm Automatic Sapphire Chronograph (৳26,500)</span>
                   </div>
                   <div className="flex items-center space-x-2.5 text-zinc-200 font-medium">
                     <span className="w-5 h-5 rounded-full bg-amber-500 text-black font-mono text-[10px] font-bold flex items-center justify-center">2</span>
-                    <span>18k Heavy Gold-Vermeil Signet Ring ($88.00)</span>
+                    <span>18k Heavy Gold-Vermeil Signet Ring (৳9,500)</span>
                   </div>
                   <div className="flex items-center space-x-2.5 text-zinc-200 font-medium">
                     <span className="w-5 h-5 rounded-full bg-amber-500 text-black font-mono text-[10px] font-bold flex items-center justify-center">3</span>
-                    <span>Beta-Titanium Polarized Aviators ($115.00)</span>
+                    <span>Beta-Titanium Polarized Aviators (৳12,500)</span>
                   </div>
                 </div>
 
                 <div className="pt-4 flex items-baseline space-x-3">
-                  <span className="text-2xl font-black text-amber-400 font-mono">$385.00</span>
-                  <span className="text-sm text-zinc-500 line-through font-mono">$443.00</span>
+                  <span className="text-2xl font-black text-amber-400 font-mono">৳41,900</span>
+                  <span className="text-sm text-zinc-500 line-through font-mono">৳48,500</span>
                   <span className="text-xs font-bold text-amber-300 bg-amber-950 px-2 py-0.5 rounded-full border border-amber-700">
-                    Save $58.00 (13% Off)
+                    Save ৳6,600 (14% Off)
                   </span>
                 </div>
 
@@ -631,8 +631,8 @@ export function JewelryStorefront({
           </div>
         </div>
 
-        {/* Disciplined Square Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-8">
+        {/* Disciplined Square Product Grid - Mobile First 2-Col */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4 lg:gap-6 pt-6 sm:pt-8">
           {filteredProducts.map((p) => {
             const isHovered = hoveredCardId === p.id;
             const chosenOpt = quickOptionMap[p.id] || (p.variants[0]?.title || "Standard");
@@ -644,11 +644,11 @@ export function JewelryStorefront({
                 onMouseEnter={() => setHoveredCardId(p.id)}
                 onMouseLeave={() => setHoveredCardId(null)}
                 onClick={() => onOpenProduct(p)}
-                className="group bg-[#121317] rounded-2xl border border-neutral-800 hover:border-amber-500/40 transition-all duration-300 p-3.5 flex flex-col justify-between shadow-2xs hover:shadow-amber-950/20 hover:shadow-lg cursor-pointer"
+                className="group bg-[#121317] rounded-2xl border border-neutral-800 hover:border-amber-500/40 transition-all duration-300 p-2.5 sm:p-3.5 flex flex-col justify-between shadow-2xs hover:shadow-amber-950/20 hover:shadow-lg cursor-pointer"
               >
                 {/* Square 1:1 Media Frame */}
                 <div>
-                  <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-black/60 border border-neutral-800 mb-3.5">
+                  <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-black/60 border border-neutral-800 mb-2.5 sm:mb-3.5">
                     <img
                       src={p.imageUrl}
                       alt={p.title}
@@ -667,8 +667,8 @@ export function JewelryStorefront({
                     )}
 
                     {/* Maison Gold Badge */}
-                    <div className="absolute top-2.5 left-2.5 z-10">
-                      <span className="px-2.5 py-1 bg-black/90 backdrop-blur-md rounded-full text-[10px] font-bold text-amber-400 border border-amber-800/60 shadow-2xs uppercase tracking-wider font-mono">
+                    <div className="absolute top-2 sm:top-2.5 left-2 sm:left-2.5 z-10">
+                      <span className="px-1.5 sm:px-2.5 py-0.5 sm:py-1 bg-black/90 backdrop-blur-md rounded-full text-[8.5px] sm:text-[10px] font-bold text-amber-400 border border-amber-800/60 shadow-2xs uppercase tracking-wider font-mono">
                         {p.badge || "Solid 18K"}
                       </span>
                     </div>
@@ -679,7 +679,7 @@ export function JewelryStorefront({
                         e.stopPropagation();
                         onToggleWishlist(p.id);
                       }}
-                      className={`absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                      className={`absolute top-2 sm:top-2.5 right-2 sm:right-2.5 z-10 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all ${
                         isSaved
                           ? "bg-amber-500 text-black shadow-xs"
                           : "bg-black/80 text-zinc-400 hover:bg-black hover:text-amber-400 shadow-2xs"
@@ -690,7 +690,7 @@ export function JewelryStorefront({
                     </button>
 
                     {/* Loupe Seal Badge */}
-                    <div className="absolute bottom-2.5 left-2.5 z-10">
+                    <div className="absolute bottom-2 sm:bottom-2.5 left-2 sm:left-2.5 z-10 hidden sm:block">
                       <span className="px-2 py-0.5 bg-amber-950/90 text-amber-300 rounded text-[9px] font-mono tracking-wide border border-amber-800/50">
                         Assay Loupe Protocol
                       </span>
@@ -699,9 +699,9 @@ export function JewelryStorefront({
 
                   {/* Quick Variant / Size Selector Pills */}
                   {p.variants.length > 0 && (
-                    <div className="mb-3 space-y-1.5" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex items-center justify-between text-[10px] font-mono">
-                        <span className="text-zinc-500">Edition / Size:</span>
+                    <div className="mb-2 sm:mb-3 space-y-1 sm:space-y-1.5" onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center justify-between text-[9px] sm:text-[10px] font-mono">
+                        <span className="text-zinc-500">Edition:</span>
                         <span className="text-amber-400 font-bold">{chosenOpt}</span>
                       </div>
                       <div className="flex flex-wrap gap-1 font-mono">
@@ -712,7 +712,7 @@ export function JewelryStorefront({
                             <button
                               key={vIdx}
                               onClick={(e) => handleQuickOptionSelect(p.id, val, e)}
-                              className={`px-2 py-0.5 rounded text-[10px] font-semibold border transition ${
+                              className={`px-1.5 sm:px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-semibold border transition ${
                                 isSel
                                   ? "bg-amber-500 text-black border-amber-500"
                                   : "bg-neutral-900 hover:bg-neutral-800 text-zinc-400 border-neutral-800"
@@ -727,44 +727,44 @@ export function JewelryStorefront({
                   )}
 
                   {/* Rating & Reviews */}
-                  <div className="flex items-center space-x-1.5 mb-1.5 font-mono">
+                  <div className="flex items-center space-x-1 mb-1 font-mono">
                     <div className="flex text-amber-400">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-3 h-3 fill-current" />
+                        <Star key={i} className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current" />
                       ))}
                     </div>
-                    <span className="text-[11px] font-bold text-zinc-300">5.0</span>
-                    <span className="text-[10px] text-zinc-500">(48 patrons)</span>
+                    <span className="text-[10px] sm:text-[11px] font-bold text-zinc-300">5.0</span>
                   </div>
 
                   {/* Title & Description */}
-                  <h3 className="text-sm font-bold text-white group-hover:text-amber-400 transition leading-snug font-serif">
+                  <h3 className="text-xs sm:text-sm font-bold text-white group-hover:text-amber-400 transition leading-snug font-serif line-clamp-1 sm:line-clamp-2">
                     {p.title}
                   </h3>
-                  <p className="text-xs text-zinc-400 line-clamp-2 mt-1 leading-relaxed font-sans">
+                  <p className="hidden sm:block text-xs text-zinc-400 line-clamp-2 mt-1 leading-relaxed font-sans">
                     {p.description}
                   </p>
                 </div>
 
                 {/* Price & Add to Bag */}
-                <div className="pt-4 mt-3 border-t border-neutral-800 flex items-center justify-between font-mono">
+                <div className="pt-2 sm:pt-3 mt-2 border-t border-neutral-800 flex items-center justify-between font-mono gap-1">
                   <div>
-                    <span className="text-base font-black text-white">
-                      ${p.price.toFixed(2)}
+                    <span className="text-xs sm:text-base font-black text-white">
+                      ৳{p.price.toLocaleString("en-BD")}
                     </span>
                     {p.comparePrice > p.price && (
-                      <span className="text-xs text-zinc-500 line-through ml-1.5">
-                        ${p.comparePrice.toFixed(2)}
+                      <span className="text-[10px] sm:text-xs text-zinc-500 line-through ml-1">
+                        ৳{p.comparePrice.toLocaleString("en-BD")}
                       </span>
                     )}
                   </div>
 
                   <button
                     onClick={(e) => handleCardQuickAdd(p, e)}
-                    className="py-2 px-3.5 bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs rounded-xl shadow-xs transition flex items-center space-x-1.5 btn-press font-serif"
+                    className="py-1.5 sm:py-2 px-2.5 sm:px-3.5 bg-amber-500 hover:bg-amber-400 text-black font-bold text-[10px] sm:text-xs rounded-lg sm:rounded-xl shadow-xs transition flex items-center space-x-1 sm:space-x-1.5 btn-press font-serif shrink-0 active:scale-95"
                   >
-                    <ShoppingBag className="w-3.5 h-3.5 text-black" />
-                    <span>Add to Salon Bag</span>
+                    <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-black" />
+                    <span className="hidden sm:inline">Add to Bag</span>
+                    <span className="sm:hidden">Add</span>
                   </button>
                 </div>
               </div>

@@ -413,7 +413,7 @@ export function PantryStorefront({
                       <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider block">Micro-Lot Sourcing</span>
                       <p className="text-xs font-bold">Ethiopian Yirgacheffe Heirloom (1kg)</p>
                     </div>
-                    <span className="text-xs font-mono font-bold text-emerald-300">$24.50</span>
+                    <span className="text-xs font-mono font-bold text-emerald-300">৳1,850</span>
                   </div>
                   <p className="text-[10px] text-emerald-200/80 mt-1">Bergamot citrus • Candied peach • Fresh drum roasted</p>
                 </div>
@@ -534,23 +534,23 @@ export function PantryStorefront({
                 <div className="space-y-2 pt-2 text-xs">
                   <div className="flex items-center space-x-2.5 text-stone-800 font-medium">
                     <span className="w-5 h-5 rounded-full bg-emerald-900 text-emerald-300 font-mono text-[10px] font-bold flex items-center justify-center">1</span>
-                    <span>Single-Origin Yirgacheffe Coffee 1kg ($24.50)</span>
+                    <span>Single-Origin Yirgacheffe Coffee 1kg (৳1,850)</span>
                   </div>
                   <div className="flex items-center space-x-2.5 text-stone-800 font-medium">
                     <span className="w-5 h-5 rounded-full bg-emerald-900 text-emerald-300 font-mono text-[10px] font-bold flex items-center justify-center">2</span>
-                    <span>Raw Wild Alpine High-Meadow Honey 500g ($18.00)</span>
+                    <span>Raw Wild Alpine High-Meadow Honey 500g (৳1,450)</span>
                   </div>
                   <div className="flex items-center space-x-2.5 text-stone-800 font-medium">
                     <span className="w-5 h-5 rounded-full bg-emerald-900 text-emerald-300 font-mono text-[10px] font-bold flex items-center justify-center">3</span>
-                    <span>Early-Harvest Koroneiki EVOO 500ml ($29.00)</span>
+                    <span>Early-Harvest Koroneiki EVOO 500ml (৳2,250)</span>
                   </div>
                 </div>
 
                 <div className="pt-4 flex items-baseline space-x-3">
-                  <span className="text-2xl font-black text-emerald-950 font-mono">$62.00</span>
-                  <span className="text-sm text-stone-400 line-through font-mono">$71.50</span>
+                  <span className="text-2xl font-black text-emerald-950 font-mono">৳4,850</span>
+                  <span className="text-sm text-stone-400 line-through font-mono">৳5,550</span>
                   <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-300">
-                    Save $9.50 (13% Off)
+                    Save ৳700 (13% Off)
                   </span>
                 </div>
 
@@ -631,8 +631,8 @@ export function PantryStorefront({
           </div>
         </div>
 
-        {/* Disciplined 4:3 Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-8">
+        {/* Disciplined 4:3 Product Grid - Mobile First 2-Col */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4 lg:gap-6 pt-6 sm:pt-8">
           {filteredProducts.map((p) => {
             const isHovered = hoveredCardId === p.id;
             const chosenOpt = quickOptionMap[p.id] || (p.variants[0]?.title || "Standard");
@@ -644,11 +644,11 @@ export function PantryStorefront({
                 onMouseEnter={() => setHoveredCardId(p.id)}
                 onMouseLeave={() => setHoveredCardId(null)}
                 onClick={() => onOpenProduct(p)}
-                className="group bg-white rounded-2xl border border-stone-200 hover:border-emerald-700/50 transition-all duration-300 p-3.5 flex flex-col justify-between shadow-2xs hover:shadow-md cursor-pointer"
+                className="group bg-white rounded-2xl border border-stone-200 hover:border-emerald-700/50 transition-all duration-300 p-2.5 sm:p-3.5 flex flex-col justify-between shadow-2xs hover:shadow-md cursor-pointer"
               >
                 {/* 4:3 Ratio Media Frame */}
                 <div>
-                  <div className="relative aspect-[4/3] w-full rounded-xl overflow-hidden bg-stone-100 border border-stone-200 mb-3.5">
+                  <div className="relative aspect-[4/3] w-full rounded-xl overflow-hidden bg-stone-100 border border-stone-200 mb-2.5 sm:mb-3.5">
                     <img
                       src={p.imageUrl}
                       alt={p.title}
@@ -667,8 +667,8 @@ export function PantryStorefront({
                     )}
 
                     {/* Fresh Harvest Badge */}
-                    <div className="absolute top-2.5 left-2.5 z-10">
-                      <span className="px-2.5 py-1 bg-white/95 backdrop-blur-md rounded-full text-[10px] font-bold text-emerald-900 border border-emerald-300 shadow-2xs uppercase tracking-wider font-mono">
+                    <div className="absolute top-2 sm:top-2.5 left-2 sm:left-2.5 z-10">
+                      <span className="px-1.5 sm:px-2.5 py-0.5 sm:py-1 bg-white/95 backdrop-blur-md rounded-full text-[8.5px] sm:text-[10px] font-bold text-emerald-900 border border-emerald-300 shadow-2xs uppercase tracking-wider font-mono">
                         {p.badge || "Organic"}
                       </span>
                     </div>
@@ -679,7 +679,7 @@ export function PantryStorefront({
                         e.stopPropagation();
                         onToggleWishlist(p.id);
                       }}
-                      className={`absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                      className={`absolute top-2 sm:top-2.5 right-2 sm:right-2.5 z-10 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all ${
                         isSaved
                           ? "bg-emerald-700 text-white shadow-xs"
                           : "bg-white/90 text-stone-600 hover:bg-white hover:text-emerald-800 shadow-2xs"
@@ -690,7 +690,7 @@ export function PantryStorefront({
                     </button>
 
                     {/* Aroma Inspection Badge */}
-                    <div className="absolute bottom-2.5 left-2.5 z-10">
+                    <div className="absolute bottom-2 sm:bottom-2.5 left-2 sm:left-2.5 z-10 hidden sm:block">
                       <span className="px-2 py-0.5 bg-black/80 backdrop-blur-md text-emerald-300 rounded text-[9px] font-mono tracking-wide">
                         Aroma Valve Sealed
                       </span>
@@ -699,8 +699,8 @@ export function PantryStorefront({
 
                   {/* Quick Variant / Grind Selector Pills */}
                   {p.variants.length > 0 && (
-                    <div className="mb-3 space-y-1.5" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex items-center justify-between text-[10px] font-mono">
+                    <div className="mb-2 sm:mb-3 space-y-1 sm:space-y-1.5" onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center justify-between text-[9px] sm:text-[10px] font-mono">
                         <span className="text-stone-500">Selection:</span>
                         <span className="text-emerald-800 font-bold">{chosenOpt}</span>
                       </div>
@@ -712,7 +712,7 @@ export function PantryStorefront({
                             <button
                               key={vIdx}
                               onClick={(e) => handleQuickOptionSelect(p.id, val, e)}
-                              className={`px-2 py-0.5 rounded text-[10px] font-semibold border transition ${
+                              className={`px-1.5 sm:px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-semibold border transition ${
                                 isSel
                                   ? "bg-emerald-900 text-emerald-200 border-emerald-900"
                                   : "bg-stone-50 hover:bg-stone-100 text-stone-700 border-stone-200"
@@ -727,44 +727,44 @@ export function PantryStorefront({
                   )}
 
                   {/* Rating & Reviews */}
-                  <div className="flex items-center space-x-1.5 mb-1.5 font-mono">
+                  <div className="flex items-center space-x-1 mb-1 font-mono">
                     <div className="flex text-amber-500">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-3 h-3 fill-current" />
+                        <Star key={i} className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current" />
                       ))}
                     </div>
-                    <span className="text-[11px] font-bold text-stone-800">5.0</span>
-                    <span className="text-[10px] text-stone-400">(48 cuppings)</span>
+                    <span className="text-[10px] sm:text-[11px] font-bold text-stone-800">5.0</span>
                   </div>
 
                   {/* Title & Description */}
-                  <h3 className="text-sm font-bold text-stone-900 group-hover:text-emerald-800 transition leading-snug">
+                  <h3 className="text-xs sm:text-sm font-bold text-stone-900 group-hover:text-emerald-800 transition leading-snug line-clamp-1 sm:line-clamp-2">
                     {p.title}
                   </h3>
-                  <p className="text-xs text-stone-500 line-clamp-2 mt-1 leading-relaxed">
+                  <p className="hidden sm:block text-xs text-stone-500 line-clamp-2 mt-1 leading-relaxed">
                     {p.description}
                   </p>
                 </div>
 
                 {/* Price & Add to Bag */}
-                <div className="pt-4 mt-3 border-t border-stone-200 flex items-center justify-between font-mono">
+                <div className="pt-2 sm:pt-3 mt-2 border-t border-stone-200 flex items-center justify-between font-mono gap-1">
                   <div>
-                    <span className="text-base font-black text-stone-950">
-                      ${p.price.toFixed(2)}
+                    <span className="text-xs sm:text-base font-black text-stone-950">
+                      ৳{p.price.toLocaleString("en-BD")}
                     </span>
                     {p.comparePrice > p.price && (
-                      <span className="text-xs text-stone-400 line-through ml-1.5">
-                        ${p.comparePrice.toFixed(2)}
+                      <span className="text-[10px] sm:text-xs text-stone-400 line-through ml-1">
+                        ৳{p.comparePrice.toLocaleString("en-BD")}
                       </span>
                     )}
                   </div>
 
                   <button
                     onClick={(e) => handleCardQuickAdd(p, e)}
-                    className="py-2 px-3.5 bg-emerald-900 hover:bg-emerald-800 text-emerald-100 font-bold text-xs rounded-xl shadow-xs transition flex items-center space-x-1.5 btn-press"
+                    className="py-1.5 sm:py-2 px-2.5 sm:px-3.5 bg-emerald-900 hover:bg-emerald-800 text-emerald-100 font-bold text-[10px] sm:text-xs rounded-lg sm:rounded-xl shadow-xs transition flex items-center space-x-1 sm:space-x-1.5 btn-press shrink-0 active:scale-95"
                   >
-                    <ShoppingBag className="w-3.5 h-3.5 text-emerald-300" />
-                    <span>Add to Bag</span>
+                    <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-300" />
+                    <span className="hidden sm:inline">Add to Bag</span>
+                    <span className="sm:hidden">Add</span>
                   </button>
                 </div>
               </div>

@@ -418,7 +418,7 @@ export function TechStorefront({
                       <span className="text-[10px] font-bold text-sky-400 uppercase tracking-wider block">Flagship Audio</span>
                       <p className="text-xs font-bold">Acoustic Pro Hybrid ANC</p>
                     </div>
-                    <span className="text-xs font-bold text-sky-400">$169.00</span>
+                    <span className="text-xs font-bold text-sky-400">৳18,500</span>
                   </div>
                   <p className="text-[10px] text-zinc-400 mt-1 font-mono">40mm Beryllium • 45h ANC • aptX Lossless</p>
                 </div>
@@ -542,23 +542,23 @@ export function TechStorefront({
                 <div className="space-y-2 pt-2 text-xs">
                   <div className="flex items-center space-x-2.5 text-zinc-200 font-medium">
                     <span className="w-5 h-5 rounded-full bg-sky-500 text-black font-mono text-[10px] font-bold flex items-center justify-center">1</span>
-                    <span>Acoustic Pro Hybrid ANC Wireless Headphones ($169.00)</span>
+                    <span>Acoustic Pro Hybrid ANC Wireless Headphones (৳18,500)</span>
                   </div>
                   <div className="flex items-center space-x-2.5 text-zinc-200 font-medium">
                     <span className="w-5 h-5 rounded-full bg-sky-500 text-black font-mono text-[10px] font-bold flex items-center justify-center">2</span>
-                    <span>Tactile CNC Gasket Mechanical Keyboard ($138.00)</span>
+                    <span>Tactile CNC Gasket Mechanical Keyboard (৳14,900)</span>
                   </div>
                   <div className="flex items-center space-x-2.5 text-zinc-200 font-medium">
                     <span className="w-5 h-5 rounded-full bg-sky-500 text-black font-mono text-[10px] font-bold flex items-center justify-center">3</span>
-                    <span>Braided 100W GaN Charging Hub & Cable ($49.00)</span>
+                    <span>Braided 100W GaN Charging Hub & Cable (৳5,400)</span>
                   </div>
                 </div>
 
                 <div className="pt-4 flex items-baseline space-x-3">
-                  <span className="text-2xl font-black text-sky-400 font-mono">$310.00</span>
-                  <span className="text-sm text-zinc-500 line-through font-mono">$356.00</span>
+                  <span className="text-2xl font-black text-sky-400 font-mono">৳33,900</span>
+                  <span className="text-sm text-zinc-500 line-through font-mono">৳38,800</span>
                   <span className="text-xs font-bold text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-800">
-                    Save $46.00 (13% Off)
+                    Save ৳4,900 (13% Off)
                   </span>
                 </div>
 
@@ -639,8 +639,8 @@ export function TechStorefront({
           </div>
         </div>
 
-        {/* Disciplined 16:10 Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-8">
+        {/* Disciplined 16:10 Product Grid - Mobile First 2-Col */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4 lg:gap-6 pt-6 sm:pt-8">
           {filteredProducts.map((p) => {
             const isHovered = hoveredCardId === p.id;
             const chosenVar = quickVariantMap[p.id] || (p.variants[0]?.title || "Default");
@@ -652,11 +652,11 @@ export function TechStorefront({
                 onMouseEnter={() => setHoveredCardId(p.id)}
                 onMouseLeave={() => setHoveredCardId(null)}
                 onClick={() => onOpenProduct(p)}
-                className="group bg-[#13151f] rounded-2xl border border-zinc-800 hover:border-sky-500/50 transition-all duration-300 p-3.5 flex flex-col justify-between shadow-2xs hover:shadow-sky-950/30 hover:shadow-lg cursor-pointer"
+                className="group bg-[#13151f] rounded-2xl border border-zinc-800 hover:border-sky-500/50 transition-all duration-300 p-2.5 sm:p-3.5 flex flex-col justify-between shadow-2xs hover:shadow-sky-950/30 hover:shadow-lg cursor-pointer"
               >
                 {/* 16:10 Widescreen Frame */}
                 <div>
-                  <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-black/60 border border-zinc-800 mb-3.5">
+                  <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-black/60 border border-zinc-800 mb-2.5 sm:mb-3.5">
                     <img
                       src={p.imageUrl}
                       alt={p.title}
@@ -675,8 +675,8 @@ export function TechStorefront({
                     )}
 
                     {/* Pro Telemetry Badge */}
-                    <div className="absolute top-2.5 left-2.5 z-10">
-                      <span className="px-2.5 py-1 bg-black/90 backdrop-blur-md rounded-full text-[10px] font-bold text-sky-400 border border-sky-800/60 shadow-2xs uppercase tracking-wider font-mono">
+                    <div className="absolute top-2 sm:top-2.5 left-2 sm:left-2.5 z-10">
+                      <span className="px-1.5 sm:px-2.5 py-0.5 sm:py-1 bg-black/90 backdrop-blur-md rounded-full text-[8.5px] sm:text-[10px] font-bold text-sky-400 border border-sky-800/60 shadow-2xs uppercase tracking-wider font-mono">
                         {p.badge || "Mil-Spec"}
                       </span>
                     </div>
@@ -687,7 +687,7 @@ export function TechStorefront({
                         e.stopPropagation();
                         onToggleWishlist(p.id);
                       }}
-                      className={`absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                      className={`absolute top-2 sm:top-2.5 right-2 sm:right-2.5 z-10 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all ${
                         isSaved
                           ? "bg-sky-500 text-black shadow-xs"
                           : "bg-black/80 text-zinc-400 hover:bg-black hover:text-sky-400 shadow-2xs"
@@ -698,7 +698,7 @@ export function TechStorefront({
                     </button>
 
                     {/* Anti-Static Seal Badge */}
-                    <div className="absolute bottom-2.5 left-2.5 z-10">
+                    <div className="absolute bottom-2 sm:bottom-2.5 left-2 sm:left-2.5 z-10 hidden sm:block">
                       <span className="px-2 py-0.5 bg-sky-950/90 text-sky-300 rounded text-[9px] font-mono tracking-wide border border-sky-800/50">
                         Anti-Static Sealed
                       </span>
@@ -707,8 +707,8 @@ export function TechStorefront({
 
                   {/* Quick Variant Selector Pills */}
                   {p.variants.length > 0 && (
-                    <div className="mb-3 space-y-1.5" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex items-center justify-between text-[10px] font-mono">
+                    <div className="mb-2 sm:mb-3 space-y-1 sm:space-y-1.5" onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center justify-between text-[9px] sm:text-[10px] font-mono">
                         <span className="text-zinc-500">Config:</span>
                         <span className="text-sky-400 font-bold">{chosenVar}</span>
                       </div>
@@ -720,7 +720,7 @@ export function TechStorefront({
                             <button
                               key={vIdx}
                               onClick={(e) => handleQuickVariantSelect(p.id, val, e)}
-                              className={`px-2 py-0.5 rounded text-[10px] font-semibold border transition ${
+                              className={`px-1.5 sm:px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-semibold border transition ${
                                 isSel
                                   ? "bg-sky-500 text-black border-sky-500"
                                   : "bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border-zinc-800"
@@ -735,44 +735,44 @@ export function TechStorefront({
                   )}
 
                   {/* Rating & Reviews */}
-                  <div className="flex items-center space-x-1.5 mb-1.5 font-mono">
+                  <div className="flex items-center space-x-1 mb-1 font-mono">
                     <div className="flex text-amber-400">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-3 h-3 fill-current" />
+                        <Star key={i} className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current" />
                       ))}
                     </div>
-                    <span className="text-[11px] font-bold text-zinc-300">5.0</span>
-                    <span className="text-[10px] text-zinc-500">(48 verified)</span>
+                    <span className="text-[10px] sm:text-[11px] font-bold text-zinc-300">5.0</span>
                   </div>
 
                   {/* Title & Description */}
-                  <h3 className="text-sm font-bold text-white group-hover:text-sky-400 transition leading-snug font-mono">
+                  <h3 className="text-xs sm:text-sm font-bold text-white group-hover:text-sky-400 transition leading-snug font-mono line-clamp-1 sm:line-clamp-2">
                     {p.title}
                   </h3>
-                  <p className="text-xs text-zinc-400 line-clamp-2 mt-1 leading-relaxed font-sans">
+                  <p className="hidden sm:block text-xs text-zinc-400 line-clamp-2 mt-1 leading-relaxed font-sans">
                     {p.description}
                   </p>
                 </div>
 
                 {/* Price & Add to Bag */}
-                <div className="pt-4 mt-3 border-t border-zinc-800 flex items-center justify-between font-mono">
+                <div className="pt-2 sm:pt-3 mt-2 border-t border-zinc-800 flex items-center justify-between font-mono gap-1">
                   <div>
-                    <span className="text-base font-black text-white">
-                      ${p.price.toFixed(2)}
+                    <span className="text-xs sm:text-base font-black text-white">
+                      ৳{p.price.toLocaleString("en-BD")}
                     </span>
                     {p.comparePrice > p.price && (
-                      <span className="text-xs text-zinc-500 line-through ml-1.5">
-                        ${p.comparePrice.toFixed(2)}
+                      <span className="text-[10px] sm:text-xs text-zinc-500 line-through ml-1">
+                        ৳{p.comparePrice.toLocaleString("en-BD")}
                       </span>
                     )}
                   </div>
 
                   <button
                     onClick={(e) => handleCardQuickAdd(p, e)}
-                    className="py-2 px-3.5 bg-sky-500 hover:bg-sky-400 text-black font-bold text-xs rounded-xl shadow-xs transition flex items-center space-x-1.5 btn-press"
+                    className="py-1.5 sm:py-2 px-2.5 sm:px-3.5 bg-sky-500 hover:bg-sky-400 text-black font-bold text-[10px] sm:text-xs rounded-lg sm:rounded-xl shadow-xs transition flex items-center space-x-1 sm:space-x-1.5 btn-press shrink-0 active:scale-95"
                   >
-                    <ShoppingBag className="w-3.5 h-3.5 text-black" />
-                    <span>Add to Bag</span>
+                    <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-black" />
+                    <span className="hidden sm:inline">Add to Bag</span>
+                    <span className="sm:hidden">Add</span>
                   </button>
                 </div>
               </div>

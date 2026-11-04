@@ -405,32 +405,32 @@ export function ClothingStorefront({
             </div>
           </section>
 
-          {/* ── Brand Logos ─────────────────────────────────────── */}
-          <section className="border-y border-stone-200 py-8">
+          {/* ── Express Courier & Logistics Trust Strip ────────────────── */}
+          <section className="border-y border-stone-200 py-6 bg-stone-50/60">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
-              <p className="text-center text-xs font-mono uppercase tracking-[0.3em] text-stone-400 mb-6">Trusted Partner Brands</p>
-              <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
-                {["H&M", "OBEY", "Shopify", "LACOSTE", "Levi's", "amazon"].map(brand => (
-                  <span key={brand} className="text-lg font-black text-stone-300 hover:text-stone-500 transition cursor-default tracking-tight">{brand}</span>
-                ))}
+              <p className="text-center text-[10px] font-mono uppercase tracking-[0.25em] text-stone-400 mb-4">64 Districts Express Delivery Network</p>
+              <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs font-bold text-stone-600">
+                <span className="flex items-center gap-1.5"><Truck className="w-3.5 h-3.5 text-emerald-600" /> Steadfast Courier 24h</span>
+                <span className="text-stone-300">•</span>
+                <span className="flex items-center gap-1.5"><Truck className="w-3.5 h-3.5 text-emerald-600" /> Pathao Express</span>
+                <span className="text-stone-300">•</span>
+                <span className="flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> Doorstep Parcel Inspection</span>
+                <span className="text-stone-300">•</span>
+                <span className="flex items-center gap-1.5"><CreditCard className="w-3.5 h-3.5 text-emerald-600" /> bKash, Nagad &amp; Cash on Delivery</span>
               </div>
             </div>
           </section>
 
-          {/* ── Download App Strip ──────────────────────────────── */}
-          <section className="bg-[#3d2d1e] text-white py-10">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
+          {/* ── Quality Guarantee Strip ───────────────────────────── */}
+          <section className="bg-[#241b12] text-white py-8 sm:py-10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-5">
               <div>
-                <h3 className="text-xl font-bold mb-1">Download Our App</h3>
-                <p className="text-stone-300 text-sm">Shop anytime, anywhere. Exclusive app-only deals inside.</p>
+                <h3 className="text-lg sm:text-xl font-bold mb-1">Authentic Fabric &amp; Fit Guarantee</h3>
+                <p className="text-stone-300 text-xs sm:text-sm">Inspect your garments before paying courier delivery. 7-day hassle-free size exchanges.</p>
               </div>
-              <div className="flex gap-3">
-                <button className="flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition">
-                  <Smartphone className="w-4 h-4" /> App Store
-                </button>
-                <button className="flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition">
-                  <Smartphone className="w-4 h-4" /> Google Play
-                </button>
+              <div className="flex items-center gap-3">
+                <span className="px-4 py-2 rounded-xl bg-white/10 text-xs font-semibold text-white border border-white/10">100% Combed Cotton</span>
+                <span className="px-4 py-2 rounded-xl bg-emerald-500/20 text-xs font-semibold text-emerald-300 border border-emerald-500/30">Verified Quality</span>
               </div>
             </div>
           </section>

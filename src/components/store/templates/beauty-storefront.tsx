@@ -432,7 +432,7 @@ export function BeautyStorefront({
                       <span className="text-[10px] font-bold text-rose-600 uppercase tracking-wider block">Award-Winning</span>
                       <p className="text-xs font-black">Pure Glow Triple Hyaluronic Dew</p>
                     </div>
-                    <span className="text-xs font-mono font-bold text-rose-700">$42.00</span>
+                    <span className="text-xs font-mono font-bold text-rose-700">৳2,850</span>
                   </div>
                   <p className="text-[10px] text-zinc-500 mt-1">Multi-depth Tremella mushroom & prebiotic squalane</p>
                 </div>
@@ -505,23 +505,23 @@ export function BeautyStorefront({
                 <div className="space-y-2 pt-2">
                   <div className="flex items-center space-x-2.5 text-xs text-zinc-800 font-medium">
                     <span className="w-5 h-5 rounded-full bg-rose-100 text-rose-700 font-mono text-[10px] font-bold flex items-center justify-center">1</span>
-                    <span>Pure Glow Triple Hyaluronic Dew Serum ($42.00)</span>
+                    <span>Pure Glow Triple Hyaluronic Dew Serum (৳2,850)</span>
                   </div>
                   <div className="flex items-center space-x-2.5 text-xs text-zinc-800 font-medium">
                     <span className="w-5 h-5 rounded-full bg-rose-100 text-rose-700 font-mono text-[10px] font-bold flex items-center justify-center">2</span>
-                    <span>Whipped Botanical Lipid Barrier Balm ($36.00)</span>
+                    <span>Whipped Botanical Lipid Barrier Balm (৳2,450)</span>
                   </div>
                   <div className="flex items-center space-x-2.5 text-xs text-zinc-800 font-medium">
                     <span className="w-5 h-5 rounded-full bg-rose-100 text-rose-700 font-mono text-[10px] font-bold flex items-center justify-center">3</span>
-                    <span>Velvet Satin Moisture Camellia Lipstick ($28.00)</span>
+                    <span>Velvet Satin Moisture Camellia Lipstick (৳1,950)</span>
                   </div>
                 </div>
 
                 <div className="pt-4 flex items-baseline space-x-3">
-                  <span className="text-2xl font-black text-rose-700 font-mono">$89.00</span>
-                  <span className="text-sm text-zinc-400 line-through font-mono">$106.00</span>
+                  <span className="text-2xl font-black text-rose-700 font-mono">৳5,990</span>
+                  <span className="text-sm text-zinc-400 line-through font-mono">৳7,250</span>
                   <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
-                    Save $17.00 (16% Off)
+                    Save ৳1,260 (17% Off)
                   </span>
                 </div>
 
@@ -602,8 +602,8 @@ export function BeautyStorefront({
           </div>
         </div>
 
-        {/* Disciplined Beauty Product Grid (Square 1:1) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-8">
+        {/* Disciplined Beauty Product Grid (Square 1:1) - Mobile First 2-Col */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4 lg:gap-6 pt-6 sm:pt-8">
           {filteredProducts.map((p) => {
             const isHovered = hoveredCardId === p.id;
             const chosenVolume = quickVolumeMap[p.id] || (p.variants[0]?.title.split(": ")[1] || "30ml");
@@ -615,11 +615,11 @@ export function BeautyStorefront({
                 onMouseEnter={() => setHoveredCardId(p.id)}
                 onMouseLeave={() => setHoveredCardId(null)}
                 onClick={() => onOpenProduct(p)}
-                className="group bg-white rounded-2xl border border-rose-100 hover:border-rose-300 transition-all duration-300 p-3.5 flex flex-col justify-between shadow-xs hover:shadow-md cursor-pointer"
+                className="group bg-white rounded-2xl border border-rose-100 hover:border-rose-300 transition-all duration-300 p-2.5 sm:p-3.5 flex flex-col justify-between shadow-xs hover:shadow-md cursor-pointer"
               >
                 {/* 1:1 Square Media Frame */}
                 <div>
-                  <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-rose-50/40 border border-rose-100/50 mb-3.5">
+                  <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-rose-50/40 border border-rose-100/50 mb-2 sm:mb-3.5">
                     <img
                       src={p.imageUrl}
                       alt={p.title}
@@ -638,9 +638,9 @@ export function BeautyStorefront({
                     )}
 
                     {/* Clean Beauty Badge */}
-                    <div className="absolute top-2.5 left-2.5 z-10">
-                      <span className="px-2.5 py-1 bg-white/95 backdrop-blur-md rounded-full text-[10px] font-bold text-rose-700 border border-rose-200/80 shadow-xs uppercase tracking-wider">
-                        {p.badge || "Clean Protocol"}
+                    <div className="absolute top-2 sm:top-2.5 left-2 sm:left-2.5 z-10">
+                      <span className="px-1.5 sm:px-2.5 py-0.5 sm:py-1 bg-white/95 backdrop-blur-md rounded-full text-[8.5px] sm:text-[10px] font-bold text-rose-700 border border-rose-200/80 shadow-xs uppercase tracking-wider">
+                        {p.badge || "Clean"}
                       </span>
                     </div>
 
@@ -650,7 +650,7 @@ export function BeautyStorefront({
                         e.stopPropagation();
                         onToggleWishlist(p.id);
                       }}
-                      className={`absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                      className={`absolute top-2 sm:top-2.5 right-2 sm:right-2.5 z-10 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all ${
                         isSaved
                           ? "bg-rose-600 text-white shadow-xs"
                           : "bg-white/90 text-zinc-600 hover:bg-white hover:text-rose-600 shadow-xs"
@@ -661,7 +661,7 @@ export function BeautyStorefront({
                     </button>
 
                     {/* Doorstep Inspection Seal Badge */}
-                    <div className="absolute bottom-2.5 left-2.5 z-10">
+                    <div className="absolute bottom-2 sm:bottom-2.5 left-2 sm:left-2.5 z-10 hidden sm:block">
                       <span className="px-2 py-0.5 bg-black/75 backdrop-blur-md text-white rounded text-[9px] font-mono tracking-wide">
                         Tamper Foil Sealed
                       </span>
@@ -670,12 +670,12 @@ export function BeautyStorefront({
 
                   {/* Volume Variant Selector Pills */}
                   {p.variants.length > 0 && (
-                    <div className="mb-3 space-y-1.5" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex items-center justify-between text-[10px]">
-                        <span className="text-zinc-500 font-medium">Select Volume:</span>
+                    <div className="mb-2 sm:mb-3 space-y-1 sm:space-y-1.5" onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
+                        <span className="text-zinc-500 font-medium">Volume:</span>
                         <span className="font-mono text-rose-700 font-bold">{chosenVolume}</span>
                       </div>
-                      <div className="flex flex-wrap gap-1.5">
+                      <div className="flex flex-wrap gap-1">
                         {p.variants.map((v, vIdx) => {
                           const val = v.title.includes(": ") ? v.title.split(": ")[1] : v.title;
                           const isSel = chosenVolume.toLowerCase() === val.toLowerCase();
@@ -683,7 +683,7 @@ export function BeautyStorefront({
                             <button
                               key={vIdx}
                               onClick={(e) => handleQuickVolumeSelect(p.id, val, e)}
-                              className={`px-2.5 py-1 rounded-lg text-[10px] font-semibold border transition ${
+                              className={`px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-semibold border transition ${
                                 isSel
                                   ? "bg-rose-600 text-white border-rose-600 shadow-xs"
                                   : "bg-rose-50/60 hover:bg-rose-100/70 text-zinc-700 border-rose-200/70"
@@ -698,44 +698,44 @@ export function BeautyStorefront({
                   )}
 
                   {/* Rating & Reviews */}
-                  <div className="flex items-center space-x-1.5 mb-1.5">
+                  <div className="flex items-center space-x-1 mb-1">
                     <div className="flex text-amber-400">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-3 h-3 fill-current" />
+                        <Star key={i} className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current" />
                       ))}
                     </div>
-                    <span className="text-[11px] font-mono font-bold text-zinc-700">5.0</span>
-                    <span className="text-[10px] text-zinc-400 font-mono">(48 verified)</span>
+                    <span className="text-[10px] sm:text-[11px] font-mono font-bold text-zinc-700">5.0</span>
                   </div>
 
                   {/* Title & Description */}
-                  <h3 className="text-sm font-bold text-zinc-900 group-hover:text-rose-600 transition leading-snug">
+                  <h3 className="text-xs sm:text-sm font-bold text-zinc-900 group-hover:text-rose-600 transition leading-snug line-clamp-1 sm:line-clamp-2">
                     {p.title}
                   </h3>
-                  <p className="text-xs text-zinc-500 line-clamp-2 mt-1 leading-relaxed">
+                  <p className="hidden sm:block text-xs text-zinc-500 line-clamp-2 mt-1 leading-relaxed">
                     {p.description}
                   </p>
                 </div>
 
                 {/* Price & Add to Bag */}
-                <div className="pt-4 mt-3 border-t border-rose-100 flex items-center justify-between">
+                <div className="pt-2 sm:pt-3 mt-2 border-t border-rose-100 flex items-center justify-between gap-1">
                   <div>
-                    <span className="text-base font-black text-zinc-900 font-mono">
-                      ${p.price.toFixed(2)}
+                    <span className="text-xs sm:text-base font-black text-zinc-900 font-mono">
+                      ৳{p.price.toLocaleString("en-BD")}
                     </span>
                     {p.comparePrice > p.price && (
-                      <span className="text-xs text-zinc-400 line-through font-mono ml-1.5">
-                        ${p.comparePrice.toFixed(2)}
+                      <span className="text-[10px] sm:text-xs text-zinc-400 line-through font-mono ml-1">
+                        ৳{p.comparePrice.toLocaleString("en-BD")}
                       </span>
                     )}
                   </div>
 
                   <button
                     onClick={(e) => handleCardQuickAdd(p, e)}
-                    className="py-2 px-3.5 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center space-x-1.5 btn-press"
+                    className="py-1.5 sm:py-2 px-2.5 sm:px-3.5 bg-rose-600 hover:bg-rose-700 text-white font-bold text-[10px] sm:text-xs rounded-lg sm:rounded-xl shadow-xs transition flex items-center space-x-1 sm:space-x-1.5 btn-press shrink-0 active:scale-95"
                   >
-                    <ShoppingBag className="w-3.5 h-3.5" />
-                    <span>Add to Bag</span>
+                    <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                    <span className="hidden sm:inline">Add to Bag</span>
+                    <span className="sm:hidden">Add</span>
                   </button>
                 </div>
               </div>
