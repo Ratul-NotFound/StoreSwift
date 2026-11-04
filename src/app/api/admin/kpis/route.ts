@@ -48,7 +48,7 @@ export async function GET(request: Request) {
           totalStores,
           byPlan,
           mrr: byPlan.medium * 499 + byPlan.pro * 999,
-          gmv30d: gmv30d > 0 ? gmv30d : 487250,
+          gmv30d,
           pendingCommissionBdt: Math.round(parseFloat(commRow?.total ?? "0") * 100) / 100,
           pendingCommissionCount: Number(commRow?.cnt ?? 0),
           activeStores30d: totalStores,

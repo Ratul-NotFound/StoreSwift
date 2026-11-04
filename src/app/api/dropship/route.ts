@@ -50,14 +50,7 @@ export async function POST(request: Request) {
   const targetSlug = session.role !== "super_admin" ? (session.slug || session.storeId || requestedSlug) : requestedSlug;
   const store = devStore.ensureStore(targetSlug);
 
-  // Plan Gate: Dropshipping requires Medium or Pro
-  if (store.plan === "free") {
-    return NextResponse.json(
-      { error: "Dropshipping requires Medium (৳499/mo) or Pro (৳999/mo) plan.", upgrade: true },
-      { status: 403 }
-    );
-  }
-
+  // Dropshipping is available across all plans (Free, Medium, Pro)
   // List product into merchant's store catalog
   const listedProduct = devStore.listDropshipProduct(targetSlug, platformProductId, numPrice);
 

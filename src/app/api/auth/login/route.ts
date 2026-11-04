@@ -92,7 +92,8 @@ export async function POST(request: Request) {
         return response;
       }
 
-      const demoStore = devStore.getStore("apex-fashion") || devStore.ensureStore("apex-fashion", "Apex Fashion Ltd", "fashion");
+      const targetSlug = (body as any)?.slug || "apex-fashion";
+      const demoStore = devStore.getStore(targetSlug) || devStore.ensureStore(targetSlug);
       const demoToken = signSessionToken({
         userId: "demo-merchant-id",
         email: "demo@storeswift.com",

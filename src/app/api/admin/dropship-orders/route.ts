@@ -33,7 +33,7 @@ export async function GET(request: Request) {
     minPrice: o.minimumPrice,
     soldPrice: o.sellPrice,
     merchantEarns: o.merchantMargin,
-    platformEarns: o.minimumPrice,
+    platformEarns: Math.round((o.minimumPrice * (o.quantity || 1)) * 100) / 100,
     status: o.fulfillmentStatus,
     trackingCode: o.trackingCode,
     courierName: o.courierName || "Steadfast Courier",

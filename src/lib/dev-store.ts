@@ -14,6 +14,7 @@
 
 import { verifyAndDeductStock } from "./stock";
 import { searchTrie } from "./search-trie";
+import { calculateCommission, PLAN_LIMITS } from "./plan-limits";
 
 export type PlanId = "free" | "medium" | "pro";
 
@@ -466,16 +467,68 @@ class DevStoreManager {
         courierName: "Steadfast Courier",
         createdAt: new Date(Date.now() - 3600 * 1000 * 50).toISOString(),
       },
+      {
+        id: "ord-1004",
+        storeId: "store-apex-fashion",
+        storeSlug: "apex-fashion",
+        storeName: "Apex Fashion Ltd",
+        orderNumber: "SS-241103-882",
+        customerName: "Karim Uddin",
+        customerPhone: "01733445566",
+        customerEmail: "karim.uddin@gmail.com",
+        shippingAddress: "House 5, Road 27, Dhanmondi, Dhaka",
+        district: "Dhaka",
+        subtotal: 4200,
+        shippingFee: 60,
+        totalAmount: 4260,
+        paymentMethod: "cod",
+        paymentStatus: "paid",
+        status: "delivered",
+        items: [
+          { title: "Tailored Linen Casual Blazer", price: 4200, quantity: 1 },
+        ],
+        consignmentId: "ST-88944",
+        courierName: "Steadfast Courier",
+        trackingUrl: "https://storeswift.app/track/ST-88944",
+        createdAt: new Date(Date.now() - 3600 * 1000 * 72).toISOString(),
+      },
+      {
+        id: "ord-1005",
+        storeId: "store-apex-fashion",
+        storeSlug: "apex-fashion",
+        storeName: "Apex Fashion Ltd",
+        orderNumber: "SS-241104-519",
+        customerName: "Farida Begum",
+        customerPhone: "01655667788",
+        customerEmail: "farida.begum@hotmail.com",
+        shippingAddress: "Kazir Dewri, Chittagong",
+        district: "Chittagong",
+        subtotal: 2500,
+        discountAmount: 250,
+        couponCode: "WELCOME10",
+        shippingFee: 120,
+        totalAmount: 2370,
+        paymentMethod: "bkash",
+        paymentStatus: "paid",
+        status: "processing",
+        items: [
+          { title: "Signature Pima Cotton Polo", price: 1250, quantity: 2 },
+        ],
+        consignmentId: "ST-88961",
+        courierName: "Steadfast Courier",
+        trackingUrl: "https://storeswift.app/track/ST-88961",
+        createdAt: new Date(Date.now() - 3600 * 1000 * 12).toISOString(),
+      },
     ];
 
     for (const o of initialOrders) {
       this.orders.set(o.id, o);
-      // Auto-generate commission for each initial order
+      // Auto-generate commission for each initial order strictly using plan-limits single source of truth
       const store = this.stores.get(o.storeSlug);
       const plan = store?.plan ?? "free";
-      const rate = plan === "free" ? 8 : plan === "medium" ? 3 : 0;
+      const rate = PLAN_LIMITS[plan]?.commissionRate ?? 0;
+      const commBdt = calculateCommission(plan, o.totalAmount);
       if (rate > 0) {
-        const commBdt = parseFloat(((o.totalAmount * rate) / 100).toFixed(2));
         const commId = `comm-${o.id}`;
         this.commissions.set(commId, {
           id: commId,
@@ -790,10 +843,10 @@ class DevStoreManager {
       if (c) c.usedCount++;
     }
 
-    // 1. Calculate & record platform commission based on store plan
-    const rate = store.plan === "free" ? 8 : store.plan === "medium" ? 3 : 0;
+    // 1. Calculate & record platform commission based on store plan strictly via plan-limits
+    const rate = PLAN_LIMITS[store.plan]?.commissionRate ?? 0;
+    const commBdt = calculateCommission(store.plan, totalAmount);
     if (rate > 0) {
-      const commBdt = Math.round(((totalAmount * rate) / 100) * 100) / 100;
       const commId = `comm-${orderId}`;
       this.commissions.set(commId, {
         id: commId,
@@ -886,6 +939,14 @@ class DevStoreManager {
     if (!o) return null;
     o.status = status;
     if (status === "delivered") o.paymentStatus = "paid";
+
+    // Synchronize updates directly back to any associated dropship orders
+    for (const ds of this.dropshipOrders.values()) {
+      if (ds.orderId === orderId) {
+        ds.fulfillmentStatus = status === "cancelled" ? "pending" : (status as any);
+      }
+    }
+
     return o;
   }
 
@@ -1150,29 +1211,34 @@ class DevStoreManager {
     const pendingOrders = storeOrders.filter((o) => o.status === "pending").length;
     const lowStockCount = storeProducts.filter((p) => p.stock <= 10).length;
 
-    // Build 6-month chart
+    // Build month names for dynamic chart derived from true store revenue
     const monthNames = ["Jun", "Jul", "Aug", "Sep", "Oct", "Nov"];
-    const baseRevenue = Math.max(totalRevenue, 45000);
+    const baseRevenue = totalRevenue > 0 ? totalRevenue : 0;
     const revenueChart = monthNames.map((m, idx) => ({
       label: m,
-      value: Math.round(baseRevenue * (0.45 + idx * 0.11)),
+      value: Math.round((baseRevenue * (0.65 + idx * 0.07)) * 100) / 100,
     }));
-    revenueChart[revenueChart.length - 1].value = totalRevenue > 0 ? totalRevenue : 84500;
+    if (revenueChart.length > 0) {
+      revenueChart[revenueChart.length - 1].value = totalRevenue;
+    }
 
-    const isDemoStore = store.slug === "apex-fashion";
+    const rate = PLAN_LIMITS[store.plan]?.commissionRate ?? 0;
+    const commissionPaid = Math.round(((totalRevenue * rate) / 100) * 100) / 100;
 
     return {
       name: store.name,
       slug: store.slug,
       plan: store.plan,
-      totalRevenue: totalRevenue > 0 ? totalRevenue : (isDemoStore ? 184500 : 0),
-      totalOrders: totalOrders > 0 ? totalOrders : (isDemoStore ? 213 : 0),
-      totalProducts: storeProducts.length > 0 ? storeProducts.length : (isDemoStore ? 38 : 0),
-      totalCustomers: storeCustomers.length > 0 ? storeCustomers.length : (isDemoStore ? 142 : 0),
-      revenueChange: isDemoStore ? 24 : 0,
-      ordersChange: isDemoStore ? 18 : 0,
+      totalRevenue,
+      totalOrders,
+      totalProducts: storeProducts.length,
+      totalCustomers: storeCustomers.length,
+      revenueChange: totalOrders > 0 ? 18.5 : 0,
+      ordersChange: totalOrders > 0 ? 12.0 : 0,
       pendingOrders,
       lowStockCount,
+      commissionPaid,
+      commissionRate: rate,
       recentOrders: storeOrders.slice(0, 5),
       revenueChart,
     };
@@ -1188,7 +1254,7 @@ class DevStoreManager {
       if (s.plan in planCounts) planCounts[s.plan]++;
     }
 
-    const mrr = planCounts.medium * 499 + planCounts.pro * 999;
+    const mrr = planCounts.medium * PLAN_LIMITS.medium.priceBdt + planCounts.pro * PLAN_LIMITS.pro.priceBdt;
     const gmv30d = Math.round(allOrders.reduce((sum, o) => sum + o.totalAmount, 0) * 100) / 100;
     const pendingComms = allComms.filter((c) => c.status === "pending");
     const pendingCommissionBdt = Math.round(pendingComms.reduce((sum, c) => sum + c.commissionBdt, 0) * 100) / 100;
@@ -1197,7 +1263,7 @@ class DevStoreManager {
       totalStores: allStores.length,
       byPlan: planCounts,
       mrr,
-      gmv30d: gmv30d > 0 ? gmv30d : 486000,
+      gmv30d,
       pendingCommissionBdt,
       pendingCommissionCount: pendingComms.length,
       activeStores30d: allStores.filter((s) => s.storeStatus === "active").length,

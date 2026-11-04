@@ -27,7 +27,7 @@ export const PLAN_LIMITS: Record<PlanId, PlanConfig> = {
     maxProducts:          50,
     commissionRate:       8,
     customDomain:         false,
-    dropshipping:         false,
+    dropshipping:         true,
     advancedAnalytics:    false,
     apiAccess:            false,
     maxStaff:             0,

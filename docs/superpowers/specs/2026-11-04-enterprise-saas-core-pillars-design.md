@@ -229,3 +229,4 @@ export interface DevStoreStaff {
 - **RBAC Strictness:** Fulfillment and catalog editors cannot access store revenue or profit KPIs.
 - **XSS & CSV Injection Shield:** All imported CSV cells are sanitized against formula injection (`=`, `@`, `+`, `-` prefixes escaped).
 - **Server-Authoritative Precision:** Prices imported or calculated are sanitized to non-negative floats rounded to 2 decimal places.
+
