@@ -48,11 +48,14 @@ export async function PATCH(
       numStock = 0;
     }
 
+    const cleanPrice = numPrice !== undefined ? Math.round(numPrice * 100) / 100 : undefined;
+    const cleanCompare = numCompare !== undefined ? Math.round(numCompare * 100) / 100 : undefined;
+
     // 1. Update devStore
     const updated = devStore.updateProduct(id, {
       title: body.title,
-      price: numPrice,
-      comparePrice: numCompare,
+      price: cleanPrice,
+      comparePrice: cleanCompare,
       stock: numStock,
       sku: body.sku,
       category: body.category,
@@ -63,8 +66,8 @@ export async function PATCH(
     try {
       const dbUpdates: any = { updatedAt: new Date() };
       if (body.title) dbUpdates.title = body.title;
-      if (numPrice !== undefined) dbUpdates.basePrice = String(numPrice);
-      if (numCompare !== undefined) dbUpdates.compareAtPrice = String(numCompare);
+      if (cleanPrice !== undefined) dbUpdates.basePrice = cleanPrice.toFixed(2);
+      if (cleanCompare !== undefined) dbUpdates.compareAtPrice = cleanCompare.toFixed(2);
 
       await Promise.race([
         db.update(products).set(dbUpdates).where(eq(products.id, id)),

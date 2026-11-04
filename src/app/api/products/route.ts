@@ -194,6 +194,9 @@ export async function POST(request: Request) {
 
   const imgUrl = data.imageUrl || (data.images && data.images[0]) || "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800";
 
+  const cleanPrice = Math.round(numPrice * 100) / 100;
+  const cleanCompare = numCompare !== undefined ? Math.round(numCompare * 100) / 100 : undefined;
+
   // 1. Add to devStore
   const newProduct = devStore.addProduct({
     storeId: targetStore.id,
@@ -201,8 +204,8 @@ export async function POST(request: Request) {
     title: data.title,
     slug: finalSlug,
     description: data.description,
-    price: numPrice,
-    comparePrice: numCompare,
+    price: cleanPrice,
+    comparePrice: cleanCompare,
     stock: numStock,
     sku: data.sku || `SKU-${Math.floor(1000 + Math.random() * 9000)}`,
     category: data.category || "General",
@@ -219,8 +222,8 @@ export async function POST(request: Request) {
         title: data.title,
         slug: `${finalSlug}-${Date.now().toString(36)}`,
         description: data.description,
-        basePrice: String(numPrice),
-        compareAtPrice: numCompare ? String(numCompare) : undefined,
+        basePrice: cleanPrice.toFixed(2),
+        compareAtPrice: cleanCompare !== undefined ? cleanCompare.toFixed(2) : undefined,
         isPublished: true,
         hasVariants: false,
         images: [imgUrl],
@@ -235,7 +238,7 @@ export async function POST(request: Request) {
         productId: dbProduct.id,
         title: "Standard",
         sku: data.sku || `SKU-${Math.floor(1000 + Math.random() * 9000)}`,
-        price: String(numPrice),
+        price: cleanPrice.toFixed(2),
         inventoryQuantity: numStock,
         options: {},
       });

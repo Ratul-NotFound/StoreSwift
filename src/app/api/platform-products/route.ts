@@ -39,7 +39,8 @@ export async function GET(request: Request) {
   }
 
   const normalized = rawList.map((p: any) => {
-    const minVal = p.minPrice !== undefined ? Number(p.minPrice) : (p.minimumPrice ? parseFloat(p.minimumPrice) : 0);
+    const rawMin = p.minPrice !== undefined ? Number(p.minPrice) : (p.minimumPrice ? parseFloat(p.minimumPrice) : 0);
+    const minVal = Math.round((isNaN(rawMin) ? 0 : rawMin) * 100) / 100;
     const imgList = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.imageUrl ? [p.imageUrl] : []);
     const mainImg = imgList[0] || p.imageUrl || "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800";
 
@@ -50,7 +51,7 @@ export async function GET(request: Request) {
       category: p.category,
       minPrice: minVal,
       minimumPrice: String(minVal),
-      suggestedPrice: p.suggestedPrice !== undefined ? Number(p.suggestedPrice) : Math.round(minVal * 1.5),
+      suggestedPrice: p.suggestedPrice !== undefined ? Math.round(Number(p.suggestedPrice) * 100) / 100 : Math.round(minVal * 1.5 * 100) / 100,
       stockQuantity: p.stockQuantity ?? 100,
       sku: p.sku || `DS-${String(p.id).slice(-6).toUpperCase()}`,
       images: imgList.length > 0 ? imgList : [mainImg],
@@ -89,14 +90,16 @@ export async function POST(request: Request) {
     }
 
     const { minimumPrice, suggestedPrice, description, category, title, stockQuantity, images } = parse.data;
+    const cleanMin = Math.round(minimumPrice * 100) / 100;
+    const cleanSuggested = Math.round(suggestedPrice * 100) / 100;
 
     // 1. Add to devStore
     const newPP = devStore.addPlatformProduct({
       title,
       description: description || "",
       category,
-      minPrice: minimumPrice,
-      suggestedPrice,
+      minPrice: cleanMin,
+      suggestedPrice: cleanSuggested,
       stockQuantity,
       imageUrl: images[0] || "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800",
       status: "active",
@@ -108,8 +111,8 @@ export async function POST(request: Request) {
         title,
         description,
         category,
-        minimumPrice: minimumPrice.toFixed(2),
-        suggestedPrice: suggestedPrice.toFixed(2),
+        minimumPrice: cleanMin.toFixed(2),
+        suggestedPrice: cleanSuggested.toFixed(2),
         stockQuantity,
         images,
         status: "active",

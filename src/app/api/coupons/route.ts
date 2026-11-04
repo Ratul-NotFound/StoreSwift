@@ -105,17 +105,7 @@ export async function POST(request: Request) {
 export async function PATCH(request: Request) {
   const body = await request.json();
 
-  // Mode 1: Validate coupon at checkout (Public)
-  if (body.validate || body.code) {
-    const storeSlug = body.storeSlug || body.storeId || "apex-fashion";
-    const code = String(body.code || "");
-    const orderAmount = parseFloat(String(body.orderAmount || 0));
-
-    const result = devStore.validateCoupon(storeSlug, code, orderAmount);
-    return NextResponse.json(result);
-  }
-
-  // Mode 2: Toggle coupon active/inactive (Requires Authentication)
+  // Mode 1: Toggle coupon active/inactive (Requires Authentication)
   if (body.id && typeof body.isActive === "boolean") {
     const session = getSessionFromRequest(request);
     if (!session) {
@@ -123,6 +113,17 @@ export async function PATCH(request: Request) {
     }
     devStore.toggleCoupon(body.id, body.isActive);
     return NextResponse.json({ ok: true });
+  }
+
+  // Mode 2: Validate coupon at checkout (Public)
+  if (body.validate || body.code) {
+    const storeSlug = body.storeSlug || body.storeId || "apex-fashion";
+    const code = String(body.code || "");
+    const rawAmount = parseFloat(String(body.orderAmount || 0));
+    const orderAmount = isNaN(rawAmount) || rawAmount < 0 ? 0 : Math.round(rawAmount * 100) / 100;
+
+    const result = devStore.validateCoupon(storeSlug, code, orderAmount);
+    return NextResponse.json(result);
   }
 
   return NextResponse.json({ error: "Invalid action" }, { status: 400 });

@@ -56,8 +56,8 @@ export async function GET(request: Request) {
         ok: true,
         commissions: rows,
         summary: {
-          pendingTotal: parseFloat(summary?.pendingTotal ?? "0"),
-          clearedTotal: parseFloat(summary?.clearedTotal ?? "0"),
+          pendingTotal: Math.round(parseFloat(summary?.pendingTotal ?? "0") * 100) / 100,
+          clearedTotal: Math.round(parseFloat(summary?.clearedTotal ?? "0") * 100) / 100,
           totalCount: Number(summary?.totalCount ?? 0)
         },
         page, limit
@@ -70,8 +70,8 @@ export async function GET(request: Request) {
   // devStore commissions
   const allComms = devStore.getCommissions();
   const filtered = status ? allComms.filter((c) => c.status === status) : allComms;
-  const pendingTotal = allComms.filter((c) => c.status === "pending").reduce((s, c) => s + c.commissionBdt, 0);
-  const clearedTotal = allComms.filter((c) => c.status === "cleared").reduce((s, c) => s + c.commissionBdt, 0);
+  const pendingTotal = Math.round(allComms.filter((c) => c.status === "pending").reduce((s, c) => s + c.commissionBdt, 0) * 100) / 100;
+  const clearedTotal = Math.round(allComms.filter((c) => c.status === "cleared").reduce((s, c) => s + c.commissionBdt, 0) * 100) / 100;
 
   return NextResponse.json({
     ok: true,

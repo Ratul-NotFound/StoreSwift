@@ -26,6 +26,7 @@ describe("SaaS Management System & Platform Products End-to-End Suite", () => {
     const superAdminToken = signSessionToken({
       userId: "usr-superadmin-1",
       email: "admin@storeswift.app",
+      storeId: "platform-admin",
       role: "super_admin",
     }, secret);
     superAdminHeaders = { Authorization: `Bearer ${superAdminToken}` };

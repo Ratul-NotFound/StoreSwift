@@ -91,9 +91,10 @@ export function getPlanConfig(plan: string | null | undefined): PlanConfig {
  * Returns 0 for Pro plan.
  */
 export function calculateCommission(plan: PlanId, orderAmountBdt: number): number {
+  if (!orderAmountBdt || orderAmountBdt <= 0 || !Number.isFinite(orderAmountBdt)) return 0;
   const rate = PLAN_LIMITS[plan].commissionRate;
-  if (rate === 0) return 0;
-  return parseFloat(((orderAmountBdt * rate) / 100).toFixed(2));
+  if (rate <= 0) return 0;
+  return Math.round(((orderAmountBdt * rate) / 100) * 100) / 100;
 }
 
 /**

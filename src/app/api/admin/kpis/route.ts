@@ -32,7 +32,7 @@ export async function GET(request: Request) {
         .select({ gmv: sql<string>`coalesce(sum(total_amount::numeric), 0)` })
         .from(orders)
         .where(gte(orders.createdAt, thirtyDaysAgo));
-      const gmv30d = parseFloat(gmvRow?.gmv ?? "0");
+      const gmv30d = Math.round(parseFloat(gmvRow?.gmv ?? "0") * 100) / 100;
 
       const [commRow] = await db
         .select({
@@ -49,7 +49,7 @@ export async function GET(request: Request) {
           byPlan,
           mrr: byPlan.medium * 499 + byPlan.pro * 999,
           gmv30d: gmv30d > 0 ? gmv30d : 487250,
-          pendingCommissionBdt: parseFloat(commRow?.total ?? "0"),
+          pendingCommissionBdt: Math.round(parseFloat(commRow?.total ?? "0") * 100) / 100,
           pendingCommissionCount: Number(commRow?.cnt ?? 0),
           activeStores30d: totalStores,
           mrrGrowth: 28,

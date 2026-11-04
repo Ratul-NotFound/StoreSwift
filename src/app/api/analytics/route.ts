@@ -52,7 +52,7 @@ export async function GET(request: Request) {
         .where(eq(orders.storeId, storeId));
 
       if (orderStats && Number(orderStats.totalOrders) > 0) {
-        overview.totalRevenue = parseFloat(orderStats.totalRevenue);
+        overview.totalRevenue = Math.round(parseFloat(orderStats.totalRevenue) * 100) / 100;
         overview.totalOrders = Number(orderStats.totalOrders);
       }
     }
@@ -68,7 +68,7 @@ export async function GET(request: Request) {
       totalRevenue: overview.totalRevenue,
       totalOrders: overview.totalOrders,
       totalCustomers: overview.totalCustomers,
-      avgOrderValue: overview.totalOrders > 0 ? Math.round(overview.totalRevenue / overview.totalOrders) : 0,
+      avgOrderValue: overview.totalOrders > 0 ? Math.round((overview.totalRevenue / overview.totalOrders) * 100) / 100 : 0,
       avgConversion: 3.4,
     },
     snapshots: [],

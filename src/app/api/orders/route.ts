@@ -39,6 +39,7 @@ const orderCreateSchema = z.object({
   deliveryZone: z.enum(["metro", "suburbs", "national"]).optional().default("metro"),
   trxId: z.string().optional(),
   shippingFee: z.number().min(0, "Shipping fee cannot be negative").max(10000).optional().default(0),
+  couponCode: z.string().optional(),
 });
 
 function isValidUuid(id?: string | null): boolean {
@@ -240,6 +241,24 @@ export async function POST(request: Request) {
       };
     });
 
+    // ── Server-Authoritative Price & Calculation Integrity ──
+    const subtotal = Math.round(cleanItems.reduce((acc, it) => acc + (it.price * it.quantity), 0) * 100) / 100;
+
+    let discountAmount = 0;
+    let appliedCouponCode: string | undefined = undefined;
+
+    if (data.couponCode && data.couponCode.trim()) {
+      const couponValidation = devStore.validateCoupon(storeSlug, data.couponCode, subtotal);
+      if (!couponValidation.valid) {
+        return NextResponse.json(
+          { error: couponValidation.error || "Invalid coupon code." },
+          { status: 400 }
+        );
+      }
+      discountAmount = couponValidation.discountAmount;
+      appliedCouponCode = couponValidation.coupon?.code;
+    }
+
     // 1. Save to devStore (instant, 100% synchronized)
     const newOrder = devStore.addOrder({
       storeSlug,
@@ -251,6 +270,8 @@ export async function POST(request: Request) {
       items: cleanItems,
       paymentMethod: data.paymentMethod,
       shippingFee: data.shippingFee ?? 0,
+      couponCode: appliedCouponCode,
+      discountAmount,
       trxId: data.trxId ? sanitizeString(data.trxId) : undefined,
     });
 
@@ -360,6 +381,10 @@ export async function POST(request: Request) {
       ok: true,
       orderId: newOrder.id,
       orderNumber: newOrder.orderNumber,
+      subtotal: newOrder.subtotal.toFixed(2),
+      discountAmount: (newOrder.discountAmount || 0).toFixed(2),
+      couponCode: newOrder.couponCode,
+      shippingFee: newOrder.shippingFee.toFixed(2),
       totalAmount: newOrder.totalAmount.toFixed(2),
       consignmentId: newOrder.consignmentId,
       courierName: newOrder.courierName,

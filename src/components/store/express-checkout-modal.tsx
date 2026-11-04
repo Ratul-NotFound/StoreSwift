@@ -89,8 +89,8 @@ export function ExpressCheckoutModal({
   const isBDT = currency === "৳" || currency.toLowerCase().includes("bdt");
   const zoneConfig = DELIVERY_ZONES[deliveryZone];
   const shippingFee = isBDT ? zoneConfig.rateBDT : zoneConfig.rateUSD;
-  const subtotal = items.reduce((sum, it) => sum + it.price * it.quantity, 0);
-  const finalTotal = Math.max(0, subtotal - appliedDiscount) + shippingFee;
+  const subtotal = Math.round(items.reduce((sum, it) => sum + it.price * it.quantity, 0) * 100) / 100;
+  const finalTotal = Math.round((Math.max(0, subtotal - appliedDiscount) + shippingFee) * 100) / 100;
 
   const handleApplyCoupon = async () => {
     if (!couponInput.trim()) return;
@@ -175,6 +175,7 @@ export function ExpressCheckoutModal({
           zone: zoneConfig.name
         },
         items: items.map((it) => ({
+          id: (it as any).productId || it.id,
           variantId: it.variantId || "var-default",
           title: it.title,
           price: it.price,
@@ -183,7 +184,8 @@ export function ExpressCheckoutModal({
         paymentMethod: paymentMethod === "card" ? "stripe" : paymentMethod,
         deliveryZone,
         trxId: trxId.trim() || undefined,
-        shippingFee
+        shippingFee,
+        couponCode: appliedCode || undefined,
       };
 
       const res = await fetch("/api/orders", {

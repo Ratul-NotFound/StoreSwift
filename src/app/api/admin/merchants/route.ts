@@ -68,8 +68,8 @@ export async function GET(request: Request) {
               ...store,
               owner: null,
               totalOrders: Number(orderStats?.totalOrders ?? 0),
-              totalRevenue: parseFloat(orderStats?.totalRevenue ?? "0"),
-              pendingCommissionBdt: parseFloat(commStats?.pendingBdt ?? "0")
+              totalRevenue: Math.round(parseFloat(orderStats?.totalRevenue ?? "0") * 100) / 100,
+              pendingCommissionBdt: Math.round(parseFloat(commStats?.pendingBdt ?? "0") * 100) / 100
             };
           } catch {
             return { ...store, totalOrders: 0, totalRevenue: 0, pendingCommissionBdt: 0, owner: null };
@@ -92,8 +92,8 @@ export async function GET(request: Request) {
   const enriched = all.map((s) => {
     const orders = devStore.getOrders(s.slug);
     const comms = devStore.getCommissions("pending").filter((c) => c.storeSlug === s.slug || c.storeId === s.id);
-    const totalRevenue = orders.reduce((sum, o) => sum + o.totalAmount, 0);
-    const pendingCommissionBdt = comms.reduce((sum, c) => sum + c.commissionBdt, 0);
+    const totalRevenue = Math.round(orders.reduce((sum, o) => sum + o.totalAmount, 0) * 100) / 100;
+    const pendingCommissionBdt = Math.round(comms.reduce((sum, c) => sum + c.commissionBdt, 0) * 100) / 100;
 
     return {
       id: s.id,

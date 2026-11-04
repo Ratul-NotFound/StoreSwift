@@ -85,6 +85,8 @@ export interface DevOrder {
     isDropship?: boolean;
     platformProductId?: string;
   }[];
+  couponCode?: string;
+  discountAmount?: number;
   consignmentId?: string;
   courierName?: string;
   trackingUrl?: string;
@@ -617,6 +619,8 @@ class DevStoreManager {
   addProduct(product: Partial<DevProduct> & { storeId: string; title: string; price: number }): DevProduct {
     const id = `prod-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
     const finalSlug = product.slug || product.title.toLowerCase().replace(/[^a-z0-9]/g, "-").slice(0, 50);
+    const cleanPrice = Math.max(0, Math.round((Number(product.price) || 0) * 100) / 100);
+    const cleanCompare = product.comparePrice !== undefined ? Math.max(0, Math.round((Number(product.comparePrice) || 0) * 100) / 100) : undefined;
     const newProd: DevProduct = {
       sku: product.sku || `SKU-${Math.floor(1000 + Math.random() * 9000)}`,
       category: product.category || "General",
@@ -625,6 +629,8 @@ class DevStoreManager {
       status: product.status || "active",
       storeSlug: product.storeSlug || product.storeId,
       ...product,
+      price: cleanPrice,
+      comparePrice: cleanCompare,
       slug: finalSlug,
       id,
       salesCount: 0,
@@ -644,7 +650,14 @@ class DevStoreManager {
   updateProduct(id: string, updates: Partial<DevProduct>): DevProduct | null {
     const prod = this.products.get(id);
     if (!prod) return null;
-    Object.assign(prod, updates);
+    const cleanUpdates = { ...updates };
+    if (cleanUpdates.price !== undefined) {
+      cleanUpdates.price = Math.max(0, Math.round((Number(cleanUpdates.price) || 0) * 100) / 100);
+    }
+    if (cleanUpdates.comparePrice !== undefined) {
+      cleanUpdates.comparePrice = Math.max(0, Math.round((Number(cleanUpdates.comparePrice) || 0) * 100) / 100);
+    }
+    Object.assign(prod, cleanUpdates);
 
     // Re-index into Search Trie
     const targetSlug = prod.storeSlug || prod.storeId;
@@ -727,11 +740,16 @@ class DevStoreManager {
     }[];
     paymentMethod: string;
     shippingFee: number;
+    couponCode?: string;
+    discountAmount?: number;
     trxId?: string;
   }): DevOrder {
     const store = this.ensureStore(data.storeSlug);
-    const subtotal = data.items.reduce((s, it) => s + it.price * it.quantity, 0);
-    const totalAmount = subtotal + data.shippingFee;
+    const subtotal = Math.round(data.items.reduce((s, it) => s + it.price * it.quantity, 0) * 100) / 100;
+    const discountAmount = Math.min(subtotal, Math.max(0, data.discountAmount ? Math.round(data.discountAmount * 100) / 100 : 0));
+    const discountedSubtotal = Math.round((subtotal - discountAmount) * 100) / 100;
+    const shippingFee = Math.round(Math.max(0, data.shippingFee || 0) * 100) / 100;
+    const totalAmount = Math.round((discountedSubtotal + shippingFee) * 100) / 100;
     const orderNumber = `SS-${Date.now().toString(36).toUpperCase()}-${Math.floor(100 + Math.random() * 900)}`;
     const orderId = `ord-${Date.now()}`;
     const consignmentId = `ST-${Math.floor(100000 + Math.random() * 900000)}`;
@@ -748,7 +766,9 @@ class DevStoreManager {
       shippingAddress: data.shippingAddress,
       district: data.district || "Dhaka",
       subtotal,
-      shippingFee: data.shippingFee,
+      discountAmount,
+      couponCode: data.couponCode,
+      shippingFee,
       totalAmount,
       paymentMethod: data.paymentMethod,
       paymentStatus: data.paymentMethod === "cod" ? "pending" : "paid",
@@ -762,10 +782,18 @@ class DevStoreManager {
 
     this.orders.set(orderId, newOrder);
 
+    // Track coupon usage
+    if (data.couponCode) {
+      const c = this.getCoupons(store.slug).find(
+        (cp) => cp.code.toUpperCase() === data.couponCode!.toUpperCase()
+      );
+      if (c) c.usedCount++;
+    }
+
     // 1. Calculate & record platform commission based on store plan
     const rate = store.plan === "free" ? 8 : store.plan === "medium" ? 3 : 0;
     if (rate > 0) {
-      const commBdt = parseFloat(((totalAmount * rate) / 100).toFixed(2));
+      const commBdt = Math.round(((totalAmount * rate) / 100) * 100) / 100;
       const commId = `comm-${orderId}`;
       this.commissions.set(commId, {
         id: commId,
@@ -799,9 +827,9 @@ class DevStoreManager {
     for (const item of data.items) {
       if (item.isDropship && item.platformProductId) {
         const pp = this.platformProducts.get(item.platformProductId);
-        const minPrice = pp ? pp.minPrice : item.price * 0.6;
+        const minPrice = pp ? pp.minPrice : Math.round(item.price * 0.6 * 100) / 100;
         const qty = item.quantity || 1;
-        const margin = Math.max(0, item.price - minPrice) * qty;
+        const margin = Math.round(Math.max(0, item.price - minPrice) * qty * 100) / 100;
         const dropshipOrderId = `ds-ord-${orderId}-${Math.floor(Math.random() * 1000)}`;
 
         this.dropshipOrders.set(dropshipOrderId, {
@@ -909,7 +937,7 @@ class DevStoreManager {
       existing.email = data.email || existing.email;
       existing.district = data.district || existing.district;
       existing.totalOrders += 1;
-      existing.totalSpent += data.amount;
+      existing.totalSpent = Math.round((existing.totalSpent + data.amount) * 100) / 100;
       existing.lastOrderAt = data.orderDate;
       existing.isLoyal = existing.totalOrders >= 3;
     } else {
@@ -922,7 +950,7 @@ class DevStoreManager {
         email: data.email,
         district: data.district || "Dhaka",
         totalOrders: 1,
-        totalSpent: data.amount,
+        totalSpent: Math.round(data.amount * 100) / 100,
         lastOrderAt: data.orderDate,
         isLoyal: false,
       });
@@ -971,6 +999,7 @@ class DevStoreManager {
     coupon?: DevCoupon;
     error?: string;
   } {
+    const safeAmount = Math.max(0, isNaN(orderAmount) ? 0 : Math.round(orderAmount * 100) / 100);
     const cleanCode = code.toUpperCase().trim();
     const coupons = this.getCoupons(storeSlug);
     const found = coupons.find((c) => c.code === cleanCode && c.isActive);
@@ -987,7 +1016,7 @@ class DevStoreManager {
       return { valid: false, discountAmount: 0, error: "Coupon usage limit reached." };
     }
 
-    if (found.minOrder && orderAmount < found.minOrder) {
+    if (found.minOrder && safeAmount < found.minOrder) {
       return {
         valid: false,
         discountAmount: 0,
@@ -995,10 +1024,12 @@ class DevStoreManager {
       };
     }
 
-    const discountAmount =
+    const rawDiscount =
       found.type === "flat"
-        ? Math.min(found.value, orderAmount)
-        : Math.round((orderAmount * found.value) / 100);
+        ? Math.min(found.value, safeAmount)
+        : (safeAmount * Math.min(100, Math.max(0, found.value))) / 100;
+
+    const discountAmount = Math.min(safeAmount, Math.max(0, Math.round(rawDiscount * 100) / 100));
 
     return { valid: true, discountAmount, coupon: found };
   }
@@ -1036,14 +1067,15 @@ class DevStoreManager {
     const store = this.ensureStore(storeSlug);
     const pp = this.platformProducts.get(platformProductId);
     if (!pp) return null;
-    if (sellPrice < pp.minPrice) return null;
+    const cleanSellPrice = Math.round(sellPrice * 100) / 100;
+    if (cleanSellPrice < pp.minPrice) return null;
 
     // Check if already listed
     const existing = Array.from(this.products.values()).find(
       (p) => p.storeSlug === store.slug && p.platformProductId === platformProductId
     );
     if (existing) {
-      existing.price = sellPrice;
+      existing.price = cleanSellPrice;
       existing.status = "active";
       return existing;
     }
@@ -1055,8 +1087,8 @@ class DevStoreManager {
       title: pp.title,
       slug: `${pp.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40)}-${Math.floor(100 + Math.random() * 900)}`,
       description: pp.description,
-      price: sellPrice,
-      comparePrice: pp.suggestedPrice > sellPrice ? pp.suggestedPrice : Math.round(sellPrice * 1.3),
+      price: cleanSellPrice,
+      comparePrice: pp.suggestedPrice > cleanSellPrice ? pp.suggestedPrice : Math.round(cleanSellPrice * 1.3 * 100) / 100,
       stock: pp.stockQuantity,
       sku: `DS-${platformProductId.slice(-6).toUpperCase()}`,
       category: pp.category,
@@ -1113,7 +1145,7 @@ class DevStoreManager {
     const storeProducts = this.getProducts(store.slug);
     const storeCustomers = this.getCustomers(store.slug);
 
-    const totalRevenue = storeOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+    const totalRevenue = Math.round(storeOrders.reduce((sum, o) => sum + o.totalAmount, 0) * 100) / 100;
     const totalOrders = storeOrders.length;
     const pendingOrders = storeOrders.filter((o) => o.status === "pending").length;
     const lowStockCount = storeProducts.filter((p) => p.stock <= 10).length;
@@ -1157,9 +1189,9 @@ class DevStoreManager {
     }
 
     const mrr = planCounts.medium * 499 + planCounts.pro * 999;
-    const gmv30d = allOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+    const gmv30d = Math.round(allOrders.reduce((sum, o) => sum + o.totalAmount, 0) * 100) / 100;
     const pendingComms = allComms.filter((c) => c.status === "pending");
-    const pendingCommissionBdt = pendingComms.reduce((sum, c) => sum + c.commissionBdt, 0);
+    const pendingCommissionBdt = Math.round(pendingComms.reduce((sum, c) => sum + c.commissionBdt, 0) * 100) / 100;
 
     return {
       totalStores: allStores.length,
