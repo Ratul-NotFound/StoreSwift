@@ -167,7 +167,7 @@ export function MilanoStorefront({
   };
 
   return (
-    <div className="min-h-screen bg-[#0e0e0e] text-white font-sans antialiased">
+    <div suppressHydrationWarning className="min-h-screen bg-[#0e0e0e] text-white font-sans antialiased">
 
       {/* ── Header ────────────────────────────────────────────────── */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#0e0e0e]/90 backdrop-blur-md border-b border-white/5">

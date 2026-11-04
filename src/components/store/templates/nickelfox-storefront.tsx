@@ -191,7 +191,7 @@ export function NickelFoxStorefront({
   const filteredProducts = activeCat === "All" ? catalogItems : catalogItems.filter(p => p.cat === activeCat);
 
   return (
-    <div className="min-h-screen bg-[#f7f500] text-black font-sans antialiased">
+    <div suppressHydrationWarning className="min-h-screen bg-[#f7f500] text-black font-sans antialiased">
 
       {/* ── Header ─────────────────────────────────────────────── */}
       <header className="sticky top-0 z-50 bg-white border-b-4 border-black shadow-[0_4px_0_0_#000]">

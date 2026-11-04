@@ -120,7 +120,7 @@ export function AthleisureStorefront({
   };
 
   return (
-    <div className="min-h-screen bg-[#090d16] text-slate-100 font-sans selection:bg-[#ccff00] selection:text-black">
+    <div suppressHydrationWarning className="min-h-screen bg-[#090d16] text-slate-100 font-sans selection:bg-[#ccff00] selection:text-black">
       {/* ─── Top Telemetry Announcement Bar ─── */}
       <div className="bg-[#ccff00] text-black py-1.5 px-4 text-[11px] font-black tracking-widest uppercase flex items-center justify-between">
         <div className="flex items-center gap-2 mx-auto">

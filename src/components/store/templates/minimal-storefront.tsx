@@ -194,7 +194,10 @@ export function MinimalStorefront({
   const cartCount = cartItems.reduce((acc, it) => acc + (it.quantity || 1), 0);
 
   return (
-    <div className="min-h-screen bg-white text-zinc-900 font-sans selection:bg-zinc-900 selection:text-white flex flex-col">
+    <div
+      suppressHydrationWarning
+      className="min-h-screen bg-white text-zinc-900 font-sans selection:bg-zinc-900 selection:text-white flex flex-col"
+    >
       {/* ─── 1. Atelier Top Announcement Bar ─────────────────────────────── */}
       <div className="bg-zinc-950 text-zinc-300 py-2 px-4 text-center text-[11px] font-mono tracking-wider border-b border-zinc-900 flex items-center justify-center gap-3">
         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />

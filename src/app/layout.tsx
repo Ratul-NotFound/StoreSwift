@@ -92,7 +92,10 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.variable} ${playfair.variable} min-h-screen antialiased font-sans selection:bg-zinc-800 selection:text-zinc-100 dark:selection:bg-zinc-200 dark:selection:text-zinc-900`}>
+      <body
+        suppressHydrationWarning
+        className={`${inter.variable} ${playfair.variable} min-h-screen antialiased font-sans selection:bg-zinc-800 selection:text-zinc-100 dark:selection:bg-zinc-200 dark:selection:text-zinc-900`}
+      >
         <ThemeProvider>
           <ToastProvider>{children}</ToastProvider>
         </ThemeProvider>

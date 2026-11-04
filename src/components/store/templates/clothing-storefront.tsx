@@ -208,7 +208,7 @@ export function ClothingStorefront({
   ];
 
   return (
-    <div className="min-h-screen bg-white text-[#2c2c2c] font-sans">
+    <div suppressHydrationWarning className="min-h-screen bg-white text-[#2c2c2c] font-sans">
 
       {/* ── Announcement Bar ─────────────────────────────────────── */}
       <div className="bg-[#3d2d1e] text-white text-center text-xs py-2 tracking-wide">

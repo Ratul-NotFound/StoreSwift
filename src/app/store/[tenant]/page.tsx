@@ -104,12 +104,16 @@ const CATEGORY_COLLECTIONS: Record<string, Array<{ title: string; subtitle: stri
 };
 
 export default function TenantStorefrontPage({
-  params
+  params,
+  searchParams
 }: {
   params: Promise<{ tenant: string }>;
+  searchParams?: Promise<{ template?: string; category?: string }>;
 }) {
   const resolvedParams = use(params);
+  const resolvedSearchParams = searchParams ? use(searchParams) : undefined;
   const tenantSlug = resolvedParams.tenant || "apex-fashion";
+  const urlTemplate = resolvedSearchParams?.template;
 
   const { success, error: toastError } = useToast();
 
@@ -126,8 +130,9 @@ export default function TenantStorefrontPage({
   const [activeCategoryKey, setActiveCategoryKey] = useState(initialCategoryKey);
   const categoryConfig = getCategoryConfig(activeCategoryKey);
 
-  const [templateKey, setTemplateKey] = useState<string>(categoryConfig.recommendedTemplate || "minimal");
+  const [templateKey, setTemplateKey] = useState<string>(urlTemplate || categoryConfig.recommendedTemplate || "minimal");
   const [currentTemplateId, setCurrentTemplateId] = useState<string>(() => {
+    if (urlTemplate) return urlTemplate;
     const slug = tenantSlug.toLowerCase();
     if (slug.includes("clothing") || slug.includes("cloth")) return "clothing";
     if (slug.includes("milano") || slug.includes("street") || slug.includes("urban")) return "milano";
@@ -142,29 +147,21 @@ export default function TenantStorefrontPage({
   const template = getTemplateConfig(templateKey);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const sp = new URLSearchParams(window.location.search);
-      const qTmpl = sp.get("template");
-      if (qTmpl) {
-        setCurrentTemplateId(qTmpl);
-        setTemplateKey(qTmpl);
-      }
+    if (urlTemplate) {
+      setCurrentTemplateId(urlTemplate);
+      setTemplateKey(urlTemplate);
+      return;
     }
     fetch(`/api/stores/${tenantSlug}/settings`)
       .then((r) => r.json())
       .then((d) => {
         if (d.settings?.template) {
-          if (typeof window !== "undefined") {
-            const sp = new URLSearchParams(window.location.search);
-            if (!sp.get("template")) {
-              setCurrentTemplateId(d.settings.template);
-              setTemplateKey(d.settings.template);
-            }
-          }
+          setCurrentTemplateId(d.settings.template);
+          setTemplateKey(d.settings.template);
         }
       })
       .catch(() => {});
-  }, [tenantSlug]);
+  }, [tenantSlug, urlTemplate]);
 
   // Floating Theme Menu Toggle
   const seed = useMemo(() => {
@@ -421,7 +418,10 @@ export default function TenantStorefrontPage({
   const isPantryVertical = currentTemplateId === "pantry" || currentTemplateId === "food" || currentTemplateId === "bazaar" || currentTemplateId === "patisserie" || currentTemplateId === "matcha-zen" || currentTemplateId === "smokehouse";
 
   return (
-    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${template.classes.pageBg}`}>
+    <div
+      suppressHydrationWarning
+      className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${template.classes.pageBg}`}
+    >
       {/* ─── Top Demo Store Preview Bar ──────────────────────────────────── */}
       <DemoStoreBar
         currentSlug={tenantSlug}

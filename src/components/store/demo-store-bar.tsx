@@ -38,7 +38,7 @@ export function DemoStoreBar({
 
   if (isDismissed) {
     return (
-      <div className="fixed bottom-20 right-4 z-40 animate-fade-in font-sans hidden sm:block">
+      <div suppressHydrationWarning className="fixed bottom-20 right-4 z-40 animate-fade-in font-sans hidden sm:block">
         <button
           onClick={() => setIsDismissed(false)}
           className="bg-zinc-950/90 hover:bg-black text-white text-[11px] font-bold px-3 py-1.5 rounded-full shadow-lg border border-white/20 backdrop-blur-md flex items-center space-x-1.5 transition hover:scale-105"
@@ -52,7 +52,7 @@ export function DemoStoreBar({
   }
 
   return (
-    <div className="bg-zinc-950 text-white border-b border-zinc-800/80 text-xs py-2 px-3 sm:px-6 relative z-30 font-sans shadow-xs">
+    <div suppressHydrationWarning className="bg-zinc-950 text-white border-b border-zinc-800/80 text-xs py-2 px-3 sm:px-6 relative z-30 font-sans shadow-xs">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
         {/* Left: Platform Logo + Current Store Name + Dropdown Switcher */}
         <div className="flex items-center space-x-2.5 min-w-0">
