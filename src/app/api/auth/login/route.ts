@@ -48,6 +48,20 @@ export async function POST(request: Request) {
 
     // ─── Instant Demo Access ───────────────────────────────────────────
     if (demo) {
+      // Production gate: Strictly reject unauthenticated demo access in production
+      if (process.env.NODE_ENV === "production" && process.env.ALLOW_DEMO_LOGIN !== "true") {
+        return NextResponse.json(
+          { error: "Demo access is disabled in production environments." },
+          { status: 403 }
+        );
+      }
+      if (role === "super_admin" && process.env.NODE_ENV === "production") {
+        return NextResponse.json(
+          { error: "Super Admin demo access is disabled." },
+          { status: 403 }
+        );
+      }
+
       if (role === "super_admin") {
         const demoToken = signSessionToken({
           userId: "demo-super-admin-id",
@@ -174,10 +188,22 @@ export async function POST(request: Request) {
       return response;
     } catch (dbErr) {
       console.error("[Login API DB Fallback]", dbErr);
-      // Fallback for offline dev environment
+      // In production, never permit unverified fallback login
+      if (process.env.NODE_ENV === "production") {
+        return NextResponse.json({ error: "Authentication database unreachable." }, { status: 503 });
+      }
+
+      if (!password || password.length < 6) {
+        return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
+      }
+
+      const isSuper = email.toLowerCase().includes("superadmin") || email.toLowerCase().includes("admin@storeswift");
+      if (isSuper && password !== "SuperAdmin2026!" && password !== (process.env.SUPER_ADMIN_PASSWORD || "SuperAdmin2026!")) {
+        return NextResponse.json({ error: "Invalid super admin credentials." }, { status: 401 });
+      }
+
       const slug = email.split("@")[0].toLowerCase().replace(/[^a-z0-9]/g, "-") || "apex-fashion";
       const store = devStore.getStore(slug) || devStore.ensureStore(slug);
-      const isSuper = email.toLowerCase().includes("superadmin") || email.toLowerCase().includes("admin@storeswift");
       const fallbackRole = isSuper ? "super_admin" : "merchant_owner";
 
       const token = signSessionToken({
@@ -200,7 +226,7 @@ export async function POST(request: Request) {
 
       response.cookies.set("ss_session", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: false,
         sameSite: "strict",
         path: "/",
         maxAge: 60 * 60 * 24 * 7

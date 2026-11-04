@@ -34,10 +34,36 @@ export function resolveTenantFromHost(host: string, rootDomain = "platform.com")
   return { type: "store", tenantSlug: cleanHost };
 }
 
+function applySecurityHeaders(response: NextResponse): NextResponse {
+  response.headers.set("X-Content-Type-Options", "nosniff");
+  response.headers.set("X-Frame-Options", "SAMEORIGIN");
+  response.headers.set("X-XSS-Protection", "1; mode=block");
+  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  response.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  return response;
+}
+
 export async function middleware(request: NextRequest) {
   const host = request.headers.get("host") || "platform.com";
   const url = request.nextUrl.clone();
   const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "platform.com";
+
+  const token = request.cookies.get("ss_session")?.value;
+  const session = token ? await verifySessionTokenEdge(token) : null;
+
+  // ─── Direct API Admin Armor: Strict 401/403 for API endpoints ──────
+  if (url.pathname.startsWith("/api/admin")) {
+    if (!session) {
+      return applySecurityHeaders(
+        NextResponse.json({ error: "Unauthorized: Session required." }, { status: 401 })
+      );
+    }
+    if (session.role !== "super_admin") {
+      return applySecurityHeaders(
+        NextResponse.json({ error: "Forbidden: Super admin authentication required." }, { status: 403 })
+      );
+    }
+  }
 
   // ─── JWT Auth Guard for protected admin and merchant dashboard routes ─────
   const isSuperAdminRoute = url.pathname.startsWith("/super-admin");
@@ -45,31 +71,26 @@ export async function middleware(request: NextRequest) {
   const isStoreDashboardRoute = /\/store\/[^/]+\/dashboard/.test(url.pathname);
   const isProtected = isSuperAdminRoute || isAdminRoute || isStoreDashboardRoute;
 
-  const token = request.cookies.get("ss_session")?.value;
-  const session = token ? await verifySessionTokenEdge(token) : null;
-
   if (isProtected) {
-    if (process.env.NODE_ENV === "production" && !session) {
+    if (!session) {
       const loginUrl = new URL("/login", request.url);
       loginUrl.searchParams.set("redirect", url.pathname);
-      return NextResponse.redirect(loginUrl);
+      return applySecurityHeaders(NextResponse.redirect(loginUrl));
     }
 
-    if (session) {
-      // 1. Super admin route requires super_admin role
-      if (isSuperAdminRoute && session.role !== "super_admin") {
-        const dest = session.slug ? `/store/${session.slug}/dashboard` : "/login?error=super_admin_required";
-        return NextResponse.redirect(new URL(dest, request.url));
-      }
+    // 1. Super admin route requires super_admin role
+    if (isSuperAdminRoute && session.role !== "super_admin") {
+      const dest = session.slug ? `/store/${session.slug}/dashboard` : "/login?error=super_admin_required";
+      return applySecurityHeaders(NextResponse.redirect(new URL(dest, request.url)));
+    }
 
-      // 2. Multi-tenant isolation: prevent cross-store dashboard access for regular merchants
-      if (isStoreDashboardRoute && session.role !== "super_admin") {
-        const match = url.pathname.match(/\/store\/([^/]+)\/dashboard/);
-        const requestedTenant = match ? match[1] : null;
-        if (requestedTenant && session.slug && session.slug.toLowerCase() !== requestedTenant.toLowerCase()) {
-          // Merchant attempted to access another store's dashboard -> redirect to their own store dashboard
-          return NextResponse.redirect(new URL(`/store/${session.slug}/dashboard`, request.url));
-        }
+    // 2. Multi-tenant isolation: prevent cross-store dashboard access for regular merchants
+    if (isStoreDashboardRoute && session.role !== "super_admin") {
+      const match = url.pathname.match(/\/store\/([^/]+)\/dashboard/);
+      const requestedTenant = match ? match[1] : null;
+      if (requestedTenant && session.slug && session.slug.toLowerCase() !== requestedTenant.toLowerCase()) {
+        // Merchant attempted to access another store's dashboard -> redirect to their own store dashboard
+        return applySecurityHeaders(NextResponse.redirect(new URL(`/store/${session.slug}/dashboard`, request.url)));
       }
     }
   }
@@ -81,9 +102,7 @@ export async function middleware(request: NextRequest) {
   if (resolved.type === "admin" && !url.pathname.startsWith("/admin")) {
     url.pathname = `/admin${url.pathname === "/" ? "" : url.pathname}`;
     const response = NextResponse.rewrite(url);
-    response.headers.set("X-Content-Type-Options", "nosniff");
-    response.headers.set("X-Frame-Options", "SAMEORIGIN");
-    return response;
+    return applySecurityHeaders(response);
   }
 
   // Rewriting internal routes for store subdomains & custom domains
@@ -95,16 +114,12 @@ export async function middleware(request: NextRequest) {
     ) {
       url.pathname = `/store/${resolved.tenantSlug}${url.pathname === "/" ? "" : url.pathname}`;
       const response = NextResponse.rewrite(url);
-      response.headers.set("X-Content-Type-Options", "nosniff");
-      response.headers.set("X-Frame-Options", "SAMEORIGIN");
-      return response;
+      return applySecurityHeaders(response);
     }
   }
 
   const response = NextResponse.next();
-  response.headers.set("X-Content-Type-Options", "nosniff");
-  response.headers.set("X-Frame-Options", "SAMEORIGIN");
-  return response;
+  return applySecurityHeaders(response);
 }
 
 export const config = {

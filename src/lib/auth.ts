@@ -42,11 +42,11 @@ export function verifySessionToken(token: string, secret?: string): SessionPaylo
     const key = secret || process.env.AUTH_SECRET || (process.env.NODE_ENV !== "production" ? DEV_FALLBACK_SECRET : undefined);
     if (!key) return null;
     const decoded = jwt.verify(token, key) as SessionPayload;
-    if (decoded && decoded.userId && decoded.storeId) {
+    if (decoded && decoded.userId && (decoded.storeId || decoded.role === "super_admin")) {
       return {
         userId: decoded.userId,
         email: decoded.email,
-        storeId: decoded.storeId,
+        storeId: decoded.storeId || "platform-root",
         storeName: decoded.storeName,
         slug: decoded.slug,
         role: decoded.role,

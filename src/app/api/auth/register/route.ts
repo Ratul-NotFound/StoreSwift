@@ -5,6 +5,7 @@ import { eq } from "drizzle-orm";
 import { hashPassword, signSessionToken } from "@/lib/auth";
 import { isReservedSlug } from "@/config/reserved-slugs";
 import { devStore } from "@/lib/dev-store";
+import { sanitizeString } from "@/lib/security";
 
 const registerSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters").max(100),
@@ -38,7 +39,9 @@ export async function POST(request: Request) {
       );
     }
 
-    const { fullName, email, password, storeName, category, template, currency } = result.data;
+    const { fullName: rawName, email, password, storeName: rawStoreName, category, template, currency } = result.data;
+    const fullName = sanitizeString(rawName);
+    const storeName = sanitizeString(rawStoreName);
 
     let baseSlug = slugify(storeName);
     if (!baseSlug || isReservedSlug(baseSlug)) {

@@ -9,10 +9,9 @@ import { getSessionFromRequest } from "@/lib/api-auth";
  */
 export async function GET(request: Request) {
   const session = getSessionFromRequest(request);
-  const isDev = process.env.NODE_ENV !== "production";
 
-  if (!isDev && (!session || session.role !== "super_admin")) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!session || session.role !== "super_admin") {
+    return NextResponse.json({ error: "Forbidden: Super admin authentication required." }, { status: 403 });
   }
 
   const url = new URL(request.url);

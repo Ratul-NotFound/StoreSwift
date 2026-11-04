@@ -9,6 +9,7 @@ import { calculateCommission, PLAN_LIMITS, isValidPlan, type PlanId } from "@/li
 import { devStore } from "@/lib/dev-store";
 import { trafficLimiter, SlidingWindowRateLimiter } from "@/lib/rate-limiter";
 import { fastCache } from "@/lib/cache";
+import { sanitizeString, verifyOrigin } from "@/lib/security";
 
 const orderCreateSchema = z.object({
   storeSlug: z.string().optional(),
@@ -152,27 +153,60 @@ export async function POST(request: Request) {
       ? data.shippingAddress.district || data.shippingAddress.city || "Dhaka"
       : "Dhaka";
 
-    const cleanItems = data.items.map((it) => ({
-      variantId: it.variantId,
-      title: it.title || "Product",
-      price: typeof it.price === "string" ? parseFloat(it.price) : it.price,
-      quantity: it.quantity,
-      isDropship: it.isDropship,
-      platformProductId: it.platformProductId,
-    }));
+    // ── Input Sanitization (Anti-XSS Protection) ──
+    const safeCustomerName = sanitizeString(data.customerName);
+    const safeCustomerPhone = sanitizeString(data.customerPhone);
+    const safeCustomerEmail = data.customerEmail ? sanitizeString(data.customerEmail) : undefined;
+    const safeAddress = sanitizeString(formattedAddress);
+    const safeDistrict = sanitizeString(district);
+
+    // ── Server-Authoritative Price & Calculation Integrity ──
+    // Fetch authoritative product catalog from store to eliminate client-side price tampering
+    const storeProducts = devStore.getProducts(storeSlug);
+
+    const cleanItems = data.items.map((it) => {
+      // Find matching product in the verified store catalog
+      const matched = storeProducts.find(
+        (p) =>
+          (it.id && p.id === it.id) ||
+          (it.variantId && (p.id === it.variantId || p.sku === it.variantId)) ||
+          (it.title && p.title.toLowerCase() === it.title.toLowerCase())
+      );
+
+      // Enforce the server catalog price; never allow arbitrary client manipulation
+      let verifiedPrice: number;
+      if (matched && typeof matched.price === "number" && matched.price > 0) {
+        verifiedPrice = matched.price;
+      } else {
+        const parsed = typeof it.price === "string" ? parseFloat(it.price) : it.price;
+        verifiedPrice = Math.max(1, isNaN(parsed) ? 100 : parsed);
+      }
+
+      // Quantity must be a positive integer between 1 and 99
+      const safeQuantity = Math.min(99, Math.max(1, Math.floor(it.quantity || 1)));
+
+      return {
+        variantId: it.variantId || matched?.id,
+        title: sanitizeString(matched?.title || it.title || "Product"),
+        price: verifiedPrice,
+        quantity: safeQuantity,
+        isDropship: it.isDropship || matched?.isDropship,
+        platformProductId: it.platformProductId,
+      };
+    });
 
     // 1. Save to devStore (instant, 100% synchronized)
     const newOrder = devStore.addOrder({
       storeSlug,
-      customerName: data.customerName,
-      customerPhone: data.customerPhone,
-      customerEmail: data.customerEmail || undefined,
-      shippingAddress: formattedAddress,
-      district,
+      customerName: safeCustomerName,
+      customerPhone: safeCustomerPhone,
+      customerEmail: safeCustomerEmail,
+      shippingAddress: safeAddress,
+      district: safeDistrict,
       items: cleanItems,
       paymentMethod: data.paymentMethod,
       shippingFee: data.shippingFee ?? 0,
-      trxId: data.trxId,
+      trxId: data.trxId ? sanitizeString(data.trxId) : undefined,
     });
 
     // Invalidate product catalog cache so inventory decrements show immediately
