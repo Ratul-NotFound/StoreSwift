@@ -15,7 +15,11 @@ import {
   Activity, Award, Target, X, Check, Menu,
   LogOut, Edit, Save, Tag, ArrowRight, Copy, CheckCheck,
   Info, Sparkles, Package2, Palette,
+  ShieldCheck, ShoppingCart, History, UserPlus, Printer, FileSpreadsheet, MessageSquare,
 } from "lucide-react";
+import { PrintableOrderModal, type PrintableOrderData } from "@/components/merchant/orders/printable-order-modal";
+import { CsvImportModal } from "@/components/merchant/catalog/csv-import-modal";
+import type { DevStoreStaff } from "@/lib/dev-store";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -274,6 +278,7 @@ function OrdersTab({ tenant }: { tenant: string }) {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [printOrder, setPrintOrder] = useState<PrintableOrderData | null>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -289,6 +294,35 @@ function OrdersTab({ tenant }: { tenant: string }) {
       await fetch(`/api/orders/${id}/status`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ status }) });
       setOrders(prev => prev.map(o => o.id === id ? { ...o, status } : o));
     } catch { /* graceful */ }
+  };
+
+  const handleExport = () => {
+    window.open(`/api/stores/${tenant}/export?type=orders`, "_blank");
+  };
+
+  const handlePrintClick = (o: Order) => {
+    setPrintOrder({
+      orderNumber: o.orderNumber,
+      customerName: o.customerName,
+      customerPhone: o.customerPhone,
+      customerEmail: (o as any).customerEmail,
+      shippingAddress: o.shippingAddress,
+      district: (o as any).district || "Dhaka",
+      items: Array.isArray((o as any).items) && typeof (o as any).items[0] === "object"
+        ? (o as any).items
+        : [{ title: `Order Items (${typeof o.items === "number" ? o.items : 1} pcs)`, price: o.totalAmount, quantity: 1 }],
+      subtotal: (o as any).subtotal || o.totalAmount,
+      discountAmount: (o as any).discountAmount || 0,
+      couponCode: (o as any).couponCode,
+      shippingFee: (o as any).shippingFee || 60,
+      totalAmount: o.totalAmount,
+      paymentMethod: o.paymentMethod,
+      paymentStatus: (o as any).paymentStatus || (o.status === "delivered" ? "paid" : "pending"),
+      consignmentId: o.consignmentId,
+      courierName: o.courierName || "Steadfast Courier",
+      createdAt: o.createdAt,
+      storeName: tenant.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase()),
+    });
   };
 
   const filtered = orders.filter(o => {
@@ -309,8 +343,8 @@ function OrdersTab({ tenant }: { tenant: string }) {
         <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} className="text-sm border border-zinc-200 rounded-xl px-4 py-2.5 bg-white focus:outline-none cursor-pointer">
           {["all","pending","processing","shipped","delivered","cancelled"].map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
         </select>
-        <button className="flex items-center gap-2 text-sm font-semibold text-zinc-700 border border-zinc-200 rounded-xl px-4 py-2.5 bg-white hover:bg-zinc-50 transition">
-          <Download className="w-4 h-4" /> Export
+        <button onClick={handleExport} className="flex items-center gap-2 text-sm font-semibold text-zinc-700 border border-zinc-200 rounded-xl px-4 py-2.5 bg-white hover:bg-zinc-50 transition shadow-sm">
+          <Download className="w-4 h-4" /> Export CSV
         </button>
       </div>
 
@@ -335,14 +369,15 @@ function OrdersTab({ tenant }: { tenant: string }) {
                         <p className="font-semibold text-zinc-900 text-xs">{o.customerName}</p>
                         <p className="text-xs text-zinc-400 flex items-center gap-1 mt-0.5"><Phone className="w-3 h-3" />{o.customerPhone}</p>
                       </td>
-                      <td className="px-5 py-3.5 font-semibold text-zinc-700">{o.items}</td>
+                      <td className="px-5 py-3.5 font-semibold text-zinc-700">{typeof o.items === "number" ? o.items : 1}</td>
                       <td className="px-5 py-3.5 font-bold text-zinc-900">{BDT(o.totalAmount)}</td>
                       <td className="px-5 py-3.5 uppercase text-xs font-semibold text-zinc-500">{o.paymentMethod}</td>
                       <td className="px-5 py-3.5"><StatusBadge status={o.status} /></td>
                       <td className="px-5 py-3.5 text-xs text-zinc-400 whitespace-nowrap">{new Date(o.createdAt).toLocaleDateString("en-BD")}</td>
                       <td className="px-5 py-3.5">
                         <div className="flex items-center gap-1">
-                          <button onClick={() => setExpanded(expanded === o.id ? null : o.id)} className="p-1.5 rounded-lg hover:bg-zinc-100 text-zinc-500 transition"><Eye className="w-3.5 h-3.5" /></button>
+                          <button onClick={() => setExpanded(expanded === o.id ? null : o.id)} className="p-1.5 rounded-lg hover:bg-zinc-100 text-zinc-500 transition" title="View details"><Eye className="w-3.5 h-3.5" /></button>
+                          <button onClick={() => handlePrintClick(o)} className="p-1.5 rounded-lg hover:bg-emerald-50 text-emerald-600 transition" title="Print Invoice & Thermal Shipping Label"><Printer className="w-3.5 h-3.5" /></button>
                           {o.status === "pending" && <button onClick={() => updateStatus(o.id, "processing")} className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-600 transition" title="Confirm"><Check className="w-3.5 h-3.5" /></button>}
                           {o.status === "processing" && <button onClick={() => updateStatus(o.id, "shipped")} className="p-1.5 rounded-lg hover:bg-indigo-50 text-indigo-600 transition" title="Ship"><Truck className="w-3.5 h-3.5" /></button>}
                         </div>
@@ -355,6 +390,11 @@ function OrdersTab({ tenant }: { tenant: string }) {
                             <div><p className="text-zinc-500 text-xs font-semibold mb-1">Shipping Address</p><p className="font-semibold text-zinc-900">{o.shippingAddress}</p></div>
                             <div><p className="text-zinc-500 text-xs font-semibold mb-1">Total</p><p className="font-black text-emerald-700 text-lg">{BDT(o.totalAmount)}</p></div>
                             <div><p className="text-zinc-500 text-xs font-semibold mb-1">Tracking</p><p className="font-mono text-xs">{o.consignmentId ?? "Not assigned"}</p>{o.courierName && <p className="text-xs text-zinc-500">{o.courierName}</p>}</div>
+                            <div className="flex items-center justify-end">
+                              <button onClick={() => handlePrintClick(o)} className="flex items-center gap-1.5 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition shadow-sm">
+                                <Printer className="w-3.5 h-3.5" /> 1-Click Print
+                              </button>
+                            </div>
                           </div>
                           <div className="flex gap-2 flex-wrap">
                             {["pending","processing","shipped","delivered","cancelled"].map(s => (
@@ -371,6 +411,9 @@ function OrdersTab({ tenant }: { tenant: string }) {
           </table>
         </div>
       </div>
+
+      {/* 1-Click Printable Modal */}
+      {printOrder && <PrintableOrderModal order={printOrder} onClose={() => setPrintOrder(null)} />}
     </div>
   );
 }
@@ -382,6 +425,7 @@ function ProductsTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [showCsvImport, setShowCsvImport] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState({ title: "", price: "", stock: "", sku: "", category: "", comparePrice: "" });
   const [saving, setSaving] = useState(false);
@@ -456,13 +500,19 @@ function ProductsTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
           <h2 className="text-lg font-bold text-zinc-900">Products</h2>
           <p className="text-xs text-zinc-500 mt-0.5">{products.length} / {cfg.maxProducts ?? "∞"}{atLimit && <span className="text-red-600 font-semibold ml-2">· Limit reached</span>}</p>
         </div>
-        <div className="flex gap-2 w-full sm:w-auto">
+        <div className="flex flex-wrap gap-2 w-full sm:w-auto">
           <div className="relative flex-1 sm:flex-none">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
-            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search..." className="w-full sm:w-48 pl-9 pr-4 py-2 text-sm border border-zinc-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/30" />
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search..." className="w-full sm:w-40 pl-9 pr-4 py-2 text-sm border border-zinc-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/30" />
           </div>
-          <button onClick={() => { if (!atLimit) { setShowForm(true); setEditId(null); setForm({ title: "", price: "", stock: "", sku: "", category: "", comparePrice: "" }); } }} disabled={atLimit} className="flex items-center gap-2 bg-violet-600 hover:bg-violet-500 disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-2 rounded-xl text-sm font-bold transition whitespace-nowrap">
-            <Plus className="w-4 h-4" /> Add Product
+          <button onClick={() => setShowCsvImport(true)} className="flex items-center gap-1.5 border border-zinc-200 bg-white hover:bg-zinc-50 px-3 py-2 rounded-xl text-xs font-bold text-zinc-700 transition shadow-sm">
+            <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" /> Import CSV
+          </button>
+          <button onClick={() => window.open(`/api/stores/${tenant}/export?type=products`, "_blank")} className="flex items-center gap-1.5 border border-zinc-200 bg-white hover:bg-zinc-50 px-3 py-2 rounded-xl text-xs font-bold text-zinc-700 transition shadow-sm">
+            <Download className="w-3.5 h-3.5 text-zinc-500" /> Export CSV
+          </button>
+          <button onClick={() => { if (!atLimit) { setShowForm(true); setEditId(null); setForm({ title: "", price: "", stock: "", sku: "", category: "", comparePrice: "" }); } }} disabled={atLimit} className="flex items-center gap-1.5 bg-violet-600 hover:bg-violet-500 disabled:opacity-50 disabled:cursor-not-allowed text-white px-3.5 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap shadow-sm">
+            <Plus className="w-3.5 h-3.5" /> Add Product
           </button>
         </div>
       </div>
@@ -547,6 +597,17 @@ function ProductsTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
           </table>
         </div>
       </div>
+
+      {/* Bulk CSV Import Modal */}
+      <CsvImportModal
+        tenantSlug={tenant}
+        isOpen={showCsvImport}
+        onClose={() => setShowCsvImport(false)}
+        onSuccess={() => {
+          setShowCsvImport(false);
+          load();
+        }}
+      />
     </div>
   );
 }
@@ -570,6 +631,10 @@ function CustomersTab({ tenant }: { tenant: string }) {
       .finally(() => setLoading(false));
   }, [tenant]);
 
+  const handleExportCustomers = () => {
+    window.open(`/api/stores/${tenant}/export?type=customers`, "_blank");
+  };
+
   const filtered = customers.filter(c => !search || c.name.toLowerCase().includes(search.toLowerCase()) || c.phone.includes(search));
   const totalRevenue = customers.reduce((s, c) => s + c.totalSpent, 0);
 
@@ -588,7 +653,7 @@ function CustomersTab({ tenant }: { tenant: string }) {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by name or phone..." className="w-full pl-10 pr-4 py-2.5 text-sm border border-zinc-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/30" />
         </div>
-        <button className="flex items-center gap-2 text-sm font-semibold text-zinc-700 border border-zinc-200 rounded-xl px-4 py-2.5 bg-white hover:bg-zinc-50 transition"><Download className="w-4 h-4" /> Export CSV</button>
+        <button onClick={handleExportCustomers} className="flex items-center gap-2 text-sm font-semibold text-zinc-700 border border-zinc-200 rounded-xl px-4 py-2.5 bg-white hover:bg-zinc-50 transition shadow-sm"><Download className="w-4 h-4" /> Export CSV</button>
       </div>
       <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
@@ -1553,9 +1618,532 @@ function ThemesTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
   );
 }
 
+// ─── STAFF & RBAC ────────────────────────────────────────────────────────────
+
+function StaffTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
+  const [staffList, setStaffList] = useState<DevStoreStaff[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [planLimit, setPlanLimit] = useState<{ allowed: boolean; limit: number; current: number }>({ allowed: true, limit: 0, current: 0 });
+  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [inviteForm, setInviteForm] = useState({ name: "", email: "", phone: "", role: "fulfillment" as any });
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [upgradeNotice, setUpgradeNotice] = useState(false);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
+
+  const loadStaff = useCallback(() => {
+    setLoading(true);
+    fetch(`/api/stores/${tenant}/staff`)
+      .then(r => r.json())
+      .then(d => {
+        if (d.ok) {
+          setStaffList(d.staff || []);
+          if (d.planLimit) setPlanLimit(d.planLimit);
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [tenant]);
+
+  useEffect(() => { loadStaff(); }, [loadStaff]);
+
+  const handleInvite = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inviteForm.name || !inviteForm.email) return;
+    setSubmitting(true);
+    setError(null);
+    setUpgradeNotice(false);
+    try {
+      const res = await fetch(`/api/stores/${tenant}/staff`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(inviteForm),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Failed to invite staff member.");
+        if (data.upgrade) setUpgradeNotice(true);
+      } else {
+        setSuccessMsg(`Successfully invited ${inviteForm.name}!`);
+        setShowInviteModal(false);
+        setInviteForm({ name: "", email: "", phone: "", role: "fulfillment" });
+        loadStaff();
+        setTimeout(() => setSuccessMsg(null), 3500);
+      }
+    } catch {
+      setError("Network error inviting staff member.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleDeleteStaff = async (staffId: string) => {
+    if (!confirm("Are you sure you want to remove this staff account?")) return;
+    try {
+      const res = await fetch(`/api/stores/${tenant}/staff?staffId=${staffId}`, { method: "DELETE" });
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.error || "Failed to remove staff member.");
+      } else {
+        loadStaff();
+      }
+    } catch {
+      // graceful
+    }
+  };
+
+  const roleBadges: Record<string, { label: string; style: string }> = {
+    owner: { label: "Store Owner", style: "bg-purple-50 text-purple-700 border-purple-200" },
+    manager: { label: "Operations Manager", style: "bg-blue-50 text-blue-700 border-blue-200" },
+    fulfillment: { label: "Fulfillment & Courier", style: "bg-amber-50 text-amber-700 border-amber-200" },
+    catalog_editor: { label: "Catalog & Pricing", style: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+  };
+
+  if (loading) return <div className="flex justify-center py-20"><div className="w-8 h-8 border-4 border-violet-600 border-t-transparent rounded-full animate-spin" /></div>;
+
+  return (
+    <div className="space-y-6">
+      {successMsg && (
+        <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-xs font-semibold flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+          <span>{successMsg}</span>
+        </div>
+      )}
+
+      {/* Seat Limit Card */}
+      <div className="bg-white rounded-2xl border border-zinc-100 p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <ShieldCheck className="w-4 h-4 text-violet-600" />
+            <h3 className="font-bold text-zinc-900 text-base">Staff Accounts & RBAC Seats</h3>
+          </div>
+          <p className="text-xs text-zinc-500">
+            {plan === "free"
+              ? "Free plan includes primary owner only. Upgrade to Medium (2 seats) or Pro (10 seats) for team delegation."
+              : `You are using ${planLimit.current} of ${planLimit.limit} allowed staff seats on your ${PLAN_CONFIG[plan].name} plan.`}
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => {
+              if (!planLimit.allowed) {
+                alert(`Staff limit reached (${planLimit.current}/${planLimit.limit}). Upgrade to Medium or Pro.`);
+              } else {
+                setShowInviteModal(true);
+              }
+            }}
+            className="flex items-center gap-1.5 px-4 py-2.5 bg-violet-600 hover:bg-violet-700 text-white rounded-xl text-xs font-bold shadow-md transition active:scale-95 whitespace-nowrap"
+          >
+            <UserPlus className="w-4 h-4" /> Invite Staff Member
+          </button>
+        </div>
+      </div>
+
+      {/* Staff Table */}
+      <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm overflow-hidden">
+        <div className="px-5 py-3.5 border-b border-zinc-50 flex justify-between items-center bg-zinc-50/50">
+          <span className="text-xs font-bold text-zinc-700 uppercase tracking-wider">Active Team Members ({staffList.length})</span>
+          <span className="text-xs text-zinc-400">Enterprise Role-Based Access Control</span>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-zinc-50 border-b border-zinc-100 text-left text-xs font-semibold text-zinc-500">
+                <th className="px-5 py-3">Member</th>
+                <th className="px-5 py-3">Role</th>
+                <th className="px-5 py-3">Contact</th>
+                <th className="px-5 py-3">Status</th>
+                <th className="px-5 py-3">Added</th>
+                <th className="px-5 py-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-50">
+              {staffList.map((s) => {
+                const badge = roleBadges[s.role] || { label: s.role, style: "bg-zinc-100 text-zinc-700 border-zinc-200" };
+                const isOwner = s.role === "owner";
+                return (
+                  <tr key={s.id} className="hover:bg-zinc-50/50 transition">
+                    <td className="px-5 py-3.5">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-violet-100 text-violet-700 flex items-center justify-center font-bold text-xs uppercase">
+                          {s.name.slice(0, 2)}
+                        </div>
+                        <div>
+                          <p className="font-semibold text-zinc-900 text-xs">{s.name}</p>
+                          <p className="text-[11px] text-zinc-400">{s.email}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-5 py-3.5">
+                      <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${badge.style}`}>
+                        {badge.label}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3.5 text-xs text-zinc-500 font-mono">
+                      {s.phone || "—"}
+                    </td>
+                    <td className="px-5 py-3.5">
+                      <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Active
+                      </span>
+                    </td>
+                    <td className="px-5 py-3.5 text-xs text-zinc-400">
+                      {new Date(s.invitedAt).toLocaleDateString("en-BD")}
+                    </td>
+                    <td className="px-5 py-3.5 text-right">
+                      {!isOwner && (
+                        <button
+                          onClick={() => handleDeleteStaff(s.id)}
+                          className="p-1.5 rounded-lg hover:bg-red-50 text-red-600 transition"
+                          title="Remove Staff"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Invite Modal */}
+      {showInviteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden border border-zinc-100">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-100 bg-zinc-50">
+              <div className="flex items-center gap-2">
+                <UserPlus className="w-4 h-4 text-violet-600" />
+                <h3 className="font-bold text-zinc-900 text-sm">Invite Team Member</h3>
+              </div>
+              <button onClick={() => setShowInviteModal(false)} className="p-1.5 text-zinc-400 hover:text-zinc-700 rounded-lg">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <form onSubmit={handleInvite} className="p-6 space-y-4">
+              {error && (
+                <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl">
+                  {error}
+                  {upgradeNotice && <div className="mt-1 font-bold text-red-800">Requires Medium or Pro Plan.</div>}
+                </div>
+              )}
+              <div>
+                <label className="block text-xs font-bold text-zinc-700 mb-1">Full Name</label>
+                <input
+                  value={inviteForm.name}
+                  onChange={(e) => setInviteForm({ ...inviteForm, name: e.target.value })}
+                  placeholder="e.g. Tariqul Islam"
+                  required
+                  className="w-full text-xs p-2.5 border border-zinc-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-zinc-700 mb-1">Email Address</label>
+                <input
+                  type="email"
+                  value={inviteForm.email}
+                  onChange={(e) => setInviteForm({ ...inviteForm, email: e.target.value })}
+                  placeholder="e.g. tariq@store.bd"
+                  required
+                  className="w-full text-xs p-2.5 border border-zinc-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-zinc-700 mb-1">Phone Number (Optional)</label>
+                <input
+                  value={inviteForm.phone}
+                  onChange={(e) => setInviteForm({ ...inviteForm, phone: e.target.value })}
+                  placeholder="e.g. 01711223344"
+                  className="w-full text-xs p-2.5 border border-zinc-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/20"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-zinc-700 mb-1">Role & Permissions</label>
+                <select
+                  value={inviteForm.role}
+                  onChange={(e) => setInviteForm({ ...inviteForm, role: e.target.value as any })}
+                  className="w-full text-xs p-2.5 border border-zinc-200 rounded-xl bg-white focus:outline-none cursor-pointer"
+                >
+                  <option value="manager">Operations Manager (Orders, Products, Staff)</option>
+                  <option value="fulfillment">Fulfillment Specialist (Shipping, Slips, Invoices)</option>
+                  <option value="catalog_editor">Catalog Editor (Products, Inventory, Categories)</option>
+                </select>
+              </div>
+              <div className="flex justify-end gap-2 pt-3 border-t border-zinc-100">
+                <button
+                  type="button"
+                  onClick={() => setShowInviteModal(false)}
+                  className="px-4 py-2 text-xs font-semibold text-zinc-600 hover:bg-zinc-100 rounded-xl"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="px-5 py-2 bg-violet-600 hover:bg-violet-700 text-white text-xs font-bold rounded-xl transition shadow"
+                >
+                  {submitting ? "Sending Invite..." : "Send Invite"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── ABANDONED CARTS ──────────────────────────────────────────────────────────
+
+function AbandonedTab({ tenant }: { tenant: string }) {
+  const [carts, setCarts] = useState<any[]>([]);
+  const [totalRecoverable, setTotalRecoverable] = useState(0);
+  const [totalAbandoned, setTotalAbandoned] = useState(0);
+  const [convertedCount, setConvertedCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`/api/stores/${tenant}/abandoned-carts`)
+      .then(r => r.json())
+      .then(d => {
+        if (d.ok) {
+          setCarts(d.abandonedCarts || []);
+          setTotalRecoverable(d.totalRecoverable || 0);
+          setTotalAbandoned(d.totalAbandoned || 0);
+          setConvertedCount(d.convertedCount || 0);
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [tenant]);
+
+  if (loading) return <div className="flex justify-center py-20"><div className="w-8 h-8 border-4 border-violet-600 border-t-transparent rounded-full animate-spin" /></div>;
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <StatCard label="Recoverable Revenue" value={BDT(totalRecoverable)} icon={DollarSign} iconBg="bg-emerald-50 text-emerald-600" />
+        <StatCard label="Abandoned Checkouts" value={totalAbandoned} icon={ShoppingCart} iconBg="bg-amber-50 text-amber-600" />
+        <StatCard label="Recovered Orders" value={convertedCount} icon={CheckCircle2} iconBg="bg-violet-50 text-violet-600" />
+      </div>
+
+      <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm overflow-hidden">
+        <div className="px-5 py-4 border-b border-zinc-50 flex items-center justify-between">
+          <div>
+            <h3 className="font-bold text-zinc-900 text-sm">Abandoned Checkout Leads</h3>
+            <p className="text-xs text-zinc-500 mt-0.5">Automated high-intent prospective buyers captured before order submission</p>
+          </div>
+          <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
+            1-Click WhatsApp Recovery
+          </span>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-zinc-50 border-b border-zinc-100 text-left text-xs font-semibold text-zinc-500">
+                <th className="px-5 py-3">Customer</th>
+                <th className="px-5 py-3">Items in Bag</th>
+                <th className="px-5 py-3">Bag Value</th>
+                <th className="px-5 py-3">Location</th>
+                <th className="px-5 py-3">Captured</th>
+                <th className="px-5 py-3 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-50">
+              {carts.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="text-center py-16 text-zinc-400 text-xs">
+                    No abandoned carts recorded. All customers are completing checkouts smoothly!
+                  </td>
+                </tr>
+              ) : (
+                carts.map((c) => (
+                  <tr key={c.id} className="hover:bg-zinc-50/50 transition">
+                    <td className="px-5 py-3.5">
+                      <p className="font-semibold text-zinc-900 text-xs">{c.customerName || "Prospective Buyer"}</p>
+                      <p className="text-[11px] text-zinc-400 font-mono flex items-center gap-1 mt-0.5">
+                        <Phone className="w-3 h-3 text-zinc-400" /> {c.customerPhone}
+                      </p>
+                    </td>
+                    <td className="px-5 py-3.5">
+                      <div className="space-y-0.5 max-w-xs">
+                        {c.items.map((it: any, idx: number) => (
+                          <p key={idx} className="text-xs text-zinc-700 truncate">
+                            <span className="font-bold text-zinc-900">{it.quantity}x</span> {it.title}
+                          </p>
+                        ))}
+                      </div>
+                    </td>
+                    <td className="px-5 py-3.5 font-bold text-zinc-900 text-sm">
+                      {BDT(c.totalAmount)}
+                    </td>
+                    <td className="px-5 py-3.5 text-xs text-zinc-500 capitalize">
+                      {c.district || "Dhaka"}
+                    </td>
+                    <td className="px-5 py-3.5 text-xs text-zinc-400 whitespace-nowrap">
+                      {new Date(c.createdAt).toLocaleDateString("en-BD", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
+                    </td>
+                    <td className="px-5 py-3.5 text-right">
+                      <a
+                        href={c.whatsAppUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition shadow-sm"
+                      >
+                        <MessageSquare className="w-3.5 h-3.5" /> Recover Lead
+                      </a>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── ACTIVITY & LOGS ──────────────────────────────────────────────────────────
+
+function ActivityTab({ tenant }: { tenant: string }) {
+  const [events, setEvents] = useState<any[]>([]);
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [subTab, setSubTab] = useState<"audit" | "notifications">("audit");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    Promise.all([
+      fetch(`/api/stores/${tenant}/audit`).then(r => r.json()),
+      fetch(`/api/stores/${tenant}/notifications`).then(r => r.json()),
+    ])
+      .then(([auditData, notifData]) => {
+        if (auditData.ok) setEvents(auditData.events || []);
+        if (notifData.ok) setNotifications(notifData.notifications || []);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [tenant]);
+
+  if (loading) return <div className="flex justify-center py-20"><div className="w-8 h-8 border-4 border-violet-600 border-t-transparent rounded-full animate-spin" /></div>;
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center gap-2 border-b border-zinc-200 pb-3">
+        <button
+          onClick={() => setSubTab("audit")}
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition ${
+            subTab === "audit"
+              ? "bg-zinc-900 text-white shadow"
+              : "bg-white text-zinc-600 hover:bg-zinc-100 border border-zinc-200"
+          }`}
+        >
+          <History className="w-4 h-4" /> Store Security Audit Trail ({events.length})
+        </button>
+        <button
+          onClick={() => setSubTab("notifications")}
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition ${
+            subTab === "notifications"
+              ? "bg-zinc-900 text-white shadow"
+              : "bg-white text-zinc-600 hover:bg-zinc-100 border border-zinc-200"
+          }`}
+        >
+          <Bell className="w-4 h-4" /> Transactional Notifications Queue ({notifications.length})
+        </button>
+      </div>
+
+      {subTab === "audit" ? (
+        <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm overflow-hidden">
+          <div className="px-5 py-3.5 border-b border-zinc-50 bg-zinc-50/50 flex justify-between items-center">
+            <span className="text-xs font-bold text-zinc-700 uppercase tracking-wider">Tamper-Evident Audit Timeline</span>
+            <span className="text-xs text-zinc-400">SOC2 Type II Ready Logging</span>
+          </div>
+          <div className="divide-y divide-zinc-50">
+            {events.length === 0 ? (
+              <div className="text-center py-16 text-zinc-400 text-xs">No audit events recorded yet.</div>
+            ) : (
+              events.map((e) => (
+                <div key={e.id} className="p-4 flex items-start gap-4 hover:bg-zinc-50/50 transition">
+                  <div className="w-8 h-8 rounded-full bg-zinc-100 text-zinc-700 flex items-center justify-center font-bold text-xs flex-shrink-0">
+                    <Activity className="w-4 h-4 text-violet-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-xs font-bold uppercase text-zinc-900">{e.action.replace(/_/g, " ")}</span>
+                      <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-700">
+                        {e.actorRole}
+                      </span>
+                      <span className="text-[11px] text-zinc-400">· {e.actorEmail}</span>
+                    </div>
+                    <p className="text-xs text-zinc-700 mt-1">{e.details}</p>
+                    <p className="text-[10px] text-zinc-400 mt-1 font-mono">
+                      {new Date(e.timestamp).toLocaleString("en-BD")}
+                    </p>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      ) : (
+        <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm overflow-hidden">
+          <div className="px-5 py-3.5 border-b border-zinc-50 bg-zinc-50/50 flex justify-between items-center">
+            <span className="text-xs font-bold text-zinc-700 uppercase tracking-wider">Simulated Message Deliveries (SMS/WhatsApp/Email)</span>
+            <span className="text-xs text-zinc-400">Carrier Routing Engine</span>
+          </div>
+          <div className="divide-y divide-zinc-50">
+            {notifications.length === 0 ? (
+              <div className="text-center py-16 text-zinc-400 text-xs">No notifications queued yet.</div>
+            ) : (
+              notifications.map((n) => (
+                <div key={n.id} className="p-4 flex items-start gap-4 hover:bg-zinc-50/50 transition">
+                  <div className="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-xs flex-shrink-0">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="uppercase text-[10px] font-black px-2 py-0.5 rounded-full bg-zinc-900 text-white font-mono">
+                        {n.channel}
+                      </span>
+                      <span className="text-xs font-bold text-zinc-900">{n.recipient}</span>
+                      <span className="text-xs text-zinc-400">({n.template})</span>
+                    </div>
+                    <div className="text-xs text-zinc-600 mt-1 font-mono bg-zinc-50 p-2 rounded-lg border border-zinc-100">
+                      {JSON.stringify(n.payload, null, 2)}
+                    </div>
+                    <p className="text-[10px] text-zinc-400 mt-1">
+                      {new Date(n.createdAt).toLocaleString("en-BD")} · Status: <span className="text-emerald-700 font-bold uppercase">{n.status}</span>
+                    </p>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 
-type TabId = "overview"|"orders"|"products"|"themes"|"customers"|"analytics"|"coupons"|"dropship"|"settings"|"billing";
+type TabId =
+  | "overview"
+  | "orders"
+  | "products"
+  | "themes"
+  | "customers"
+  | "staff"
+  | "abandoned"
+  | "activity"
+  | "analytics"
+  | "coupons"
+  | "dropship"
+  | "settings"
+  | "billing";
 
 const NAV: { id: TabId; label: string; icon: React.ElementType; badge?: string; requiresMedium?: boolean }[] = [
   { id: "overview",   label: "Overview",   icon: LayoutDashboard },
@@ -1563,9 +2151,12 @@ const NAV: { id: TabId; label: string; icon: React.ElementType; badge?: string; 
   { id: "products",   label: "Products",   icon: Package },
   { id: "themes",     label: "Themes & Design", icon: Palette, badge: "30" },
   { id: "customers",  label: "Customers",  icon: Users },
+  { id: "staff",      label: "Staff & RBAC", icon: ShieldCheck, requiresMedium: true },
+  { id: "abandoned",  label: "Abandoned Carts", icon: ShoppingCart, badge: "Lead" },
+  { id: "activity",   label: "Activity & Logs", icon: History },
   { id: "analytics",  label: "Analytics",  icon: BarChart3 },
   { id: "coupons",    label: "Coupons",    icon: Percent,  requiresMedium: true },
-  { id: "dropship",   label: "Dropship",   icon: Layers,   requiresMedium: true },
+  { id: "dropship",   label: "Dropship",   icon: Layers },
   { id: "settings",   label: "Settings",   icon: Settings },
   { id: "billing",    label: "Billing",    icon: CreditCard },
 ];
@@ -1603,6 +2194,9 @@ export default function MerchantDashboard() {
       case "products":  return <ProductsTab tenant={tenant} plan={plan} />;
       case "themes":    return <ThemesTab tenant={tenant} plan={plan} />;
       case "customers": return <CustomersTab tenant={tenant} />;
+      case "staff":     return <StaffTab tenant={tenant} plan={plan} />;
+      case "abandoned": return <AbandonedTab tenant={tenant} />;
+      case "activity":  return <ActivityTab tenant={tenant} />;
       case "analytics": return <AnalyticsTab tenant={tenant} plan={plan} />;
       case "coupons":   return <CouponsTab tenant={tenant} plan={plan} />;
       case "dropship":  return <DropshipTab tenant={tenant} plan={plan} />;

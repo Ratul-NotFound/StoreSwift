@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   X,
   CheckCircle2,
@@ -83,6 +83,13 @@ export function ExpressCheckoutModal({
   const [couponError, setCouponError] = useState<string | null>(null);
   const [checkingCoupon, setCheckingCoupon] = useState(false);
 
+  const t = CHECKOUT_I18N[lang];
+  const isBDT = currency === "৳" || currency.toLowerCase().includes("bdt");
+  const zoneConfig = DELIVERY_ZONES[deliveryZone];
+  const shippingFee = isBDT ? zoneConfig.rateBDT : zoneConfig.rateUSD;
+  const subtotal = Math.round(items.reduce((sum, it) => sum + it.price * it.quantity, 0) * 100) / 100;
+  const finalTotal = Math.round((Math.max(0, subtotal - appliedDiscount) + shippingFee) * 100) / 100;
+
   // Debounced abandoned cart lead capture when customer fills phone
   useEffect(() => {
     if (customerPhone.trim().length >= 11 && items.length > 0 && !orderConfirmed) {
@@ -105,13 +112,6 @@ export function ExpressCheckoutModal({
   }, [customerPhone, customerName, customerEmail, items, finalTotal, tenantSlug, selectedDistrict, orderConfirmed]);
 
   if (!isOpen) return null;
-
-  const t = CHECKOUT_I18N[lang];
-  const isBDT = currency === "৳" || currency.toLowerCase().includes("bdt");
-  const zoneConfig = DELIVERY_ZONES[deliveryZone];
-  const shippingFee = isBDT ? zoneConfig.rateBDT : zoneConfig.rateUSD;
-  const subtotal = Math.round(items.reduce((sum, it) => sum + it.price * it.quantity, 0) * 100) / 100;
-  const finalTotal = Math.round((Math.max(0, subtotal - appliedDiscount) + shippingFee) * 100) / 100;
 
   const handleApplyCoupon = async () => {
     if (!couponInput.trim()) return;
