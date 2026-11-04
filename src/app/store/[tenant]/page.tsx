@@ -215,6 +215,8 @@ export default function TenantStorefrontPage({
             description: p.description || "",
             price: typeof p.price === "number" ? p.price : parseFloat(p.price || "0"),
             comparePrice: p.comparePrice ? (typeof p.comparePrice === "number" ? p.comparePrice : parseFloat(p.comparePrice)) : (p.price * 1.3),
+            stock: p.stock !== undefined ? (typeof p.stock === "number" ? p.stock : parseInt(p.stock, 10)) : 25,
+            status: p.status || (p.stock === 0 ? "out_of_stock" : "active"),
             imageUrl: p.imageUrl || "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=1000&auto=format&fit=crop&q=85",
             secondaryImage: p.imageUrl || "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=1000&auto=format&fit=crop&q=85",
             badge: p.isDropship ? "Dropship" : idx === 0 ? "Best Seller" : "Trending",
@@ -225,7 +227,7 @@ export default function TenantStorefrontPage({
                 sku: p.sku || `SKU-${p.id}`,
                 title: "Standard",
                 price: String(p.price),
-                inventoryQuantity: p.stock || 25,
+                inventoryQuantity: p.stock !== undefined ? (typeof p.stock === "number" ? p.stock : parseInt(p.stock, 10)) : 25,
                 productSlug: p.slug
               }
             ]
@@ -321,11 +323,12 @@ export default function TenantStorefrontPage({
     } else {
       setCartItems([...cartItems, {
         id: itemKey,
+        productId: prod.id,
         title: variant ? `${prod.title} (${variant.title})` : prod.title,
         price: variant ? parseFloat(variant.price) : prod.price,
         quantity: 1,
-        variantId: variant?.sku || "std"
-      }]);
+        variantId: variant?.id || variant?.sku || "std"
+      } as any]);
     }
     trackEvent("add_to_cart", { productTitle: prod.title, price: prod.price, variant: variant?.title });
     success("Added to Bag", `${prod.title}${variant ? ` (${variant.title})` : ""} added to your bag.`);
@@ -373,22 +376,30 @@ export default function TenantStorefrontPage({
           storeSlug: tenantSlug,
           customerName, customerPhone, customerEmail,
           shippingAddress: { address: shippingAddress, notes: deliveryNotes },
-          items: cartItems.map((it) => ({ variantId: it.variantId || "mock-var-1", title: it.title, price: it.price, quantity: it.quantity })),
+          items: cartItems.map((it) => ({
+            id: (it as any).productId || it.id,
+            variantId: it.variantId || "mock-var-1",
+            title: it.title,
+            price: it.price,
+            quantity: it.quantity,
+          })),
           paymentMethod,
           shippingFee: cartSummary.isFreeShippingEligible ? 0 : shippingFee
         })
       });
       const data = await res.json();
-      if (!res.ok) { toastError("Order Issue", data.error || "Failed to process order."); setIsSubmittingOrder(false); return; }
+      if (!res.ok) {
+        toastError("Order Issue", data.error || "Failed to process order.");
+        setIsSubmittingOrder(false);
+        return;
+      }
       setOrderSuccess({ orderNumber: data.orderNumber || `SS-${Date.now().toString(36).toUpperCase()}`, total: data.totalAmount || finalTotal.toFixed(2), paymentMethod });
       setCartItems([]);
       setIsSubmittingOrder(false);
       success("Order Confirmed!", `Order #${data.orderNumber} placed.`);
     } catch {
-      setOrderSuccess({ orderNumber: `SS-${Date.now().toString(36).toUpperCase()}`, total: finalTotal.toFixed(2), paymentMethod });
-      setCartItems([]);
+      toastError("Checkout Error", "Network error while connecting to checkout service. Please check your connection and try again.");
       setIsSubmittingOrder(false);
-      success("Order Placed", "Your order has been recorded.");
     }
   };
 

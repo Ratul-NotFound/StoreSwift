@@ -716,6 +716,7 @@ class DevStoreManager {
     shippingAddress: string;
     district?: string;
     items: {
+      id?: string;
       variantId?: string;
       title: string;
       price: number;
@@ -828,7 +829,11 @@ class DevStoreManager {
           prod &&
           prod.storeSlug === store.slug &&
           (
-            (item.title && prod.title && prod.title.toLowerCase() === item.title.toLowerCase()) ||
+            (item.id && prod.id === item.id) ||
+            (item.title && prod.title && (
+              prod.title.toLowerCase() === item.title.toLowerCase() ||
+              item.title.toLowerCase().startsWith(prod.title.toLowerCase())
+            )) ||
             (item.variantId && (prod.id === item.variantId || prod.sku === item.variantId))
           )
         ) {
@@ -1087,16 +1092,18 @@ class DevStoreManager {
     }));
     revenueChart[revenueChart.length - 1].value = totalRevenue > 0 ? totalRevenue : 84500;
 
+    const isDemoStore = store.slug === "apex-fashion";
+
     return {
       name: store.name,
       slug: store.slug,
       plan: store.plan,
-      totalRevenue: totalRevenue > 0 ? totalRevenue : 184500,
-      totalOrders: totalOrders > 0 ? totalOrders : 213,
-      totalProducts: storeProducts.length > 0 ? storeProducts.length : 38,
-      totalCustomers: storeCustomers.length > 0 ? storeCustomers.length : 142,
-      revenueChange: 24,
-      ordersChange: 18,
+      totalRevenue: totalRevenue > 0 ? totalRevenue : (isDemoStore ? 184500 : 0),
+      totalOrders: totalOrders > 0 ? totalOrders : (isDemoStore ? 213 : 0),
+      totalProducts: storeProducts.length > 0 ? storeProducts.length : (isDemoStore ? 38 : 0),
+      totalCustomers: storeCustomers.length > 0 ? storeCustomers.length : (isDemoStore ? 142 : 0),
+      revenueChange: isDemoStore ? 24 : 0,
+      ordersChange: isDemoStore ? 18 : 0,
       pendingOrders,
       lowStockCount,
       recentOrders: storeOrders.slice(0, 5),

@@ -901,7 +901,7 @@ export function PantryStorefront({
             Join The {storeDisplayName} Harvest Club
           </h3>
           <p className="text-xs text-stone-600 leading-relaxed">
-            Receive $10 off your first pantry delivery, seasonal micro-lot reserve allocations, and our harvest recipes.
+            Receive ৳200 off your first pantry delivery, seasonal micro-lot reserve allocations, and our harvest recipes.
           </p>
 
           {newsletterSubscribed ? (
@@ -911,7 +911,7 @@ export function PantryStorefront({
                 <span>Welcome to the Harvest Club!</span>
               </div>
               <p className="text-[11px] text-stone-600 font-normal font-mono">
-                Use code <strong className="text-emerald-800 font-bold">PANTRY10</strong> for $10 off at checkout.
+                Use code <strong className="text-emerald-800 font-bold">PANTRY200</strong> for ৳200 off at checkout.
               </p>
             </div>
           ) : (
@@ -934,7 +934,7 @@ export function PantryStorefront({
                 type="submit"
                 className="py-2.5 px-5 bg-emerald-900 hover:bg-emerald-800 text-emerald-100 font-bold text-xs rounded-xl shadow-xs transition btn-press"
               >
-                Claim $10
+                Claim ৳200
               </button>
             </form>
           )}

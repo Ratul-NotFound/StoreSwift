@@ -917,7 +917,7 @@ export function FootwearStorefront({
             Join The {storeDisplayName} Guild Circle
           </h3>
           <p className="text-xs text-stone-600 leading-relaxed">
-            Receive $15 off your first cash on delivery order, archival batch reserve notifications, and our comprehensive boot waxing & conditioning manual.
+            Receive ৳300 off your first cash on delivery order, archival batch reserve notifications, and our comprehensive boot waxing & conditioning manual.
           </p>
 
           {newsletterSubscribed ? (
@@ -927,7 +927,7 @@ export function FootwearStorefront({
                 <span>Welcome to the Guild Circle!</span>
               </div>
               <p className="text-[11px] text-stone-600 font-normal">
-                Use code <strong className="font-mono text-amber-900 font-bold">GUILD15</strong> for $15 off at checkout.
+                Use code <strong className="font-mono text-amber-900 font-bold">GUILD300</strong> for ৳300 off at checkout.
               </p>
             </div>
           ) : (
@@ -950,7 +950,7 @@ export function FootwearStorefront({
                 type="submit"
                 className="py-2.5 px-5 bg-stone-950 hover:bg-stone-800 text-amber-200 font-bold text-xs rounded-xl shadow-xs transition btn-press"
               >
-                Claim $15
+                Claim ৳300
               </button>
             </form>
           )}

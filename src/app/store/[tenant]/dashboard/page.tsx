@@ -379,6 +379,7 @@ function ProductsTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState({ title: "", price: "", stock: "", sku: "", category: "", comparePrice: "" });
   const [saving, setSaving] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
   const cfg = PLAN_CONFIG[plan];
   const atLimit = cfg.maxProducts !== null && products.length >= cfg.maxProducts;
@@ -402,16 +403,25 @@ function ProductsTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
   const handleSave = async () => {
     if (!form.title || !form.price) return;
     setSaving(true);
+    setFormError(null);
     try {
       const payload = { storeSlug: tenant, title: form.title, price: parseFloat(form.price), stock: parseInt(form.stock) || 0, sku: form.sku || undefined, category: form.category || undefined, comparePrice: form.comparePrice ? parseFloat(form.comparePrice) : undefined };
-      if (editId) {
-        await fetch(`/api/products/${editId}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-      } else {
-        await fetch("/api/products", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+      const res = editId
+        ? await fetch(`/api/products/${editId}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
+        : await fetch("/api/products", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+
+      const data = await res.json();
+      if (!res.ok) {
+        setFormError(data.error || "Failed to save product.");
+        setSaving(false);
+        return;
       }
+
       setForm({ title: "", price: "", stock: "", sku: "", category: "", comparePrice: "" });
       setShowForm(false); setEditId(null); load();
-    } catch { /* graceful */ }
+    } catch {
+      setFormError("Network error while saving product.");
+    }
     setSaving(false);
   };
 
@@ -462,6 +472,12 @@ function ProductsTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
       {showForm && (
         <div className="bg-white border border-zinc-200 rounded-2xl p-5 shadow-sm">
           <h3 className="font-bold text-zinc-900 mb-4">{editId ? "Edit Product" : "New Product"}</h3>
+          {formError && (
+            <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 text-red-600 flex-shrink-0" />
+              <span>{formError}</span>
+            </div>
+          )}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
               { key: "title", label: "Title *", placeholder: "Product name", type: "text" },
@@ -607,7 +623,42 @@ function CustomersTab({ tenant }: { tenant: string }) {
 
 // ─── ANALYTICS ────────────────────────────────────────────────────────────────
 
-function AnalyticsTab({ plan }: { plan: PlanId }) {
+function AnalyticsTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
+  const [analyticsData, setAnalyticsData] = useState<{
+    totalRevenue: number;
+    totalOrders: number;
+    avgOrderValue: number;
+    returnRate: string;
+    loading: boolean;
+  }>({
+    totalRevenue: 84500,
+    totalOrders: 98,
+    avgOrderValue: 862,
+    returnRate: "4.8%",
+    loading: true,
+  });
+
+  useEffect(() => {
+    fetch(`/api/analytics?storeSlug=${tenant}`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.ok && d.overview) {
+          const rev = d.overview.totalRevenue ?? 0;
+          const ord = d.overview.totalOrders ?? 0;
+          const aov = ord > 0 ? Math.round(rev / ord) : (d.summary?.avgOrderValue ?? 0);
+          setAnalyticsData({
+            totalRevenue: rev,
+            totalOrders: ord,
+            avgOrderValue: aov,
+            returnRate: "4.8%",
+            loading: false,
+          });
+        }
+      })
+      .catch(() => {})
+      .finally(() => setAnalyticsData((prev) => ({ ...prev, loading: false })));
+  }, [tenant]);
+
   const weekData = [
     { day: "Mon", orders: 12 }, { day: "Tue", orders: 18 }, { day: "Wed", orders: 9 },
     { day: "Thu", orders: 22 }, { day: "Fri", orders: 31 }, { day: "Sat", orders: 28 }, { day: "Sun", orders: 15 },
@@ -617,10 +668,10 @@ function AnalyticsTab({ plan }: { plan: PlanId }) {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Monthly Revenue" value={BDT(84500)} icon={DollarSign} iconBg="bg-emerald-50 text-emerald-600" trend="up" trendVal="+24%" />
-        <StatCard label="Monthly Orders" value="98" icon={ShoppingBag} iconBg="bg-blue-50 text-blue-600" trend="up" trendVal="+18%" />
-        <StatCard label="Avg. Order Value" value={BDT(862)} icon={Target} iconBg="bg-amber-50 text-amber-600" />
-        <StatCard label="Return Rate" value="4.8%" icon={RefreshCw} iconBg="bg-red-50 text-red-600" />
+        <StatCard label="Monthly Revenue" value={BDT(analyticsData.totalRevenue)} icon={DollarSign} iconBg="bg-emerald-50 text-emerald-600" trend="up" trendVal="+24%" />
+        <StatCard label="Monthly Orders" value={String(analyticsData.totalOrders)} icon={ShoppingBag} iconBg="bg-blue-50 text-blue-600" trend="up" trendVal="+18%" />
+        <StatCard label="Avg. Order Value" value={BDT(analyticsData.avgOrderValue)} icon={Target} iconBg="bg-amber-50 text-amber-600" />
+        <StatCard label="Return Rate" value={analyticsData.returnRate} icon={RefreshCw} iconBg="bg-red-50 text-red-600" />
       </div>
 
       <div className="bg-white rounded-2xl border border-zinc-100 p-5 shadow-sm">
@@ -699,8 +750,23 @@ function CouponsTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
     if (!form.code || !form.value) return;
     setSaving(true);
     try {
-      await fetch("/api/coupons", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ storeSlug: tenant, ...form, value: parseFloat(form.value), minOrder: form.minOrder ? parseFloat(form.minOrder) : undefined, maxUses: form.maxUses ? parseInt(form.maxUses) : undefined }) });
-      setShowForm(false); setForm({ code: "", type: "flat", value: "", minOrder: "", maxUses: "", expiresAt: "" });
+      const res = await fetch("/api/coupons", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          storeSlug: tenant,
+          ...form,
+          value: parseFloat(form.value),
+          minOrder: form.minOrder ? parseFloat(form.minOrder) : undefined,
+          maxUses: form.maxUses ? parseInt(form.maxUses) : undefined,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.coupon) {
+        setCoupons((prev) => [data.coupon, ...prev]);
+        setShowForm(false);
+        setForm({ code: "", type: "flat", value: "", minOrder: "", maxUses: "", expiresAt: "" });
+      }
     } catch { /* graceful */ }
     setSaving(false);
   };
@@ -805,18 +871,44 @@ function DropshipTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
 
   useEffect(() => {
     if (plan === "free") { setLoading(false); return; }
-    fetch("/api/platform-products?limit=20")
-      .then(r => r.json())
-      .then(d => setProducts(d.products ?? []))
-      .catch(() => setProducts([
-        { id: "pp1", title: "StoreSwift T-Shirt Bundle", category: "Clothing", minPrice: 420, description: "Premium cotton bulk bundle" },
-        { id: "pp2", title: "Ceramic Mug Set (6pcs)", category: "Home", minPrice: 850, description: "Hand-painted ceramic mugs" },
-        { id: "pp3", title: "LED Desk Lamp", category: "Electronics", minPrice: 1200, description: "USB-C rechargeable" },
-        { id: "pp4", title: "Leather Phone Case", category: "Accessories", minPrice: 320, description: "Genuine leather" },
-        { id: "pp5", title: "Organic Face Cream", category: "Beauty", minPrice: 580, description: "Natural ingredients" },
-      ]))
+    Promise.all([
+      fetch("/api/platform-products?limit=20").then(r => r.json()).catch(() => ({})),
+      fetch(`/api/dropship?storeSlug=${tenant}`).then(r => r.json()).catch(() => ({})),
+    ])
+      .then(([prodData, dropshipData]) => {
+        const rawProducts: PlatformProduct[] = prodData?.products ?? [
+          { id: "pp1", title: "StoreSwift T-Shirt Bundle", category: "Clothing", minPrice: 420, description: "Premium cotton bulk bundle" },
+          { id: "pp2", title: "Ceramic Mug Set (6pcs)", category: "Home", minPrice: 850, description: "Hand-painted ceramic mugs" },
+          { id: "pp3", title: "LED Desk Lamp", category: "Electronics", minPrice: 1200, description: "USB-C rechargeable" },
+          { id: "pp4", title: "Leather Phone Case", category: "Accessories", minPrice: 320, description: "Genuine leather" },
+          { id: "pp5", title: "Organic Face Cream", category: "Beauty", minPrice: 580, description: "Natural ingredients" },
+        ];
+        const listings = Array.isArray(dropshipData?.listings) ? dropshipData.listings : [];
+        const listedMap = new Map<string, number>(
+          listings.map((l: any) => [l.platformProductId || l.id, l.price || l.sellPrice])
+        );
+
+        setProducts(
+          rawProducts.map(pp => {
+            const myPrice = listedMap.get(pp.id);
+            if (myPrice !== undefined) {
+              return { ...pp, listed: true, myPrice };
+            }
+            return pp;
+          })
+        );
+      })
+      .catch(() => {
+        setProducts([
+          { id: "pp1", title: "StoreSwift T-Shirt Bundle", category: "Clothing", minPrice: 420, description: "Premium cotton bulk bundle" },
+          { id: "pp2", title: "Ceramic Mug Set (6pcs)", category: "Home", minPrice: 850, description: "Hand-painted ceramic mugs" },
+          { id: "pp3", title: "LED Desk Lamp", category: "Electronics", minPrice: 1200, description: "USB-C rechargeable" },
+          { id: "pp4", title: "Leather Phone Case", category: "Accessories", minPrice: 320, description: "Genuine leather" },
+          { id: "pp5", title: "Organic Face Cream", category: "Beauty", minPrice: 580, description: "Natural ingredients" },
+        ]);
+      })
       .finally(() => setLoading(false));
-  }, [plan]);
+  }, [tenant, plan]);
 
   if (plan === "free") return <PlanGate plan={plan} required="medium" />;
   if (loading) return <div className="flex justify-center py-20"><div className="w-8 h-8 border-4 border-violet-600 border-t-transparent rounded-full animate-spin" /></div>;
@@ -826,8 +918,14 @@ function DropshipTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
     if (!myPrice || myPrice < pp.minPrice) { alert(`Min price: ৳${pp.minPrice}`); return; }
     setListing(pp.id);
     try {
-      await fetch("/api/dropship", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ storeSlug: tenant, platformProductId: pp.id, myPrice }) });
-      setProducts(prev => prev.map(p => p.id === pp.id ? { ...p, listed: true, myPrice } : p));
+      const res = await fetch("/api/dropship", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ storeSlug: tenant, platformProductId: pp.id, myPrice })
+      });
+      if (res.ok) {
+        setProducts(prev => prev.map(p => p.id === pp.id ? { ...p, listed: true, myPrice } : p));
+      }
     } catch { /* graceful */ }
     setListing(null);
   };
@@ -908,9 +1006,28 @@ function SettingsTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
   const addDomain = async () => {
     if (!domain.domain) return;
     try {
-      const res = await fetch("/api/domains", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ domain: domain.domain }) });
+      const res = await fetch("/api/domains", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ domain: domain.domain, storeSlug: tenant }),
+      });
       const d = await res.json();
-      if (d.cnameTarget) setDomain(prev => ({ ...prev, cnameTarget: d.cnameTarget }));
+      if (d.ok) {
+        setDomain((prev) => ({
+          ...prev,
+          domain: d.domain || domain.domain,
+          cnameTarget: d.cnameTarget || "cname.storeswift.app",
+          isVerified: d.isVerified ?? true,
+        }));
+      }
+    } catch { /* graceful */ }
+  };
+
+  const removeDomain = async () => {
+    if (!confirm("Are you sure you want to disconnect this custom domain?")) return;
+    try {
+      await fetch(`/api/domains?storeSlug=${tenant}`, { method: "DELETE" });
+      setDomain({ domain: "", cnameTarget: "", isVerified: false });
     } catch { /* graceful */ }
   };
 
@@ -1061,6 +1178,9 @@ function SettingsTab({ tenant, plan }: { tenant: string; plan: PlanId }) {
                 <input value={domain.domain} onChange={e => setDomain(p => ({ ...p, domain: e.target.value }))} placeholder="yourdomain.com" className="w-full pl-10 pr-4 py-2.5 text-sm border border-zinc-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/30" />
               </div>
               <button onClick={addDomain} className="bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition">Connect</button>
+              {(domain.domain || domain.cnameTarget) && (
+                <button onClick={removeDomain} className="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 px-4 py-2.5 rounded-xl text-sm font-bold transition">Disconnect</button>
+              )}
             </div>
             {domain.cnameTarget && (
               <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm">
@@ -1432,7 +1552,7 @@ export default function MerchantDashboard() {
       case "products":  return <ProductsTab tenant={tenant} plan={plan} />;
       case "themes":    return <ThemesTab tenant={tenant} plan={plan} />;
       case "customers": return <CustomersTab tenant={tenant} />;
-      case "analytics": return <AnalyticsTab plan={plan} />;
+      case "analytics": return <AnalyticsTab tenant={tenant} plan={plan} />;
       case "coupons":   return <CouponsTab tenant={tenant} plan={plan} />;
       case "dropship":  return <DropshipTab tenant={tenant} plan={plan} />;
       case "settings":  return <SettingsTab tenant={tenant} plan={plan} />;

@@ -909,7 +909,7 @@ export function TechStorefront({
             Join The {storeDisplayName} Operator Circle
           </h3>
           <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-            Receive $20 off your first hardware order, early firmware beta access, and advance notification of limited anodized batch drops.
+            Receive ৳500 off your first hardware order, early firmware beta access, and advance notification of limited anodized batch drops.
           </p>
 
           {newsletterSubscribed ? (
@@ -919,7 +919,7 @@ export function TechStorefront({
                 <span>Welcome to the Operator Circle!</span>
               </div>
               <p className="text-[11px] text-zinc-400 font-normal">
-                Use code <strong className="text-sky-400 font-bold">OPERATOR20</strong> for $20 off at checkout.
+                Use code <strong className="text-sky-400 font-bold">OPERATOR500</strong> for ৳500 off at checkout.
               </p>
             </div>
           ) : (
@@ -942,7 +942,7 @@ export function TechStorefront({
                 type="submit"
                 className="py-2.5 px-5 bg-sky-500 hover:bg-sky-400 text-black font-bold text-xs rounded-xl shadow-xs transition btn-press"
               >
-                Claim $20
+                Claim ৳500
               </button>
             </form>
           )}

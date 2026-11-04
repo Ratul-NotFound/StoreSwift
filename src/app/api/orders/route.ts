@@ -175,9 +175,37 @@ export async function POST(request: Request) {
     const safeAddress = sanitizeString(formattedAddress);
     const safeDistrict = sanitizeString(district);
 
-    // ── Server-Authoritative Price & Calculation Integrity ──
-    // Fetch authoritative product catalog from store to eliminate client-side price tampering
+    // ── Server-Authoritative Price & Stock Integrity ──
+    // Fetch authoritative product catalog from store to eliminate client-side price tampering & overselling
     const storeProducts = devStore.getProducts(storeSlug);
+
+    // 1. Pre-flight stock availability verification
+    for (const it of data.items) {
+      const matched = storeProducts.find(
+        (p) =>
+          (it.id && p.id === it.id) ||
+          (it.variantId && (p.id === it.variantId || p.sku === it.variantId)) ||
+          (it.title && p.title.toLowerCase() === it.title.toLowerCase()) ||
+          (it.title && it.title.toLowerCase().startsWith(p.title.toLowerCase()))
+      );
+
+      const safeQuantity = Math.min(99, Math.max(1, Math.floor(it.quantity || 1)));
+
+      if (matched && matched.stock !== undefined) {
+        if (matched.stock <= 0) {
+          return NextResponse.json(
+            { error: `Sorry, "${matched.title}" is currently out of stock.` },
+            { status: 400 }
+          );
+        }
+        if (matched.stock < safeQuantity) {
+          return NextResponse.json(
+            { error: `Sorry, only ${matched.stock} unit(s) of "${matched.title}" available in stock.` },
+            { status: 400 }
+          );
+        }
+      }
+    }
 
     const cleanItems = data.items.map((it) => {
       // Find matching product in the verified store catalog
@@ -185,7 +213,8 @@ export async function POST(request: Request) {
         (p) =>
           (it.id && p.id === it.id) ||
           (it.variantId && (p.id === it.variantId || p.sku === it.variantId)) ||
-          (it.title && p.title.toLowerCase() === it.title.toLowerCase())
+          (it.title && p.title.toLowerCase() === it.title.toLowerCase()) ||
+          (it.title && it.title.toLowerCase().startsWith(p.title.toLowerCase()))
       );
 
       // Enforce the server catalog price; never allow arbitrary client manipulation
@@ -201,6 +230,7 @@ export async function POST(request: Request) {
       const safeQuantity = Math.min(99, Math.max(1, Math.floor(it.quantity || 1)));
 
       return {
+        id: it.id || matched?.id,
         variantId: it.variantId || matched?.id,
         title: sanitizeString(matched?.title || it.title || "Product"),
         price: verifiedPrice,

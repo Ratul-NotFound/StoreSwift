@@ -901,7 +901,7 @@ export function JewelryStorefront({
             Join The {storeDisplayName} Private Salon
           </h3>
           <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-            Receive $25 courtesy credit towards your inaugural acquisition, private invitations to limited serialized batch allocations, and our annual horology gazette.
+            Receive ৳500 courtesy credit towards your inaugural acquisition, private invitations to limited serialized batch allocations, and our annual horology gazette.
           </p>
 
           {newsletterSubscribed ? (
@@ -911,7 +911,7 @@ export function JewelryStorefront({
                 <span>Welcome to the Private Salon!</span>
               </div>
               <p className="text-[11px] text-zinc-400 font-normal font-mono">
-                Use courtesy code <strong className="text-amber-400 font-bold">MAISON25</strong> for $25 off at checkout.
+                Use courtesy code <strong className="text-amber-400 font-bold">MAISON500</strong> for ৳500 off at checkout.
               </p>
             </div>
           ) : (
@@ -934,7 +934,7 @@ export function JewelryStorefront({
                 type="submit"
                 className="py-2.5 px-5 bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs rounded-xl shadow-xs transition btn-press font-serif"
               >
-                Claim $25
+                Claim ৳500
               </button>
             </form>
           )}
