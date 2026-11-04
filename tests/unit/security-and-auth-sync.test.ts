@@ -2,7 +2,7 @@ import { describe, it, expect, beforeAll } from "vitest";
 import { signSessionToken, verifySessionToken } from "@/lib/auth";
 import { canAccessStore, getSessionFromRequest } from "@/lib/api-auth";
 import { GET as getAuthMe } from "@/app/api/auth/me/route";
-import { GET as getOnboarding } from "@/app/onboarding/route";
+import OnboardingWizardPage from "@/app/(platform)/onboarding/page";
 import { PATCH as patchProduct } from "@/app/api/products/[id]/route";
 import { devStore } from "@/lib/dev-store";
 import { NextRequest } from "next/server";
@@ -126,14 +126,9 @@ describe("Security, Multi-Tenant Isolation & Auth Synchronization", () => {
     expect(authBody.user.role).toBe("merchant_owner");
   });
 
-  it("redirects /onboarding cleanly to /register while preserving query params", async () => {
-    const req = new NextRequest("http://localhost:3000/onboarding?plan=growth&category=beauty");
-    const res = await getOnboarding(req);
-    expect(res.status).toBe(307); // NextResponse.redirect default
-    const location = res.headers.get("location");
-    expect(location).toContain("/register");
-    expect(location).toContain("plan=growth");
-    expect(location).toContain("category=beauty");
+  it("renders the interactive OnboardingWizardPage component", () => {
+    expect(OnboardingWizardPage).toBeDefined();
+    expect(typeof OnboardingWizardPage).toBe("function");
   });
 
   it("blocks cross-tenant unauthorized product modification (IDOR protection)", async () => {

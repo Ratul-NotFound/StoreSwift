@@ -26,6 +26,7 @@ const orderCreateSchema = z.object({
   }).or(z.string()),
   items: z.array(
     z.object({
+      id: z.string().optional(),
       variantId: z.string().optional(),
       title: z.string().optional(),
       price: z.number().or(z.string()),

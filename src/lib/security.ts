@@ -117,3 +117,4 @@ export function verifyOrigin(request: Request, allowedHosts: string[] = []): boo
     return false;
   }
 }
+
