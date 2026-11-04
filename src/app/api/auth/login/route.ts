@@ -30,7 +30,8 @@ function checkRateLimit(key: string): boolean {
 const loginSchema = z.object({
   email: z.string().email().optional(),
   password: z.string().min(1).optional(),
-  demo: z.boolean().optional()
+  demo: z.boolean().optional(),
+  role: z.string().optional()
 });
 
 export async function POST(request: Request) {
@@ -43,10 +44,39 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid login credentials." }, { status: 400 });
     }
 
-    const { email, password, demo } = parse.data;
+    const { email, password, demo, role } = parse.data;
 
     // ─── Instant Demo Access ───────────────────────────────────────────
     if (demo) {
+      if (role === "super_admin") {
+        const demoToken = signSessionToken({
+          userId: "demo-super-admin-id",
+          email: "superadmin@storeswift.com",
+          storeId: "platform-root",
+          storeName: "StoreSwift Super Admin",
+          role: "super_admin",
+          plan: "pro"
+        });
+
+        const response = NextResponse.json({
+          ok: true,
+          storeId: "platform-root",
+          slug: "apex-fashion",
+          role: "super_admin",
+          plan: "pro"
+        });
+
+        response.cookies.set("ss_session", demoToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "strict",
+          path: "/",
+          maxAge: 60 * 60 * 24 * 7
+        });
+
+        return response;
+      }
+
       const demoStore = devStore.getStore("apex-fashion") || devStore.ensureStore("apex-fashion", "Apex Fashion Ltd", "fashion");
       const demoToken = signSessionToken({
         userId: "demo-merchant-id",
@@ -60,7 +90,9 @@ export async function POST(request: Request) {
       const response = NextResponse.json({
         ok: true,
         storeId: demoStore.id,
-        slug: demoStore.slug
+        slug: demoStore.slug,
+        role: "merchant_owner",
+        plan: demoStore.plan
       });
 
       response.cookies.set("ss_session", demoToken, {
@@ -109,20 +141,23 @@ export async function POST(request: Request) {
       const storeId = userStore?.id || `store-${slug}`;
       const storePlan = (userStore?.plan || devStore.getStore(slug)?.plan || "free") as "free" | "medium" | "pro";
       const storeName = userStore?.name || devStore.getStore(slug)?.name || "My Store";
+      const resolvedRole = existingUser.role === "super_admin" || email.toLowerCase().includes("superadmin") ? "super_admin" : (existingUser.role || "merchant_owner");
 
       const token = signSessionToken({
         userId: existingUser.id,
         email: existingUser.email,
         storeId,
         storeName,
-        role: existingUser.role,
+        role: resolvedRole,
         plan: storePlan
       });
 
       const response = NextResponse.json({
         ok: true,
         storeId,
-        slug
+        slug,
+        role: resolvedRole,
+        plan: storePlan
       });
 
       response.cookies.set("ss_session", token, {
@@ -139,20 +174,24 @@ export async function POST(request: Request) {
       // Fallback for offline dev environment
       const slug = email.split("@")[0].toLowerCase().replace(/[^a-z0-9]/g, "-") || "apex-fashion";
       const store = devStore.getStore(slug) || devStore.ensureStore(slug);
+      const isSuper = email.toLowerCase().includes("superadmin") || email.toLowerCase().includes("admin@storeswift");
+      const fallbackRole = isSuper ? "super_admin" : "merchant_owner";
 
       const token = signSessionToken({
         userId: "local-dev-user",
         email,
         storeId: store.id,
         storeName: store.name,
-        role: "merchant_owner",
+        role: fallbackRole,
         plan: store.plan
       });
 
       const response = NextResponse.json({
         ok: true,
         storeId: store.id,
-        slug: store.slug
+        slug: store.slug,
+        role: fallbackRole,
+        plan: store.plan
       });
 
       response.cookies.set("ss_session", token, {
@@ -165,9 +204,8 @@ export async function POST(request: Request) {
 
       return response;
     }
-  } catch (err) {
-    console.error("[Login API Error]", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  } catch (error) {
+    console.error("[Login API Error]", error);
+    return NextResponse.json({ error: "Failed to sign in. Please try again." }, { status: 500 });
   }
 }
-

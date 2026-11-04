@@ -1,10 +1,15 @@
 import { jwtVerify } from "jose/jwt/verify";
 
+export type SubscriptionPlan = "free" | "medium" | "pro";
+
 export interface SessionPayload {
   userId: string;
   email: string;
   storeId: string;
   role: string;
+  plan?: SubscriptionPlan;
+  storeName?: string;
+  slug?: string;
 }
 
 export async function verifySessionTokenEdge(token: string): Promise<SessionPayload | null> {
@@ -19,7 +24,10 @@ export async function verifySessionTokenEdge(token: string): Promise<SessionPayl
         userId: String(p.userId),
         email: String(p.email ?? ""),
         storeId: String(p.storeId),
-        role: String(p.role ?? "merchant_owner")
+        role: String(p.role ?? "merchant_owner"),
+        plan: (p.plan as SubscriptionPlan) ?? "free",
+        storeName: p.storeName ? String(p.storeName) : undefined,
+        slug: p.slug ? String(p.slug) : undefined,
       };
     }
     return null;

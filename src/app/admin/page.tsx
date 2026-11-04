@@ -41,7 +41,8 @@ import {
   Copy,
   Radio,
   FileText,
-  X
+  X,
+  LogOut
 } from "lucide-react";
 import { useToast } from "@/components/ui/toast";
 import {
@@ -484,12 +485,35 @@ export default function MerchantAdminPage() {
 
           <div className="flex items-center space-x-2 sm:space-x-3">
             <Link
+              href={`/store/${storeSlug}/dashboard`}
+              target="_blank"
+              className="hidden md:inline-flex items-center space-x-1.5 text-xs font-semibold bg-violet-50 hover:bg-violet-100 border border-violet-200 text-violet-700 px-3 py-1.5 rounded-xl transition shadow-subtle btn-press"
+            >
+              <Store className="w-3.5 h-3.5 text-violet-600" />
+              <span>Shop Dashboard</span>
+            </Link>
+            <Link
+              href="/super-admin"
+              target="_blank"
+              className="hidden lg:inline-flex items-center space-x-1.5 text-xs font-semibold bg-zinc-50 hover:bg-zinc-100 border border-zinc-200 text-zinc-700 px-3 py-1.5 rounded-xl transition shadow-subtle btn-press"
+            >
+              <Zap className="w-3.5 h-3.5 text-amber-500" />
+              <span>Super Admin</span>
+            </Link>
+            <Link
               href={`/store/${storeSlug}`}
               target="_blank"
               className="inline-flex items-center space-x-1.5 text-xs font-semibold bg-white hover:bg-zinc-50 border border-zinc-200 text-zinc-700 px-3.5 py-1.5 rounded-xl transition shadow-subtle btn-press"
             >
               <span>View Storefront</span>
               <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400" />
+            </Link>
+            <Link
+              href="/logout"
+              className="inline-flex items-center text-xs text-red-600 hover:text-red-800 p-1.5 rounded-xl hover:bg-red-50 border border-transparent hover:border-red-100 transition"
+              title="Sign Out"
+            >
+              <LogOut className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>

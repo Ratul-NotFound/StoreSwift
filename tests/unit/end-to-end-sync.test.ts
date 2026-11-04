@@ -1,6 +1,8 @@
 import { describe, it, expect } from "vitest";
 import { devStore } from "@/lib/dev-store";
 import { calculateCommission } from "@/lib/plan-limits";
+import { signSessionToken } from "@/lib/auth";
+import { verifySessionTokenEdge } from "@/lib/auth-edge";
 
 describe("StoreSwift End-to-End Dynamic Sync Pipeline", () => {
   it("initializes stores and seed catalog properly", () => {
@@ -188,4 +190,40 @@ describe("StoreSwift End-to-End Dynamic Sync Pipeline", () => {
     expect(kpis.gmv30d).toBeGreaterThan(0);
     expect(kpis.byPlan).toBeDefined();
   });
+
+  it("verifies multi-role auth tokens and edge session preservation", async () => {
+    process.env.AUTH_SECRET = "super-secret-key-that-is-at-least-32-chars-long!";
+
+    // 1. Merchant session token
+    const merchantToken = signSessionToken({
+      userId: "m-123",
+      email: "merchant@storeswift.app",
+      storeId: "store-apex",
+      storeName: "Apex Fashion Ltd",
+      role: "merchant_owner",
+      plan: "medium",
+    });
+
+    const merchantSession = await verifySessionTokenEdge(merchantToken);
+    expect(merchantSession).not.toBeNull();
+    expect(merchantSession?.role).toBe("merchant_owner");
+    expect(merchantSession?.plan).toBe("medium");
+    expect(merchantSession?.storeName).toBe("Apex Fashion Ltd");
+
+    // 2. Super Admin session token
+    const adminToken = signSessionToken({
+      userId: "sa-999",
+      email: "admin@storeswift.com",
+      storeId: "platform-root",
+      storeName: "StoreSwift Platform HQ",
+      role: "super_admin",
+      plan: "pro",
+    });
+
+    const adminSession = await verifySessionTokenEdge(adminToken);
+    expect(adminSession).not.toBeNull();
+    expect(adminSession?.role).toBe("super_admin");
+    expect(adminSession?.plan).toBe("pro");
+  });
 });
+

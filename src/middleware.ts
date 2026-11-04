@@ -39,9 +39,11 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
   const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "platform.com";
 
-  // ─── JWT Auth Guard for protected admin routes ─────────────────────
-  const protectedPaths = ["/admin", "/super-admin"];
-  const isProtected = protectedPaths.some((p) => url.pathname.startsWith(p));
+  // ─── JWT Auth Guard for protected admin and merchant dashboard routes ─────
+  const isSuperAdminRoute = url.pathname.startsWith("/super-admin");
+  const isAdminRoute = url.pathname.startsWith("/admin");
+  const isStoreDashboardRoute = /\/store\/[^/]+\/dashboard/.test(url.pathname);
+  const isProtected = isSuperAdminRoute || isAdminRoute || isStoreDashboardRoute;
 
   if (isProtected && process.env.NODE_ENV === "production") {
     const token = request.cookies.get("ss_session")?.value;
@@ -53,7 +55,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(loginUrl);
     }
 
-    if (url.pathname.startsWith("/super-admin") && session.role !== "super_admin") {
+    if (isSuperAdminRoute && session.role !== "super_admin") {
       return NextResponse.redirect(new URL("/", request.url));
     }
   }

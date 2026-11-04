@@ -3,7 +3,7 @@
 import { useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Store, ArrowRight, Lock, Mail, AlertCircle, Sparkles } from "lucide-react";
+import { Store, ArrowRight, Lock, Mail, AlertCircle, Sparkles, Shield, ExternalLink } from "lucide-react";
 
 function LoginForm() {
   const router = useRouter();
@@ -43,8 +43,10 @@ function LoginForm() {
       localStorage.setItem("current_store", data.slug);
       if (redirectPath) {
         router.push(redirectPath);
+      } else if (data.role === "super_admin") {
+        router.push("/super-admin");
       } else {
-        router.push(`/admin?store=${data.slug}`);
+        router.push(`/store/${data.slug}/dashboard`);
       }
     } catch {
       setError("Network error. Please try again.");
@@ -52,14 +54,14 @@ function LoginForm() {
     }
   };
 
-  const handleDemoLogin = async () => {
+  const handleDemoMerchantLogin = async () => {
     setLoading(true);
     setError(null);
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ demo: true })
+        body: JSON.stringify({ demo: true, role: "merchant_owner" })
       });
 
       const data = await res.json();
@@ -69,10 +71,43 @@ function LoginForm() {
         return;
       }
 
-      localStorage.setItem("current_store", data.slug || "apex-fashion");
-      router.push(`/admin?store=${data.slug || "apex-fashion"}`);
+      const slug = data.slug || "apex-fashion";
+      localStorage.setItem("current_store", slug);
+      if (redirectPath) {
+        router.push(redirectPath);
+      } else {
+        router.push(`/store/${slug}/dashboard`);
+      }
     } catch {
       setError("Network error during demo login.");
+      setLoading(false);
+    }
+  };
+
+  const handleDemoSuperAdminLogin = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ demo: true, role: "super_admin" })
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Super Admin demo login failed.");
+        setLoading(false);
+        return;
+      }
+
+      if (redirectPath) {
+        router.push(redirectPath);
+      } else {
+        router.push("/super-admin");
+      }
+    } catch {
+      setError("Network error during super admin login.");
       setLoading(false);
     }
   };
@@ -81,10 +116,10 @@ function LoginForm() {
     <div className="bg-white border border-zinc-200/80 rounded-2xl shadow-card p-6 sm:p-8">
       <div className="text-center mb-6">
         <h1 className="text-xl font-bold text-zinc-900 tracking-tight">
-          Merchant Login
+          Sign In to StoreSwift
         </h1>
         <p className="text-xs text-zinc-500 mt-1">
-          Sign in to manage catalog, orders, and storefront settings.
+          Access your merchant shop dashboard or SaaS super admin control panel.
         </p>
       </div>
 
@@ -98,13 +133,13 @@ function LoginForm() {
       <form onSubmit={handleLogin} className="space-y-3.5">
         <div>
           <label className="block text-[11px] font-semibold text-zinc-700 uppercase tracking-wider mb-1">
-            Store Email
+            Email Address
           </label>
           <div className="relative">
             <Mail className="w-3.5 h-3.5 text-zinc-400 absolute left-3.5 top-3" />
             <input
               type="email"
-              placeholder="founder@mystore.com"
+              placeholder="founder@apex-fashion.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full pl-9 pr-3 py-2 border border-zinc-200 rounded-xl text-xs outline-none focus:border-zinc-900 transition font-medium placeholder:text-zinc-400"
@@ -143,19 +178,41 @@ function LoginForm() {
           <div className="w-full border-t border-zinc-100" />
         </div>
         <div className="relative flex justify-center text-[10px] uppercase font-semibold text-zinc-400">
-          <span className="bg-white px-2">Instant Demo Access</span>
+          <span className="bg-white px-2">Instant 1-Click Demo Portals</span>
         </div>
       </div>
 
-      <button
-        onClick={handleDemoLogin}
-        disabled={loading}
-        type="button"
-        className="w-full py-2 bg-zinc-50 hover:bg-zinc-100 border border-zinc-200 text-zinc-700 font-semibold text-xs rounded-xl transition flex items-center justify-center space-x-1.5 btn-press disabled:opacity-60"
-      >
-        <Sparkles className="w-3.5 h-3.5 text-zinc-600" />
-        <span>1-Click Demo Merchant Login</span>
-      </button>
+      <div className="space-y-2">
+        <button
+          onClick={handleDemoMerchantLogin}
+          disabled={loading}
+          type="button"
+          className="w-full py-2.5 bg-zinc-50 hover:bg-zinc-100 border border-zinc-200 text-zinc-800 font-semibold text-xs rounded-xl transition flex items-center justify-center space-x-1.5 btn-press disabled:opacity-60"
+        >
+          <Sparkles className="w-3.5 h-3.5 text-violet-600" />
+          <span>Demo Merchant Dashboard (Apex Fashion)</span>
+        </button>
+
+        <button
+          onClick={handleDemoSuperAdminLogin}
+          disabled={loading}
+          type="button"
+          className="w-full py-2.5 bg-violet-50 hover:bg-violet-100 border border-violet-200 text-violet-900 font-semibold text-xs rounded-xl transition flex items-center justify-center space-x-1.5 btn-press disabled:opacity-60"
+        >
+          <Shield className="w-3.5 h-3.5 text-violet-700" />
+          <span>Demo SaaS Super Admin Panel</span>
+        </button>
+      </div>
+
+      <div className="mt-4 pt-4 border-t border-zinc-100 flex items-center justify-between text-xs text-zinc-500">
+        <Link href="/store/apex-fashion" target="_blank" className="hover:text-zinc-900 flex items-center gap-1">
+          <span>View Live Store</span>
+          <ExternalLink className="w-3 h-3" />
+        </Link>
+        <Link href="/register" className="font-semibold text-violet-600 hover:text-violet-800">
+          Create New Store →
+        </Link>
+      </div>
     </div>
   );
 }
@@ -170,15 +227,24 @@ export default function MerchantLoginPage() {
               <Store className="w-4 h-4" />
             </div>
             <span className="font-bold text-zinc-900 tracking-tight text-sm">
-              Store<span className="text-blue-600">Swift</span>
+              Store<span className="text-violet-600">Swift</span>
             </span>
           </Link>
-          <Link
-            href="/register"
-            className="text-xs font-semibold text-zinc-600 hover:text-zinc-900 transition"
-          >
-            Create New Store →
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/store/apex-fashion"
+              target="_blank"
+              className="text-xs font-medium text-zinc-600 hover:text-zinc-900 flex items-center gap-1"
+            >
+              Live Demo Store <ExternalLink className="w-3 h-3" />
+            </Link>
+            <Link
+              href="/register"
+              className="text-xs font-semibold text-violet-600 hover:text-violet-700"
+            >
+              Start Free Store →
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -189,7 +255,7 @@ export default function MerchantLoginPage() {
       </main>
 
       <footer className="py-4 text-center text-xs text-zinc-400">
-        StoreSwift SaaS Platform
+        StoreSwift SaaS Commerce Platform · Bangladesh & Global
       </footer>
     </div>
   );

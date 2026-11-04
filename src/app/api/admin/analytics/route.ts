@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { db, orders, stores, subscriptions, commissionEvents } from "@/db";
-import { eq, sql, count, gte, and, desc } from "drizzle-orm";
+import { db, orders, stores } from "@/db";
+import { eq, sql, count, gte } from "drizzle-orm";
 import { getSessionFromRequest } from "@/lib/api-auth";
 
 /**
@@ -37,12 +37,15 @@ export async function GET(request: Request) {
     const topStores = await db
       .select({
         storeId: orders.storeId,
+        storeName: stores.name,
+        slug: stores.slug,
         revenue: sql<string>`sum(total_amount::numeric)`,
         orderCount: count()
       })
       .from(orders)
+      .leftJoin(stores, eq(orders.storeId, stores.id))
       .where(gte(orders.createdAt, new Date(Date.now() - 30 * 86400000)))
-      .groupBy(orders.storeId)
+      .groupBy(orders.storeId, stores.name, stores.slug)
       .orderBy(sql`sum(total_amount::numeric) desc`)
       .limit(5);
 
@@ -75,11 +78,11 @@ export async function GET(request: Request) {
       period,
       gmvChart: mockChart,
       topStores: [
-        { storeId: "s1", storeName: "Apex Fashion", revenue: "184500", orderCount: 342 },
-        { storeId: "s2", storeName: "Dhaka Trends", revenue: "92300", orderCount: 198 },
-        { storeId: "s3", storeName: "Metro Tech", revenue: "43200", orderCount: 87 },
-        { storeId: "s4", storeName: "Gulshan Jewels", revenue: "112000", orderCount: 45 },
-        { storeId: "s5", storeName: "Fresh Pantry", revenue: "67800", orderCount: 234 }
+        { storeId: "s1", storeName: "Apex Fashion Hub", slug: "apex-fashion", revenue: "184500", orderCount: 342 },
+        { storeId: "s2", storeName: "Luxe Glow Beauty", slug: "luxe-glow-beauty", revenue: "92300", orderCount: 198 },
+        { storeId: "s3", storeName: "CyberTech Audio", slug: "cyber-tech", revenue: "43200", orderCount: 87 },
+        { storeId: "s4", storeName: "Maison Opulente", slug: "maison-jewelry", revenue: "112000", orderCount: 45 },
+        { storeId: "s5", storeName: "Craft Bench Shoes", slug: "craft-shoes", revenue: "67800", orderCount: 234 }
       ],
       planDistribution: [
         { plan: "free", cnt: 98 },
@@ -90,4 +93,3 @@ export async function GET(request: Request) {
     });
   }
 }
-

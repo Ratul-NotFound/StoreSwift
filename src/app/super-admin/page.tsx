@@ -72,7 +72,7 @@ interface KpiData {
 interface AnalyticsData {
   period: string;
   gmvChart: { day: string; gmv: string; orderCount: number }[];
-  topStores: { storeId: string; storeName?: string; revenue: string; orderCount: number }[];
+  topStores: { storeId: string; storeName?: string; slug?: string; revenue: string; orderCount: number }[];
   planDistribution: { plan: string; cnt: number }[];
   _mock?: boolean;
 }
@@ -524,19 +524,44 @@ function DashboardTab({ addToast }: { addToast: (type: ToastMessage["type"], msg
               </tr>
             </thead>
             <tbody>
-              {(analytics?.topStores ?? []).map((s, i) => (
-                <tr key={s.storeId} className="border-t border-zinc-100 hover:bg-zinc-50">
-                  <td className="px-3 py-2.5 font-medium text-zinc-800">
-                    <span className="inline-flex items-center gap-2">
-                      <span className="w-5 h-5 rounded-full bg-violet-100 text-violet-700 text-xs font-bold flex items-center justify-center">{i + 1}</span>
-                      {s.storeName ?? s.storeId}
-                    </span>
-                  </td>
-                  <td className="px-3 py-2.5 font-semibold text-zinc-900">{BDT(parseFloat(s.revenue))}</td>
-                  <td className="px-3 py-2.5 text-zinc-600">{s.orderCount}</td>
-                  <td className="px-3 py-2.5 text-amber-600 font-medium">{BDT(parseFloat(s.revenue) * 0.03)}</td>
-                </tr>
-              ))}
+              {(analytics?.topStores ?? []).map((s, i) => {
+                const storeSlug = s.slug || (s.storeName ? s.storeName.toLowerCase().replace(/[^a-z0-9]/g, "-") : "apex-fashion");
+                return (
+                  <tr key={s.storeId} className="border-t border-zinc-100 hover:bg-zinc-50">
+                    <td className="px-3 py-2.5 font-medium text-zinc-800">
+                      <div className="flex items-center justify-between">
+                        <span className="inline-flex items-center gap-2">
+                          <span className="w-5 h-5 rounded-full bg-violet-100 text-violet-700 text-xs font-bold flex items-center justify-center shrink-0">{i + 1}</span>
+                          <span className="font-semibold">{s.storeName ?? s.storeId}</span>
+                        </span>
+                        <div className="flex items-center gap-1.5 ml-2">
+                          <Link
+                            href={`/store/${storeSlug}`}
+                            target="_blank"
+                            className="text-[11px] text-zinc-500 hover:text-violet-600 px-2 py-0.5 rounded border border-zinc-200 hover:border-violet-300 bg-white transition inline-flex items-center gap-1"
+                            title="Visit Storefront"
+                          >
+                            <ExternalLink className="w-3 h-3" />
+                            <span>Storefront</span>
+                          </Link>
+                          <Link
+                            href={`/store/${storeSlug}/dashboard`}
+                            target="_blank"
+                            className="text-[11px] text-violet-700 hover:text-violet-900 px-2 py-0.5 rounded border border-violet-200 bg-violet-50 font-medium transition inline-flex items-center gap-1"
+                            title="Open Merchant Dashboard"
+                          >
+                            <Store className="w-3 h-3" />
+                            <span>Dashboard</span>
+                          </Link>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-3 py-2.5 font-semibold text-zinc-900">{BDT(parseFloat(s.revenue))}</td>
+                    <td className="px-3 py-2.5 text-zinc-600">{s.orderCount}</td>
+                    <td className="px-3 py-2.5 text-amber-600 font-medium">{BDT(parseFloat(s.revenue) * 0.03)}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -668,7 +693,10 @@ function MerchantsTab({ addToast }: { addToast: (type: ToastMessage["type"], msg
                   ))
                 : merchants.map((m) => (
                     <tr key={m.id} className="border-t border-zinc-100 hover:bg-zinc-50">
-                      <td className="px-4 py-3 font-medium text-zinc-900">{m.name}</td>
+                      <td className="px-4 py-3">
+                        <div className="font-semibold text-zinc-900">{m.name}</div>
+                        <div className="text-[11px] font-mono text-zinc-400">{m.slug}.storeswift.app</div>
+                      </td>
                       <td className="px-4 py-3">
                         <div className="text-zinc-800 text-xs">{m.owner?.fullName ?? "—"}</div>
                         <div className="text-zinc-400 text-xs">{m.owner?.email ?? "—"}</div>
@@ -681,16 +709,39 @@ function MerchantsTab({ addToast }: { addToast: (type: ToastMessage["type"], msg
                       <td className="px-4 py-3"><StatusBadge status={m.storeStatus} /></td>
                       <td className="px-4 py-3 text-zinc-500 text-xs">{new Date(m.createdAt).toLocaleDateString("en-BD")}</td>
                       <td className="px-4 py-3">
-                        <div className="flex items-center gap-2">
-                          <Link href={`/store/${m.slug}`} target="_blank" className="p-1.5 rounded hover:bg-violet-50 text-violet-600" title="View Store">
-                            <ExternalLink className="w-3.5 h-3.5" />
+                        <div className="flex items-center gap-1.5">
+                          <Link
+                            href={`/store/${m.slug}`}
+                            target="_blank"
+                            className="flex items-center gap-1 px-2 py-1 rounded-lg border border-zinc-200 hover:bg-violet-50 hover:border-violet-200 text-zinc-700 hover:text-violet-700 text-xs font-medium transition"
+                            title="Visit Live Storefront"
+                          >
+                            <ExternalLink className="w-3 h-3 text-zinc-400" />
+                            <span>Storefront</span>
+                          </Link>
+                          <Link
+                            href={`/store/${m.slug}/dashboard`}
+                            target="_blank"
+                            className="flex items-center gap-1 px-2 py-1 rounded-lg border border-zinc-200 hover:bg-blue-50 hover:border-blue-200 text-zinc-700 hover:text-blue-700 text-xs font-medium transition"
+                            title="Manage Shop Dashboard"
+                          >
+                            <Store className="w-3 h-3 text-zinc-400" />
+                            <span>Dashboard</span>
                           </Link>
                           {m.storeStatus === "active" ? (
-                            <button onClick={() => handleAction(m.id, "suspend")} className="p-1.5 rounded hover:bg-red-50 text-red-500" title="Suspend">
+                            <button
+                              onClick={() => handleAction(m.id, "suspend")}
+                              className="p-1 rounded-lg border border-zinc-200 hover:bg-red-50 hover:border-red-200 text-zinc-400 hover:text-red-500 transition"
+                              title="Suspend Store"
+                            >
                               <Ban className="w-3.5 h-3.5" />
                             </button>
                           ) : (
-                            <button onClick={() => handleAction(m.id, "activate")} className="p-1.5 rounded hover:bg-green-50 text-green-600" title="Activate">
+                            <button
+                              onClick={() => handleAction(m.id, "activate")}
+                              className="p-1 rounded-lg border border-zinc-200 hover:bg-green-50 hover:border-green-200 text-zinc-400 hover:text-green-600 transition"
+                              title="Activate Store"
+                            >
                               <CheckCircle2 className="w-3.5 h-3.5" />
                             </button>
                           )}
@@ -853,6 +904,25 @@ function OrdersTab({ addToast }: { addToast: (type: ToastMessage["type"], msg: s
                 <div className="flex justify-between"><span className="text-zinc-500">Payment</span><span className="capitalize">{selectedOrder.paymentMethod}</span></div>
                 <div className="flex justify-between"><span className="text-zinc-500">Status</span><StatusBadge status={selectedOrder.fulfillmentStatus ?? selectedOrder.status ?? "pending"} /></div>
                 <div className="flex justify-between"><span className="text-zinc-500">Date</span><span>{new Date(selectedOrder.createdAt).toLocaleString()}</span></div>
+              </div>
+
+              <div className="pt-2 flex flex-col gap-2">
+                <Link
+                  href="/store/apex-fashion/dashboard"
+                  target="_blank"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-violet-600 text-white font-semibold text-xs hover:bg-violet-700 transition"
+                >
+                  <Store className="w-3.5 h-3.5" />
+                  <span>Open in Merchant Orders Panel</span>
+                </Link>
+                <Link
+                  href="/store/apex-fashion"
+                  target="_blank"
+                  className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl border border-zinc-200 bg-white text-zinc-700 font-semibold text-xs hover:bg-zinc-50 transition"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>Visit Apex Fashion Storefront</span>
+                </Link>
               </div>
             </div>
           </div>
@@ -1848,7 +1918,21 @@ export default function SuperAdminPage() {
         </nav>
 
         {/* Footer */}
-        <div className="border-t border-zinc-100 p-3">
+        <div className="border-t border-zinc-100 p-3 space-y-1">
+          <Link
+            href="/"
+            className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 text-xs transition"
+          >
+            <Globe className="w-4 h-4 text-zinc-400" />
+            {sidebarOpen && <span>Landing Page</span>}
+          </Link>
+          <Link
+            href="/logout"
+            className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-red-600 hover:bg-red-50 text-xs transition"
+          >
+            <LogOut className="w-4 h-4" />
+            {sidebarOpen && <span>Sign Out</span>}
+          </Link>
           <button
             onClick={() => setSidebarOpen((v) => !v)}
             className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-zinc-500 hover:bg-zinc-50 text-xs"
@@ -1871,11 +1955,34 @@ export default function SuperAdminPage() {
             <p className="text-xs text-zinc-400">StoreSwift Platform Administration</p>
           </div>
           <div className="flex items-center gap-3">
+            <Link
+              href="/store/apex-fashion"
+              target="_blank"
+              className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-medium text-zinc-700 hover:bg-zinc-50 hover:text-zinc-900 transition"
+            >
+              <ExternalLink className="w-3.5 h-3.5 text-zinc-400" />
+              <span>Demo Storefront</span>
+            </Link>
+            <Link
+              href="/store/apex-fashion/dashboard"
+              target="_blank"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-violet-200 bg-violet-50 text-xs font-medium text-violet-700 hover:bg-violet-100 transition"
+            >
+              <Store className="w-3.5 h-3.5 text-violet-600" />
+              <span>Shop Dashboard</span>
+            </Link>
             <div className="w-2 h-2 bg-green-500 rounded-full" title="Platform Online" />
             <span className="text-xs text-zinc-400 hidden md:block">Platform Online</span>
             <div className="w-8 h-8 bg-violet-100 rounded-full flex items-center justify-center">
               <span className="text-xs font-bold text-violet-700">SA</span>
             </div>
+            <Link
+              href="/logout"
+              className="p-1.5 rounded-lg border border-zinc-200 hover:bg-red-50 hover:border-red-200 text-zinc-400 hover:text-red-500 transition"
+              title="Sign Out"
+            >
+              <LogOut className="w-4 h-4" />
+            </Link>
           </div>
         </header>
 

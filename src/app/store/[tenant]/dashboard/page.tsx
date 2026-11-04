@@ -1202,6 +1202,9 @@ export default function MerchantDashboard() {
           <a href={`/store/${tenant}`} target="_blank" className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold text-zinc-600 hover:bg-zinc-50 transition group">
             <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" /> View Store
           </a>
+          <a href="/super-admin" target="_blank" className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium text-violet-700 hover:bg-violet-50 transition">
+            <Sparkles className="w-4 h-4 text-violet-600" /> Platform Admin
+          </a>
           <a href="/logout" className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold text-red-600 hover:bg-red-50 transition">
             <LogOut className="w-4 h-4" /> Sign Out
           </a>
@@ -1222,6 +1225,9 @@ export default function MerchantDashboard() {
               <Bell className="w-4 h-4" />
               <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-red-500 rounded-full" />
             </button>
+            <a href="/super-admin" target="_blank" className="hidden md:flex items-center gap-1.5 text-xs font-semibold text-violet-700 bg-violet-50 border border-violet-200 rounded-xl px-3 py-2 hover:bg-violet-100 transition">
+              <Sparkles className="w-3.5 h-3.5 text-violet-600" /> Super Admin
+            </a>
             <a href={`/store/${tenant}`} target="_blank" className="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-zinc-600 border border-zinc-200 rounded-xl px-3 py-2 hover:bg-zinc-50 transition">
               <ExternalLink className="w-3.5 h-3.5" /> Live Store
             </a>
