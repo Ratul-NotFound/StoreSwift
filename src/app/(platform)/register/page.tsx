@@ -119,7 +119,7 @@ function RegisterForm() {
           Create Your Store
         </h1>
         <p className="text-xs text-zinc-500 mt-1">
-          {initialPlan !== "free" ? `Setting up with ${initialPlan.toUpperCase()} plan. Free 14-day trial.` : "Set up your StoreSwift storefront in seconds."}
+          {initialPlan !== "free" ? `Setting up with ${initialPlan.toUpperCase()} plan. Start with our ৳0 Free Forever plan or scale up anytime.` : "Set up your StoreSwift storefront in seconds — ৳0 upfront cost, Free Forever."}
         </p>
       </div>
 

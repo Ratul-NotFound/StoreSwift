@@ -19,7 +19,7 @@ A turnkey, self-service **Multi-Tenant eCommerce SaaS** where a merchant can:
 * Get an instant, fully responsive, professional eCommerce storefront (`brand.platform.com` or custom domain) with pre-populated dummy products, banners, and category-tailored attributes.
 * Manage stock and products through an intuitive **Merchant Admin Dashboard** with variant matrix generation (e.g. Size x Color) and batch inventory updates.
 * Process incoming orders across multiple channels with a **Hybrid Checkout System** supporting **Cash on Delivery (COD)**, **Credit/Debit Cards (Stripe)**, and **Manual/Mobile Bank Transfers**.
-* Pay an affordable monthly SaaS subscription fee (e.g., $9 – $29/mo) after a 14-day free trial.
+* Launch with a ৳0 Free Forever plan with integrated platform dropshipping, and scale into transparent monthly tiers (Growth ৳499/mo, Pro ৳999/mo) with zero commission.
 
 ---
 

@@ -38,7 +38,7 @@ export const stores = pgTable("stores", {
   announcementText:   text("announcement_text"),
   metaTitle:          varchar("meta_title", { length: 255 }),
   metaDescription:    text("meta_description"),
-  subscriptionStatus: varchar("subscription_status", { length: 20 }).default("trial").notNull(),
+  subscriptionStatus: varchar("subscription_status", { length: 20 }).default("active").notNull(),
   createdAt:          timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt:          timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 });

@@ -94,7 +94,7 @@ export async function POST(request: Request) {
           primaryColor: "#0f172a",
           themeConfig: { template: template || "minimal" },
           paymentConfig: { enable_cod: true, enable_stripe: false, enable_manual: false },
-          subscriptionStatus: "trial"
+          subscriptionStatus: "active"
         })
         .returning();
 

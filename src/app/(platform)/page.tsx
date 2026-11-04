@@ -1683,7 +1683,7 @@ export default function PlatformLandingPage() {
                 </ul>
               </div>
               <Link href="/register?plan=medium" className="mt-6 w-full py-3.5 btn-glass-primary font-bold text-xs rounded-xl transition text-center btn-press">
-                Start 14-Day Free Trial
+                Choose Growth Plan
               </Link>
             </div>
 
@@ -1715,7 +1715,7 @@ export default function PlatformLandingPage() {
                 </ul>
               </div>
               <Link href="/register?plan=pro" className="mt-6 w-full py-3 bg-zinc-100 hover:bg-zinc-200 border border-zinc-200/90 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 text-zinc-900 dark:text-white font-bold text-xs rounded-xl transition text-center btn-press">
-                Start 14-Day Free Trial
+                Choose Pro Enterprise
               </Link>
             </div>
           </div>

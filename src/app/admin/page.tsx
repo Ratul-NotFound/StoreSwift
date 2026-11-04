@@ -1661,10 +1661,14 @@ export default function MerchantAdminPage() {
                 <div>
                   <span className="text-[11px] font-semibold uppercase text-zinc-400">Current Plan</span>
                   <h2 className="text-xl font-bold text-zinc-900">{subscriptionPlan}</h2>
-                  <p className="text-xs text-zinc-500 mt-0.5">14-Day Free Trial active</p>
+                  <p className="text-xs text-zinc-500 mt-0.5">
+                    {subscriptionPlan.toLowerCase().includes("free") || subscriptionPlan.toLowerCase().includes("starter")
+                      ? "Free Forever (৳0 upfront cost • Platform dropshipping included)"
+                      : "Subscription Active"}
+                  </p>
                 </div>
                 <span className="text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full">
-                  Trial Active
+                  Active
                 </span>
               </div>
 
@@ -1672,9 +1676,9 @@ export default function MerchantAdminPage() {
                 <h3 className="font-bold text-zinc-900 text-xs mb-3">Available Plans:</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
                   {[
-                    { name: "Starter", price: "$9", period: "/mo", desc: "Up to 50 products, standard subdomain" },
-                    { name: "Growth", price: "$29", period: "/mo", desc: "Up to 500 products, custom domain", featured: true },
-                    { name: "Pro", price: "$79", period: "/mo", desc: "Unlimited products, multi-staff access" }
+                    { name: "Free Starter", price: "৳0", period: "/mo", desc: "Up to 50 products, Free Forever, 8% commission, dropshipping included" },
+                    { name: "Growth", price: "৳499", period: "/mo", desc: "Up to 500 products, custom domain, 3% platform fee, priority fulfillment", featured: true },
+                    { name: "Pro Enterprise", price: "৳999", period: "/mo", desc: "Unlimited products, 0% commission, unlimited staff, VIP dropshipping" }
                   ].map((p) => (
                     <div
                       key={p.name}
