@@ -49,6 +49,7 @@ import { SearchModal } from "@/components/store/search-modal";
 import { ExpressCheckoutModal } from "@/components/store/express-checkout-modal";
 import { DemoStoreBar } from "@/components/store/demo-store-bar";
 import { TrackOrderModal } from "@/components/store/track-order-modal";
+import { MinimalStorefront } from "@/components/store/templates/minimal-storefront";
 import { FashionStorefront } from "@/components/store/templates/fashion-storefront";
 import { BeautyStorefront } from "@/components/store/templates/beauty-storefront";
 import { FootwearStorefront } from "@/components/store/templates/footwear-storefront";
@@ -399,12 +400,12 @@ export default function TenantStorefrontPage({
   const isClothingTemplate = currentTemplateId === "clothing";
   const isMilanoTemplate = currentTemplateId === "milano";
   const isNickelFoxTemplate = currentTemplateId === "nickelfox";
+  const isMinimalTemplate = currentTemplateId === "minimal";
   const isBeautyVertical = currentTemplateId === "glow" || currentTemplateId === "beauty";
   const isFootwearVertical = currentTemplateId === "artisan" || currentTemplateId === "shoes";
   const isTechVertical = currentTemplateId === "bold" || currentTemplateId === "cyber" || currentTemplateId === "tech";
   const isJewelryVertical = currentTemplateId === "maison" || currentTemplateId === "jewelry";
   const isPantryVertical = currentTemplateId === "pantry" || currentTemplateId === "food";
-  const isFashionVertical = !isClothingTemplate && !isMilanoTemplate && !isNickelFoxTemplate && !isBeautyVertical && !isFootwearVertical && !isTechVertical && !isJewelryVertical && !isPantryVertical;
 
   return (
     <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${template.classes.pageBg}`}>
@@ -415,7 +416,7 @@ export default function TenantStorefrontPage({
         categoryName={categoryConfig.name}
         onOpenCheckout={() => setIsCheckoutOpen(true)}
         onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
-        defaultDismissed={isFashionVertical}
+        defaultDismissed={isMinimalTemplate}
       />
 
       {/* ─── New Premium Templates (Reference-matched) ───────────────────── */}
@@ -467,8 +468,8 @@ export default function TenantStorefrontPage({
           onOpenCheckout={() => setIsCheckoutOpen(true)}
           onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
         />
-      ) : isFashionVertical ? (
-        <FashionStorefront
+      ) : isMinimalTemplate ? (
+        <MinimalStorefront
           storeDisplayName={storeDisplayName}
           tenantSlug={tenantSlug}
           onOpenCheckout={() => setIsCheckoutOpen(true)}
@@ -642,7 +643,7 @@ export default function TenantStorefrontPage({
           storeTemplatesMap={STORE_TEMPLATES}
         />
       ) : (
-        <FashionStorefront
+        <MinimalStorefront
           storeDisplayName={storeDisplayName}
           tenantSlug={tenantSlug}
           onOpenCheckout={() => setIsCheckoutOpen(true)}
@@ -671,9 +672,6 @@ export default function TenantStorefrontPage({
           storeTemplatesMap={STORE_TEMPLATES}
         />
       )}
-
-      {/* ─── Template Switcher Preview Bar ──────────────────────────────── */}
-      <TemplateSwitcherBar currentSlug={tenantSlug} />
 
       {/* ─── Search Modal ─────────────────────────────────────────────────── */}
       <SearchModal
@@ -950,7 +948,7 @@ export default function TenantStorefrontPage({
         }
         storeDisplayName={storeDisplayName}
         tenantSlug={tenantSlug}
-        currency="$"
+        currency="৳"
         onClearCart={() => setCartItems([])}
       />
 
@@ -969,6 +967,16 @@ export default function TenantStorefrontPage({
         onSelectTemplate={(t) => {
           setCurrentTemplateId(t);
           setTemplateKey(t);
+          if (typeof window !== "undefined") {
+            const url = new URL(window.location.href);
+            url.searchParams.set("template", t);
+            window.history.replaceState({}, "", url.toString());
+          }
+          fetch(`/api/stores/${tenantSlug}/settings`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ template: t })
+          }).catch(() => {});
         }}
       />
 

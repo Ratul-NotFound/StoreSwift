@@ -5,3 +5,4 @@ export async function GET(request: NextRequest) {
   url.pathname = "/register";
   return NextResponse.redirect(url);
 }
+

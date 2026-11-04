@@ -100,9 +100,9 @@ const CATEGORY_SECTIONS = [
 ];
 
 const TRUST_ITEMS = [
-  { icon: <Truck className="w-6 h-6" />, title: "Free Shipping", desc: "Free shipping for orders above $180" },
-  { icon: <CreditCard className="w-6 h-6" />, title: "Flexible Payment", desc: "Multiple secure payment options" },
-  { icon: <Phone className="w-6 h-6" />, title: "24×7 Support", desc: "We support 24 hours a day" },
+  { icon: <Truck className="w-6 h-6" />, title: "Free Shipping", desc: "Free shipping for orders above ৳2,000" },
+  { icon: <CreditCard className="w-6 h-6" />, title: "Flexible Payment", desc: "bKash, Nagad & Cash on Delivery" },
+  { icon: <Phone className="w-6 h-6" />, title: "24×7 Support", desc: "Dedicated support team" },
 ];
 
 const ABOUT_CONTENT = {
@@ -491,7 +491,7 @@ export function ClothingStorefront({
                 <div className="mt-6 pt-5 border-t border-stone-200">
                   <h3 className="font-bold text-[#1a1209] mb-3 text-sm uppercase tracking-wider">Price Range</h3>
                   <div className="space-y-1.5">
-                    {["Under $60", "$60 – $100", "$100 – $200", "Over $200"].map(r => (
+                    {["Under ৳1,000", "৳1,000 – ৳2,500", "৳2,500 – ৳5,000", "Over ৳5,000"].map(r => (
                       <label key={r} className="flex items-center gap-2 text-sm text-stone-600 cursor-pointer">
                         <input type="checkbox" className="rounded border-stone-300 accent-[#3d2d1e]" />
                         {r}

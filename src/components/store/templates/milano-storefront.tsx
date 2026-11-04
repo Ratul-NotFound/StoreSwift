@@ -369,7 +369,7 @@ export function MilanoStorefront({
           <section className="border-t border-white/5 py-10">
             <div className="max-w-7xl mx-auto px-5 grid grid-cols-1 sm:grid-cols-3 gap-8">
               {[
-                { icon: <Truck className="w-5 h-5" />, title: "Free Shipping", sub: "Orders above $150" },
+                { icon: <Truck className="w-5 h-5" />, title: "Free Shipping", sub: "Orders above ৳2,000" },
                 { icon: <RotateCcw className="w-5 h-5" />, title: "30-Day Returns", sub: "Hassle-free exchanges" },
                 { icon: <ShieldCheck className="w-5 h-5" />, title: "Secure Checkout", sub: "256-bit SSL encryption" },
               ].map(t => (

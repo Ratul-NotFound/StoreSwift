@@ -410,7 +410,7 @@ export function NickelFoxStorefront({
           <section className="bg-white border-b-4 border-black py-8">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
               {[
-                { icon: <Truck className="w-5 h-5" />, t: "Free Shipping", s: "On orders above $80" },
+                { icon: <Truck className="w-5 h-5" />, t: "Free Shipping", s: "On orders above ৳1,500" },
                 { icon: <ShieldCheck className="w-5 h-5" />, t: "Secure Payment", s: "100% protected checkout" },
                 { icon: <RotateCcw className="w-5 h-5" />, t: "Easy Returns", s: "30-day hassle-free returns" },
               ].map(x => (

@@ -120,4 +120,15 @@ describe("Storefront Template Switcher & Dynamic Catalog System", () => {
       expect(formatted).toMatch(/^৳[\d,]+$/);
     });
   });
+
+  it("verifies elimination of duplicate fashion sub-styles and confirms clean MinimalStorefront forwarder", async () => {
+    // 1. FashionStorefront and MinimalStorefront export properly
+    const { MinimalStorefront } = await import("@/components/store/templates/minimal-storefront");
+    const { FashionStorefront } = await import("@/components/store/templates/fashion-storefront");
+
+    expect(MinimalStorefront).toBeDefined();
+    expect(FashionStorefront).toBeDefined();
+    // FashionStorefront is an alias / forwarder to MinimalStorefront
+    expect(FashionStorefront).toBe(MinimalStorefront);
+  });
 });
