@@ -589,11 +589,11 @@ export default function PlatformLandingPage() {
                 </>
               )}
             </div>
-            <a href="#features" className="hover:text-zinc-950 dark:hover:text-white transition">Features</a>
-            <a href="#how-it-works" className="hover:text-zinc-950 dark:hover:text-white transition">How It Works</a>
-            <a href="#storefronts" className="hover:text-zinc-950 dark:hover:text-white transition">30 Templates</a>
-            <a href="#pricing" className="hover:text-zinc-950 dark:hover:text-white transition">Pricing & Dropshipping</a>
-            <a href="#faq" className="hover:text-zinc-950 dark:hover:text-white transition">FAQ</a>
+            <a href="#features" className="px-3 py-1.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/[0.06] transition-all duration-200">Features</a>
+            <a href="#how-it-works" className="px-3 py-1.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/[0.06] transition-all duration-200">How It Works</a>
+            <a href="#storefronts" className="px-3 py-1.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/[0.06] transition-all duration-200">30 Templates</a>
+            <a href="#pricing" className="px-3 py-1.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/[0.06] transition-all duration-200">Pricing & Dropshipping</a>
+            <a href="#faq" className="px-3 py-1.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/[0.06] transition-all duration-200">FAQ</a>
           </nav>
 
           {/* Action Buttons & Mobile Hamburger */}
@@ -602,17 +602,17 @@ export default function PlatformLandingPage() {
 
             <Link
               href="/login"
-              className="text-xs font-semibold text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white px-3.5 py-2 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800/60 transition hidden sm:inline-flex items-center"
+              className="text-xs font-semibold text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white px-3.5 py-2 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800/60 hover:-translate-y-0.5 transition-all duration-200 hidden sm:inline-flex items-center"
             >
               <span>Sign In</span>
             </Link>
 
             <Link
               href="/register"
-              className="inline-flex items-center space-x-1.5 text-xs font-bold btn-glass-primary px-4 py-2 rounded-xl transition btn-press"
+              className="inline-flex items-center space-x-1.5 text-xs font-bold btn-glass-primary btn-shimmer px-4 py-2 rounded-xl transition btn-press group"
             >
               <span>Start Free Store</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
             </Link>
             <button
               type="button"
@@ -739,55 +739,70 @@ export default function PlatformLandingPage() {
             <motion.div whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.98 }}>
               <Link
                 href="/register"
-                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-bold px-7 py-3.5 rounded-xl btn-glass-primary transition btn-press group"
+                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-bold px-7 py-3.5 rounded-xl btn-glass-primary btn-shimmer transition btn-press group"
               >
                 <span>Start Free Store (৳0 Upfront)</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-200" />
               </Link>
             </motion.div>
             <motion.div whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.98 }}>
               <Link
                 href="/store/apex-fashion/dashboard"
-                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-semibold bg-white hover:bg-zinc-50 text-zinc-800 border border-zinc-200/90 dark:bg-zinc-900/80 dark:hover:bg-zinc-800 dark:text-zinc-200 dark:border-white/[0.08] px-6 py-3.5 rounded-xl transition shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
+                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-semibold bg-white hover:bg-zinc-50 text-zinc-800 border border-zinc-200/90 hover:border-emerald-500/40 dark:bg-zinc-900/80 dark:hover:bg-zinc-800 dark:text-zinc-200 dark:border-white/[0.08] px-6 py-3.5 rounded-xl transition shadow-[0_1px_2px_rgba(0,0,0,0.02)] group"
               >
-                <Store className="w-4 h-4 text-emerald-500" />
-                <span>Merchant Dashboard</span>
+                <Store className="w-4 h-4 text-emerald-500 group-hover:scale-110 transition-transform duration-200" />
+                <span className="group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors">Merchant Dashboard</span>
               </Link>
             </motion.div>
             <motion.div whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.98 }}>
               <Link
                 href="/super-admin"
-                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-semibold bg-violet-50 hover:bg-violet-100 text-violet-900 border border-violet-200 dark:bg-violet-950/40 dark:hover:bg-violet-900/50 dark:text-violet-300 dark:border-violet-800/40 px-5 py-3.5 rounded-xl transition shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
+                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-semibold bg-violet-50 hover:bg-violet-100 text-violet-900 border border-violet-200 hover:border-violet-300 dark:bg-violet-950/40 dark:hover:bg-violet-900/50 dark:text-violet-300 dark:border-violet-800/40 px-5 py-3.5 rounded-xl transition shadow-[0_1px_2px_rgba(0,0,0,0.02)] group"
               >
-                <Zap className="w-4 h-4 text-amber-500" />
+                <Zap className="w-4 h-4 text-amber-500 group-hover:scale-110 transition-transform duration-200" />
                 <span>SaaS Super Admin</span>
               </Link>
             </motion.div>
           </motion.div>
 
-          {/* Trust Indicators Strip */}
+          {/* Interactive Trust Indicators Strip */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.32, ease: [0.16, 1, 0.3, 1] }}
-            className="pt-3 flex flex-wrap items-center justify-center gap-5 sm:gap-8 text-xs text-zinc-600 dark:text-zinc-400 font-medium"
+            className="pt-3 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5 text-xs text-zinc-600 dark:text-zinc-400 font-medium"
           >
-            <div className="flex items-center space-x-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)]" />
-              <span>30 Industry Category Templates</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)]" />
-              <span>Platform Dropshipping in All Plans</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)]" />
-              <span>Steadfast & Pathao 1-Click Sync</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)]" />
-              <span>0% Commission on Pro Plan</span>
-            </div>
+            <motion.div
+              whileHover={{ scale: 1.04, y: -2 }}
+              className="px-3.5 py-1.5 rounded-full bg-zinc-100/80 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-white/[0.08] hover:border-emerald-500/40 hover:bg-emerald-500/[0.03] dark:hover:bg-emerald-500/[0.06] hover:shadow-md hover:shadow-emerald-500/10 transition-all flex items-center space-x-2 cursor-default group"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] group-hover:scale-125 transition-transform" />
+              <span className="group-hover:text-zinc-950 dark:group-hover:text-white transition-colors">30 Category Templates</span>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.04, y: -2 }}
+              className="px-3.5 py-1.5 rounded-full bg-zinc-100/80 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-white/[0.08] hover:border-emerald-500/40 hover:bg-emerald-500/[0.03] dark:hover:bg-emerald-500/[0.06] hover:shadow-md hover:shadow-emerald-500/10 transition-all flex items-center space-x-2 cursor-default group"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] group-hover:scale-125 transition-transform" />
+              <span className="group-hover:text-zinc-950 dark:group-hover:text-white transition-colors">Dropshipping in All Plans</span>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.04, y: -2 }}
+              className="px-3.5 py-1.5 rounded-full bg-zinc-100/80 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-white/[0.08] hover:border-emerald-500/40 hover:bg-emerald-500/[0.03] dark:hover:bg-emerald-500/[0.06] hover:shadow-md hover:shadow-emerald-500/10 transition-all flex items-center space-x-2 cursor-default group"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] group-hover:scale-125 transition-transform" />
+              <span className="group-hover:text-zinc-950 dark:group-hover:text-white transition-colors">Steadfast & Pathao 1-Click</span>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.04, y: -2 }}
+              className="px-3.5 py-1.5 rounded-full bg-zinc-100/80 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-white/[0.08] hover:border-emerald-500/40 hover:bg-emerald-500/[0.03] dark:hover:bg-emerald-500/[0.06] hover:shadow-md hover:shadow-emerald-500/10 transition-all flex items-center space-x-2 cursor-default group"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] group-hover:scale-125 transition-transform" />
+              <span className="group-hover:text-zinc-950 dark:group-hover:text-white transition-colors">0% Commission on Pro</span>
+            </motion.div>
           </motion.div>
         </div>
 
@@ -836,12 +851,12 @@ export default function PlatformLandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -5 }}
+              whileHover={{ y: -6 }}
               className="rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm">
+                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40 group-hover:shadow-[0_0_16px_rgba(16,185,129,0.35)] transition-all duration-300">
                     <Zap className="w-5 h-5" />
                   </motion.div>
                   <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20 animate-float-subtle">
@@ -850,7 +865,7 @@ export default function PlatformLandingPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white tracking-tight">
+                  <h3 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white tracking-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors duration-200">
                     1-Page Express Checkout
                   </h3>
                   <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
@@ -859,15 +874,15 @@ export default function PlatformLandingPage() {
                 </div>
 
                 <div className="space-y-2.5 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
-                  <div className="flex items-start space-x-2.5">
+                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
                     <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>Automatic Inside Dhaka (৳60) and Nationwide (৳130) rates</span>
                   </div>
-                  <div className="flex items-start space-x-2.5">
+                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
                     <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>1-Tap bKash, Nagad, and Cash on Delivery with open parcel check</span>
                   </div>
-                  <div className="flex items-start space-x-2.5">
+                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
                     <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>Instant English and Bengali (বাংলা) language switcher</span>
                   </div>
@@ -886,12 +901,12 @@ export default function PlatformLandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.5, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -5 }}
+              whileHover={{ y: -6 }}
               className="rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm">
+                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40 group-hover:shadow-[0_0_16px_rgba(16,185,129,0.35)] transition-all duration-300">
                     <Truck className="w-5 h-5" />
                   </motion.div>
                   <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20 animate-float-subtle">
@@ -900,7 +915,7 @@ export default function PlatformLandingPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white tracking-tight">
+                  <h3 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white tracking-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors duration-200">
                     1-Click Courier & Printing
                   </h3>
                   <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
@@ -909,15 +924,15 @@ export default function PlatformLandingPage() {
                 </div>
 
                 <div className="space-y-2.5 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
-                  <div className="flex items-start space-x-2.5">
+                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
                     <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>1-Click consignment booking directly from admin orders</span>
                   </div>
-                  <div className="flex items-start space-x-2.5">
+                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
                     <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>Ready-to-print 4x6 thermal courier stickers and A4 tax invoices</span>
                   </div>
-                  <div className="flex items-start space-x-2.5">
+                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
                     <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>Automated customer SMS triggers and live parcel tracking links</span>
                   </div>
@@ -936,12 +951,12 @@ export default function PlatformLandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.5, delay: 0.19, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -5 }}
+              whileHover={{ y: -6 }}
               className="rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm">
+                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40 group-hover:shadow-[0_0_16px_rgba(16,185,129,0.35)] transition-all duration-300">
                     <ShoppingBag className="w-5 h-5" />
                   </motion.div>
                   <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20 animate-float-subtle">
@@ -950,7 +965,7 @@ export default function PlatformLandingPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white tracking-tight">
+                  <h3 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white tracking-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors duration-200">
                     Built-in Platform Dropshipping
                   </h3>
                   <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
@@ -959,15 +974,15 @@ export default function PlatformLandingPage() {
                 </div>
 
                 <div className="space-y-2.5 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
-                  <div className="flex items-start space-x-2.5">
+                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
                     <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>Zero upfront inventory investment needed</span>
                   </div>
-                  <div className="flex items-start space-x-2.5">
+                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
                     <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>1-Click import from platform catalog with custom retail pricing</span>
                   </div>
-                  <div className="flex items-start space-x-2.5">
+                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
                     <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>Platform warehouse handles packing, dispatch, and COD collection</span>
                   </div>
@@ -986,12 +1001,12 @@ export default function PlatformLandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.5, delay: 0.26, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -5 }}
+              whileHover={{ y: -6 }}
               className="rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm">
+                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40 group-hover:shadow-[0_0_16px_rgba(16,185,129,0.35)] transition-all duration-300">
                     <ShieldCheck className="w-5 h-5" />
                   </motion.div>
                   <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 px-2.5 py-1 rounded-full border border-emerald-500/20 animate-float-subtle">
@@ -1000,7 +1015,7 @@ export default function PlatformLandingPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white tracking-tight">
+                  <h3 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white tracking-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors duration-200">
                     Anti-Fraud RTO Risk Shield
                   </h3>
                   <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
@@ -1009,15 +1024,15 @@ export default function PlatformLandingPage() {
                 </div>
 
                 <div className="space-y-2.5 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
-                  <div className="flex items-start space-x-2.5">
+                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
                     <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>0–100% delivery confidence score before courier handover</span>
                   </div>
-                  <div className="flex items-start space-x-2.5">
+                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
                     <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>Advance delivery charge alerts for high-risk customer orders</span>
                   </div>
-                  <div className="flex items-start space-x-2.5">
+                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
                     <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>Atomic stock locks prevent overselling during high-traffic sales</span>
                   </div>
@@ -1036,12 +1051,12 @@ export default function PlatformLandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.5, delay: 0.33, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -5 }}
+              whileHover={{ y: -6 }}
               className="rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm">
+                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40 group-hover:shadow-[0_0_16px_rgba(16,185,129,0.35)] transition-all duration-300">
                     <MessageSquare className="w-5 h-5" />
                   </motion.div>
                   <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20 animate-float-subtle">
@@ -1050,7 +1065,7 @@ export default function PlatformLandingPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white tracking-tight">
+                  <h3 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white tracking-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors duration-200">
                     Abandoned Cart WhatsApp Recovery
                   </h3>
                   <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
@@ -1059,15 +1074,15 @@ export default function PlatformLandingPage() {
                 </div>
 
                 <div className="space-y-2.5 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
-                  <div className="flex items-start space-x-2.5">
+                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
                     <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>Real-time pre-submit lead capture as customers type their phone</span>
                   </div>
-                  <div className="flex items-start space-x-2.5">
+                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
                     <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>1-Click WhatsApp direct messaging with itemized recovery links</span>
                   </div>
-                  <div className="flex items-start space-x-2.5">
+                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
                     <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>Real-time recoverable revenue analytics dashboard</span>
                   </div>
@@ -1086,12 +1101,12 @@ export default function PlatformLandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.5, delay: 0.40, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -5 }}
+              whileHover={{ y: -6 }}
               className="rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm">
+                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40 group-hover:shadow-[0_0_16px_rgba(16,185,129,0.35)] transition-all duration-300">
                     <Users className="w-5 h-5" />
                   </motion.div>
                   <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20 animate-float-subtle">
@@ -1100,7 +1115,7 @@ export default function PlatformLandingPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white tracking-tight">
+                  <h3 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white tracking-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors duration-200">
                     Team Staff RBAC & Bulk CSV
                   </h3>
                   <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
@@ -1109,15 +1124,15 @@ export default function PlatformLandingPage() {
                 </div>
 
                 <div className="space-y-2.5 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
-                  <div className="flex items-start space-x-2.5">
+                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
                     <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>Granular roles: Owner, Manager, Fulfillment, Catalog Editor</span>
                   </div>
-                  <div className="flex items-start space-x-2.5">
+                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
                     <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>RFC-4180 CSV product import with sample template download</span>
                   </div>
-                  <div className="flex items-start space-x-2.5">
+                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
                     <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>Formula injection defense and customer retargeting directory export</span>
                   </div>
@@ -1164,12 +1179,12 @@ export default function PlatformLandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -4 }}
-              className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group"
+              whileHover={{ y: -6 }}
+              className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group cursor-default"
             >
-              <motion.div whileHover={{ scale: 1.12, rotate: 4 }} className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-emerald-500/20 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm transition-transform flex-shrink-0">
+              <motion.div whileHover={{ scale: 1.15, rotate: 4 }} className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-emerald-500/20 group-hover:border-emerald-500/50 group-hover:shadow-[0_0_24px_rgba(16,185,129,0.25)] text-zinc-900 dark:text-white flex items-center justify-center shadow-sm transition-all duration-300 flex-shrink-0">
                 <Store className="w-6 h-6 md:w-7 md:h-7 text-emerald-500 dark:text-emerald-400" />
-                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500 text-zinc-950 shadow-md shadow-emerald-500/25">
+                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500 text-zinc-950 shadow-md shadow-emerald-500/25 group-hover:scale-110 group-hover:shadow-[0_0_12px_rgba(16,185,129,0.7)] transition-all duration-300">
                   01
                 </span>
               </motion.div>
@@ -1177,7 +1192,7 @@ export default function PlatformLandingPage() {
                 <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-500 dark:text-emerald-400 font-bold block">
                   Step 01 • Template Setup
                 </span>
-                <h3 className="text-lg md:text-xl font-bold text-zinc-950 dark:text-white tracking-tight">
+                <h3 className="text-lg md:text-xl font-bold text-zinc-950 dark:text-white tracking-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors duration-200">
                   Choose from 30 Templates
                 </h3>
                 <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
@@ -1185,11 +1200,11 @@ export default function PlatformLandingPage() {
                 </p>
               </div>
               <div className="pt-1 md:pt-2 space-y-1.5 md:space-y-2">
-                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300">
+                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300 hover:translate-x-1 transition-transform duration-200">
                   <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
                   <span>30 Production-grade responsive templates</span>
                 </div>
-                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300">
+                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300 hover:translate-x-1 transition-transform duration-200">
                   <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
                   <span>Pre-loaded catalog or 1-click dropshipping</span>
                 </div>
@@ -1202,12 +1217,12 @@ export default function PlatformLandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.55, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -4 }}
-              className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group"
+              whileHover={{ y: -6 }}
+              className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group cursor-default"
             >
-              <motion.div whileHover={{ scale: 1.12, rotate: 4 }} className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-emerald-500/20 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm transition-transform flex-shrink-0">
+              <motion.div whileHover={{ scale: 1.15, rotate: 4 }} className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-emerald-500/20 group-hover:border-emerald-500/50 group-hover:shadow-[0_0_24px_rgba(16,185,129,0.25)] text-zinc-900 dark:text-white flex items-center justify-center shadow-sm transition-all duration-300 flex-shrink-0">
                 <Truck className="w-6 h-6 md:w-7 md:h-7 text-emerald-500 dark:text-emerald-400" />
-                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500 text-zinc-950 shadow-md shadow-emerald-500/25">
+                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500 text-zinc-950 shadow-md shadow-emerald-500/25 group-hover:scale-110 group-hover:shadow-[0_0_12px_rgba(16,185,129,0.7)] transition-all duration-300">
                   02
                 </span>
               </motion.div>
@@ -1215,7 +1230,7 @@ export default function PlatformLandingPage() {
                 <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-500 dark:text-emerald-400 font-bold block">
                   Step 02 • Local Integrations
                 </span>
-                <h3 className="text-lg md:text-xl font-bold text-zinc-950 dark:text-white tracking-tight">
+                <h3 className="text-lg md:text-xl font-bold text-zinc-950 dark:text-white tracking-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors duration-200">
                   Connect Courier & Payments
                 </h3>
                 <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
@@ -1223,11 +1238,11 @@ export default function PlatformLandingPage() {
                 </p>
               </div>
               <div className="pt-1 md:pt-2 space-y-1.5 md:space-y-2">
-                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300">
+                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300 hover:translate-x-1 transition-transform duration-200">
                   <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
                   <span>Steadfast & Pathao 1-click sync</span>
                 </div>
-                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300">
+                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300 hover:translate-x-1 transition-transform duration-200">
                   <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
                   <span>Automated ৳60 / ৳130 district rates</span>
                 </div>
@@ -1240,12 +1255,12 @@ export default function PlatformLandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.55, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -4 }}
-              className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group"
+              whileHover={{ y: -6 }}
+              className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group cursor-default"
             >
-              <motion.div whileHover={{ scale: 1.12, rotate: 4 }} className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-emerald-500/25 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm transition-transform flex-shrink-0">
+              <motion.div whileHover={{ scale: 1.15, rotate: 4 }} className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-emerald-500/25 group-hover:border-emerald-500/50 group-hover:shadow-[0_0_24px_rgba(16,185,129,0.25)] text-zinc-900 dark:text-white flex items-center justify-center shadow-sm transition-all duration-300 flex-shrink-0">
                 <Rocket className="w-6 h-6 md:w-7 md:h-7 text-emerald-500 dark:text-emerald-400" />
-                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500 text-zinc-950 font-bold shadow-md shadow-emerald-500/25">
+                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500 text-zinc-950 font-bold shadow-md shadow-emerald-500/25 group-hover:scale-110 group-hover:shadow-[0_0_12px_rgba(16,185,129,0.7)] transition-all duration-300">
                   03
                 </span>
               </motion.div>
@@ -1253,7 +1268,7 @@ export default function PlatformLandingPage() {
                 <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-500 dark:text-emerald-400 font-bold block">
                   Step 03 • High-Speed Selling
                 </span>
-                <h3 className="text-lg md:text-xl font-bold text-zinc-950 dark:text-white tracking-tight">
+                <h3 className="text-lg md:text-xl font-bold text-zinc-950 dark:text-white tracking-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors duration-200">
                   Launch & Collect Orders
                 </h3>
                 <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
@@ -1261,11 +1276,11 @@ export default function PlatformLandingPage() {
                 </p>
               </div>
               <div className="pt-1 md:pt-2 space-y-1.5 md:space-y-2">
-                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300">
+                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300 hover:translate-x-1 transition-transform duration-200">
                   <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
                   <span>20-Second friction-free checkout</span>
                 </div>
-                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300">
+                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300 hover:translate-x-1 transition-transform duration-200">
                   <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
                   <span>0% Commission on Pro Plan</span>
                 </div>
@@ -1318,14 +1333,14 @@ export default function PlatformLandingPage() {
                       setSelectedStoreSlug(store.slug);
                       setSelectedTemplateId(store.templates[0].id);
                     }}
-                    className={`px-4 py-2 rounded-xl sm:rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center space-x-2 ${
+                    className={`px-4 py-2 rounded-xl sm:rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-200 flex items-center space-x-2 ${
                       isSelected
-                        ? "bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white shadow-sm border border-zinc-200/90 dark:border-white/10"
-                        : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-200/60 dark:hover:bg-white/[0.04] border border-transparent"
+                        ? "bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white shadow-sm border border-zinc-200/90 dark:border-white/10 ring-1 ring-emerald-500/25"
+                        : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-200/60 dark:hover:bg-white/[0.04] hover:-translate-y-0.5 border border-transparent"
                     }`}
                   >
                     {isSelected && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)] flex-shrink-0" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)] flex-shrink-0 animate-pulse" />
                     )}
                     <span>{store.category}</span>
                     <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-zinc-200 dark:bg-white/10 text-zinc-700 dark:text-zinc-300">5</span>
@@ -1609,33 +1624,33 @@ export default function PlatformLandingPage() {
                             setSelectedTemplateId(tmpl.id);
                             setIsIframeLoading(true);
                           }}
-                          className={`text-left px-3 py-2.5 rounded-xl border text-xs font-medium transition-all flex items-center justify-between group ${
+                          className={`text-left px-3 py-2.5 rounded-xl border text-xs font-medium transition-all duration-200 flex items-center justify-between group ${
                             isSelected
-                              ? "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500 dark:border-emerald-500/80 text-zinc-950 dark:text-white shadow-sm ring-1 ring-emerald-500/30"
-                              : "bg-white dark:bg-zinc-900 border-zinc-200/90 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-white/20 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800/60"
+                              ? "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500 dark:border-emerald-500/80 text-zinc-950 dark:text-white shadow-sm ring-1 ring-emerald-500/30 scale-[1.01]"
+                              : "bg-white dark:bg-zinc-900 border-zinc-200/90 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-emerald-500/40 dark:hover:border-emerald-500/40 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100/80 dark:hover:bg-zinc-800/80 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-md"
                           }`}
                         >
                           <div className="flex items-center space-x-2 min-w-0 pr-1">
                             <span
-                              className={`w-2 h-2 rounded-full flex-shrink-0 transition-transform ${
+                              className={`w-2 h-2 rounded-full flex-shrink-0 transition-all duration-200 ${
                                 isSelected
                                   ? "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.9)] scale-110"
-                                  : "bg-zinc-300 dark:bg-zinc-600 group-hover:bg-zinc-400"
+                                  : "bg-zinc-300 dark:bg-zinc-600 group-hover:bg-emerald-400 group-hover:scale-110"
                               }`}
                             />
                             <div className="truncate">
-                              <span className="block truncate font-semibold text-[11px]">{tmpl.name}</span>
+                              <span className="block truncate font-semibold text-[11px] group-hover:text-zinc-950 dark:group-hover:text-white transition-colors">{tmpl.name}</span>
                               <span className="block text-[9.5px] text-zinc-400 dark:text-zinc-500 font-mono truncate">
                                 {tmpl.tag}
                               </span>
                             </div>
                           </div>
                           {isSelected ? (
-                            <span className="flex-shrink-0 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[9px] font-bold">
+                            <span className="flex-shrink-0 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[9px] font-bold shadow-xs">
                               ✓
                             </span>
                           ) : (
-                            <span className="text-[10px] text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <span className="text-[10px] text-zinc-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-200">
                               →
                             </span>
                           )}
@@ -1652,14 +1667,14 @@ export default function PlatformLandingPage() {
                   </span>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {activeTemplate.highlights.map((feat, idx) => (
-          <div key={idx} className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300">
-            <div className="w-4 h-4 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 border border-emerald-500/20">
-              <Check className="w-2.5 h-2.5" />
-            </div>
-            <span className="font-medium text-zinc-800 dark:text-zinc-200 text-[11.5px] truncate" title={feat}>
-              {feat}
-            </span>
-          </div>
+                      <div key={idx} className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300 hover:translate-x-1 transition-transform duration-200 cursor-default">
+                        <div className="w-4 h-4 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 border border-emerald-500/20">
+                          <Check className="w-2.5 h-2.5" />
+                        </div>
+                        <span className="font-medium text-zinc-800 dark:text-zinc-200 text-[11.5px] truncate" title={feat}>
+                          {feat}
+                        </span>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -1668,27 +1683,27 @@ export default function PlatformLandingPage() {
               {/* Bottom Specs & Action Footer */}
               <div className="space-y-4 pt-4 border-t border-zinc-200/80 dark:border-white/[0.08]">
                 <div className="grid grid-cols-3 gap-2 p-3 rounded-xl bg-zinc-100 dark:bg-zinc-900/70 border border-zinc-200/80 dark:border-white/[0.08] text-center">
-                  <div>
+                  <div className="hover:bg-zinc-200/50 dark:hover:bg-white/[0.04] transition-colors rounded-lg py-1 cursor-default group/stat">
                     <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block">
                       Plans
                     </span>
-                    <span className="text-xs sm:text-sm font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                    <span className="text-xs sm:text-sm font-mono font-bold text-emerald-600 dark:text-emerald-400 group-hover/stat:scale-105 inline-block transition-transform">
                       Start Free ৳0
                     </span>
                   </div>
-                  <div className="border-x border-zinc-200/80 dark:border-white/[0.08]">
+                  <div className="border-x border-zinc-200/80 dark:border-white/[0.08] hover:bg-zinc-200/50 dark:hover:bg-white/[0.04] transition-colors rounded-lg py-1 cursor-default group/stat">
                     <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block">
                       Setup Time
                     </span>
-                    <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white">
+                    <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white group-hover/stat:text-emerald-500 transition-colors">
                       3 Minutes
                     </span>
                   </div>
-                  <div>
+                  <div className="hover:bg-zinc-200/50 dark:hover:bg-white/[0.04] transition-colors rounded-lg py-1 cursor-default group/stat">
                     <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block">
                       Checkout
                     </span>
-                    <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white">
+                    <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white group-hover/stat:text-emerald-500 transition-colors">
                       20s Express
                     </span>
                   </div>
@@ -1698,14 +1713,14 @@ export default function PlatformLandingPage() {
                   <Link
                     href={`/store/${activeStore.slug}?template=${activeTemplate.id}`}
                     target="_blank"
-                    className="flex-1 py-3 px-4 btn-glass-primary text-xs font-bold rounded-xl transition text-center flex items-center justify-center space-x-2 shadow-lg shadow-emerald-500/20 btn-press group"
+                    className="flex-1 py-3 px-4 btn-glass-primary btn-shimmer text-xs font-bold rounded-xl transition text-center flex items-center justify-center space-x-2 shadow-lg shadow-emerald-500/20 btn-press group"
                   >
                     <span>Launch {activeTemplate.name} Live</span>
-                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200" />
                   </Link>
                   <Link
                     href={`/register?category=${activeStore.categoryParam}&template=${activeTemplate.id}`}
-                    className="py-3 px-5 bg-white hover:bg-zinc-50 border border-zinc-200/90 text-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 dark:text-zinc-200 dark:hover:text-white font-semibold text-xs rounded-xl transition text-center shadow-[0_1px_2px_rgba(0,0,0,0.02)] btn-press flex items-center justify-center"
+                    className="py-3 px-5 bg-white hover:bg-zinc-50 border border-zinc-200/90 text-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 dark:text-zinc-200 dark:hover:text-white hover:border-emerald-500/40 hover:-translate-y-0.5 font-semibold text-xs rounded-xl transition-all text-center shadow-[0_1px_2px_rgba(0,0,0,0.02)] btn-press flex items-center justify-center"
                   >
                     <span>Clone Template</span>
                   </Link>
@@ -1806,7 +1821,7 @@ export default function PlatformLandingPage() {
                   <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Free StoreSwift subdomain with SSL</span></li>
                 </ul>
               </div>
-              <Link href="/register?plan=free" className="mt-6 w-full py-3 bg-zinc-100 hover:bg-zinc-200 border border-zinc-200/90 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 text-zinc-900 dark:text-white font-bold text-xs rounded-xl transition text-center btn-press">
+              <Link href="/register?plan=free" className="mt-6 w-full py-3 bg-zinc-100 hover:bg-zinc-200 border border-zinc-200/90 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 text-zinc-900 dark:text-white font-bold text-xs rounded-xl hover:border-emerald-500/40 hover:-translate-y-0.5 transition-all text-center btn-press">
                 Start Free Store
               </Link>
             </SpotlightCard>
@@ -1817,10 +1832,10 @@ export default function PlatformLandingPage() {
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.55, delay: 0.14, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -6 }}
+              whileHover={{ y: -8 }}
               className="ring-1 ring-emerald-500/60 dark:ring-emerald-500/50 rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative shadow-2xl shadow-emerald-500/10"
             >
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-emerald-500 text-zinc-950 text-[10px] font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-md shadow-emerald-500/20">
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-emerald-500 text-zinc-950 text-[10px] font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-md shadow-emerald-500/20 animate-pulse">
                 Most Popular
               </div>
               <div className="space-y-4">
@@ -1829,7 +1844,7 @@ export default function PlatformLandingPage() {
                   <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-1">For scaling direct, social & dropshipping brands</p>
                 </div>
                 <div className="flex items-baseline space-x-1.5">
-                  <span className="text-3xl sm:text-4xl font-extrabold text-zinc-950 dark:text-white">
+                  <span className="text-3xl sm:text-4xl font-extrabold text-zinc-950 dark:text-white group-hover:scale-105 inline-block transition-transform duration-200">
                     {pricingBilling === "monthly" ? "৳499" : "৳399"}
                   </span>
                   <span className="text-xs text-zinc-600 dark:text-zinc-300 font-medium">/month</span>
@@ -1838,18 +1853,18 @@ export default function PlatformLandingPage() {
                   )}
                 </div>
                 <ul className="space-y-2.5 text-xs text-zinc-700 dark:text-zinc-200 pt-3 border-t border-zinc-200/80 dark:border-white/10">
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Up to 500 active products</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span className="font-semibold text-emerald-600 dark:text-emerald-400">Platform Dropshipping (Priority Fulfillment)</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Low 3% platform fee per order</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Custom domain with automated SSL</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Discount coupon engine (flat & percent)</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Up to 3 staff seats with RBAC roles</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Anti-Fraud RTO Risk Shield</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Meta Pixel, TikTok & GTM CAPI</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Priority customer support</span></li>
+                  <li className="flex items-center space-x-2.5 hover:translate-x-1 transition-transform duration-200"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Up to 500 active products</span></li>
+                  <li className="flex items-center space-x-2.5 hover:translate-x-1 transition-transform duration-200"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span className="font-semibold text-emerald-600 dark:text-emerald-400">Platform Dropshipping (Priority Fulfillment)</span></li>
+                  <li className="flex items-center space-x-2.5 hover:translate-x-1 transition-transform duration-200"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Low 3% platform fee per order</span></li>
+                  <li className="flex items-center space-x-2.5 hover:translate-x-1 transition-transform duration-200"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Custom domain with automated SSL</span></li>
+                  <li className="flex items-center space-x-2.5 hover:translate-x-1 transition-transform duration-200"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Discount coupon engine (flat & percent)</span></li>
+                  <li className="flex items-center space-x-2.5 hover:translate-x-1 transition-transform duration-200"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Up to 3 staff seats with RBAC roles</span></li>
+                  <li className="flex items-center space-x-2.5 hover:translate-x-1 transition-transform duration-200"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Anti-Fraud RTO Risk Shield</span></li>
+                  <li className="flex items-center space-x-2.5 hover:translate-x-1 transition-transform duration-200"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Meta Pixel, TikTok & GTM CAPI</span></li>
+                  <li className="flex items-center space-x-2.5 hover:translate-x-1 transition-transform duration-200"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Priority customer support</span></li>
                 </ul>
               </div>
-              <Link href="/register?plan=medium" className="mt-6 w-full py-3.5 btn-glass-primary font-bold text-xs rounded-xl transition text-center btn-press">
+              <Link href="/register?plan=medium" className="mt-6 w-full py-3.5 btn-glass-primary btn-shimmer font-bold text-xs rounded-xl transition text-center btn-press">
                 Choose Growth Plan
               </Link>
             </SpotlightCard>
@@ -1860,7 +1875,7 @@ export default function PlatformLandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.5, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -5 }}
+              whileHover={{ y: -6 }}
               className="rounded-3xl p-6 sm:p-8 flex flex-col justify-between"
             >
               <div className="space-y-4">
@@ -1869,7 +1884,7 @@ export default function PlatformLandingPage() {
                   <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">For high-volume multi-channel merchants & teams</p>
                 </div>
                 <div className="flex items-baseline space-x-1.5">
-                  <span className="text-3xl sm:text-4xl font-extrabold text-zinc-950 dark:text-white">
+                  <span className="text-3xl sm:text-4xl font-extrabold text-zinc-950 dark:text-white group-hover:scale-105 inline-block transition-transform duration-200">
                     {pricingBilling === "monthly" ? "৳999" : "৳799"}
                   </span>
                   <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">/month</span>
@@ -1878,17 +1893,17 @@ export default function PlatformLandingPage() {
                   )}
                 </div>
                 <ul className="space-y-2.5 text-xs text-zinc-700 dark:text-zinc-300 pt-3 border-t border-zinc-200/80 dark:border-white/[0.08]">
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Unlimited products & orders</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span className="font-semibold text-emerald-600 dark:text-emerald-400">Platform Dropshipping (VIP Dispatch & Custom Packing)</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span className="font-semibold text-emerald-600 dark:text-emerald-400">0% Commission — Keep 100% of profit</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Unlimited staff seats & granular RBAC</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Custom courier API credentials</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Bulk CSV product, order & customer export</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Dedicated 24/7 VIP account manager</span></li>
-                  <li className="flex items-center space-x-2.5"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Global CDN & sub-second response SLA</span></li>
+                  <li className="flex items-center space-x-2.5 hover:translate-x-1 transition-transform duration-200"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Unlimited products & orders</span></li>
+                  <li className="flex items-center space-x-2.5 hover:translate-x-1 transition-transform duration-200"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span className="font-semibold text-emerald-600 dark:text-emerald-400">Platform Dropshipping (VIP Dispatch & Custom Packing)</span></li>
+                  <li className="flex items-center space-x-2.5 hover:translate-x-1 transition-transform duration-200"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span className="font-semibold text-emerald-600 dark:text-emerald-400">0% Commission — Keep 100% of profit</span></li>
+                  <li className="flex items-center space-x-2.5 hover:translate-x-1 transition-transform duration-200"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Unlimited staff seats & granular RBAC</span></li>
+                  <li className="flex items-center space-x-2.5 hover:translate-x-1 transition-transform duration-200"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Custom courier API credentials</span></li>
+                  <li className="flex items-center space-x-2.5 hover:translate-x-1 transition-transform duration-200"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Bulk CSV product, order & customer export</span></li>
+                  <li className="flex items-center space-x-2.5 hover:translate-x-1 transition-transform duration-200"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Dedicated 24/7 VIP account manager</span></li>
+                  <li className="flex items-center space-x-2.5 hover:translate-x-1 transition-transform duration-200"><Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" /><span>Global CDN & sub-second response SLA</span></li>
                 </ul>
               </div>
-              <Link href="/register?plan=pro" className="mt-6 w-full py-3 bg-zinc-100 hover:bg-zinc-200 border border-zinc-200/90 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 text-zinc-900 dark:text-white font-bold text-xs rounded-xl transition text-center btn-press">
+              <Link href="/register?plan=pro" className="mt-6 w-full py-3 bg-zinc-100 hover:bg-zinc-200 border border-zinc-200/90 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 text-zinc-900 dark:text-white font-bold text-xs rounded-xl hover:border-emerald-500/40 hover:-translate-y-0.5 transition-all text-center btn-press">
                 Choose Pro Enterprise
               </Link>
             </SpotlightCard>
@@ -1931,19 +1946,19 @@ export default function PlatformLandingPage() {
                       1. Pricing & Platform Fees
                     </td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">Monthly Subscription Fee</td>
                     <td className="py-3 px-3 sm:px-6 text-center font-bold text-zinc-900 dark:text-white">৳0 / mo (Free)</td>
                     <td className="py-3 px-3 sm:px-6 text-center font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/5">৳499 / mo</td>
                     <td className="py-3 px-3 sm:px-6 text-center font-bold text-zinc-900 dark:text-white">৳999 / mo</td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">Platform Transaction Commission</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-zinc-600 dark:text-zinc-400">8%</td>
                     <td className="py-3 px-3 sm:px-6 text-center font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/5">3%</td>
                     <td className="py-3 px-3 sm:px-6 text-center font-bold text-emerald-500">0% (Keep 100%)</td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">Active Products Limit</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-zinc-600 dark:text-zinc-400">50 Products</td>
                     <td className="py-3 px-3 sm:px-6 text-center font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/5">500 Products</td>
@@ -1956,19 +1971,19 @@ export default function PlatformLandingPage() {
                       2. Platform Dropshipping (Available in All Plans)
                     </td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">Platform Dropshipping Access</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500 bg-emerald-500/5"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">1-Click Catalog Import & Markup Customization</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500 bg-emerald-500/5"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">Platform Warehouse Packaging & COD Remittance</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/5">Priority Queue</td>
@@ -1981,25 +1996,25 @@ export default function PlatformLandingPage() {
                       3. Storefronts, Themes & Domains
                     </td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">All 30 Production-Grade Industry Themes</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500 bg-emerald-500/5"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">Free StoreSwift Subdomain (.storeswift.app) with SSL</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500 bg-emerald-500/5"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">Custom Domain Connection (e.g. yourbrand.com)</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-zinc-400">—</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500 bg-emerald-500/5"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">Storefront Customer Portal & Order History</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500 bg-emerald-500/5"><Check className="w-4 h-4 mx-auto" /></td>
@@ -2012,25 +2027,25 @@ export default function PlatformLandingPage() {
                       4. Checkout, Orders & Printing
                     </td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">1-Page 20s Express Checkout (64 Districts)</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500 bg-emerald-500/5"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">1-Click Printable A4 Tax Invoices</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500 bg-emerald-500/5"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">4x6" Thermal Courier Shipping Slips (with Barcodes)</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500 bg-emerald-500/5"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">Courier Integrations (Steadfast, Pathao, RedX)</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-zinc-600 dark:text-zinc-400">1 Courier</td>
                     <td className="py-3 px-3 sm:px-6 text-center font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/5">2 Couriers</td>
@@ -2043,19 +2058,19 @@ export default function PlatformLandingPage() {
                       5. Team Collaboration & RBAC Security
                     </td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">Staff Accounts & RBAC Roles</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-zinc-600 dark:text-zinc-400">1 Seat (Owner)</td>
                     <td className="py-3 px-3 sm:px-6 text-center font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/5">Up to 3 Seats</td>
                     <td className="py-3 px-3 sm:px-6 text-center font-bold text-emerald-500">Unlimited Seats</td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">Granular Role Permissions (Manager, Fulfillment, Editor)</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-zinc-400">—</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500 bg-emerald-500/5"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">Anti-Fraud RTO Risk Shield</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-zinc-400">—</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500 bg-emerald-500/5"><Check className="w-4 h-4 mx-auto" /></td>
@@ -2068,25 +2083,25 @@ export default function PlatformLandingPage() {
                       6. Marketing, Discounts & Data
                     </td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">Discount & Coupon Engine (Flat & Percent)</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-zinc-400">—</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500 bg-emerald-500/5"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">Abandoned Cart WhatsApp 1-Click Recovery</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500 bg-emerald-500/5"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">Bulk CSV Product Import & Export</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500 bg-emerald-500/5"><Check className="w-4 h-4 mx-auto" /></td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500"><Check className="w-4 h-4 mx-auto" /></td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">Bulk Accounting Orders & Customer Export</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-zinc-400">—</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-emerald-500 bg-emerald-500/5"><Check className="w-4 h-4 mx-auto" /></td>
@@ -2099,13 +2114,13 @@ export default function PlatformLandingPage() {
                       7. Support & Service SLA
                     </td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">Customer Support Service Level</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-zinc-600 dark:text-zinc-400">Community & Docs</td>
                     <td className="py-3 px-3 sm:px-6 text-center font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/5">Priority 24/7 Support</td>
                     <td className="py-3 px-3 sm:px-6 text-center font-bold text-zinc-950 dark:text-white">VIP Dedicated Manager</td>
                   </tr>
-                  <tr className="hover:bg-zinc-50 dark:hover:bg-white/[0.01] transition">
+                  <tr className="matrix-row-hover transition-colors duration-150">
                     <td className="py-3 px-4 sm:px-6 font-medium text-zinc-900 dark:text-zinc-200">Guaranteed Cloud SLA Uptime</td>
                     <td className="py-3 px-3 sm:px-6 text-center text-zinc-600 dark:text-zinc-400">99.9% Uptime</td>
                     <td className="py-3 px-3 sm:px-6 text-center font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/5">99.95% High Avail</td>
@@ -2152,14 +2167,14 @@ export default function PlatformLandingPage() {
                 <div key={index} className="py-3.5 first:pt-0 last:pb-0">
                   <button
                     onClick={() => setActiveFaq(isOpen ? null : index)}
-                    className="w-full flex items-center justify-between text-left focus:outline-none group"
+                    className="w-full flex items-center justify-between text-left focus:outline-none py-1.5 px-3 -mx-3 rounded-xl hover:bg-zinc-100/70 dark:hover:bg-white/[0.04] transition-all duration-200 group"
                   >
-                    <span className="font-bold text-sm text-zinc-900 dark:text-white group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition">
+                    <span className="font-bold text-sm text-zinc-900 dark:text-white group-hover:text-emerald-500 dark:group-hover:text-emerald-400 group-hover:translate-x-1 transition-all duration-200">
                       {faq.q}
                     </span>
                     <ChevronDown
-                      className={`w-4 h-4 text-zinc-400 dark:text-zinc-500 transition-transform duration-200 ${
-                        isOpen ? "transform rotate-180 text-emerald-500 dark:text-emerald-400" : ""
+                      className={`w-4 h-4 text-zinc-400 dark:text-zinc-500 transition-transform duration-200 flex-shrink-0 ml-2 ${
+                        isOpen ? "transform rotate-180 text-emerald-500 dark:text-emerald-400" : "group-hover:translate-y-0.5"
                       }`}
                     />
                   </button>
@@ -2206,22 +2221,22 @@ export default function PlatformLandingPage() {
               Start selling in minutes with 30 curated templates, 1-page checkout, automated courier dispatch, and platform dropshipping.
             </p>
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5 relative">
-              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
+              <motion.div whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.98 }}>
                 <Link
                   href="/register"
-                  className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-xs font-bold px-7 py-3.5 rounded-xl btn-glass-primary transition btn-press"
+                  className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-xs font-bold px-7 py-3.5 rounded-xl btn-glass-primary btn-shimmer transition btn-press group"
                 >
                   <span>Start Free Store (৳0 Upfront)</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-200" />
                 </Link>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <motion.div whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.98 }}>
                 <Link
                   href="/store/apex-fashion/dashboard"
-                  className="w-full sm:w-auto inline-flex items-center justify-center space-x-1.5 text-xs font-semibold bg-white hover:bg-zinc-50 border border-zinc-200/90 text-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/[0.08] dark:text-zinc-200 px-6 py-3.5 rounded-xl transition shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
+                  className="w-full sm:w-auto inline-flex items-center justify-center space-x-1.5 text-xs font-semibold bg-white hover:bg-zinc-50 border border-zinc-200/90 hover:border-emerald-500/40 text-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/[0.08] dark:text-zinc-200 px-6 py-3.5 rounded-xl transition shadow-[0_1px_2px_rgba(0,0,0,0.02)] group"
                 >
-                  <span>Explore Merchant Dashboard</span>
-                  <ExternalLink className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500" />
+                  <span className="group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors">Explore Merchant Dashboard</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500 group-hover:text-emerald-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200" />
                 </Link>
               </motion.div>
             </div>

@@ -409,11 +409,78 @@ body {
   animation: pulse-ring 2.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
+/* Premium Interactive Micro-Hover Effects */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shimmer::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 100%
+  );
+  transform: rotate(25deg);
+  pointer-events: none;
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+}
+
+.btn-shimmer:hover::after {
+  opacity: 1;
+  transform: rotate(25deg) translate3d(360%, 0, 0);
+}
+
+/* Tactile Interactive Pill */
+.interactive-pill {
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.interactive-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px -2px rgba(16, 185, 129, 0.15);
+}
+
+/* Metric Micro-Card Hover Glow */
+.metric-card-hover {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.metric-card-hover:hover {
+  transform: translateY(-3px);
+  border-color: rgba(16, 185, 129, 0.35);
+  background-color: rgba(16, 185, 129, 0.04);
+  box-shadow: 0 8px 24px -4px rgba(16, 185, 129, 0.12);
+}
+
+/* Table Matrix Row Clean Highlight */
+.matrix-row-hover {
+  transition: background-color 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.matrix-row-hover:hover {
+  background-color: rgba(16, 185, 129, 0.045);
+}
+
+.dark .matrix-row-hover:hover {
+  background-color: rgba(16, 185, 129, 0.07);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-float-subtle,
   .animate-pulse-ring,
-  .animate-shimmer {
+  .animate-shimmer,
+  .btn-shimmer::after {
     animation: none !important;
+    transition: none !important;
   }
 }
 
