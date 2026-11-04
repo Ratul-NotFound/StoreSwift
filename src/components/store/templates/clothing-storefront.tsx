@@ -233,25 +233,16 @@ export function ClothingStorefront({
           <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-stone-600">
             {NAV_LINKS.map(n => (
               <button key={n.label} onClick={() => setView(n.view)}
-                className={`hover:text-[#3d2d1e] transition pb-0.5 ${view === n.view ? "text-[#3d2d1e] border-b-2 border-[#3d2d1e]" : ""}`}>
+                className={`hover:text-[#3d2d1e] transition pb-0.5 ${view === n.view ? "text-[#3d2d1e] border-b-2 border-[#3d2d1e] font-semibold" : ""}`}>
                 {n.label}
               </button>
             ))}
-            <button className="hover:text-[#3d2d1e] transition">Women</button>
-            <button className="hover:text-[#3d2d1e] transition">Men</button>
-            <button className="hover:text-[#3d2d1e] transition">Contact Us</button>
           </nav>
 
           {/* Actions */}
-          <div className="flex items-center gap-3">
-            <button onClick={onOpenSearch} className="p-2 rounded-full hover:bg-stone-100 text-stone-600 transition">
+          <div className="flex items-center gap-2.5">
+            <button onClick={onOpenSearch} className="p-2 rounded-full hover:bg-stone-100 text-stone-600 transition" aria-label="Search catalog">
               <Search className="w-4.5 h-4.5" />
-            </button>
-            <button className="p-2 rounded-full hover:bg-stone-100 text-stone-600 transition hidden sm:flex">
-              <User className="w-4.5 h-4.5" />
-            </button>
-            <button className="p-2 rounded-full hover:bg-stone-100 text-stone-600 transition hidden sm:flex">
-              <Heart className="w-4.5 h-4.5" />
             </button>
             {onOpenTrackOrder && (
               <button onClick={onOpenTrackOrder} className="hidden lg:flex items-center gap-1 text-xs text-stone-600 hover:text-[#3d2d1e] transition font-medium mr-1">
@@ -280,7 +271,7 @@ export function ClothingStorefront({
         {/* Mobile menu */}
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-stone-200 bg-white px-4 py-3 space-y-1">
-            {[...NAV_LINKS, { label: "Women", view: "home" as const }, { label: "Men", view: "home" as const }].map(n => (
+            {NAV_LINKS.map(n => (
               <button key={n.label} onClick={() => { setView(n.view); setMobileMenuOpen(false); }}
                 className="block w-full text-left py-2 text-sm text-stone-700 hover:text-[#3d2d1e] font-medium">
                 {n.label}

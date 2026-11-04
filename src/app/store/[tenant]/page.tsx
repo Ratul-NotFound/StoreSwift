@@ -416,7 +416,7 @@ export default function TenantStorefrontPage({
         categoryName={categoryConfig.name}
         onOpenCheckout={() => setIsCheckoutOpen(true)}
         onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
-        defaultDismissed={isMinimalTemplate}
+        defaultDismissed={true}
       />
 
       {/* ─── New Premium Templates (Reference-matched) ───────────────────── */}

@@ -123,31 +123,11 @@ export function DemoStoreBar({
 
         {/* Right: Quick Action Controls */}
         <div className="flex items-center space-x-2 flex-shrink-0">
-          {onOpenCheckout && (
-            <button
-              onClick={onOpenCheckout}
-              className="hidden md:inline-flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-zinc-100 hover:bg-white text-zinc-950 font-semibold text-[11px] shadow-xs transition btn-press"
-            >
-              <Zap className="w-3 h-3 text-emerald-600" />
-              <span>1-Page Express Checkout</span>
-            </button>
-          )}
-
-          {onOpenTrackOrder && (
-            <button
-              onClick={onOpenTrackOrder}
-              className="hidden lg:inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-white text-[11px] font-medium transition"
-            >
-              <Truck className="w-3 h-3 text-zinc-400" />
-              <span>Track Parcel</span>
-            </button>
-          )}
-
           <Link
-            href={`/admin?store=${currentSlug}`}
+            href={`/store/${currentSlug}/dashboard`}
             className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-white text-[11px] font-medium transition"
           >
-            <span>Admin</span>
+            <span>Dashboard</span>
             <ExternalLink className="w-2.5 h-2.5 text-zinc-400" />
           </Link>
 
@@ -163,6 +143,7 @@ export function DemoStoreBar({
             onClick={() => setIsDismissed(true)}
             className="p-1 text-zinc-500 hover:text-zinc-300 rounded hover:bg-zinc-800 transition"
             title="Hide Demo Bar"
+            aria-label="Hide Demo Bar"
           >
             <X className="w-3.5 h-3.5" />
           </button>

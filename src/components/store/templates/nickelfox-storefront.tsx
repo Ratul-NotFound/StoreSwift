@@ -240,14 +240,11 @@ export function NickelFoxStorefront({
             <button className="p-2 rounded-full hover:bg-black/10 transition hidden sm:flex" onClick={() => setView("favourite")}>
               <Heart className="w-4.5 h-4.5" />
             </button>
-            <button onClick={onOpenCart} className="relative p-2 rounded-full hover:bg-black/10 transition">
+            <button onClick={onOpenCart} className="relative p-2 rounded-full hover:bg-black/10 transition" aria-label="Cart">
               <ShoppingBag className="w-4.5 h-4.5" />
               {cartCount > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-black text-[#f7f500] text-[10px] font-black rounded-full flex items-center justify-center">{cartCount}</span>
               )}
-            </button>
-            <button className="hidden sm:flex items-center gap-2 bg-black text-[#f7f500] text-xs font-black px-4 py-2 rounded-full hover:bg-neutral-800 transition">
-              SIGN UP
             </button>
             <button className="md:hidden p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}

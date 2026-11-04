@@ -202,11 +202,8 @@ export function MilanoStorefront({
                 <span>Checkout</span>
               </button>
             )}
-            <button onClick={onOpenSearch} className="text-white/60 hover:text-white transition">
+            <button onClick={onOpenSearch} className="text-white/60 hover:text-white transition" aria-label="Search catalog">
               <Search className="w-4 h-4" />
-            </button>
-            <button className="text-white/60 hover:text-white transition hidden sm:flex">
-              <User className="w-4 h-4" />
             </button>
             <button onClick={onOpenCart} className="relative text-white/60 hover:text-white transition">
               <ShoppingBag className="w-4 h-4" />
