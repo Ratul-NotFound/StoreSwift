@@ -820,7 +820,7 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 4. Core Platform Capabilities (6 High-Velocity Hardware Cards) ────────── */}
-      <section id="features" className="relative overflow-hidden py-16 sm:py-20 lg:py-20 border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 transition-colors">
+      <section id="features" className="relative overflow-hidden py-16 sm:py-20 lg:py-24 border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 transition-colors">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] lg:w-[1150px] h-[440px] bg-gradient-to-b from-emerald-500/[0.06] to-transparent rounded-full blur-[100px] pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12 w-full my-auto">
           <motion.div
@@ -830,7 +830,7 @@ export default function PlatformLandingPage() {
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
             className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3"
           >
-            <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+            <span className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
               Core Platform Engines
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-zinc-950 dark:text-white leading-tight">
@@ -841,7 +841,7 @@ export default function PlatformLandingPage() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Card 01: 20-Second Checkout */}
             <SpotlightCard
               initial={{ opacity: 0, y: 28 }}
@@ -849,46 +849,46 @@ export default function PlatformLandingPage() {
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -6 }}
-              className="rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6"
+              className="rounded-3xl p-6 sm:p-7 flex flex-col justify-between space-y-5"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/30 transition-all duration-300">
+                  <div className="w-11 h-11 rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-white/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-2xs">
                     <Zap className="w-5 h-5" />
-                  </motion.div>
-                  <span className="text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
+                  </div>
+                  <span className="text-[11px] font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-3 py-1 rounded-full border border-emerald-500/20 font-mono">
                     &lt; 20s Flow
                   </span>
                 </div>
 
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white tracking-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors duration-200">
+                  <h3 className="text-lg font-bold text-zinc-950 dark:text-white tracking-tight">
                     1-Page Express Checkout
                   </h3>
-                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
-                    Multi-step checkout carts abandon over 65% of mobile customers. StoreSwift compresses checkout into a single 20-second screen.
+                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-1.5">
+                    Multi-step carts abandon 65% of mobile shoppers. StoreSwift compresses checkout into a single 20-second screen.
                   </p>
                 </div>
 
-                <div className="space-y-2.5 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
-                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
-                    <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <span>Automatic Inside Dhaka (৳60) and Nationwide (৳130) rates</span>
+                <div className="space-y-2 pt-1 text-xs">
+                  <div className="flex items-center space-x-2.5 px-3 py-2 rounded-xl bg-zinc-100/70 dark:bg-white/[0.04] border border-zinc-200/60 dark:border-white/[0.06] text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span className="text-[11.5px] font-medium leading-snug">Auto Dhaka (৳60) &amp; Nationwide (৳130) Rates</span>
                   </div>
-                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
-                    <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <span>1-Tap bKash, Nagad, and Cash on Delivery with open parcel check</span>
+                  <div className="flex items-center space-x-2.5 px-3 py-2 rounded-xl bg-zinc-100/70 dark:bg-white/[0.04] border border-zinc-200/60 dark:border-white/[0.06] text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span className="text-[11.5px] font-medium leading-snug">1-Tap bKash, Nagad &amp; COD Open Parcel Check</span>
                   </div>
-                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
-                    <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <span>Instant English and Bengali (বাংলা) language switcher</span>
+                  <div className="flex items-center space-x-2.5 px-3 py-2 rounded-xl bg-zinc-100/70 dark:bg-white/[0.04] border border-zinc-200/60 dark:border-white/[0.06] text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span className="text-[11.5px] font-medium leading-snug">Instant English &amp; Bengali (বাংলা) Switcher</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+              <div className="pt-3.5 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
                 <span>Speed Benchmark:</span>
-                <span className="text-emerald-500 dark:text-emerald-400 font-mono font-bold">+42.8% Conversion Lift</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-mono font-bold">+42.8% Conversion Lift</span>
               </div>
             </SpotlightCard>
 
@@ -899,46 +899,46 @@ export default function PlatformLandingPage() {
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.5, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -6 }}
-              className="rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6"
+              className="rounded-3xl p-6 sm:p-7 flex flex-col justify-between space-y-5"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/30 transition-all duration-300">
+                  <div className="w-11 h-11 rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-white/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-2xs">
                     <Truck className="w-5 h-5" />
-                  </motion.div>
-                  <span className="text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
-                    Steadfast & Pathao
+                  </div>
+                  <span className="text-[11px] font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-3 py-1 rounded-full border border-emerald-500/20 font-mono">
+                    Steadfast &amp; Pathao
                   </span>
                 </div>
 
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white tracking-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors duration-200">
-                    1-Click Courier & Printing
+                  <h3 className="text-lg font-bold text-zinc-950 dark:text-white tracking-tight">
+                    1-Click Courier &amp; Printing
                   </h3>
-                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
+                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-1.5">
                     Never copy-paste customer orders into courier apps. Generate tracking IDs with one click and print standard 4x6 thermal barcode labels.
                   </p>
                 </div>
 
-                <div className="space-y-2.5 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
-                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
-                    <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <span>1-Click consignment booking directly from admin orders</span>
+                <div className="space-y-2 pt-1 text-xs">
+                  <div className="flex items-center space-x-2.5 px-3 py-2 rounded-xl bg-zinc-100/70 dark:bg-white/[0.04] border border-zinc-200/60 dark:border-white/[0.06] text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span className="text-[11.5px] font-medium leading-snug">1-Click Steadfast &amp; Pathao Consignment Sync</span>
                   </div>
-                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
-                    <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <span>Ready-to-print 4x6 thermal courier stickers and A4 tax invoices</span>
+                  <div className="flex items-center space-x-2.5 px-3 py-2 rounded-xl bg-zinc-100/70 dark:bg-white/[0.04] border border-zinc-200/60 dark:border-white/[0.06] text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span className="text-[11.5px] font-medium leading-snug">Print 4x6 Thermal Labels &amp; A4 Tax Invoices</span>
                   </div>
-                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
-                    <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <span>Automated customer SMS triggers and live parcel tracking links</span>
+                  <div className="flex items-center space-x-2.5 px-3 py-2 rounded-xl bg-zinc-100/70 dark:bg-white/[0.04] border border-zinc-200/60 dark:border-white/[0.06] text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span className="text-[11.5px] font-medium leading-snug">Automated Customer SMS &amp; Live Parcel Tracking</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
-                <span>Logistics Partners:</span>
-                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">1-Click Dispatch Active</span>
+              <div className="pt-3.5 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+                <span>Logistics Protocol:</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-mono font-bold">100% Automated Consignments</span>
               </div>
             </SpotlightCard>
 
@@ -949,46 +949,46 @@ export default function PlatformLandingPage() {
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.5, delay: 0.19, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -6 }}
-              className="rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6"
+              className="rounded-3xl p-6 sm:p-7 flex flex-col justify-between space-y-5"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/30 transition-all duration-300">
+                  <div className="w-11 h-11 rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-white/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-2xs">
                     <ShoppingBag className="w-5 h-5" />
-                  </motion.div>
-                  <span className="text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
+                  </div>
+                  <span className="text-[11px] font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-3 py-1 rounded-full border border-emerald-500/20 font-mono">
                     All Plans
                   </span>
                 </div>
 
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white tracking-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors duration-200">
+                  <h3 className="text-lg font-bold text-zinc-950 dark:text-white tracking-tight">
                     Built-in Platform Dropshipping
                   </h3>
-                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
+                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-1.5">
                     Start selling immediately without holding inventory. Source verified high-demand products and keep your custom retail markup.
                   </p>
                 </div>
 
-                <div className="space-y-2.5 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
-                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
-                    <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <span>Zero upfront inventory investment needed</span>
+                <div className="space-y-2 pt-1 text-xs">
+                  <div className="flex items-center space-x-2.5 px-3 py-2 rounded-xl bg-zinc-100/70 dark:bg-white/[0.04] border border-zinc-200/60 dark:border-white/[0.06] text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span className="text-[11.5px] font-medium leading-snug">Super Admin Catalog with Zero Stock Risk</span>
                   </div>
-                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
-                    <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <span>1-Click import from platform catalog with custom retail pricing</span>
+                  <div className="flex items-center space-x-2.5 px-3 py-2 rounded-xl bg-zinc-100/70 dark:bg-white/[0.04] border border-zinc-200/60 dark:border-white/[0.06] text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span className="text-[11.5px] font-medium leading-snug">1-Click Import with Custom Merchant Markup</span>
                   </div>
-                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
-                    <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <span>Platform warehouse handles packing, dispatch, and COD collection</span>
+                  <div className="flex items-center space-x-2.5 px-3 py-2 rounded-xl bg-zinc-100/70 dark:bg-white/[0.04] border border-zinc-200/60 dark:border-white/[0.06] text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span className="text-[11.5px] font-medium leading-snug">Automated Central Fulfillment &amp; COD Collection</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+              <div className="pt-3.5 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
                 <span>Inventory Risk:</span>
-                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Zero Stock Risk</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-mono font-bold">৳0 Upfront Capital</span>
               </div>
             </SpotlightCard>
 
@@ -999,46 +999,46 @@ export default function PlatformLandingPage() {
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.5, delay: 0.26, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -6 }}
-              className="rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6"
+              className="rounded-3xl p-6 sm:p-7 flex flex-col justify-between space-y-5"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/30 transition-all duration-300">
+                  <div className="w-11 h-11 rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-white/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-2xs">
                     <ShieldCheck className="w-5 h-5" />
-                  </motion.div>
-                  <span className="text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
+                  </div>
+                  <span className="text-[11px] font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-3 py-1 rounded-full border border-emerald-500/20 font-mono">
                     COD Defense
                   </span>
                 </div>
 
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white tracking-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors duration-200">
+                  <h3 className="text-lg font-bold text-zinc-950 dark:text-white tracking-tight">
                     Anti-Fraud RTO Risk Shield
                   </h3>
-                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
+                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-1.5">
                     Uncollected COD parcels drain 15–25% of merchant profits. Screen phone numbers to flag repeat returners before spending ৳130 on return fees.
                   </p>
                 </div>
 
-                <div className="space-y-2.5 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
-                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
-                    <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <span>0–100% delivery confidence score before courier handover</span>
+                <div className="space-y-2 pt-1 text-xs">
+                  <div className="flex items-center space-x-2.5 px-3 py-2 rounded-xl bg-zinc-100/70 dark:bg-white/[0.04] border border-zinc-200/60 dark:border-white/[0.06] text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span className="text-[11.5px] font-medium leading-snug">0–100% Delivery Confidence Score Algorithm</span>
                   </div>
-                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
-                    <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <span>Advance delivery charge alerts for high-risk customer orders</span>
+                  <div className="flex items-center space-x-2.5 px-3 py-2 rounded-xl bg-zinc-100/70 dark:bg-white/[0.04] border border-zinc-200/60 dark:border-white/[0.06] text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span className="text-[11.5px] font-medium leading-snug">Advance Delivery Charge Alerts for High-Risk COD</span>
                   </div>
-                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
-                    <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <span>Atomic stock locks prevent overselling during high-traffic sales</span>
+                  <div className="flex items-center space-x-2.5 px-3 py-2 rounded-xl bg-zinc-100/70 dark:bg-white/[0.04] border border-zinc-200/60 dark:border-white/[0.06] text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span className="text-[11.5px] font-medium leading-snug">Atomic Stock Locks to Prevent Overselling</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+              <div className="pt-3.5 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
                 <span>RTO Protection:</span>
-                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Saves ৳130/Return</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-mono font-bold">Saves ৳130/Return</span>
               </div>
             </SpotlightCard>
 
@@ -1049,46 +1049,46 @@ export default function PlatformLandingPage() {
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.5, delay: 0.33, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -6 }}
-              className="rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6"
+              className="rounded-3xl p-6 sm:p-7 flex flex-col justify-between space-y-5"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/30 transition-all duration-300">
+                  <div className="w-11 h-11 rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-white/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-2xs">
                     <MessageSquare className="w-5 h-5" />
-                  </motion.div>
-                  <span className="text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
+                  </div>
+                  <span className="text-[11px] font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-3 py-1 rounded-full border border-emerald-500/20 font-mono">
                     WhatsApp CRM
                   </span>
                 </div>
 
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white tracking-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors duration-200">
+                  <h3 className="text-lg font-bold text-zinc-950 dark:text-white tracking-tight">
                     Abandoned Cart WhatsApp Recovery
                   </h3>
-                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
+                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-1.5">
                     Recover up to 30% of lost revenue. StoreSwift captures customer details pre-submit and generates 1-click personalized WhatsApp recovery links.
                   </p>
                 </div>
 
-                <div className="space-y-2.5 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
-                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
-                    <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <span>Real-time pre-submit lead capture as customers type their phone</span>
+                <div className="space-y-2 pt-1 text-xs">
+                  <div className="flex items-center space-x-2.5 px-3 py-2 rounded-xl bg-zinc-100/70 dark:bg-white/[0.04] border border-zinc-200/60 dark:border-white/[0.06] text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span className="text-[11.5px] font-medium leading-snug">Real-Time Pre-Submit Lead Capture on Phone Input</span>
                   </div>
-                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
-                    <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <span>1-Click WhatsApp direct messaging with itemized recovery links</span>
+                  <div className="flex items-center space-x-2.5 px-3 py-2 rounded-xl bg-zinc-100/70 dark:bg-white/[0.04] border border-zinc-200/60 dark:border-white/[0.06] text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span className="text-[11.5px] font-medium leading-snug">1-Click WhatsApp Direct Message with Cart Restore</span>
                   </div>
-                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
-                    <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <span>Real-time recoverable revenue analytics dashboard</span>
+                  <div className="flex items-center space-x-2.5 px-3 py-2 rounded-xl bg-zinc-100/70 dark:bg-white/[0.04] border border-zinc-200/60 dark:border-white/[0.06] text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span className="text-[11.5px] font-medium leading-snug">Live Recoverable Revenue Analytics Dashboard</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
-                <span>Recovery Lift:</span>
-                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">+28% Recovered GMV</span>
+              <div className="pt-3.5 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+                <span>Revenue Recovery:</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-mono font-bold">+28% Recovered GMV</span>
               </div>
             </SpotlightCard>
 
@@ -1099,46 +1099,46 @@ export default function PlatformLandingPage() {
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.5, delay: 0.40, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -6 }}
-              className="rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6"
+              className="rounded-3xl p-6 sm:p-7 flex flex-col justify-between space-y-5"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/30 transition-all duration-300">
+                  <div className="w-11 h-11 rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-white/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-2xs">
                     <Users className="w-5 h-5" />
-                  </motion.div>
-                  <span className="text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
+                  </div>
+                  <span className="text-[11px] font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-3 py-1 rounded-full border border-emerald-500/20 font-mono">
                     Enterprise RBAC
                   </span>
                 </div>
 
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white tracking-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors duration-200">
-                    Team Staff RBAC & Bulk CSV
+                  <h3 className="text-lg font-bold text-zinc-950 dark:text-white tracking-tight">
+                    Team Staff RBAC &amp; Bulk CSV
                   </h3>
-                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2">
+                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-1.5">
                     Collaborate securely with multi-user permissions. Bulk import thousands of products via CSV and export orders for accounting.
                   </p>
                 </div>
 
-                <div className="space-y-2.5 pt-1 text-xs text-zinc-700 dark:text-zinc-300">
-                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
-                    <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <span>Granular roles: Owner, Manager, Fulfillment, Catalog Editor</span>
+                <div className="space-y-2 pt-1 text-xs">
+                  <div className="flex items-center space-x-2.5 px-3 py-2 rounded-xl bg-zinc-100/70 dark:bg-white/[0.04] border border-zinc-200/60 dark:border-white/[0.06] text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span className="text-[11.5px] font-medium leading-snug">Granular Roles: Owner, Manager, Courier, Editor</span>
                   </div>
-                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
-                    <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <span>RFC-4180 CSV product import with sample template download</span>
+                  <div className="flex items-center space-x-2.5 px-3 py-2 rounded-xl bg-zinc-100/70 dark:bg-white/[0.04] border border-zinc-200/60 dark:border-white/[0.06] text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span className="text-[11.5px] font-medium leading-snug">RFC-4180 CSV Import Engine with Sample Download</span>
                   </div>
-                  <div className="flex items-start space-x-2.5 hover:translate-x-1 transition-transform duration-200 cursor-default">
-                    <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                    <span>Formula injection defense and customer retargeting directory export</span>
+                  <div className="flex items-center space-x-2.5 px-3 py-2 rounded-xl bg-zinc-100/70 dark:bg-white/[0.04] border border-zinc-200/60 dark:border-white/[0.06] text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span className="text-[11.5px] font-medium leading-snug">Formula Injection Defense &amp; Tamper-Proof Audit Log</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
-                <span>Team Collaboration:</span>
-                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Secure Multi-User</span>
+              <div className="pt-3.5 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+                <span>Access Control:</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-mono font-bold">Bank-Grade Multi-User</span>
               </div>
             </SpotlightCard>
           </div>
@@ -1146,7 +1146,7 @@ export default function PlatformLandingPage() {
       </section>
 
       {/* ─── 5. How It Works (Minimalist Schematic Workflow) ───────────────── */}
-      <section id="how-it-works" className="relative overflow-hidden py-16 sm:py-20 lg:py-20 border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 transition-colors">
+      <section id="how-it-works" className="relative overflow-hidden py-16 sm:py-20 lg:py-24 border-b border-zinc-200/80 dark:border-white/[0.08] scroll-mt-16 transition-colors">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] lg:w-[1000px] h-[360px] bg-gradient-to-b from-emerald-500/[0.05] to-transparent rounded-full blur-[100px] pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-14 w-full my-auto">
           <motion.div
@@ -1156,7 +1156,7 @@ export default function PlatformLandingPage() {
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
             className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3"
           >
-            <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+            <span className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
               Simple Onboarding
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-zinc-950 dark:text-white leading-tight">
@@ -1167,9 +1167,7 @@ export default function PlatformLandingPage() {
             </p>
           </motion.div>
 
-          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-8 lg:gap-12">
-            <div className="hidden md:block absolute top-8 left-[16.6%] right-[16.6%] h-[1px] border-t border-dashed border-emerald-500/25 dark:border-emerald-500/25 pointer-events-none" />
-
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-7">
             {/* Step 01 */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -1177,34 +1175,44 @@ export default function PlatformLandingPage() {
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -6 }}
-              className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group cursor-default"
+              className="luxury-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between space-y-5 border border-zinc-200/80 dark:border-white/[0.08] shadow-sm hover:shadow-lg transition-all duration-300"
             >
-              <motion.div whileHover={{ scale: 1.15, rotate: 4 }} className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-zinc-200 dark:border-white/[0.1] group-hover:border-emerald-500/50 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm transition-all duration-300 flex-shrink-0">
-                <Store className="w-6 h-6 md:w-7 md:h-7 text-emerald-600 dark:text-emerald-400" />
-                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-xs font-bold bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 shadow-sm transition-all duration-300">
-                  01
-                </span>
-              </motion.div>
-              <div className="space-y-1.5 md:space-y-2">
-                <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 block">
-                  Step 01 • Template Setup
-                </span>
-                <h3 className="text-lg md:text-xl font-bold text-zinc-950 dark:text-white tracking-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors duration-200">
-                  Choose from 30 Templates
-                </h3>
-                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                  Select your vertical (Fashion, Beauty, Footwear, Tech, Jewelry, Food) and pick from 5 curated design presets pre-configured with conversion psychology.
-                </p>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-white/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-2xs">
+                    <Store className="w-6 h-6" />
+                  </div>
+                  <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 shadow-xs">
+                    STEP 01
+                  </span>
+                </div>
+
+                <div>
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block mb-1">
+                    Storefront Setup
+                  </span>
+                  <h3 className="text-lg font-bold text-zinc-950 dark:text-white tracking-tight">
+                    Choose from 30 Templates
+                  </h3>
+                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-1.5">
+                    Select your vertical (Fashion, Beauty, Footwear, Tech, Jewelry, Food) and pick from 5 curated design presets pre-configured with conversion psychology.
+                  </p>
+                </div>
+
+                <div className="space-y-2 pt-2 border-t border-zinc-100 dark:border-white/[0.06]">
+                  <div className="flex items-center space-x-2.5 text-xs text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span>30 Production-grade responsive templates</span>
+                  </div>
+                  <div className="flex items-center space-x-2.5 text-xs text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span>Pre-loaded catalog or 1-click dropshipping</span>
+                  </div>
+                </div>
               </div>
-              <div className="pt-1 md:pt-2 space-y-1.5 md:space-y-2">
-                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300 hover:translate-x-1 transition-transform duration-200">
-                  <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
-                  <span>30 Production-grade responsive templates</span>
-                </div>
-                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300 hover:translate-x-1 transition-transform duration-200">
-                  <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
-                  <span>Pre-loaded catalog or 1-click dropshipping</span>
-                </div>
+
+              <div className="pt-3 border-t border-zinc-100 dark:border-white/[0.06] text-[11px] text-zinc-500 dark:text-zinc-400 font-mono">
+                Duration: &lt; 60 seconds
               </div>
             </motion.div>
 
@@ -1215,34 +1223,44 @@ export default function PlatformLandingPage() {
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.55, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -6 }}
-              className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group cursor-default"
+              className="luxury-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between space-y-5 border border-zinc-200/80 dark:border-white/[0.08] shadow-sm hover:shadow-lg transition-all duration-300"
             >
-              <motion.div whileHover={{ scale: 1.15, rotate: 4 }} className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-zinc-200 dark:border-white/[0.1] group-hover:border-emerald-500/50 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm transition-all duration-300 flex-shrink-0">
-                <Truck className="w-6 h-6 md:w-7 md:h-7 text-emerald-600 dark:text-emerald-400" />
-                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-xs font-bold bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 shadow-sm transition-all duration-300">
-                  02
-                </span>
-              </motion.div>
-              <div className="space-y-1.5 md:space-y-2">
-                <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 block">
-                  Step 02 • Local Integrations
-                </span>
-                <h3 className="text-lg md:text-xl font-bold text-zinc-950 dark:text-white tracking-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors duration-200">
-                  Connect Courier & Payments
-                </h3>
-                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                  Link Steadfast or Pathao API keys alongside bKash, Nagad, and Cash on Delivery. 64-district delivery rates activate automatically.
-                </p>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-white/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-2xs">
+                    <Truck className="w-6 h-6" />
+                  </div>
+                  <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 shadow-xs">
+                    STEP 02
+                  </span>
+                </div>
+
+                <div>
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block mb-1">
+                    Local Integrations
+                  </span>
+                  <h3 className="text-lg font-bold text-zinc-950 dark:text-white tracking-tight">
+                    Connect Courier &amp; Payments
+                  </h3>
+                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-1.5">
+                    Link Steadfast or Pathao API keys alongside bKash, Nagad, and Cash on Delivery. 64-district delivery rates activate automatically.
+                  </p>
+                </div>
+
+                <div className="space-y-2 pt-2 border-t border-zinc-100 dark:border-white/[0.06]">
+                  <div className="flex items-center space-x-2.5 text-xs text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span>Steadfast &amp; Pathao 1-click API sync</span>
+                  </div>
+                  <div className="flex items-center space-x-2.5 text-xs text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span>Automated ৳60 / ৳130 district rates</span>
+                  </div>
+                </div>
               </div>
-              <div className="pt-1 md:pt-2 space-y-1.5 md:space-y-2">
-                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300 hover:translate-x-1 transition-transform duration-200">
-                  <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
-                  <span>Steadfast & Pathao 1-click sync</span>
-                </div>
-                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300 hover:translate-x-1 transition-transform duration-200">
-                  <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
-                  <span>Automated ৳60 / ৳130 district rates</span>
-                </div>
+
+              <div className="pt-3 border-t border-zinc-100 dark:border-white/[0.06] text-[11px] text-zinc-500 dark:text-zinc-400 font-mono">
+                Duration: &lt; 90 seconds
               </div>
             </motion.div>
 
@@ -1253,34 +1271,44 @@ export default function PlatformLandingPage() {
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.55, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -6 }}
-              className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group cursor-default"
+              className="luxury-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between space-y-5 border border-zinc-200/80 dark:border-white/[0.08] shadow-sm hover:shadow-lg transition-all duration-300"
             >
-              <motion.div whileHover={{ scale: 1.15, rotate: 4 }} className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-zinc-200 dark:border-white/[0.1] group-hover:border-emerald-500/50 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm transition-all duration-300 flex-shrink-0">
-                <Rocket className="w-6 h-6 md:w-7 md:h-7 text-emerald-600 dark:text-emerald-400" />
-                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-xs font-bold bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 shadow-sm transition-all duration-300">
-                  03
-                </span>
-              </motion.div>
-              <div className="space-y-1.5 md:space-y-2">
-                <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 block">
-                  Step 03 • High-Speed Selling
-                </span>
-                <h3 className="text-lg md:text-xl font-bold text-zinc-950 dark:text-white tracking-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors duration-200">
-                  Launch & Collect Orders
-                </h3>
-                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                  Capture mobile shoppers with 20-second 1-page checkout. Print 4x6 thermal barcode labels with 1 click and retain up to 100% of profit.
-                </p>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-white/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-2xs">
+                    <Rocket className="w-6 h-6" />
+                  </div>
+                  <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 shadow-xs">
+                    STEP 03
+                  </span>
+                </div>
+
+                <div>
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block mb-1">
+                    High-Speed Selling
+                  </span>
+                  <h3 className="text-lg font-bold text-zinc-950 dark:text-white tracking-tight">
+                    Launch &amp; Collect Orders
+                  </h3>
+                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-1.5">
+                    Capture mobile shoppers with 20-second 1-page checkout. Print 4x6 thermal barcode labels with 1 click and retain up to 100% of profit.
+                  </p>
+                </div>
+
+                <div className="space-y-2 pt-2 border-t border-zinc-100 dark:border-white/[0.06]">
+                  <div className="flex items-center space-x-2.5 text-xs text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span>20-Second friction-free checkout</span>
+                  </div>
+                  <div className="flex items-center space-x-2.5 text-xs text-zinc-700 dark:text-zinc-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
+                    <span>0% Commission on Pro Plan</span>
+                  </div>
+                </div>
               </div>
-              <div className="pt-1 md:pt-2 space-y-1.5 md:space-y-2">
-                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300 hover:translate-x-1 transition-transform duration-200">
-                  <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
-                  <span>20-Second friction-free checkout</span>
-                </div>
-                <div className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300 hover:translate-x-1 transition-transform duration-200">
-                  <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
-                  <span>0% Commission on Pro Plan</span>
-                </div>
+
+              <div className="pt-3 border-t border-zinc-100 dark:border-white/[0.06] text-[11px] text-zinc-500 dark:text-zinc-400 font-mono">
+                Duration: Instant
               </div>
             </motion.div>
           </div>
@@ -1658,6 +1686,103 @@ export default function PlatformLandingPage() {
               </div>
             </div>
           </motion.div>
+
+          {/* ─── Clean 6-Vertical Retail Category Grid ─── */}
+          <div className="pt-10 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-3 border-b border-zinc-200/80 dark:border-white/[0.08]">
+              <div>
+                <span className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                  Turnkey Verticals
+                </span>
+                <h3 className="text-xl sm:text-2xl font-black text-zinc-950 dark:text-white tracking-tight">
+                  Curated Commerce Architecture by Industry
+                </h3>
+              </div>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-sm">
+                Click any industry card below to inspect its specialized themes in the interactive live preview engine above.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {INDUSTRY_STOREFRONTS.map((store) => {
+                const isSelected = selectedStoreSlug === store.slug;
+                const heroImg = store.templates[0]?.image || "";
+                return (
+                  <div
+                    key={store.slug}
+                    onClick={() => {
+                      setSelectedStoreSlug(store.slug);
+                      setSelectedTemplateId(store.templates[0].id);
+                      setIsIframeLoading(true);
+                      const el = document.getElementById("storefronts");
+                      if (el) el.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className={`luxury-card rounded-2xl p-5 cursor-pointer transition-all duration-300 flex flex-col justify-between group ${
+                      isSelected
+                        ? "ring-2 ring-emerald-500 border-emerald-500 shadow-md scale-[1.01]"
+                        : "border-zinc-200/80 dark:border-white/[0.08] hover:border-emerald-500/40 hover:shadow-lg"
+                    }`}
+                  >
+                    <div className="space-y-3.5">
+                      {/* Image Thumbnail with Overlay */}
+                      <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/70 dark:border-white/10">
+                        <img
+                          src={heroImg}
+                          alt={store.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
+                        <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-zinc-950/80 backdrop-blur-md text-[10px] font-bold text-white border border-white/20">
+                          {store.templates.length} Presets
+                        </span>
+                        {isSelected && (
+                          <span className="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-emerald-500 text-[10px] font-bold text-zinc-950 shadow-sm flex items-center space-x-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-zinc-950 animate-pulse" />
+                            <span>Active in Preview</span>
+                          </span>
+                        )}
+                        <div className="absolute bottom-2.5 left-3 right-3 text-white">
+                          <p className="text-xs font-bold truncate">{store.name}</p>
+                          <p className="text-[10.5px] text-zinc-300 truncate">{store.category}</p>
+                        </div>
+                      </div>
+
+                      {/* Description & Preset Pills */}
+                      <div className="space-y-2">
+                        <p className="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-2 leading-relaxed">
+                          {store.templates[0]?.description}
+                        </p>
+                        <div className="flex flex-wrap gap-1 pt-1">
+                          {store.templates.map((t) => (
+                            <span
+                              key={t.id}
+                              className={`text-[10px] font-medium px-2 py-0.5 rounded-md border ${
+                                isSelected && activeTemplate.id === t.id
+                                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+                                  : "bg-zinc-100/80 dark:bg-white/[0.04] text-zinc-600 dark:text-zinc-400 border-zinc-200/60 dark:border-white/[0.05]"
+                              }`}
+                            >
+                              {t.name}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-3.5 mt-3 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs">
+                      <span className="text-zinc-500 dark:text-zinc-400 text-[11px]">
+                        1-Click Launch Available
+                      </span>
+                      <span className="font-bold text-emerald-600 dark:text-emerald-400 group-hover:translate-x-1 transition-transform flex items-center space-x-1">
+                        <span>Preview Themes</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </section>
 
