@@ -357,61 +357,69 @@ export function FootwearStorefront({
       </header>
 
       {/* ─── 3. Benchcraft Architectural Hero ───────────────────────────────── */}
-      <section className="relative overflow-hidden border-b border-stone-200/80 bg-gradient-to-b from-[#faf7f2] via-[#f4eee4] to-[#faf7f2] py-16 sm:py-24 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-7 space-y-6">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 bg-amber-100/80 border border-amber-300/70 rounded-full text-xs font-medium text-amber-950">
+      <section className="relative overflow-hidden border-b border-stone-200/80 bg-gradient-to-b from-[#faf7f2] via-[#f4eee4] to-[#faf7f2] py-12 sm:py-20 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          <div className="lg:col-span-7 space-y-5">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 bg-amber-100/90 border border-amber-300/80 rounded-full text-xs font-semibold text-amber-950">
               <Hammer className="w-3.5 h-3.5 text-amber-800" />
-              <span>Master Benchcraft • 360° Goodyear Storm Welted</span>
+              <span>GUILD BENCHCRAFT • 360° GOODYEAR STORM WELTED</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-stone-950 font-serif leading-[1.08]">
-              Lasted by Hand. <br />
-              <span className="text-amber-900 italic font-normal">
-                Built to be Resoled for Decades.
-              </span> <br />
-              Zero Glued Cement.
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-stone-950 font-serif leading-[1.12]">
+              Handcrafted Leather Boots &amp; Classic Benchmade Footwear
             </h1>
 
             <p className="text-sm sm:text-base text-stone-600 max-w-xl leading-relaxed">
-              Constructed from Horween full-grain Chromexcel pull-up leathers with tempered steel arch shanks, vegetable-tanned oak insoles, and Vibram lug soles that mold naturally to your footprint. Try them on carpet at your door before cash on delivery tender.
+              Constructed from Horween full-grain Chromexcel pull-up leathers with tempered steel arch shanks, vegetable-tanned oak insoles, and Vibram lug soles that mold naturally to your footprint. Inspect stitch tension and try on carpet at your door before cash handover.
             </p>
 
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            <div className="flex flex-wrap items-center gap-3 pt-1">
               <a
                 href="#footwear"
-                className="py-3 px-6 bg-stone-950 hover:bg-stone-800 text-amber-100 font-bold text-xs rounded-xl shadow-xs transition flex items-center space-x-2"
+                className="py-3 px-6 bg-stone-950 hover:bg-stone-800 text-amber-100 font-bold text-xs rounded-xl shadow-md transition flex items-center space-x-2"
               >
-                <span>Explore Guild Footwear</span>
+                <span>Shop Guild Footwear</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </a>
 
               <a
                 href="#anatomy"
-                className="py-3 px-5 bg-white border border-stone-300/80 hover:bg-stone-100 text-stone-800 font-semibold text-xs rounded-xl shadow-xs transition flex items-center space-x-2"
+                className="py-3 px-5 bg-white border border-stone-300 hover:bg-stone-50 text-stone-800 font-semibold text-xs rounded-xl shadow-xs transition flex items-center space-x-2"
               >
                 <Ruler className="w-3.5 h-3.5 text-amber-800" />
-                <span>The Goodyear Welt Anatomy</span>
+                <span>Goodyear Welt Anatomy</span>
               </a>
             </div>
 
             {/* Micro Trust Indicators */}
-            <div className="pt-6 border-t border-stone-200/80 grid grid-cols-2 sm:grid-cols-4 gap-4 text-stone-700">
-              <div className="flex items-center space-x-2 text-xs">
-                <CheckCircle2 className="w-4 h-4 text-amber-800 flex-shrink-0" />
-                <span className="font-medium text-[11px]">360° Storm Welt</span>
+            <div className="pt-5 border-t border-stone-300/60 grid grid-cols-2 sm:grid-cols-4 gap-3 text-stone-700">
+              <div>
+                <p className="text-xs font-bold text-stone-950 flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-amber-800" />
+                  <span>360° Storm Welt</span>
+                </p>
+                <p className="text-[11px] text-stone-500 mt-0.5">Resoleable Vibram sole</p>
               </div>
-              <div className="flex items-center space-x-2 text-xs">
-                <ShieldCheck className="w-4 h-4 text-amber-800 flex-shrink-0" />
-                <span className="font-medium text-[11px]">Horween Full-Grain</span>
+              <div>
+                <p className="text-xs font-bold text-stone-950 flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-amber-800" />
+                  <span>Horween Leather</span>
+                </p>
+                <p className="text-[11px] text-stone-500 mt-0.5">Full-grain USA pull-up</p>
               </div>
-              <div className="flex items-center space-x-2 text-xs">
-                <Truck className="w-4 h-4 text-amber-800 flex-shrink-0" />
-                <span className="font-medium text-[11px]">Carpet Fit Trial (COD)</span>
+              <div>
+                <p className="text-xs font-bold text-stone-950 flex items-center gap-1.5">
+                  <Truck className="w-3.5 h-3.5 text-amber-800" />
+                  <span>Doorstep Fit Trial</span>
+                </p>
+                <p className="text-[11px] text-stone-500 mt-0.5">Inspect prior to COD</p>
               </div>
-              <div className="flex items-center space-x-2 text-xs">
-                <RotateCcw className="w-4 h-4 text-amber-800 flex-shrink-0" />
-                <span className="font-medium text-[11px]">Lifetime Resoling</span>
+              <div>
+                <p className="text-xs font-bold text-stone-950 flex items-center gap-1.5">
+                  <RotateCcw className="w-3.5 h-3.5 text-amber-800" />
+                  <span>7-Day Size Swaps</span>
+                </p>
+                <p className="text-[11px] text-stone-500 mt-0.5">Free doorstep courier</p>
               </div>
             </div>
           </div>
@@ -424,16 +432,30 @@ export function FootwearStorefront({
                   alt="Full-Grain Leather Chelsea Boot"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4 bg-stone-900/90 backdrop-blur-md p-3.5 rounded-xl border border-stone-700 shadow-lg text-white">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute top-3 left-3 bg-amber-500 text-stone-950 px-2.5 py-1 rounded-lg text-[10px] font-bold shadow-md uppercase tracking-wider">
+                  Signature Drop • -10% Off
+                </div>
+                <div className="absolute bottom-3 left-3 right-3 bg-stone-900/90 backdrop-blur-md p-3.5 rounded-xl border border-stone-700 shadow-lg text-white">
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="text-[10px] font-sans font-bold text-amber-400 uppercase tracking-wider block">Signature Build</span>
+                      <span className="text-[10px] font-sans font-bold text-amber-400 uppercase tracking-wider block">Signature Guild Chelsea</span>
                       <p className="text-xs font-bold font-serif">Horween Chromexcel Chelsea</p>
                     </div>
-                    <span className="text-xs font-sans font-bold text-amber-300">৳6,800</span>
+                    <div className="text-right">
+                      <span className="text-xs font-sans font-bold text-amber-300">৳6,800</span>
+                      <span className="text-[10px] text-stone-400 line-through block">৳7,500</span>
+                    </div>
                   </div>
-                  <p className="text-[10px] text-stone-300 mt-1">360° storm welt, cork bed & Vibram lug outsole</p>
+                  <div className="mt-2 pt-2 border-t border-stone-800 flex items-center justify-between text-[11px]">
+                    <span className="text-stone-300">360° Welt • Vibram Lug</span>
+                    <button
+                      onClick={() => onAddToCart(products[0], products[0]?.variants?.[0])}
+                      className="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-stone-950 text-xs font-bold rounded-lg transition"
+                    >
+                      Quick Add
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -441,43 +463,89 @@ export function FootwearStorefront({
         </div>
       </section>
 
-      {/* ─── 4. Footwear Silhouette Navigation Filter ───────────────────────── */}
-      <section id="silhouettes" className="py-10 px-4 sm:px-6 border-b border-stone-200/80 bg-white/70">
-        <div className="max-w-6xl mx-auto space-y-4">
+      {/* ─── 4. Footwear Visual "Shop by Silhouette" Category Grid ──────────────── */}
+      <section id="silhouettes" className="py-12 px-4 sm:px-6 border-b border-stone-200/80 bg-white">
+        <div className="max-w-6xl mx-auto space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
             <div>
               <span className="text-[10px] font-sans tracking-widest text-amber-900 font-bold uppercase">
-                Guild Silhouettes
+                Shop By Category
               </span>
-              <h2 className="text-xl sm:text-2xl font-black text-stone-950 font-serif tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-black text-stone-950 font-serif tracking-tight">
                 Curated Footwear Archetypes
               </h2>
             </div>
             <p className="text-xs text-stone-500 max-w-sm">
-              Each silhouette is built on specialized anatomical lasts engineered for zero instep pinch and enduring arch support.
+              Select a silhouette below to explore lasts, leather gauges, and resoleable Vibram outsoles.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-            {FOOTWEAR_SILHOUETTES.map((sil) => {
-              const isActive = selectedSilhouette === sil.id;
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              {
+                id: "boots",
+                title: "Storm-Welted Boots",
+                desc: "Horween Chromexcel & Vibram lug soles",
+                image: "https://images.unsplash.com/photo-1638247025967-b4e38f787b76?w=600&auto=format&fit=crop&q=80",
+                badge: "Heirloom"
+              },
+              {
+                id: "runners",
+                title: "Propulsion Runners",
+                desc: "Nitrogen foam & carbon torsion plate",
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop&q=80",
+                badge: "Dynamic"
+              },
+              {
+                id: "loafers",
+                title: "Tuscan Suede Loafers",
+                desc: "Butter-soft Italian velour calf",
+                image: "https://images.unsplash.com/photo-1582588678413-dbf45f4823e9?w=600&auto=format&fit=crop&q=80",
+                badge: "Luxury"
+              },
+              {
+                id: "all",
+                title: "All Guild Footwear",
+                desc: "Complete benchcrafted collection",
+                image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&auto=format&fit=crop&q=80",
+                badge: "All Styles"
+              }
+            ].map((cat) => {
+              const isActive = selectedSilhouette === cat.id;
               return (
-                <button
-                  key={sil.id}
-                  onClick={() => setSelectedSilhouette(sil.id)}
-                  className={`p-3.5 rounded-2xl border text-left transition-all ${
+                <div
+                  key={cat.id}
+                  onClick={() => {
+                    setSelectedSilhouette(cat.id);
+                    const el = document.getElementById("footwear");
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className={`group relative rounded-2xl overflow-hidden border cursor-pointer transition-all duration-300 ${
                     isActive
-                      ? "bg-stone-900 border-stone-900 text-white shadow-xs"
-                      : "bg-white border-stone-200 hover:border-amber-800/40 text-stone-800"
+                      ? "ring-2 ring-amber-800 border-amber-800 shadow-md scale-[1.02]"
+                      : "border-stone-200 hover:border-amber-800/50 hover:shadow-lg"
                   }`}
                 >
-                  <p className={`text-xs font-bold ${isActive ? "text-amber-400 font-serif" : "text-stone-900 font-serif"}`}>
-                    {sil.label}
-                  </p>
-                  <p className={`text-[10px] mt-1 leading-snug ${isActive ? "text-stone-300" : "text-stone-500"}`}>
-                    {sil.subtitle}
-                  </p>
-                </button>
+                  <div className="aspect-[4/3] w-full overflow-hidden bg-stone-100 relative">
+                    <img
+                      src={cat.image}
+                      alt={cat.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-stone-900/80 backdrop-blur-sm text-[9px] font-bold text-amber-300 font-mono">
+                      {cat.badge}
+                    </span>
+                    <div className="absolute bottom-3 left-3 right-3 text-white">
+                      <h3 className="font-serif font-bold text-sm text-stone-100 group-hover:text-amber-300 transition-colors">
+                        {cat.title}
+                      </h3>
+                      <p className="text-[10px] text-stone-300 line-clamp-1 mt-0.5">
+                        {cat.desc}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               );
             })}
           </div>
@@ -885,6 +953,60 @@ export function FootwearStorefront({
               </div>
             );
           })}
+        </div>
+      </section>
+
+      {/* ─── 7.5 Commercial Split Promotional Banners ─────────────────────────── */}
+      <section className="py-10 px-4 sm:px-6 bg-[#faf7f2] border-b border-stone-200">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="relative overflow-hidden rounded-3xl bg-stone-900 text-white p-6 sm:p-8 flex flex-col justify-between shadow-lg border border-stone-800">
+            <div className="space-y-3 z-10">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-amber-400 font-bold bg-amber-950/80 px-2.5 py-1 rounded-md border border-amber-800/80 inline-block">
+                Complimentary Guild Kit
+              </span>
+              <h3 className="text-xl sm:text-2xl font-serif font-black text-stone-100">
+                Guild Boot Care Kit with Any 2 Pairs
+              </h3>
+              <p className="text-xs text-stone-300 leading-relaxed max-w-md">
+                Order any two pairs of Goodyear-welted boots or shoes and receive a full Horween leather conditioner set with German horsehair dauber brush (value ৳1,800) free.
+              </p>
+            </div>
+            <div className="pt-6 z-10">
+              <a
+                href="#footwear"
+                className="inline-flex items-center space-x-2 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs rounded-xl transition"
+              >
+                <span>Bundle &amp; Save</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </a>
+            </div>
+            <div className="absolute right-0 bottom-0 opacity-15 pointer-events-none translate-x-6 translate-y-6">
+              <Hammer className="w-48 h-48 text-amber-500" />
+            </div>
+          </div>
+
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-50 to-stone-100 text-stone-900 p-6 sm:p-8 flex flex-col justify-between shadow-sm border border-stone-300/80">
+            <div className="space-y-3 z-10">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-amber-900 font-bold bg-amber-200/60 px-2.5 py-1 rounded-md border border-amber-300 inline-block">
+                64-District Courier Service
+              </span>
+              <h3 className="text-xl sm:text-2xl font-serif font-black text-stone-950">
+                Doorstep Carpet Trial &amp; Free Size Exchange
+              </h3>
+              <p className="text-xs text-stone-600 leading-relaxed max-w-md">
+                Unbox with the delivery rider, check the stitch tension on indoor carpet, and verify fit. If you need half a size up or down, we dispatch the replacement within 24 hours.
+              </p>
+            </div>
+            <div className="pt-6 z-10">
+              <a
+                href="#trial"
+                className="inline-flex items-center space-x-2 px-4 py-2 bg-stone-950 hover:bg-stone-800 text-amber-100 font-bold text-xs rounded-xl transition"
+              >
+                <span>Learn About Trial Protocol</span>
+                <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 

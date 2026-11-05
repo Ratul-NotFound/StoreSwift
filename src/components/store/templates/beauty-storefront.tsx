@@ -363,30 +363,26 @@ export function BeautyStorefront({
       </header>
 
       {/* ─── 3. Luminous Ethereal Hero Section ──────────────────────────────── */}
-      <section className="relative overflow-hidden border-b border-rose-100/70 bg-gradient-to-b from-[#faf8f6] via-[#f7f2ee] to-[#faf8f6] py-16 sm:py-24 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-7 space-y-6">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 bg-rose-50 border border-rose-200/80 rounded-full text-[11px] font-semibold text-rose-800">
+      <section className="relative overflow-hidden border-b border-rose-100/70 bg-gradient-to-b from-[#faf8f6] via-[#f7f2ee] to-[#faf8f6] py-12 sm:py-20 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          <div className="lg:col-span-7 space-y-5">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 bg-rose-50 border border-rose-200/80 rounded-full text-xs font-semibold text-rose-800">
               <Sparkles className="w-3.5 h-3.5 text-rose-600" />
-              <span>Dermatologist Formulated • 100% Non-Comedogenic</span>
+              <span>DERMATOLOGIST FORMULATED • 100% NON-COMEDOGENIC &amp; CLEAN</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-zinc-900 leading-[1.08]">
-              Pure Botanicals. <br />
-              <span className="bg-gradient-to-r from-rose-600 via-pink-600 to-rose-700 bg-clip-text text-transparent">
-                Clinical Bio-Actives.
-              </span> <br />
-              Zero Compromise.
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-zinc-950 leading-[1.12]">
+              Clinical Botanical Skincare &amp; Barrier Health Formulas
             </h1>
 
             <p className="text-sm sm:text-base text-zinc-600 max-w-xl leading-relaxed">
-              Formulated without parabens, synthetic fragrance, or pore-clogging silicones. Every batch is cold-chain stabilized and delivered with a tamper-evident foil seal you can inspect prior to cash on delivery.
+              Bio-compatible active serums, ceramide lipid barrier restorers, and mineral zinc sunscreens formulated without parabens, synthetic fragrance, or silicones. Inspect cold-chain induction seals and batch codes at your door prior to cash on delivery.
             </p>
 
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            <div className="flex flex-wrap items-center gap-3 pt-1">
               <a
                 href="#rituals"
-                className="py-3 px-6 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center space-x-2"
+                className="py-3 px-6 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center space-x-2"
               >
                 <span>Shop Clinical Rituals</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -394,30 +390,42 @@ export function BeautyStorefront({
 
               <a
                 href="#bundle"
-                className="py-3 px-5 bg-white border border-rose-200 hover:bg-rose-50/70 text-zinc-800 font-semibold text-xs rounded-xl shadow-xs transition flex items-center space-x-2"
+                className="py-3 px-5 bg-white border border-rose-200 hover:bg-rose-50 text-zinc-800 font-semibold text-xs rounded-xl shadow-xs transition flex items-center space-x-2"
               >
                 <Droplets className="w-3.5 h-3.5 text-rose-600" />
-                <span>The 3-Step Glass Skin System</span>
+                <span>The Glass Skin System</span>
               </a>
             </div>
 
             {/* Micro Trust Indicators */}
-            <div className="pt-6 border-t border-rose-200/60 grid grid-cols-2 sm:grid-cols-4 gap-4 text-zinc-700">
-              <div className="flex items-center space-x-2 text-xs">
-                <CheckCircle2 className="w-4 h-4 text-rose-600 flex-shrink-0" />
-                <span className="font-medium text-[11px]">Cruelty-Free</span>
+            <div className="pt-5 border-t border-rose-200/60 grid grid-cols-2 sm:grid-cols-4 gap-3 text-zinc-700">
+              <div>
+                <p className="text-xs font-bold text-zinc-950 flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-rose-600" />
+                  <span>Dermatologist Tested</span>
+                </p>
+                <p className="text-[11px] text-zinc-500 mt-0.5">Non-comedogenic</p>
               </div>
-              <div className="flex items-center space-x-2 text-xs">
-                <ShieldCheck className="w-4 h-4 text-rose-600 flex-shrink-0" />
-                <span className="font-medium text-[11px]">Hypoallergenic</span>
+              <div>
+                <p className="text-xs font-bold text-zinc-950 flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-rose-600" />
+                  <span>Cold-Chain Sealed</span>
+                </p>
+                <p className="text-[11px] text-zinc-500 mt-0.5">Induction foil intact</p>
               </div>
-              <div className="flex items-center space-x-2 text-xs">
-                <Truck className="w-4 h-4 text-rose-600 flex-shrink-0" />
-                <span className="font-medium text-[11px]">Cold-Chain Dispatched</span>
+              <div>
+                <p className="text-xs font-bold text-zinc-950 flex items-center gap-1.5">
+                  <Truck className="w-3.5 h-3.5 text-rose-600" />
+                  <span>Doorstep Inspection</span>
+                </p>
+                <p className="text-[11px] text-zinc-500 mt-0.5">Inspect prior to COD</p>
               </div>
-              <div className="flex items-center space-x-2 text-xs">
-                <RotateCcw className="w-4 h-4 text-rose-600 flex-shrink-0" />
-                <span className="font-medium text-[11px]">14-Day Glow Guarantee</span>
+              <div>
+                <p className="text-xs font-bold text-zinc-950 flex items-center gap-1.5">
+                  <RotateCcw className="w-3.5 h-3.5 text-rose-600" />
+                  <span>14-Day Guarantee</span>
+                </p>
+                <p className="text-[11px] text-zinc-500 mt-0.5">Skin barrier promise</p>
               </div>
             </div>
           </div>
@@ -430,16 +438,30 @@ export function BeautyStorefront({
                   alt="Pure Glow Dew Serum"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md p-3.5 rounded-xl border border-white/60 shadow-lg text-zinc-900">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                <div className="absolute top-3 left-3 bg-rose-600 text-white px-2.5 py-1 rounded-lg text-[10px] font-bold shadow-md uppercase tracking-wider">
+                  Award Winner • -15% Off
+                </div>
+                <div className="absolute bottom-3 left-3 right-3 bg-white/95 backdrop-blur-md p-3.5 rounded-xl border border-white/60 shadow-lg text-zinc-900">
                   <div className="flex items-center justify-between">
                     <div>
                       <span className="text-[10px] font-bold text-rose-600 uppercase tracking-wider block">Award-Winning</span>
                       <p className="text-xs font-black">Pure Glow Triple Hyaluronic Dew</p>
                     </div>
-                    <span className="text-xs font-bold text-rose-700">৳2,850</span>
+                    <div className="text-right">
+                      <span className="text-xs font-bold text-rose-700">৳2,850</span>
+                      <span className="text-[10px] text-zinc-400 line-through block">৳3,350</span>
+                    </div>
                   </div>
-                  <p className="text-[10px] text-zinc-500 mt-1">Multi-depth Tremella mushroom & prebiotic squalane</p>
+                  <div className="mt-2 pt-2 border-t border-rose-100 flex items-center justify-between text-[11px]">
+                    <span className="text-zinc-500">Tremella Mushroom • Squalane</span>
+                    <button
+                      onClick={() => onAddToCart(products[0], products[0]?.variants?.[0])}
+                      className="px-3 py-1 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold rounded-lg transition"
+                    >
+                      Quick Add
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -447,16 +469,16 @@ export function BeautyStorefront({
         </div>
       </section>
 
-      {/* ─── 4. Skin Concern Navigation Filter ──────────────────────────────── */}
-      <section id="concerns" className="py-10 px-4 sm:px-6 border-b border-rose-100/70 bg-white/60">
-        <div className="max-w-6xl mx-auto space-y-4">
+      {/* ─── 4. Skin Concern / Category Navigation Filter ───────────────────── */}
+      <section id="concerns" className="py-12 px-4 sm:px-6 border-b border-rose-100/70 bg-white">
+        <div className="max-w-6xl mx-auto space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
             <div>
-              <span className="text-xs font-semibold uppercase tracking-wider text-rose-600">
-                Targeted Efficacy
+              <span className="text-xs font-bold uppercase tracking-wider text-rose-600">
+                Shop By Skin Need
               </span>
-              <h2 className="text-xl sm:text-2xl font-black text-zinc-900 tracking-tight">
-                Shop By Skin Need & Barrier Health
+              <h2 className="text-2xl sm:text-3xl font-black text-zinc-900 tracking-tight">
+                Targeted Clinical Formulations
               </h2>
             </div>
             <p className="text-xs text-zinc-500 max-w-sm">
@@ -464,26 +486,72 @@ export function BeautyStorefront({
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-            {SKIN_CONCERNS.map((concern) => {
-              const isActive = selectedConcern === concern.id;
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              {
+                id: "barrier",
+                title: "Barrier Repair & Hydration",
+                desc: "Ceramides & triple hyaluronic acid",
+                image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600&auto=format&fit=crop&q=80",
+                badge: "Ceramides"
+              },
+              {
+                id: "brighten",
+                title: "Active Peptides & Radiance",
+                desc: "Stabilized Vitamin C & niacinamide",
+                image: "https://images.unsplash.com/photo-1608248597359-5932598377b2?w=600&auto=format&fit=crop&q=80",
+                badge: "Active C"
+              },
+              {
+                id: "cleanse",
+                title: "Gentle Oat Cleansers",
+                desc: "Colloidal oat & organic rose hydrolat",
+                image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600&auto=format&fit=crop&q=80",
+                badge: "pH 5.5"
+              },
+              {
+                id: "all",
+                title: "All Clinical Skincare",
+                desc: "Complete non-comedogenic rituals",
+                image: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&auto=format&fit=crop&q=80",
+                badge: "All Formulas"
+              }
+            ].map((cat) => {
+              const isActive = selectedConcern === cat.id;
               return (
-                <button
-                  key={concern.id}
-                  onClick={() => setSelectedConcern(concern.id)}
-                  className={`p-3.5 rounded-2xl border text-left transition-all ${
+                <div
+                  key={cat.id}
+                  onClick={() => {
+                    setSelectedConcern(cat.id);
+                    const el = document.getElementById("rituals");
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className={`group relative rounded-2xl overflow-hidden border cursor-pointer transition-all duration-300 ${
                     isActive
-                      ? "bg-rose-50/90 border-rose-400 text-rose-950 shadow-xs"
-                      : "bg-white border-rose-100 hover:border-rose-200 text-zinc-700"
+                      ? "ring-2 ring-rose-500 border-rose-500 shadow-md scale-[1.02]"
+                      : "border-rose-100 hover:border-rose-300 hover:shadow-lg"
                   }`}
                 >
-                  <p className={`text-xs font-bold ${isActive ? "text-rose-900" : "text-zinc-900"}`}>
-                    {concern.label}
-                  </p>
-                  <p className="text-[10px] text-zinc-500 mt-1 leading-snug">
-                    {concern.description}
-                  </p>
-                </button>
+                  <div className="aspect-[4/3] w-full overflow-hidden bg-rose-50 relative">
+                    <img
+                      src={cat.image}
+                      alt={cat.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-rose-950/80 backdrop-blur-sm text-[9px] font-bold text-rose-200 font-mono">
+                      {cat.badge}
+                    </span>
+                    <div className="absolute bottom-3 left-3 right-3 text-white">
+                      <h3 className="font-bold text-sm text-white group-hover:text-rose-200 transition-colors">
+                        {cat.title}
+                      </h3>
+                      <p className="text-[10px] text-rose-100 line-clamp-1 mt-0.5">
+                        {cat.desc}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               );
             })}
           </div>

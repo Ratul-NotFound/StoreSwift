@@ -343,38 +343,34 @@ export function JewelryStorefront({
       </header>
 
       {/* ─── 3. Opulent Maison Hero Section ─────────────────────────────────── */}
-      <section className="relative overflow-hidden border-b border-neutral-800/80 bg-gradient-to-b from-[#0b0c0e] via-[#14151b] to-[#0b0c0e] py-16 sm:py-24 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-7 space-y-6">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 bg-amber-950/60 border border-amber-800/50 rounded-full text-[11px] font-semibold text-amber-300 font-mono">
+      <section className="relative overflow-hidden border-b border-neutral-800/80 bg-gradient-to-b from-[#0b0c0e] via-[#14151b] to-[#0b0c0e] py-12 sm:py-20 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          <div className="lg:col-span-7 space-y-5">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 bg-amber-950/60 border border-amber-800/50 rounded-full text-xs font-semibold text-amber-300 font-mono">
               <Crown className="w-3.5 h-3.5 text-amber-400" />
-              <span>Assay Hallmarked 750 (18K) • Swiss 28,800 VPH Caliber</span>
+              <span>CENTRAL ASSAY OFFICE 750 LASER HALLMARKED • SWISS CALIBERS</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white font-serif leading-[1.08]">
-              Heirloom Horology. <br />
-              <span className="bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 bg-clip-text text-transparent italic font-normal">
-                Solid 18K Gold Vermeil.
-              </span> <br />
-              Eternal Provenance.
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white font-serif leading-[1.12]">
+              Solid 18K Gold Jewelry &amp; Certified Luxury Timepieces
             </h1>
 
             <p className="text-sm sm:text-base text-zinc-400 max-w-xl leading-relaxed font-sans">
-              Individually serialized timepieces and heavy gold signets cast from 925 sterling silver plated with 3.0 microns of 18k yellow gold. Inspect Assay hallmarks and sapphire crystal clarity with our courier before cash tender.
+              Meticulously cast in solid 18K yellow gold, rose gold, and platinum with certified conflict-free diamonds and sapphire crystals. Delivered in tamper-evident sealed security vaults with doorstep loupe verification prior to cash tender.
             </p>
 
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            <div className="flex flex-wrap items-center gap-3 pt-1">
               <a
                 href="#creations"
-                className="py-3 px-6 bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs font-serif rounded-xl shadow-xs transition flex items-center space-x-2"
+                className="py-3 px-6 bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs font-serif rounded-xl shadow-md transition flex items-center space-x-2"
               >
-                <span>Explore Maison Creations</span>
+                <span>Shop Maison Creations</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </a>
 
               <a
                 href="#standards"
-                className="py-3 px-5 bg-[#17181f] border border-neutral-700/80 hover:bg-[#20222b] text-amber-200/90 font-semibold text-xs font-serif rounded-xl shadow-xs transition flex items-center space-x-2"
+                className="py-3 px-5 bg-[#17181f] border border-neutral-700 hover:bg-[#20222b] text-amber-200 font-semibold text-xs font-serif rounded-xl shadow-xs transition flex items-center space-x-2"
               >
                 <Gem className="w-3.5 h-3.5 text-amber-400" />
                 <span>Assay Hallmark Dossier</span>
@@ -382,22 +378,34 @@ export function JewelryStorefront({
             </div>
 
             {/* Micro Trust Indicators */}
-            <div className="pt-6 border-t border-neutral-800/80 grid grid-cols-2 sm:grid-cols-4 gap-4 text-zinc-400 font-mono">
-              <div className="flex items-center space-x-2 text-xs">
-                <CheckCircle2 className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                <span className="font-medium text-[11px]">Assay Hallmarked</span>
+            <div className="pt-5 border-t border-neutral-800/80 grid grid-cols-2 sm:grid-cols-4 gap-3 text-zinc-400 font-mono">
+              <div>
+                <p className="text-xs font-bold text-amber-200 flex items-center gap-1.5 font-sans">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" />
+                  <span>750 Hallmark</span>
+                </p>
+                <p className="text-[11px] text-zinc-500 mt-0.5">Assay certified</p>
               </div>
-              <div className="flex items-center space-x-2 text-xs">
-                <ShieldCheck className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                <span className="font-medium text-[11px]">Swiss 28.8k vph</span>
+              <div>
+                <p className="text-xs font-bold text-amber-200 flex items-center gap-1.5 font-sans">
+                  <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Swiss 28.8k vph</span>
+                </p>
+                <p className="text-[11px] text-zinc-500 mt-0.5">Automatic caliber</p>
               </div>
-              <div className="flex items-center space-x-2 text-xs">
-                <Truck className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                <span className="font-medium text-[11px]">Loupe Check (COD)</span>
+              <div>
+                <p className="text-xs font-bold text-amber-200 flex items-center gap-1.5 font-sans">
+                  <Truck className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Loupe Check (COD)</span>
+                </p>
+                <p className="text-[11px] text-zinc-500 mt-0.5">Doorstep inspection</p>
               </div>
-              <div className="flex items-center space-x-2 text-xs">
-                <RotateCcw className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                <span className="font-medium text-[11px]">Lifetime Servicing</span>
+              <div>
+                <p className="text-xs font-bold text-amber-200 flex items-center gap-1.5 font-sans">
+                  <RotateCcw className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Lifetime Care</span>
+                </p>
+                <p className="text-[11px] text-zinc-500 mt-0.5">Free ultrasonic clean</p>
               </div>
             </div>
           </div>
@@ -411,15 +419,29 @@ export function JewelryStorefront({
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4 bg-black/85 backdrop-blur-md p-3.5 rounded-xl border border-neutral-700 shadow-lg text-white">
+                <div className="absolute top-3 left-3 bg-amber-500 text-black px-2.5 py-1 rounded-lg text-[10px] font-bold shadow-md uppercase tracking-wider font-sans">
+                  Maison Signature • Limited
+                </div>
+                <div className="absolute bottom-3 left-3 right-3 bg-black/90 backdrop-blur-md p-3.5 rounded-xl border border-neutral-700 shadow-lg text-white">
                   <div className="flex items-center justify-between font-serif">
                     <div>
                       <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider block font-sans">Haute Horology</span>
                       <p className="text-xs font-bold">Heritage 39mm Sapphire Automatic</p>
                     </div>
-                    <span className="text-xs font-bold text-amber-300 font-sans">৳26,500</span>
+                    <div className="text-right">
+                      <span className="text-xs font-bold text-amber-300 font-sans">৳26,500</span>
+                      <span className="text-[10px] text-zinc-500 line-through block font-sans">৳30,000</span>
+                    </div>
                   </div>
-                  <p className="text-[10px] text-zinc-400 mt-1 font-sans">28,800 vph caliber • Exhibition caseback • Italian leather</p>
+                  <div className="mt-2 pt-2 border-t border-neutral-800 flex items-center justify-between text-[11px] font-sans">
+                    <span className="text-zinc-400">28,800 vph • Sapphire Crystal</span>
+                    <button
+                      onClick={() => onAddToCart(products[0], products[0]?.variants?.[0])}
+                      className="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold rounded-lg transition"
+                    >
+                      Quick Add
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -427,15 +449,15 @@ export function JewelryStorefront({
         </div>
       </section>
 
-      {/* ─── 4. Jewelry Collections Navigation Filter ───────────────────────── */}
-      <section id="collections" className="py-10 px-4 sm:px-6 border-b border-neutral-800/80 bg-[#0f1014]">
-        <div className="max-w-6xl mx-auto space-y-4">
+      {/* ─── 4. Jewelry Collections Visual "Shop by Category" Grid ─────────────── */}
+      <section id="collections" className="py-12 px-4 sm:px-6 border-b border-neutral-800/80 bg-[#0f1014]">
+        <div className="max-w-6xl mx-auto space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 font-serif">
             <div>
               <span className="text-[10px] font-mono tracking-widest text-amber-400 font-bold uppercase">
-                Atelier Disciplines
+                Shop By Category
               </span>
-              <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
                 Curated Heirloom Categories
               </h2>
             </div>
@@ -444,26 +466,72 @@ export function JewelryStorefront({
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-            {JEWELRY_COLLECTIONS.map((col) => {
-              const isActive = selectedCollection === col.id;
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              {
+                id: "rings",
+                title: "Solitaire Rings & Bands",
+                desc: "18K solid gold & certified diamonds",
+                image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&auto=format&fit=crop&q=80",
+                badge: "18K Gold"
+              },
+              {
+                id: "watches",
+                title: "Haute Horology Watches",
+                desc: "Automatic 28.8k vph sapphire timepieces",
+                image: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=600&auto=format&fit=crop&q=80",
+                badge: "Swiss Caliber"
+              },
+              {
+                id: "necklaces",
+                title: "Gold Pendants & Chains",
+                desc: "Heavy solid gold chains & signets",
+                image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&auto=format&fit=crop&q=80",
+                badge: "750 Assay"
+              },
+              {
+                id: "all",
+                title: "All Maison Jewels",
+                desc: "Full heirloom fine jewelry curation",
+                image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&auto=format&fit=crop&q=80",
+                badge: "All Pieces"
+              }
+            ].map((cat) => {
+              const isActive = selectedCollection === cat.id;
               return (
-                <button
-                  key={col.id}
-                  onClick={() => setSelectedCollection(col.id)}
-                  className={`p-3.5 rounded-2xl border text-left transition-all font-serif ${
+                <div
+                  key={cat.id}
+                  onClick={() => {
+                    setSelectedCollection(cat.id);
+                    const el = document.getElementById("creations");
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className={`group relative rounded-2xl overflow-hidden border cursor-pointer transition-all duration-300 ${
                     isActive
-                      ? "bg-amber-950/60 border-amber-500/80 text-white shadow-xs"
-                      : "bg-[#121317] border-neutral-800 hover:border-neutral-700 text-zinc-300"
+                      ? "ring-2 ring-amber-400 border-amber-400 shadow-md scale-[1.02]"
+                      : "border-neutral-800 hover:border-amber-400/40 hover:shadow-lg"
                   }`}
                 >
-                  <p className={`text-xs font-bold ${isActive ? "text-amber-300" : "text-white"}`}>
-                    {col.label}
-                  </p>
-                  <p className={`text-[10px] mt-1 leading-snug font-sans ${isActive ? "text-zinc-300" : "text-zinc-500"}`}>
-                    {col.subtitle}
-                  </p>
-                </button>
+                  <div className="aspect-[4/3] w-full overflow-hidden bg-neutral-900 relative">
+                    <img
+                      src={cat.image}
+                      alt={cat.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-black/80 backdrop-blur-sm text-[9px] font-bold text-amber-300 font-mono">
+                      {cat.badge}
+                    </span>
+                    <div className="absolute bottom-3 left-3 right-3 text-white">
+                      <h3 className="font-serif font-bold text-sm text-stone-100 group-hover:text-amber-300 transition-colors">
+                        {cat.title}
+                      </h3>
+                      <p className="text-[10px] text-zinc-300 line-clamp-1 mt-0.5 font-sans">
+                        {cat.desc}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               );
             })}
           </div>

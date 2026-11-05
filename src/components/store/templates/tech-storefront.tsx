@@ -347,84 +347,103 @@ export function TechStorefront({
         </div>
       </header>
 
-      {/* ─── 3. Cybernetic Pro Hero Section ─────────────────────────────────── */}
-      <section className="relative overflow-hidden border-b border-zinc-800/80 bg-gradient-to-b from-[#0c0d12] via-[#10131d] to-[#0c0d12] py-16 sm:py-24 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-7 space-y-6">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 bg-sky-950/70 border border-sky-800/60 rounded-full text-[11px] font-semibold text-sky-400 font-mono">
-              <Zap className="w-3.5 h-3.5 text-sky-400" />
-              <span>Mil-Spec QC Calibrated • Zero Gray Market Units</span>
+      {/* ─── 3. Standard Consumer Electronics E-Commerce Hero Banner ────────── */}
+      <section className="relative overflow-hidden border-b border-zinc-800/80 bg-gradient-to-b from-[#0c0d12] via-[#10131d] to-[#0c0d12] py-14 sm:py-20 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          <div className="lg:col-span-7 space-y-6 text-left">
+            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 bg-sky-950/70 border border-sky-800/60 rounded-full text-xs font-medium text-sky-300">
+              <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
+              <span>NEW PRO RELEASES • 2-YEAR ADVANCE REPLACEMENT</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.08] font-mono">
-              CNC Billet Aluminum. <br />
-              <span className="bg-gradient-to-r from-sky-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
-                Acoustic Precision.
-              </span> <br />
-              Zero Latency.
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.08]">
+              Next-Gen Pro Audio &amp; Workstation Hardware
             </h1>
 
             <p className="text-sm sm:text-base text-zinc-400 max-w-xl leading-relaxed">
-              Milled from 6063 aerospace aluminum with custom 40mm beryllium acoustic diaphragms and 100W GaN power delivery. Inspect factory anti-static seals and verify serial numbers at your door prior to cash handover.
+              Audiophile-grade beryllium headphones, CNC gasket mechanical keyboards, and 100W GaN fast power delivery. 100% factory sealed with doorstep power-on inspection prior to Cash on Delivery payment.
             </p>
 
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            <div className="flex flex-wrap items-center gap-3.5 pt-1">
               <a
                 href="#hardware"
-                className="py-3 px-6 bg-sky-500 hover:bg-sky-400 text-black font-bold text-xs font-mono rounded-xl shadow-xs transition flex items-center space-x-2"
+                className="py-3.5 px-7 bg-sky-500 hover:bg-sky-400 text-black font-bold text-xs rounded-xl shadow-xs transition flex items-center space-x-2"
               >
-                <span>Explore Hardware Catalog</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <span>Shop All Hardware</span>
+                <ArrowRight className="w-4 h-4" />
               </a>
 
               <a
                 href="#benchmarks"
-                className="py-3 px-5 bg-[#171926] border border-zinc-700/80 hover:bg-[#1f2233] text-zinc-200 font-semibold text-xs font-mono rounded-xl shadow-xs transition flex items-center space-x-2"
+                className="py-3.5 px-6 bg-[#171926] border border-zinc-700/80 hover:bg-[#1f2233] text-zinc-200 font-semibold text-xs rounded-xl shadow-xs transition flex items-center space-x-2"
               >
                 <Activity className="w-3.5 h-3.5 text-sky-400" />
-                <span>View Acoustic Specs</span>
+                <span>Audio Lab &amp; Switch Bench</span>
               </a>
             </div>
 
-            {/* Micro Trust Indicators */}
-            <div className="pt-6 border-t border-zinc-800/80 grid grid-cols-2 sm:grid-cols-4 gap-4 text-zinc-400 font-mono">
-              <div className="flex items-center space-x-2 text-xs">
-                <CheckCircle2 className="w-4 h-4 text-sky-400 flex-shrink-0" />
-                <span className="font-medium text-[11px]">Factory Sealed</span>
+            {/* Standard E-Commerce Reassurance Strip */}
+            <div className="pt-6 border-t border-zinc-800/80 grid grid-cols-2 sm:grid-cols-4 gap-4 text-left">
+              <div>
+                <p className="text-xs font-bold text-white flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-sky-400" />
+                  <span>Factory Sealed</span>
+                </p>
+                <p className="text-[11px] text-zinc-400 mt-0.5">Zero gray market</p>
               </div>
-              <div className="flex items-center space-x-2 text-xs">
-                <ShieldCheck className="w-4 h-4 text-sky-400 flex-shrink-0" />
-                <span className="font-medium text-[11px]">Mil-Spec Calibrated</span>
+              <div>
+                <p className="text-xs font-bold text-white flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-sky-400" />
+                  <span>Doorstep Power Check</span>
+                </p>
+                <p className="text-[11px] text-zinc-400 mt-0.5">Test before COD</p>
               </div>
-              <div className="flex items-center space-x-2 text-xs">
-                <Truck className="w-4 h-4 text-sky-400 flex-shrink-0" />
-                <span className="font-medium text-[11px]">Power-On Test (COD)</span>
+              <div>
+                <p className="text-xs font-bold text-white flex items-center gap-1.5">
+                  <Truck className="w-3.5 h-3.5 text-sky-400" />
+                  <span>Fast Delivery</span>
+                </p>
+                <p className="text-[11px] text-zinc-400 mt-0.5">24h Dhaka • 48h BD</p>
               </div>
-              <div className="flex items-center space-x-2 text-xs">
-                <RotateCcw className="w-4 h-4 text-sky-400 flex-shrink-0" />
-                <span className="font-medium text-[11px]">2-Year Swap Warranty</span>
+              <div>
+                <p className="text-xs font-bold text-white flex items-center gap-1.5">
+                  <RotateCcw className="w-3.5 h-3.5 text-sky-400" />
+                  <span>2-Year Warranty</span>
+                </p>
+                <p className="text-[11px] text-zinc-400 mt-0.5">Advance unit swap</p>
               </div>
             </div>
           </div>
 
           <div className="lg:col-span-5 relative">
             <div className="relative mx-auto max-w-md rounded-3xl overflow-hidden border border-zinc-800 bg-[#13151f] shadow-2xl p-2.5">
-              <div className="aspect-[16/10] rounded-2xl overflow-hidden relative group">
+              <div className="aspect-[4/3] rounded-2xl overflow-hidden relative group">
                 <img
                   src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1000&auto=format&fit=crop&q=85"
                   alt="Acoustic Pro ANC Wireless Headphones"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
+                <div className="absolute top-3.5 left-3.5 bg-sky-950/90 text-sky-300 border border-sky-800/80 px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider">
+                  Bestseller Drop
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4 bg-black/80 backdrop-blur-md p-3.5 rounded-xl border border-zinc-700 shadow-lg text-white">
-                  <div className="flex items-center justify-between font-mono">
+                <div className="absolute bottom-3.5 left-3.5 right-3.5 bg-black/85 backdrop-blur-md p-3.5 rounded-xl border border-zinc-700 shadow-lg text-white">
+                  <div className="flex items-center justify-between">
                     <div>
                       <span className="text-[10px] font-bold text-sky-400 uppercase tracking-wider block">Flagship Audio</span>
                       <p className="text-xs font-bold">Acoustic Pro Hybrid ANC</p>
                     </div>
-                    <span className="text-xs font-bold text-sky-400">৳18,500</span>
+                    <span className="text-xs font-bold text-sky-300">৳18,500</span>
                   </div>
-                  <p className="text-[10px] text-zinc-400 mt-1 font-mono">40mm Beryllium • 45h ANC • aptX Lossless</p>
+                  <div className="mt-2 pt-2 border-t border-zinc-800 flex items-center justify-between text-[11px]">
+                    <span className="text-zinc-400">40mm Beryllium • 45h ANC</span>
+                    <button
+                      onClick={() => onAddToCart(products[0], products[0]?.variants?.[0])}
+                      className="px-3 py-1 bg-sky-500 hover:bg-sky-400 text-black text-xs font-bold rounded-lg transition"
+                    >
+                      Quick Add
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -432,43 +451,79 @@ export function TechStorefront({
         </div>
       </section>
 
-      {/* ─── 4. Hardware Peripherals Navigation Filter ───────────────────────── */}
-      <section id="categories" className="py-10 px-4 sm:px-6 border-b border-zinc-800/80 bg-[#10121a]">
-        <div className="max-w-6xl mx-auto space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 font-mono">
+      {/* ─── 4. Standard E-Commerce "Shop by Category" Visual Grid ──────────── */}
+      <section id="categories" className="py-12 px-4 sm:px-6 border-b border-zinc-800/80 bg-[#10121a]">
+        <div className="max-w-6xl mx-auto space-y-6">
+          <div className="flex items-center justify-between">
             <div>
-              <span className="text-[10px] tracking-widest text-sky-400 font-bold uppercase">
-                Hardware Architecture
-              </span>
-              <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                Curated Studio Peripherals
-              </h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Shop by Department</h2>
+              <p className="text-xs text-zinc-400 mt-0.5">Explore precision acoustic, mechanical, and power hardware</p>
             </div>
-            <p className="text-xs text-zinc-400 max-w-sm">
-              Each peripheral is subjected to thermal dissipation stress testing and RF antenna spectrum calibration.
-            </p>
+            <a href="#hardware" className="text-xs font-semibold text-sky-400 hover:underline flex items-center gap-1">
+              <span>View All</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </a>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-            {TECH_CATEGORIES.map((cat) => {
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {[
+              {
+                id: "audio",
+                label: "Planar & Hybrid Audio",
+                subtitle: "40mm custom beryllium drivers & 45h ANC",
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop&q=80",
+                count: "4 Products"
+              },
+              {
+                id: "keyboards",
+                label: "CNC Mechanical Keyboards",
+                subtitle: "Gasket-mounted 6063 billet aluminum",
+                image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600&auto=format&fit=crop&q=80",
+                count: "5 Products"
+              },
+              {
+                id: "power",
+                label: "High-Density GaN Power",
+                subtitle: "100W GaN III fast delivery & silicone cables",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&auto=format&fit=crop&q=80",
+                count: "3 Products"
+              },
+              {
+                id: "desk",
+                label: "Custom Cables & Docks",
+                subtitle: "Aviation quick-release connectors",
+                image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600&auto=format&fit=crop&q=80",
+                count: "6 Products"
+              }
+            ].map((cat) => {
               const isActive = selectedCategory === cat.id;
               return (
-                <button
+                <div
                   key={cat.id}
-                  onClick={() => setSelectedCategory(cat.id)}
-                  className={`p-3.5 rounded-2xl border text-left transition-all font-mono ${
-                    isActive
-                      ? "bg-sky-950/80 border-sky-500 text-white shadow-xs"
-                      : "bg-[#13151f] border-zinc-800 hover:border-zinc-700 text-zinc-300"
+                  onClick={() => {
+                    setSelectedCategory(cat.id);
+                    const el = document.getElementById("hardware");
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className={`group cursor-pointer rounded-2xl overflow-hidden border transition-all duration-300 bg-[#13151f] flex flex-col shadow-xs hover:shadow-lg ${
+                    isActive ? "border-sky-500 ring-1 ring-sky-500/30" : "border-zinc-800 hover:border-zinc-700"
                   }`}
                 >
-                  <p className={`text-xs font-bold ${isActive ? "text-sky-300" : "text-white"}`}>
-                    {cat.label}
-                  </p>
-                  <p className={`text-[10px] mt-1 leading-snug ${isActive ? "text-zinc-300" : "text-zinc-400"}`}>
-                    {cat.subtitle}
-                  </p>
-                </button>
+                  <div className="aspect-[4/3] overflow-hidden bg-black/40 relative">
+                    <img src={cat.image} alt={cat.label} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <span className="absolute bottom-2.5 left-2.5 text-[10px] font-medium text-sky-300 bg-sky-950/80 px-2 py-0.5 rounded border border-sky-800/80">
+                      {cat.count}
+                    </span>
+                  </div>
+                  <div className="p-3.5 flex items-center justify-between">
+                    <div>
+                      <h3 className="text-xs sm:text-sm font-bold text-white group-hover:text-sky-300 transition-colors">{cat.label}</h3>
+                      <p className="text-[11px] text-zinc-400 mt-0.5 line-clamp-1">{cat.subtitle}</p>
+                    </div>
+                    <ArrowRight className="w-3.5 h-3.5 text-zinc-500 group-hover:translate-x-1 group-hover:text-sky-400 transition-all flex-shrink-0" />
+                  </div>
+                </div>
               );
             })}
           </div>

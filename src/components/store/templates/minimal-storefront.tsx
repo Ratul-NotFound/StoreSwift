@@ -21,6 +21,8 @@ import {
   Clock,
   ExternalLink,
   ChevronRight,
+  RotateCcw,
+  Banknote,
   SlidersHorizontal,
   UserCheck
 } from "lucide-react";
@@ -362,74 +364,95 @@ export function MinimalStorefront({
         )}
       </header>
 
-      {/* ─── 3. Architectural Hero Section ─────────────────────────────────── */}
-      <section className="border-b border-zinc-200/80 bg-zinc-50/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
-          <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 bg-zinc-100 border border-zinc-200 px-3 py-1 rounded-full text-[10px] font-semibold tracking-wider uppercase text-zinc-700">
-              <span className="w-1.5 h-1.5 rounded-full bg-zinc-900" />
-              <span>ARCHIVAL ATELIER • AUTUMN-WINTER 2026</span>
+      {/* ─── 3. Standard High-Fashion E-Commerce Hero Banner ──────────────── */}
+      <section className="border-b border-zinc-200/80 bg-zinc-50/60">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          <div className="lg:col-span-7 space-y-6 text-left">
+            <div className="inline-flex items-center gap-2 bg-white border border-zinc-200 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide text-zinc-800 shadow-2xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <span>AUTUMN / WINTER 2026 DROP • LIMITED PRODUCTION</span>
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-zinc-950 tracking-tight leading-[1.08]">
-              High Fashion. <br />
-              Tailored Forms. <br />
-              Pure Texture.
+              Architectural Tailoring &amp; Elevated Essentials
             </h1>
 
-            <p className="text-sm sm:text-base text-zinc-600 max-w-lg leading-relaxed font-sans">
-              Crafted in 280 GSM combed long-staple cotton and 14oz Toyoda shuttle loom selvedge. Designed for timeless structure and doorstep fit verification across Bangladesh.
+            <p className="text-sm sm:text-base text-zinc-600 max-w-xl leading-relaxed font-sans">
+              Discover minimalist silhouettes crafted from combed long-staple cotton and Japanese selvedge denim. Free doorstep inspection and size exchange across all 64 districts in Bangladesh.
             </p>
 
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            <div className="flex flex-wrap items-center gap-3.5 pt-1">
               <a
                 href="#catalog-grid"
-                className="bg-zinc-950 hover:bg-black text-white px-6 py-3 rounded-xl text-xs font-bold tracking-wide transition flex items-center gap-2 shadow-sm"
+                className="bg-zinc-950 hover:bg-black text-white px-7 py-3.5 rounded-xl text-xs font-bold tracking-wide transition flex items-center gap-2 shadow-sm"
               >
-                <span>Explore Curated Archive</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <span>Shop New Arrivals</span>
+                <ArrowRight className="w-4 h-4" />
               </a>
-              <button
-                onClick={() => setIsSizeGuideOpen(true)}
-                className="border border-zinc-300 hover:border-black text-zinc-800 hover:text-black px-5 py-3 rounded-xl text-xs font-semibold transition flex items-center gap-1.5"
+              <a
+                href="#lookbook"
+                className="bg-white hover:bg-zinc-50 border border-zinc-300 text-zinc-800 hover:text-black px-6 py-3.5 rounded-xl text-xs font-semibold transition flex items-center gap-2 shadow-2xs"
               >
-                <Ruler className="w-3.5 h-3.5 text-zinc-500" />
-                <span>Doorstep Fit Sizing</span>
-              </button>
+                <span>View Lookbook</span>
+              </a>
             </div>
 
-            <div className="pt-6 border-t border-zinc-200/80 grid grid-cols-3 gap-4 text-left">
+            {/* Commercial E-Commerce Trust Badges */}
+            <div className="pt-6 border-t border-zinc-200/80 grid grid-cols-2 sm:grid-cols-4 gap-4 text-left">
               <div>
-                <p className="text-lg font-black text-zinc-950">280 GSM</p>
-                <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Organic Combed</p>
+                <p className="text-xs font-bold text-zinc-950 flex items-center gap-1.5">
+                  <Truck className="w-3.5 h-3.5 text-zinc-700" />
+                  <span>Free Shipping</span>
+                </p>
+                <p className="text-[11px] text-zinc-500 mt-0.5">On orders over ৳1,500</p>
               </div>
               <div>
-                <p className="text-lg font-black text-zinc-950">14oz</p>
-                <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Kurabo Selvedge</p>
+                <p className="text-xs font-bold text-zinc-950 flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-zinc-700" />
+                  <span>Doorstep Trial</span>
+                </p>
+                <p className="text-[11px] text-zinc-500 mt-0.5">Inspect before COD</p>
               </div>
               <div>
-                <p className="text-lg font-black text-zinc-950">48 Hours</p>
-                <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Express Dispatch</p>
+                <p className="text-xs font-bold text-zinc-950 flex items-center gap-1.5">
+                  <RotateCcw className="w-3.5 h-3.5 text-zinc-700" />
+                  <span>7-Day Returns</span>
+                </p>
+                <p className="text-[11px] text-zinc-500 mt-0.5">Free size swaps</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-zinc-950 flex items-center gap-1.5">
+                  <Banknote className="w-3.5 h-3.5 text-zinc-700" />
+                  <span>Cash on Delivery</span>
+                </p>
+                <p className="text-[11px] text-zinc-500 mt-0.5">bKash &amp; Nagad ready</p>
               </div>
             </div>
           </div>
 
-          <div className="relative">
-            <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-zinc-200 border border-zinc-300 shadow-xl relative group">
+          {/* Right Hero Lifestyle Presentation with Quick Add */}
+          <div className="lg:col-span-5 relative">
+            <div className="aspect-[4/5] rounded-3xl overflow-hidden bg-zinc-200 border border-zinc-300 shadow-xl relative group">
               <img
                 src="https://images.unsplash.com/photo-1508427953056-b00b8d78ebf5?w=1000&auto=format&fit=crop&q=85"
                 alt="Minimal Atelier Editorial"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md p-4 rounded-xl border border-zinc-200 shadow-lg flex items-center justify-between">
+              <div className="absolute top-4 left-4 bg-zinc-950/80 backdrop-blur-md text-white px-3 py-1 rounded-full text-[11px] font-semibold tracking-wider uppercase">
+                Featured Drop
+              </div>
+              <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-zinc-200 shadow-lg flex items-center justify-between">
                 <div>
-                  <span className="text-[9px] font-sans font-semibold tracking-widest uppercase text-zinc-400 block">Look 01 Edit</span>
-                  <p className="text-xs font-bold text-zinc-900">Bonded Italian Wool Overcoat</p>
-                  <p className="text-xs font-black text-zinc-950 mt-0.5">৳6,500 <span className="text-[10px] line-through text-zinc-400">৳8,500</span></p>
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500 block">Look 01 Edit</span>
+                  <p className="text-sm font-bold text-zinc-900 leading-tight">Bonded Italian Wool Overcoat</p>
+                  <p className="text-xs font-black text-zinc-950 mt-1">
+                    ৳6,500 <span className="text-[11px] line-through text-zinc-400 font-normal ml-1">৳8,500</span>
+                    <span className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full text-[10px] font-bold ml-1.5">Save 23%</span>
+                  </p>
                 </div>
                 <button
                   onClick={() => onAddToCart(ATELIER_FALLBACKS[0], ATELIER_FALLBACKS[0].variants[0])}
-                  className="bg-black hover:bg-zinc-800 text-white text-[11px] font-bold px-3.5 py-2 rounded-lg transition"
+                  className="bg-zinc-950 hover:bg-black text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-xs transition active:scale-95 flex-shrink-0"
                 >
                   Quick Add
                 </button>
@@ -439,11 +462,84 @@ export function MinimalStorefront({
         </div>
       </section>
 
-      {/* ─── 4. Dynamic Product Catalog Grid ──────────────────────────────── */}
+      {/* ─── 4. Standard E-Commerce "Shop by Category" Visual Grid ──────────── */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-zinc-200/80">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-xl sm:text-2xl font-serif font-bold text-zinc-950">Shop by Category</h2>
+            <p className="text-xs text-zinc-500 mt-0.5">Explore our seasonal collections designed for daily living</p>
+          </div>
+          <a href="#catalog-grid" className="text-xs font-semibold text-zinc-900 hover:underline flex items-center gap-1">
+            <span>View All</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </a>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+          {[
+            {
+              title: "Outerwear & Coats",
+              count: "4 Styles",
+              image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=600&auto=format&fit=crop&q=80",
+              catKey: "Outerwear"
+            },
+            {
+              title: "Heavyweight Tees",
+              count: "6 Styles",
+              image: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&auto=format&fit=crop&q=80",
+              catKey: "Tops"
+            },
+            {
+              title: "Selvedge Denim",
+              count: "3 Styles",
+              image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=600&auto=format&fit=crop&q=80",
+              catKey: "Denim"
+            },
+            {
+              title: "Loopback Sweats",
+              count: "5 Styles",
+              image: "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=600&auto=format&fit=crop&q=80",
+              catKey: "Sets"
+            }
+          ].map((cat, idx) => (
+            <div
+              key={idx}
+              onClick={() => {
+                const match = categories.find(c => c.toLowerCase() === cat.catKey.toLowerCase()) || "all";
+                setSelectedCategory(match);
+                const el = document.getElementById("catalog-grid");
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="group cursor-pointer rounded-2xl overflow-hidden border border-zinc-200 hover:border-zinc-900 transition-all duration-300 bg-white shadow-2xs hover:shadow-md flex flex-col"
+            >
+              <div className="aspect-[4/3] overflow-hidden bg-zinc-100 relative">
+                <img
+                  src={cat.image}
+                  alt={cat.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                <span className="absolute bottom-2.5 left-2.5 text-[10px] font-semibold text-white bg-black/60 backdrop-blur-xs px-2 py-0.5 rounded">
+                  {cat.count}
+                </span>
+              </div>
+              <div className="p-3.5 flex items-center justify-between">
+                <div>
+                  <h3 className="text-xs sm:text-sm font-bold text-zinc-950 group-hover:text-black transition-colors">{cat.title}</h3>
+                  <p className="text-[11px] text-zinc-500">Explore collection</p>
+                </div>
+                <ArrowRight className="w-3.5 h-3.5 text-zinc-400 group-hover:translate-x-1 group-hover:text-zinc-950 transition-all" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── 5. Dynamic Product Catalog Grid ──────────────────────────────── */}
       <section id="catalog-grid" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 flex-1">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <div>
-            <span className="text-[10px] font-sans font-semibold tracking-[0.2em] text-zinc-400 uppercase block mb-1">
+            <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
               Curated Catalog ({filteredItems.length} Items)
             </span>
             <h2 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-950">
@@ -536,6 +632,12 @@ export function MinimalStorefront({
                     >
                       {prod.title}
                     </h3>
+                    <div className="flex items-center gap-1 mt-1 text-amber-500">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3 h-3 fill-current" />
+                      ))}
+                      <span className="text-[10px] text-zinc-400 font-medium ml-1">4.9 (42)</span>
+                    </div>
                   </div>
 
                   <div className="mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-zinc-100 flex items-center justify-between gap-1">
@@ -562,6 +664,47 @@ export function MinimalStorefront({
               </div>
             );
           })}
+        </div>
+      </section>
+
+      {/* ─── Standard E-Commerce Promotional Split Banners ────────────────── */}
+      <section className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="rounded-3xl p-8 sm:p-10 bg-gradient-to-br from-zinc-900 to-zinc-950 text-white flex flex-col justify-between min-h-[260px] relative overflow-hidden group shadow-md">
+            <div className="space-y-3 z-10 max-w-sm">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded-full border border-emerald-800/80">
+                Seasonal Promotion
+              </span>
+              <h3 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight">The Wardrobe Capsule</h3>
+              <p className="text-xs text-zinc-300 leading-relaxed">
+                Curate any 3 essentials (Coat + Tee + Denim) and receive an automatic ৳1,000 package savings at checkout.
+              </p>
+            </div>
+            <div className="pt-4 z-10">
+              <a href="#catalog-grid" className="inline-flex items-center gap-2 bg-white text-zinc-950 px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-zinc-100 transition shadow-xs">
+                <span>Shop The Capsule</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          </div>
+
+          <div className="rounded-3xl p-8 sm:p-10 bg-gradient-to-br from-[#f6f2ec] to-[#eee7dd] text-zinc-950 flex flex-col justify-between min-h-[260px] relative overflow-hidden group shadow-md border border-stone-200">
+            <div className="space-y-3 z-10 max-w-sm">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-amber-900 bg-amber-100 px-2.5 py-1 rounded-full border border-amber-300">
+                Doorstep Risk-Free
+              </span>
+              <h3 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight">Carpet Fitting Trial</h3>
+              <p className="text-xs text-stone-600 leading-relaxed">
+                Inspect stitch tension and try on for size right at your door before completing cash tender with the rider.
+              </p>
+            </div>
+            <div className="pt-4 z-10">
+              <button onClick={() => setIsSizeGuideOpen(true)} className="inline-flex items-center gap-2 bg-zinc-950 text-white px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-black transition shadow-xs">
+                <span>View Size &amp; Fit Guide</span>
+                <Ruler className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
         </div>
       </section>
 

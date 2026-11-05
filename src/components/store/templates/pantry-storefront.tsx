@@ -355,61 +355,69 @@ export function PantryStorefront({
       </header>
 
       {/* ─── 3. Organic Farmstead Hero Section ───────────────────────────────── */}
-      <section className="relative overflow-hidden border-b border-stone-200/80 bg-gradient-to-b from-[#f8f9f5] via-[#edf1e6] to-[#f8f9f5] py-16 sm:py-24 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-7 space-y-6">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 bg-emerald-100/80 border border-emerald-300/70 rounded-full text-[11px] font-semibold text-emerald-950">
+      <section className="relative overflow-hidden border-b border-stone-200/80 bg-gradient-to-b from-[#f8f9f5] via-[#edf1e6] to-[#f8f9f5] py-12 sm:py-20 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          <div className="lg:col-span-7 space-y-5">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 bg-emerald-100/90 border border-emerald-300/80 rounded-full text-xs font-semibold text-emerald-950">
               <Leaf className="w-3.5 h-3.5 text-emerald-700" />
-              <span>100% Certified Organic • Micro-Lot Drum Roasted Within 48h</span>
+              <span>ORGANIC HARVEST DROPS • ROASTED WITHIN 48 HOURS</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-stone-950 leading-[1.08]">
-              Single-Origin Terroir. <br />
-              <span className="text-emerald-800 italic font-normal">
-                Direct From Regenerative Soil.
-              </span> <br />
-              Zero Industrial Adulteration.
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-stone-950 font-serif leading-[1.12]">
+              Fresh-Roasted Specialty Coffee &amp; Artisan Farmstead Provisions
             </h1>
 
             <p className="text-sm sm:text-base text-stone-600 max-w-xl leading-relaxed">
-              Ethically harvested Ethiopian heirloom coffee beans, unheated alpine wildflower honey with natural propolis, and cold-pressed Koroneiki olive oil with acidity below 0.18%. Inspect roast dates and aroma valves at your door prior to cash payment.
+              Ethically harvested micro-lot Ethiopian heirloom beans, unheated raw alpine forest honey with active propolis, and cold-pressed estate olive oils. Inspect roast dates, aroma valves, and tamper seals at your door prior to cash payment.
             </p>
 
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            <div className="flex flex-wrap items-center gap-3 pt-1">
               <a
                 href="#provisions"
-                className="py-3 px-6 bg-emerald-900 hover:bg-emerald-800 text-emerald-100 font-bold text-xs rounded-xl shadow-xs transition flex items-center space-x-2"
+                className="py-3 px-6 bg-emerald-900 hover:bg-emerald-800 text-emerald-100 font-bold text-xs rounded-xl shadow-md transition flex items-center space-x-2"
               >
-                <span>Explore Farmstead Provisions</span>
+                <span>Shop Fresh Provisions</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </a>
 
               <a
                 href="#standards"
-                className="py-3 px-5 bg-white border border-stone-300/80 hover:bg-stone-100 text-stone-800 font-semibold text-xs rounded-xl shadow-xs transition flex items-center space-x-2"
+                className="py-3 px-5 bg-white border border-stone-300 hover:bg-stone-50 text-stone-800 font-semibold text-xs rounded-xl shadow-xs transition flex items-center space-x-2"
               >
-                <Droplet className="w-3.5 h-3.5 text-emerald-700" />
-                <span>Single-Origin Terroir Specs</span>
+                <Coffee className="w-3.5 h-3.5 text-emerald-700" />
+                <span>Barista Extraction Specs</span>
               </a>
             </div>
 
             {/* Micro Trust Indicators */}
-            <div className="pt-6 border-t border-stone-200/80 grid grid-cols-2 sm:grid-cols-4 gap-4 text-stone-700">
-              <div className="flex items-center space-x-2 text-xs">
-                <CheckCircle2 className="w-4 h-4 text-emerald-700 flex-shrink-0" />
-                <span className="font-medium text-[11px]">Direct-Trade</span>
+            <div className="pt-5 border-t border-stone-300/60 grid grid-cols-2 sm:grid-cols-4 gap-3 text-stone-700">
+              <div>
+                <p className="text-xs font-bold text-stone-950 flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700" />
+                  <span>Direct-Trade</span>
+                </p>
+                <p className="text-[11px] text-stone-500 mt-0.5">Single estate origin</p>
               </div>
-              <div className="flex items-center space-x-2 text-xs">
-                <ShieldCheck className="w-4 h-4 text-emerald-700 flex-shrink-0" />
-                <span className="font-medium text-[11px]">Roast Within 48h</span>
+              <div>
+                <p className="text-xs font-bold text-stone-950 flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+                  <span>Fresh Roasted</span>
+                </p>
+                <p className="text-[11px] text-stone-500 mt-0.5">Within 48h dispatch</p>
               </div>
-              <div className="flex items-center space-x-2 text-xs">
-                <Truck className="w-4 h-4 text-emerald-700 flex-shrink-0" />
-                <span className="font-medium text-[11px]">Aroma Check (COD)</span>
+              <div>
+                <p className="text-xs font-bold text-stone-950 flex items-center gap-1.5">
+                  <Truck className="w-3.5 h-3.5 text-emerald-700" />
+                  <span>Aroma Valve Check</span>
+                </p>
+                <p className="text-[11px] text-stone-500 mt-0.5">Inspect on COD</p>
               </div>
-              <div className="flex items-center space-x-2 text-xs">
-                <RotateCcw className="w-4 h-4 text-emerald-700 flex-shrink-0" />
-                <span className="font-medium text-[11px]">Home Compostable</span>
+              <div>
+                <p className="text-xs font-bold text-stone-950 flex items-center gap-1.5">
+                  <RotateCcw className="w-3.5 h-3.5 text-emerald-700" />
+                  <span>Home Compostable</span>
+                </p>
+                <p className="text-[11px] text-stone-500 mt-0.5">Zero plastic pouches</p>
               </div>
             </div>
           </div>
@@ -422,16 +430,30 @@ export function PantryStorefront({
                   alt="Single-Origin Yirgacheffe Heirloom Coffee"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4 bg-emerald-950/90 backdrop-blur-md p-3.5 rounded-xl border border-emerald-800 shadow-lg text-white">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute top-3 left-3 bg-emerald-600 text-white px-2.5 py-1 rounded-lg text-[10px] font-bold shadow-md uppercase tracking-wider">
+                  Harvest Batch #24 • Limited Drop
+                </div>
+                <div className="absolute bottom-3 left-3 right-3 bg-emerald-950/90 backdrop-blur-md p-3.5 rounded-xl border border-emerald-800 shadow-lg text-white">
                   <div className="flex items-center justify-between">
                     <div>
                       <span className="text-[10px] font-sans font-bold text-emerald-400 uppercase tracking-wider block">Micro-Lot Sourcing</span>
-                      <p className="text-xs font-bold">Ethiopian Yirgacheffe Heirloom (1kg)</p>
+                      <p className="text-xs font-bold font-serif">Ethiopian Yirgacheffe Heirloom (1kg)</p>
                     </div>
-                    <span className="text-xs font-sans font-bold text-emerald-300">৳1,850</span>
+                    <div className="text-right">
+                      <span className="text-xs font-sans font-bold text-emerald-300">৳1,850</span>
+                      <span className="text-[10px] text-emerald-200/60 line-through block">৳2,200</span>
+                    </div>
                   </div>
-                  <p className="text-[10px] text-emerald-200/80 mt-1">Bergamot citrus • Candied peach • Fresh drum roasted</p>
+                  <div className="mt-2 pt-2 border-t border-emerald-800 flex items-center justify-between text-[11px]">
+                    <span className="text-emerald-200/80">Bergamot • Candied Peach</span>
+                    <button
+                      onClick={() => onAddToCart(products[0], products[0]?.variants?.[0])}
+                      className="px-3 py-1 bg-emerald-500 hover:bg-emerald-400 text-stone-950 text-xs font-bold rounded-lg transition"
+                    >
+                      Quick Add
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -439,43 +461,89 @@ export function PantryStorefront({
         </div>
       </section>
 
-      {/* ─── 4. Farmstead Categories Filter ─────────────────────────────────── */}
-      <section id="categories" className="py-10 px-4 sm:px-6 border-b border-stone-200/80 bg-white/70">
-        <div className="max-w-6xl mx-auto space-y-4">
+      {/* ─── 4. Visual "Shop by Category" Grid ─────────────────────────────────── */}
+      <section id="categories" className="py-12 px-4 sm:px-6 border-b border-stone-200/80 bg-white">
+        <div className="max-w-6xl mx-auto space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
             <div>
               <span className="text-[10px] font-sans tracking-widest text-emerald-800 font-bold uppercase">
-                Farmstead Terroir
+                Shop By Category
               </span>
-              <h2 className="text-xl sm:text-2xl font-black text-stone-950 tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-black text-stone-950 font-serif tracking-tight">
                 Curated Culinary Provisions
               </h2>
             </div>
             <p className="text-xs text-stone-500 max-w-sm">
-              Each lot is single-origin traceable with harvest altitude, estate coordinates, and farmer co-op names printed on every pouch.
+              Each lot is single-origin traceable with harvest altitude, estate coordinates, and degassing valves.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-            {PANTRY_CATEGORIES.map((cat) => {
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              {
+                id: "coffee",
+                title: "Micro-Lot Coffee",
+                desc: "Drum-roasted Ethiopian & Colombian lots",
+                image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&auto=format&fit=crop&q=80",
+                badge: "Fresh Roasted"
+              },
+              {
+                id: "honey",
+                title: "Raw Wildflower Honey",
+                desc: "Unheated forest apiary with active propolis",
+                image: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=600&auto=format&fit=crop&q=80",
+                badge: "Raw & Unfiltered"
+              },
+              {
+                id: "oil",
+                title: "Cold-Pressed Olive Oil",
+                desc: "Koroneiki early harvest single estate",
+                image: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=600&auto=format&fit=crop&q=80",
+                badge: "Acidity < 0.18%"
+              },
+              {
+                id: "all",
+                title: "All Farmstead Provisions",
+                desc: "Complete artisanal harvest catalog",
+                image: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&auto=format&fit=crop&q=80",
+                badge: "All Provisions"
+              }
+            ].map((cat) => {
               const isActive = selectedCategory === cat.id;
               return (
-                <button
+                <div
                   key={cat.id}
-                  onClick={() => setSelectedCategory(cat.id)}
-                  className={`p-3.5 rounded-2xl border text-left transition-all ${
+                  onClick={() => {
+                    setSelectedCategory(cat.id);
+                    const el = document.getElementById("provisions");
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className={`group relative rounded-2xl overflow-hidden border cursor-pointer transition-all duration-300 ${
                     isActive
-                      ? "bg-emerald-900 border-emerald-900 text-white shadow-xs"
-                      : "bg-white border-stone-200 hover:border-emerald-700/50 text-stone-800"
+                      ? "ring-2 ring-emerald-800 border-emerald-800 shadow-md scale-[1.02]"
+                      : "border-stone-200 hover:border-emerald-700/50 hover:shadow-lg"
                   }`}
                 >
-                  <p className={`text-xs font-bold ${isActive ? "text-emerald-300" : "text-stone-900"}`}>
-                    {cat.label}
-                  </p>
-                  <p className={`text-[10px] mt-1 leading-snug ${isActive ? "text-emerald-200/80" : "text-stone-500"}`}>
-                    {cat.subtitle}
-                  </p>
-                </button>
+                  <div className="aspect-[4/3] w-full overflow-hidden bg-stone-100 relative">
+                    <img
+                      src={cat.image}
+                      alt={cat.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-emerald-950/80 backdrop-blur-sm text-[9px] font-bold text-emerald-300 font-mono">
+                      {cat.badge}
+                    </span>
+                    <div className="absolute bottom-3 left-3 right-3 text-white">
+                      <h3 className="font-serif font-bold text-sm text-stone-100 group-hover:text-emerald-300 transition-colors">
+                        {cat.title}
+                      </h3>
+                      <p className="text-[10px] text-stone-300 line-clamp-1 mt-0.5">
+                        {cat.desc}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               );
             })}
           </div>
