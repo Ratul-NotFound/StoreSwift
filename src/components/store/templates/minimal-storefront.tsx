@@ -201,7 +201,7 @@ export function MinimalStorefront({
     >
       {/* ─── 1. Atelier Top Announcement Bar ─────────────────────────────── */}
       <div className="bg-zinc-950 text-zinc-300 py-2 px-4 text-center text-[10.5px] sm:text-[11px] font-sans tracking-wide border-b border-zinc-900 flex items-center justify-center gap-2 sm:gap-3">
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
         <span>COMPLIMENTARY DELIVERY ACROSS DHAKA OVER ৳1,500 • CASH ON DELIVERY &amp; BKASH ACTIVE</span>
       </div>
 
@@ -366,7 +366,7 @@ export function MinimalStorefront({
       <section className="border-b border-zinc-200/80 bg-zinc-50/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
           <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 bg-zinc-100 border border-zinc-200 px-3 py-1 rounded-full text-[10px] font-mono tracking-widest uppercase text-zinc-700">
+            <div className="inline-flex items-center gap-2 bg-zinc-100 border border-zinc-200 px-3 py-1 rounded-full text-[10px] font-semibold tracking-wider uppercase text-zinc-700">
               <span className="w-1.5 h-1.5 rounded-full bg-zinc-900" />
               <span>ARCHIVAL ATELIER • AUTUMN-WINTER 2026</span>
             </div>
@@ -569,8 +569,8 @@ export function MinimalStorefront({
       <section id="lookbook" className="bg-zinc-950 text-white py-16 sm:py-24 border-t border-zinc-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-xl mb-12">
-            <span className="text-[10px] font-mono tracking-[0.25em] text-zinc-400 uppercase block mb-2">
-              LOOKBOOK ARCHIVE
+            <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400 block mb-2">
+              Lookbook Archive
             </span>
             <h2 className="text-3xl sm:text-4xl font-serif font-bold tracking-tight">
               Craftsmanship &amp; Architectural Silhouettes
@@ -588,7 +588,7 @@ export function MinimalStorefront({
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-400">Archive Spec</span>
+                <span className="text-[11px] font-medium uppercase tracking-wider text-zinc-400">Archive Spec</span>
                 <p className="text-sm font-bold text-white mt-1">Structured Bonded Overcoat</p>
                 <p className="text-xs text-zinc-400">520 GSM Italian Horn Button Tailoring</p>
               </div>
@@ -601,7 +601,7 @@ export function MinimalStorefront({
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-400">Archive Spec</span>
+                <span className="text-[11px] font-medium uppercase tracking-wider text-zinc-400">Archive Spec</span>
                 <p className="text-sm font-bold text-white mt-1">Boxy Heavyweight Drop-Shoulder</p>
                 <p className="text-xs text-zinc-400">300 GSM Combed Jersey Wash</p>
               </div>
@@ -614,7 +614,7 @@ export function MinimalStorefront({
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-400">Archive Spec</span>
+                <span className="text-[11px] font-medium uppercase tracking-wider text-zinc-400">Archive Spec</span>
                 <p className="text-sm font-bold text-white mt-1">Kurabo Redline Selvedge</p>
                 <p className="text-xs text-zinc-400">14oz Toyoda Loom Raw Denim</p>
               </div>
@@ -745,7 +745,7 @@ export function MinimalStorefront({
 
               <div className="space-y-4">
                 <div>
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-400">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
                     {quickViewProd.category || "Atelier Line"}
                   </span>
                   <h3 className="text-xl font-bold font-serif text-zinc-950 mt-1">
@@ -843,7 +843,7 @@ export function MinimalStorefront({
 
             <table className="w-full text-xs text-left border-collapse">
               <thead>
-                <tr className="border-b border-zinc-200 text-zinc-400 text-[10px] font-mono uppercase">
+                <tr className="border-b border-zinc-200 text-zinc-500 text-xs font-semibold uppercase tracking-wider">
                   <th className="py-2">Size</th>
                   <th className="py-2">Chest</th>
                   <th className="py-2">Shoulder</th>

@@ -358,7 +358,7 @@ export function PantryStorefront({
       <section className="relative overflow-hidden border-b border-stone-200/80 bg-gradient-to-b from-[#f8f9f5] via-[#edf1e6] to-[#f8f9f5] py-16 sm:py-24 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7 space-y-6">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 bg-emerald-100/80 border border-emerald-300/70 rounded-full text-[11px] font-semibold text-emerald-950 font-mono">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 bg-emerald-100/80 border border-emerald-300/70 rounded-full text-[11px] font-semibold text-emerald-950">
               <Leaf className="w-3.5 h-3.5 text-emerald-700" />
               <span>100% Certified Organic • Micro-Lot Drum Roasted Within 48h</span>
             </div>
@@ -394,7 +394,7 @@ export function PantryStorefront({
             </div>
 
             {/* Micro Trust Indicators */}
-            <div className="pt-6 border-t border-stone-200/80 grid grid-cols-2 sm:grid-cols-4 gap-4 text-stone-700 font-mono">
+            <div className="pt-6 border-t border-stone-200/80 grid grid-cols-2 sm:grid-cols-4 gap-4 text-stone-700">
               <div className="flex items-center space-x-2 text-xs">
                 <CheckCircle2 className="w-4 h-4 text-emerald-700 flex-shrink-0" />
                 <span className="font-medium text-[11px]">Direct-Trade</span>
@@ -931,7 +931,7 @@ export function PantryStorefront({
       <section id="aroma" className="py-16 px-4 sm:px-6 border-b border-stone-200/80 bg-[#edf1e6]">
         <div className="max-w-6xl mx-auto space-y-8">
           <div className="max-w-2xl space-y-2">
-            <div className="inline-flex items-center space-x-1.5 px-3 py-1 bg-emerald-100 text-emerald-950 rounded-full text-[10px] font-bold tracking-wider uppercase border border-emerald-300 font-mono">
+            <div className="inline-flex items-center space-x-1.5 px-3 py-1 bg-emerald-100 text-emerald-950 rounded-full text-[10px] font-bold tracking-wider uppercase border border-emerald-300">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-800" />
               <span>Doorstep Aroma & Seal Guarantee</span>
             </div>
@@ -965,10 +965,10 @@ export function PantryStorefront({
               }
             ].map((card) => (
               <div key={card.step} className="bg-white rounded-2xl p-6 border border-stone-300/80 shadow-xs space-y-3">
-                <span className="text-2xl font-black font-mono text-emerald-800 block">{card.step}</span>
+                <span className="text-2xl font-extrabold text-emerald-800 block">{card.step}</span>
                 <h3 className="text-sm font-bold text-stone-900">{card.title}</h3>
                 <p className="text-xs text-stone-600 leading-relaxed">{card.desc}</p>
-                <div className="pt-2 border-t border-stone-200 text-[10px] font-mono font-bold text-emerald-800">
+                <div className="pt-2 border-t border-stone-200 text-[10px] font-semibold text-emerald-800 uppercase tracking-wider">
                   {card.highlight}
                 </div>
               </div>
@@ -981,7 +981,7 @@ export function PantryStorefront({
       <section className="py-16 px-4 sm:px-6 border-b border-stone-200/80 bg-white">
         <div className="max-w-6xl mx-auto space-y-8">
           <div className="text-center max-w-xl mx-auto space-y-2">
-            <span className="text-[10px] font-mono tracking-widest text-emerald-800 font-bold uppercase">
+            <span className="text-xs font-semibold uppercase tracking-wider text-emerald-800">
               Kitchen & Cupping Notes
             </span>
             <h2 className="text-2xl sm:text-3xl font-black text-stone-950 tracking-tight">
@@ -1024,7 +1024,7 @@ export function PantryStorefront({
                         <Star key={idx} className="w-3.5 h-3.5 fill-current" />
                       ))}
                     </div>
-                    <span className="text-[10px] font-mono font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded border border-emerald-300">
+                    <span className="text-[11px] font-medium text-emerald-800 bg-emerald-100/70 px-2.5 py-0.5 rounded-full border border-emerald-200">
                       Verified Patron
                     </span>
                   </div>
@@ -1036,8 +1036,8 @@ export function PantryStorefront({
 
                 <div className="pt-3 border-t border-stone-200 text-[11px]">
                   <p className="font-bold text-stone-900">{rev.author}</p>
-                  <p className="text-emerald-800 text-[10px] font-mono">{rev.role}</p>
-                  <p className="text-stone-500 text-[10px]">{rev.provision}</p>
+                  <p className="text-stone-500 text-[11px]">{rev.role}</p>
+                  <p className="text-stone-400 text-[10px]">{rev.provision}</p>
                 </div>
               </div>
             ))}
@@ -1064,8 +1064,8 @@ export function PantryStorefront({
                 <Check className="w-4 h-4" />
                 <span>Welcome to the Harvest Club!</span>
               </div>
-              <p className="text-[11px] text-stone-600 font-normal font-mono">
-                Use code <strong className="text-emerald-800 font-bold">PANTRY200</strong> for ৳200 off at checkout.
+              <p className="text-[11px] text-stone-600 font-normal">
+                Use code <strong className="text-emerald-800 font-mono font-bold">PANTRY200</strong> for ৳200 off at checkout.
               </p>
             </div>
           ) : (
@@ -1082,7 +1082,7 @@ export function PantryStorefront({
                 value={newsletterEmail}
                 onChange={(e) => setNewsletterEmail(e.target.value)}
                 required
-                className="flex-1 px-4 py-2.5 bg-white border border-stone-300 rounded-xl text-xs text-stone-900 placeholder:text-stone-400 outline-none focus:border-emerald-700 shadow-2xs font-mono"
+                className="flex-1 px-4 py-2.5 bg-white border border-stone-300 rounded-xl text-xs text-stone-900 placeholder:text-stone-400 outline-none focus:border-emerald-700 shadow-2xs"
               />
               <button
                 type="submit"

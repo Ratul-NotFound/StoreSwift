@@ -203,7 +203,7 @@ export function StorefrontFooter({
                 </form>
               </div>
             ) : (
-              <div className="pt-2 text-[11px] text-zinc-500 font-mono tracking-wide">
+              <div className="pt-2 text-xs text-zinc-500">
                 Direct client support: priority dispatch, sizing consults, and order tracking.
               </div>
             )}
@@ -291,7 +291,7 @@ export function StorefrontFooter({
           </div>
 
           {/* Clean Monochromatic Payment & Courier Badges */}
-          <div className="flex flex-wrap items-center justify-center gap-2 text-[10px] font-mono">
+          <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-medium">
             <span className="px-2.5 py-1 bg-zinc-900 rounded-md border border-zinc-800 text-zinc-400">
               Cash on Delivery
             </span>

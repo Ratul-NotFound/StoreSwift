@@ -241,17 +241,17 @@ export function TechStorefront({
   return (
     <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${themeConfig.pageBg}`}>
       {/* ─── 1. Cyber Hardware Utility Bar ──────────────────────────────────── */}
-      <div className={`py-2.5 px-4 text-xs font-mono tracking-wide border-b ${themeConfig.barBg}`}>
+      <div className={`py-2.5 px-4 text-xs tracking-wide border-b ${themeConfig.barBg}`}>
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="hidden sm:flex items-center space-x-2 text-[11px] text-zinc-400">
             <Cpu className="w-3.5 h-3.5 text-sky-400" />
             <span>{themeConfig.announcement}</span>
           </div>
-          <div className="mx-auto sm:mx-0 flex items-center space-x-2 text-xs font-semibold text-zinc-200">
-            <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse" />
+          <div className="mx-auto sm:mx-0 flex items-center space-x-2 text-xs font-medium text-zinc-200">
+            <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
             <span>Doorstep Anti-Static Seal & Power-On Inspection (COD)</span>
           </div>
-          <div className="hidden md:flex items-center space-x-3 text-[11px] text-zinc-400 font-mono">
+          <div className="hidden md:flex items-center space-x-3 text-[11px] text-zinc-400">
             <span>2-Year Advance Replacement Swap</span>
           </div>
         </div>
@@ -492,8 +492,8 @@ export function TechStorefront({
                 Tune your audio curve profile and test mechanical switch actuation force before ordering. Zero guesswork, raw acoustic engineering.
               </p>
             </div>
-            <div className="flex items-center gap-2 self-start md:self-auto text-xs font-mono text-zinc-400 bg-zinc-900 px-3 py-1.5 rounded-lg border border-zinc-800">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <div className="flex items-center gap-2 self-start md:self-auto text-xs font-medium text-zinc-300 bg-zinc-900 px-3 py-1.5 rounded-lg border border-zinc-800">
+              <span className="w-2 h-2 rounded-full bg-emerald-400" />
               <span>Harman 2024 Reference Target Verified</span>
             </div>
           </div>
@@ -1047,7 +1047,7 @@ export function TechStorefront({
       <section className="py-16 px-4 sm:px-6 border-b border-zinc-800/80 bg-[#0c0d12]">
         <div className="max-w-6xl mx-auto space-y-8">
           <div className="text-center max-w-xl mx-auto space-y-2">
-            <span className="text-[10px] tracking-widest text-sky-400 font-bold uppercase">
+            <span className="text-xs font-semibold uppercase tracking-wider text-sky-400">
               Field Test & Studio Reports
             </span>
             <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
@@ -1090,7 +1090,7 @@ export function TechStorefront({
                         <Star key={idx} className="w-3.5 h-3.5 fill-current" />
                       ))}
                     </div>
-                    <span className="text-[10px] font-bold text-sky-400 bg-sky-950/80 px-2 py-0.5 rounded border border-sky-800 font-mono">
+                    <span className="text-[11px] font-medium text-sky-400 bg-sky-950/60 px-2.5 py-0.5 rounded-full border border-sky-800/80">
                       Verified Operator
                     </span>
                   </div>
@@ -1102,7 +1102,7 @@ export function TechStorefront({
 
                 <div className="pt-3 border-t border-zinc-800 text-[11px]">
                   <p className="font-bold text-white">{rev.author}</p>
-                  <p className="text-sky-400 text-[10px]">{rev.role}</p>
+                  <p className="text-zinc-400 text-[11px]">{rev.role}</p>
                   <p className="text-zinc-500 text-[10px]">{rev.device}</p>
                 </div>
               </div>

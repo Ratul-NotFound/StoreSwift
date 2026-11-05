@@ -263,10 +263,10 @@ export function BeautyStorefront({
             <span>{themeConfig.announcement}</span>
           </div>
           <div className="mx-auto sm:mx-0 flex items-center space-x-2 text-xs font-semibold text-rose-100">
-            <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-rose-400" />
             <span>Cold-Chain Freshness Guaranteed • Inspect Tamper Seal at Doorstep</span>
           </div>
-          <div className="hidden md:flex items-center space-x-3 text-[11px] text-rose-300/80 font-mono">
+          <div className="hidden md:flex items-center space-x-3 text-[11px] text-rose-300/80">
             <span>100% Leaping Bunny Cruelty-Free</span>
           </div>
         </div>
@@ -452,7 +452,7 @@ export function BeautyStorefront({
         <div className="max-w-6xl mx-auto space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
             <div>
-              <span className="text-[10px] font-mono tracking-widest text-rose-600 font-bold uppercase">
+              <span className="text-xs font-semibold uppercase tracking-wider text-rose-600">
                 Targeted Efficacy
               </span>
               <h2 className="text-xl sm:text-2xl font-black text-zinc-900 tracking-tight">
@@ -579,14 +579,14 @@ export function BeautyStorefront({
               <div className="bg-white rounded-3xl border border-rose-200/80 p-6 sm:p-8 shadow-md space-y-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-rose-100/80 pb-4">
                   <div>
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-rose-600 font-bold">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-rose-600">
                       Sequence Protocol
                     </span>
                     <h3 className="text-lg font-bold text-zinc-900">{current.title}</h3>
                     <p className="text-xs text-zinc-500 mt-0.5">{current.target}</p>
                   </div>
                   <div className="flex items-center space-x-3 text-xs">
-                    <span className="px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 font-medium border border-rose-200/60 font-mono">
+                    <span className="px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 font-medium border border-rose-200/60">
                       {current.time}
                     </span>
                   </div>
@@ -608,10 +608,10 @@ export function BeautyStorefront({
                       >
                         <div className="space-y-2">
                           <div className="flex items-center justify-between">
-                            <span className="w-6 h-6 rounded-full bg-rose-200 text-rose-800 text-[10px] font-bold flex items-center justify-center font-mono">
+                            <span className="w-6 h-6 rounded-full bg-rose-200 text-rose-800 text-[10px] font-bold flex items-center justify-center">
                               {st.step}
                             </span>
-                            <span className="text-[10px] font-mono text-rose-600 font-semibold truncate max-w-[120px]">
+                            <span className="text-[10px] text-rose-600 font-semibold truncate max-w-[120px]">
                               {st.active}
                             </span>
                           </div>
@@ -626,7 +626,7 @@ export function BeautyStorefront({
 
                         <div className="pt-2 border-t border-rose-100/80 flex items-center justify-between text-[10px]">
                           <span className="text-rose-700 font-semibold">Step {i + 1} of 4</span>
-                          <span className="text-zinc-400 font-mono">Bio-Available</span>
+                          <span className="text-zinc-400">Bio-Available</span>
                         </div>
                       </div>
                     );
@@ -636,7 +636,7 @@ export function BeautyStorefront({
                 {/* 1-Click Regimen Add Bar */}
                 <div className="bg-[#faf8f6] rounded-2xl p-4 sm:p-5 border border-rose-200/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div>
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-rose-700 font-bold">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-rose-700">
                       Complete Regimen Special
                     </span>
                     <div className="flex items-baseline space-x-2 mt-0.5">
@@ -670,7 +670,7 @@ export function BeautyStorefront({
       <section id="rituals" className="py-16 px-4 sm:px-6 max-w-6xl mx-auto w-full flex-1">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-8 border-b border-rose-100/80 gap-4">
           <div>
-            <div className="inline-flex items-center space-x-1.5 text-[10px] font-mono uppercase tracking-widest text-rose-600 font-bold mb-1">
+            <div className="inline-flex items-center space-x-1.5 text-xs font-semibold uppercase tracking-wider text-rose-600 mb-1">
               <span>Clean Formulations</span>
               <span>•</span>
               <span>Hypoallergenic Verified</span>
@@ -837,7 +837,7 @@ export function BeautyStorefront({
       <section id="actives" className="py-16 px-4 sm:px-6 border-y border-rose-100/70 bg-white">
         <div className="max-w-6xl mx-auto space-y-10">
           <div className="max-w-2xl space-y-2">
-            <span className="text-[10px] font-mono tracking-widest text-rose-600 font-bold uppercase">
+            <span className="text-xs font-semibold uppercase tracking-wider text-rose-600">
               Formula Integrity
             </span>
             <h2 className="text-2xl sm:text-3xl font-black text-zinc-900 tracking-tight">
@@ -856,7 +856,7 @@ export function BeautyStorefront({
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[9px] font-mono font-bold text-rose-700 uppercase bg-rose-100/80 px-2 py-0.5 rounded">
+                    <span className="text-[10px] font-semibold text-rose-700 uppercase bg-rose-100/80 px-2 py-0.5 rounded">
                       {active.potency}
                     </span>
                     <Droplets className="w-4 h-4 text-rose-500" />
@@ -864,7 +864,7 @@ export function BeautyStorefront({
                   <h3 className="text-sm font-bold text-zinc-900 leading-tight">
                     {active.name}
                   </h3>
-                  <p className="text-[11px] font-mono text-zinc-500">
+                  <p className="text-[11px] text-zinc-500">
                     Function: {active.function}
                   </p>
                   <p className="text-xs text-zinc-600 leading-relaxed">
@@ -940,10 +940,10 @@ export function BeautyStorefront({
               }
             ].map((card) => (
               <div key={card.step} className="bg-white rounded-2xl p-6 border border-rose-100 shadow-xs space-y-3">
-                <span className="text-2xl font-black font-mono text-rose-600 block">{card.step}</span>
+                <span className="text-2xl font-black text-rose-600 block">{card.step}</span>
                 <h3 className="text-sm font-bold text-zinc-900">{card.title}</h3>
                 <p className="text-xs text-zinc-600 leading-relaxed">{card.desc}</p>
-                <div className="pt-2 border-t border-rose-100 text-[10px] font-mono font-bold text-rose-700">
+                <div className="pt-2 border-t border-rose-100 text-[11px] font-semibold text-rose-700">
                   {card.highlight}
                 </div>
               </div>
@@ -956,7 +956,7 @@ export function BeautyStorefront({
       <section className="py-16 px-4 sm:px-6 border-b border-rose-100/70 bg-white">
         <div className="max-w-6xl mx-auto space-y-8">
           <div className="text-center max-w-xl mx-auto space-y-2">
-            <span className="text-[10px] font-mono tracking-widest text-rose-600 font-bold uppercase">
+            <span className="text-xs font-semibold uppercase tracking-wider text-rose-600">
               Real Skin Diaries
             </span>
             <h2 className="text-2xl sm:text-3xl font-black text-zinc-900 tracking-tight">
@@ -1011,7 +1011,7 @@ export function BeautyStorefront({
 
                 <div className="pt-3 border-t border-rose-200/50 text-[11px]">
                   <p className="font-bold text-zinc-900">{rev.author}</p>
-                  <p className="text-rose-700 font-mono text-[10px]">{rev.skinType}</p>
+                  <p className="text-rose-700 text-[11px] font-medium">{rev.skinType}</p>
                   <p className="text-zinc-500 text-[10px]">{rev.routine}</p>
                 </div>
               </div>

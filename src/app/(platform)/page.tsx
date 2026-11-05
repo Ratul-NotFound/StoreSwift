@@ -73,7 +73,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "minimal",
         name: "Minimal Atelier",
         tag: "High Fashion",
-        badge: "🤍 Atelier",
+        badge: "Atelier",
         headline: "Textile GSM badges, editorial lookbooks, and high-fashion aesthetics",
         description: "Clean editorial architecture built for luxury apparel labels with fabric weight metrics (GSM), studio angle switchers, and lookbook ensemble bundles.",
         image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1200&auto=format&fit=crop&q=85",
@@ -83,7 +83,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "clothing",
         name: "Clothing.co Boutique",
         tag: "Warm Boutique",
-        badge: "🟤 Boutique",
+        badge: "Boutique",
         headline: "Warm earth tones, curated rack collections, and artisanal lifestyle",
         description: "Designed for contemporary boutique retailers featuring warm tactile neutrals, seasonal capsule collections, and automated size fit recommendation engine.",
         image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&auto=format&fit=crop&q=85",
@@ -93,7 +93,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "milano",
         name: "Milano Streetwear",
         tag: "Dark Editorial",
-        badge: "⚫ Milano",
+        badge: "Editorial",
         headline: "Full-bleed dark editorial, limited drop timers, and oversized cuts",
         description: "High-impact dark luxury aesthetic engineered for hype streetwear brands with limited drop countdowns, oversized silhouette guides, and anti-counterfeit tags.",
         image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&auto=format&fit=crop&q=85",
@@ -103,7 +103,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "nickelfox",
         name: "NickelFox Bold",
         tag: "Avant-Garde Street",
-        badge: "🟡 NickelFox",
+        badge: "Streetwear",
         headline: "High-energy acid yellow & black catalog with bold pill navigation",
         description: "Vibrant, high-contrast retail template designed for youth streetwear and athletic apparel with urgent stock indicators and rapid 1-click cart addition.",
         image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1200&auto=format&fit=crop&q=85",
@@ -113,7 +113,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "athleisure",
         name: "Aero Athleisure Pro",
         tag: "Sport & Performance",
-        badge: "🏃 Athleisure",
+        badge: "Performance",
         headline: "Moisture-wicking telemetry, 4-way active stretch & gym performance",
         description: "Engineered for activewear and performance labels with fabric breathability gauges, athlete sizing benchmarks, and compression gradient specs.",
         image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=1200&auto=format&fit=crop&q=85",
@@ -132,7 +132,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "glow",
         name: "Clinical Botanical",
         tag: "Glass Skin Ritual",
-        badge: "🌸 Botanical",
+        badge: "Botanical",
         headline: "Clinical botanical formulations with bio-active ingredient percentages",
         description: "Purpose-built for clean beauty and derma skincare brands with a step-by-step glass skin routine builder, skin-type concern filters, and tamper seal guarantees.",
         image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1200&auto=format&fit=crop&q=85",
@@ -142,7 +142,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "luxe-glam",
         name: "Velvet Glam Parfumerie",
         tag: "Haute Parfumerie",
-        badge: "💄 Velvet Glam",
+        badge: "Haute Parfumerie",
         headline: "Midnight plum, golden olfactory pyramids & rich velvet pigments",
         description: "Opulent luxury cosmetics and haute fragrance layout featuring interactive scent notes (top/heart/base), velvet pigment swatches, and luxury travel add-on sets.",
         image: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=1200&auto=format&fit=crop&q=85",
@@ -152,7 +152,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "k-beauty",
         name: "Seoul Dew K-Beauty",
         tag: "Glass Skin Dew",
-        badge: "✨ Seoul Dew",
+        badge: "Seoul Glass Skin",
         headline: "Centella & fermented rice % badges with 10-step hydration routine guide",
         description: "Pastel, hyper-clean aesthetic inspired by Seoul skincare pioneers, with ingredient concentration disclosures, barrier repair badges, and patch-test proofs.",
         image: "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=1200&auto=format&fit=crop&q=85",
@@ -162,7 +162,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "derma-rx",
         name: "Dermacure Lab Rx",
         tag: "Clinical Dermatology",
-        badge: "🔬 Derma Rx",
+        badge: "Clinical Dermatology",
         headline: "Prescription sterile layout, ceramide NP matrix & clinical pH indicator",
         description: "Medical-grade skincare storefront with clinical trial results, active acid percentages (AHA/BHA/Retinol), and dermatologist verification badges.",
         image: "https://images.unsplash.com/photo-1608248597359-455b5502a5c4?w=1200&auto=format&fit=crop&q=85",
@@ -172,7 +172,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "apothecary",
         name: "Herbal Apothecary",
         tag: "Organic Herbalism",
-        badge: "🌿 Apothecary",
+        badge: "Herbal Apothecary",
         headline: "Amber glass apothecary, wildcrafted extraction notes & cold-pressed oils",
         description: "Warm vintage apothecary storefront showcasing botanical tinctures, cold-pressed seed oils, UV-protective glass packaging, and batch harvest stamps.",
         image: "https://images.unsplash.com/photo-1617897903246-719242758050?w=1200&auto=format&fit=crop&q=85",
@@ -191,7 +191,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "artisan",
         name: "Warm Heritage Guild",
         tag: "Welted Craft",
-        badge: "👞 Heritage",
+        badge: "Heritage Welt",
         headline: "Heritage leathercraft, Goodyear welted construction, and Vibram lug depth",
         description: "Crafted for footwear and leather goods makers with anatomical cutaway visuals, tannery provenance, and Vibram lug depth specifications.",
         image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=1200&auto=format&fit=crop&q=85",
@@ -201,7 +201,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "velocity",
         name: "Velocity Sneaker Vault",
         tag: "Kinetic Runners",
-        badge: "⚡ Velocity Kicks",
+        badge: "Propulsion",
         headline: "Carbon torsion plates, drop countdowns & dynamic live size runs",
         description: "High-octane sneaker performance storefront featuring real-time size inventory runs, energy return data, and nitrogen foam cushioning breakdown.",
         image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1200&auto=format&fit=crop&q=80",
@@ -211,7 +211,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "street-hype",
         name: "SoleStreet Hype",
         tag: "Urban Sneaker",
-        badge: "👟 Street Hype",
+        badge: "Deadstock Vault",
         headline: "Verified deadstock authentication, raffle alerts & secondary price index",
         description: "Sneakerhead marketplace layout with NFC chip verification badges, instant lottery raffle entries, and verified market price fluctuations.",
         image: "https://images.unsplash.com/photo-1552346154-21d32810aba3?w=1200&auto=format&fit=crop&q=85",
@@ -221,7 +221,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "bespoke",
         name: "Milano Bespoke Oxford",
         tag: "Handmade Goodyear",
-        badge: "👞 Bespoke",
+        badge: "Bespoke Oxford",
         headline: "Hand-patina calfskin finish guide & Goodyear chisel-toe specifications",
         description: "Sartorial elegance for custom dress shoes, featuring French calfskin leather swatches, wooden last cutaway diagrams, and monogram engraving.",
         image: "https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=1200&auto=format&fit=crop&q=85",
@@ -231,7 +231,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "alpine-trek",
         name: "Summit Alpine Trail",
         tag: "Outdoor & Trail",
-        badge: "🏔️ Alpine Trek",
+        badge: "Alpine Technical",
         headline: "GORE-TEX waterproof ratings, terrain grip meter & Cordura upper",
         description: "Technical outdoor boot showcase with 28,000mm hydrostatic head waterproof meters, sub-zero insulation ratings, and Vibram Megagrip traction charts.",
         image: "https://images.unsplash.com/photo-1520639888713-7851133b1ed0?w=1200&auto=format&fit=crop&q=80",
@@ -250,7 +250,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "bold",
         name: "Acoustic Cyber",
         tag: "Frequency Curves",
-        badge: "🎧 Cyber Tech",
+        badge: "Audio Lab",
         headline: "Frequency curves, titanium driver specs, and CNC hardware telemetry",
         description: "Optimized for audiophiles and premium hardware with acoustic frequency visualizers, IPX7 waterproof ratings, and low-latency gaming mode.",
         image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1200&auto=format&fit=crop&q=85",
@@ -260,7 +260,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "lumina",
         name: "Lumina Zen Silicon",
         tag: "Studio Monitors",
-        badge: "💻 Zen Silicon",
+        badge: "Zen Silicon",
         headline: "Pristine anodized aluminum, battery benchmarks & magnetic snap specs",
         description: "Monolithic minimalist hardware layout featuring CNC anodized chassis cutaways, battery life benchmarks, and silent magnetic connection details.",
         image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=1200&auto=format&fit=crop&q=85",
@@ -270,7 +270,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "cyber-rgb",
         name: "Cyber Neon RGB",
         tag: "Gaming Hardware",
-        badge: "🎮 Cyber RGB",
+        badge: "Cyber Battlestation",
         headline: "240Hz latency telemetry, hot-swap actuation curves & RGB preview",
         description: "Esports battlestation storefront with mechanical switch actuation force curves, polling rate telemetry, and dynamic RGB lighting zone configurator.",
         image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&auto=format&fit=crop&q=85",
@@ -280,7 +280,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "smart-home",
         name: "Smart Home IoT",
         tag: "Home Automation",
-        badge: "🏠 Smart Home",
+        badge: "Smart Home IoT",
         headline: "Matter & Zigbee compatibility matrix with low-power wattage stats",
         description: "Clean IoT connected-home storefront displaying wireless protocol matrices (Matter/Thread/Zigbee), standby power stats, and ecosystem badges.",
         image: "https://images.unsplash.com/photo-1558002038-1055907df827?w=1200&auto=format&fit=crop&q=85",
@@ -290,7 +290,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "studio-rig",
         name: "Studio Rig Audio",
         tag: "Audiophile Ref",
-        badge: "🎥 Studio Rig",
+        badge: "Studio Rig",
         headline: "4K/60fps bitrate specs, thermal cooling metrics & modular rigging",
         description: "Professional creator equipment catalog showing cold-shoe and NATO rail modular rigging, active thermal fan dissipation, and broadcast XLR audio specs.",
         image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=1200&auto=format&fit=crop&q=85",
@@ -309,7 +309,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "maison",
         name: "Opulent Maison",
         tag: "18K/24K Gold",
-        badge: "💎 Royal Maison",
+        badge: "Haute Joaillerie",
         headline: "Hallmarked 18K/24K gold, certified diamonds and unboxing seals",
         description: "Designed for fine jewelry and luxury horology with 40x loupe inspection guarantee, GIA clarity certifications, and velvet unboxing presentation.",
         image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=1200&auto=format&fit=crop&q=85",
@@ -319,7 +319,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "aurora",
         name: "Aurora Gemstones",
         tag: "Sapphire & Emerald",
-        badge: "✨ Aurora Atelier",
+        badge: "Aurora Atelier",
         headline: "Champagne pearl, stackable ring layering studio & bridal provenance",
         description: "Modern fine jewelry aesthetic featuring interactive pearl luster grades, bridal diamond provenance, and an interactive ring stack customizer.",
         image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1200&auto=format&fit=crop&q=85",
@@ -329,7 +329,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "solitaire",
         name: "Solitaire Bridal",
         tag: "Engagement Rings",
-        badge: "💍 Solitaire",
+        badge: "Solitaire",
         headline: "Interactive 4Cs diamond loupe (Cut, Color, Clarity, Carat) & GIA certs",
         description: "High-precision bridal salon featuring an interactive 4Cs diamond comparison loupe, platinum 950 prong specs, and laser-inscribed cert match.",
         image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=1200&auto=format&fit=crop&q=85",
@@ -339,7 +339,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "raw-silver",
         name: "Raw Artisan Silver",
         tag: "Statement Silver",
-        badge: "⚒️ Nordic Silver",
+        badge: "Nordic Silver",
         headline: "Oxidized 925 raw sterling silver, hand-hammered textures & Nordic runes",
         description: "Bold artisanal metalcraft showcase featuring hand-forged 925 silver cuffs, antique black patinas, and heavy gauge solid silver weight metrics.",
         image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=1200&auto=format&fit=crop&q=85",
@@ -349,7 +349,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "chronos",
         name: "Chronos Horology",
         tag: "Swiss Luxury",
-        badge: "⏱️ Chronos",
+        badge: "Chronos Horology",
         headline: "Skeleton movement tourbillon exhibition display & 28,800 vph caliber",
         description: "Grand horlogerie watch boutique showcasing open-heart mechanical calibers, sapphire casebacks, power reserve meters, and COSC chronometer certs.",
         image: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1200&auto=format&fit=crop&q=85",
@@ -368,7 +368,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "pantry",
         name: "Organic Farmstead",
         tag: "Fresh Farmstead",
-        badge: "☕ Artisan Pantry",
+        badge: "Artisan Pantry",
         headline: "Farmstead provisions, raw alpine honey, and small-batch micro-lots",
         description: "Specialty coffee, raw honey, and gourmet provisions with harvest altitude metrics, roast freshness tracking (within 48 hours), and airtight seal protocol.",
         image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&auto=format&fit=crop&q=85",
@@ -378,7 +378,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "bazaar",
         name: "Spice Bazaar",
         tag: "Direct-Trade Spices",
-        badge: "🥬 Fresh Bazaar",
+        badge: "Spice Bazaar",
         headline: "Same-day refrigerated cold-chain farm delivery, harvest bundles & pesticide-free",
         description: "Farm-to-table organic produce and heirloom spices featuring harvest date freshness badges, laboratory pesticide-free seals, and recyclable crates.",
         image: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=1200&auto=format&fit=crop&q=85",
@@ -388,7 +388,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "patisserie",
         name: "Artisan Patisserie",
         tag: "French Delicacies",
-        badge: "🥐 Pâtisserie",
+        badge: "Patisserie",
         headline: "Single-origin cacao %, multi-layer ganache schematics & fresh macaron boxes",
         description: "Fine French pastry and bean-to-bar chocolatier storefront with cacao origin terroir charts, butter lamination layers, and same-morning baking guarantees.",
         image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1200&auto=format&fit=crop&q=85",
@@ -398,7 +398,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "matcha-zen",
         name: "Matcha Zen",
         tag: "Ceremonial Matcha",
-        badge: "🍵 Matcha Zen",
+        badge: "Matcha Zen",
         headline: "First-harvest ceremonial flush rating, whisk guide & optimal water temp",
         description: "Japanese tea ceremony and ceremonial grade matcha storefront with stone-ground harvest certifications, chlorophyll hue indexes, and bamboo whisking guides.",
         image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=1200&auto=format&fit=crop&q=85",
@@ -408,7 +408,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         id: "smokehouse",
         name: "Prime Smokehouse & Roastery",
         tag: "Micro-Lot & Aged",
-        badge: "🥩 Smokehouse",
+        badge: "Cellar Reserve",
         headline: "45-day Himalayan salt dry aging, A5 Japanese Wagyu BMS 11+ & cryovac chilled",
         description: "Artisanal craft butchery and reserve roastery featuring pasture-to-plate traceability, marbling score certificates (BMS 1-12), and temperature-controlled insulated shipping.",
         image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=1200&auto=format&fit=crop&q=85",
@@ -698,10 +698,7 @@ export default function PlatformLandingPage() {
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="inline-flex items-center space-x-2.5 px-3.5 py-1.5 rounded-full bg-zinc-100/90 dark:bg-white/[0.04] border border-zinc-200/90 dark:border-white/[0.08] text-xs font-medium shadow-sm hover:border-emerald-500/40 transition-colors"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.9)]" />
-            </span>
+            <span className="w-2 h-2 rounded-full bg-emerald-500" />
             <span className="font-bold text-emerald-600 dark:text-emerald-400">StoreSwift 2.0</span>
             <span className="text-zinc-300 dark:text-zinc-700">•</span>
             <span className="text-zinc-600 dark:text-zinc-400">30 Curated Templates • 1-Page Checkout • Platform Dropshipping</span>
@@ -774,33 +771,33 @@ export default function PlatformLandingPage() {
           >
             <motion.div
               whileHover={{ scale: 1.04, y: -2 }}
-              className="px-3.5 py-1.5 rounded-full bg-zinc-100/80 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-white/[0.08] hover:border-emerald-500/40 hover:bg-emerald-500/[0.03] dark:hover:bg-emerald-500/[0.06] hover:shadow-md hover:shadow-emerald-500/10 transition-all flex items-center space-x-2 cursor-default group"
+              className="px-3.5 py-1.5 rounded-full bg-zinc-100/80 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-white/[0.08] hover:border-emerald-500/40 hover:bg-emerald-500/[0.03] dark:hover:bg-emerald-500/[0.06] transition-all flex items-center space-x-2 cursor-default group"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] group-hover:scale-125 transition-transform" />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 group-hover:scale-125 transition-transform" />
               <span className="group-hover:text-zinc-950 dark:group-hover:text-white transition-colors">30 Category Templates</span>
             </motion.div>
 
             <motion.div
               whileHover={{ scale: 1.04, y: -2 }}
-              className="px-3.5 py-1.5 rounded-full bg-zinc-100/80 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-white/[0.08] hover:border-emerald-500/40 hover:bg-emerald-500/[0.03] dark:hover:bg-emerald-500/[0.06] hover:shadow-md hover:shadow-emerald-500/10 transition-all flex items-center space-x-2 cursor-default group"
+              className="px-3.5 py-1.5 rounded-full bg-zinc-100/80 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-white/[0.08] hover:border-emerald-500/40 hover:bg-emerald-500/[0.03] dark:hover:bg-emerald-500/[0.06] transition-all flex items-center space-x-2 cursor-default group"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] group-hover:scale-125 transition-transform" />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 group-hover:scale-125 transition-transform" />
               <span className="group-hover:text-zinc-950 dark:group-hover:text-white transition-colors">Dropshipping in All Plans</span>
             </motion.div>
 
             <motion.div
               whileHover={{ scale: 1.04, y: -2 }}
-              className="px-3.5 py-1.5 rounded-full bg-zinc-100/80 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-white/[0.08] hover:border-emerald-500/40 hover:bg-emerald-500/[0.03] dark:hover:bg-emerald-500/[0.06] hover:shadow-md hover:shadow-emerald-500/10 transition-all flex items-center space-x-2 cursor-default group"
+              className="px-3.5 py-1.5 rounded-full bg-zinc-100/80 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-white/[0.08] hover:border-emerald-500/40 hover:bg-emerald-500/[0.03] dark:hover:bg-emerald-500/[0.06] transition-all flex items-center space-x-2 cursor-default group"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] group-hover:scale-125 transition-transform" />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 group-hover:scale-125 transition-transform" />
               <span className="group-hover:text-zinc-950 dark:group-hover:text-white transition-colors">Steadfast & Pathao 1-Click</span>
             </motion.div>
 
             <motion.div
               whileHover={{ scale: 1.04, y: -2 }}
-              className="px-3.5 py-1.5 rounded-full bg-zinc-100/80 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-white/[0.08] hover:border-emerald-500/40 hover:bg-emerald-500/[0.03] dark:hover:bg-emerald-500/[0.06] hover:shadow-md hover:shadow-emerald-500/10 transition-all flex items-center space-x-2 cursor-default group"
+              className="px-3.5 py-1.5 rounded-full bg-zinc-100/80 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-white/[0.08] hover:border-emerald-500/40 hover:bg-emerald-500/[0.03] dark:hover:bg-emerald-500/[0.06] transition-all flex items-center space-x-2 cursor-default group"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.7)] group-hover:scale-125 transition-transform" />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 group-hover:scale-125 transition-transform" />
               <span className="group-hover:text-zinc-950 dark:group-hover:text-white transition-colors">0% Commission on Pro</span>
             </motion.div>
           </motion.div>
@@ -833,10 +830,10 @@ export default function PlatformLandingPage() {
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
             className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3"
           >
-            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-500 dark:text-emerald-400">
+            <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
               Core Platform Engines
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight leading-tight bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400/80 bg-clip-text text-transparent">
+            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-zinc-950 dark:text-white leading-tight">
               Engineered for High-Velocity Direct Commerce
             </h2>
             <p className="text-xs sm:text-sm lg:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
@@ -856,10 +853,10 @@ export default function PlatformLandingPage() {
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40 group-hover:shadow-[0_0_16px_rgba(16,185,129,0.35)] transition-all duration-300">
+                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/30 transition-all duration-300">
                     <Zap className="w-5 h-5" />
                   </motion.div>
-                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20 animate-float-subtle">
+                  <span className="text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
                     &lt; 20s Flow
                   </span>
                 </div>
@@ -906,10 +903,10 @@ export default function PlatformLandingPage() {
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40 group-hover:shadow-[0_0_16px_rgba(16,185,129,0.35)] transition-all duration-300">
+                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/30 transition-all duration-300">
                     <Truck className="w-5 h-5" />
                   </motion.div>
-                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20 animate-float-subtle">
+                  <span className="text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
                     Steadfast & Pathao
                   </span>
                 </div>
@@ -941,7 +938,7 @@ export default function PlatformLandingPage() {
 
               <div className="pt-4 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
                 <span>Logistics Partners:</span>
-                <span className="text-emerald-500 dark:text-emerald-400 font-mono font-bold">1-Click Dispatch Active</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">1-Click Dispatch Active</span>
               </div>
             </SpotlightCard>
 
@@ -956,10 +953,10 @@ export default function PlatformLandingPage() {
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40 group-hover:shadow-[0_0_16px_rgba(16,185,129,0.35)] transition-all duration-300">
+                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/30 transition-all duration-300">
                     <ShoppingBag className="w-5 h-5" />
                   </motion.div>
-                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20 animate-float-subtle">
+                  <span className="text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
                     All Plans
                   </span>
                 </div>
@@ -991,7 +988,7 @@ export default function PlatformLandingPage() {
 
               <div className="pt-4 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
                 <span>Inventory Risk:</span>
-                <span className="text-emerald-500 dark:text-emerald-400 font-mono font-bold">Zero Stock Risk</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Zero Stock Risk</span>
               </div>
             </SpotlightCard>
 
@@ -1006,10 +1003,10 @@ export default function PlatformLandingPage() {
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40 group-hover:shadow-[0_0_16px_rgba(16,185,129,0.35)] transition-all duration-300">
+                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/30 transition-all duration-300">
                     <ShieldCheck className="w-5 h-5" />
                   </motion.div>
-                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 px-2.5 py-1 rounded-full border border-emerald-500/20 animate-float-subtle">
+                  <span className="text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
                     COD Defense
                   </span>
                 </div>
@@ -1041,7 +1038,7 @@ export default function PlatformLandingPage() {
 
               <div className="pt-4 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
                 <span>RTO Protection:</span>
-                <span className="text-emerald-500 dark:text-emerald-400 font-mono font-bold">Saves ৳130/Return</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Saves ৳130/Return</span>
               </div>
             </SpotlightCard>
 
@@ -1056,10 +1053,10 @@ export default function PlatformLandingPage() {
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40 group-hover:shadow-[0_0_16px_rgba(16,185,129,0.35)] transition-all duration-300">
+                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/30 transition-all duration-300">
                     <MessageSquare className="w-5 h-5" />
                   </motion.div>
-                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20 animate-float-subtle">
+                  <span className="text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
                     WhatsApp CRM
                   </span>
                 </div>
@@ -1091,7 +1088,7 @@ export default function PlatformLandingPage() {
 
               <div className="pt-4 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
                 <span>Recovery Lift:</span>
-                <span className="text-emerald-500 dark:text-emerald-400 font-mono font-bold">+28% Recovered GMV</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">+28% Recovered GMV</span>
               </div>
             </SpotlightCard>
 
@@ -1106,10 +1103,10 @@ export default function PlatformLandingPage() {
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40 group-hover:shadow-[0_0_16px_rgba(16,185,129,0.35)] transition-all duration-300">
+                  <motion.div whileHover={{ scale: 1.15, rotate: 6 }} className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shadow-sm group-hover:bg-emerald-500/20 group-hover:border-emerald-500/30 transition-all duration-300">
                     <Users className="w-5 h-5" />
                   </motion.div>
-                  <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20 animate-float-subtle">
+                  <span className="text-xs font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
                     Enterprise RBAC
                   </span>
                 </div>
@@ -1141,7 +1138,7 @@ export default function PlatformLandingPage() {
 
               <div className="pt-4 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
                 <span>Team Collaboration:</span>
-                <span className="text-emerald-500 dark:text-emerald-400 font-mono font-bold">Secure Multi-User</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Secure Multi-User</span>
               </div>
             </SpotlightCard>
           </div>
@@ -1159,10 +1156,10 @@ export default function PlatformLandingPage() {
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
             className="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3"
           >
-            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-500 dark:text-emerald-400">
-              Onboarding Velocity
+            <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+              Simple Onboarding
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight leading-tight bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400/80 bg-clip-text text-transparent">
+            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-zinc-950 dark:text-white leading-tight">
               Three Simple Steps to Go Live
             </h2>
             <p className="text-xs sm:text-sm lg:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
@@ -1182,14 +1179,14 @@ export default function PlatformLandingPage() {
               whileHover={{ y: -6 }}
               className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group cursor-default"
             >
-              <motion.div whileHover={{ scale: 1.15, rotate: 4 }} className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-emerald-500/20 group-hover:border-emerald-500/50 group-hover:shadow-[0_0_24px_rgba(16,185,129,0.25)] text-zinc-900 dark:text-white flex items-center justify-center shadow-sm transition-all duration-300 flex-shrink-0">
-                <Store className="w-6 h-6 md:w-7 md:h-7 text-emerald-500 dark:text-emerald-400" />
-                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500 text-zinc-950 shadow-md shadow-emerald-500/25 group-hover:scale-110 group-hover:shadow-[0_0_12px_rgba(16,185,129,0.7)] transition-all duration-300">
+              <motion.div whileHover={{ scale: 1.15, rotate: 4 }} className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-zinc-200 dark:border-white/[0.1] group-hover:border-emerald-500/50 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm transition-all duration-300 flex-shrink-0">
+                <Store className="w-6 h-6 md:w-7 md:h-7 text-emerald-600 dark:text-emerald-400" />
+                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-xs font-bold bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 shadow-sm transition-all duration-300">
                   01
                 </span>
               </motion.div>
               <div className="space-y-1.5 md:space-y-2">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-500 dark:text-emerald-400 font-bold block">
+                <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 block">
                   Step 01 • Template Setup
                 </span>
                 <h3 className="text-lg md:text-xl font-bold text-zinc-950 dark:text-white tracking-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors duration-200">
@@ -1220,14 +1217,14 @@ export default function PlatformLandingPage() {
               whileHover={{ y: -6 }}
               className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group cursor-default"
             >
-              <motion.div whileHover={{ scale: 1.15, rotate: 4 }} className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-emerald-500/20 group-hover:border-emerald-500/50 group-hover:shadow-[0_0_24px_rgba(16,185,129,0.25)] text-zinc-900 dark:text-white flex items-center justify-center shadow-sm transition-all duration-300 flex-shrink-0">
-                <Truck className="w-6 h-6 md:w-7 md:h-7 text-emerald-500 dark:text-emerald-400" />
-                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500 text-zinc-950 shadow-md shadow-emerald-500/25 group-hover:scale-110 group-hover:shadow-[0_0_12px_rgba(16,185,129,0.7)] transition-all duration-300">
+              <motion.div whileHover={{ scale: 1.15, rotate: 4 }} className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-zinc-200 dark:border-white/[0.1] group-hover:border-emerald-500/50 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm transition-all duration-300 flex-shrink-0">
+                <Truck className="w-6 h-6 md:w-7 md:h-7 text-emerald-600 dark:text-emerald-400" />
+                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-xs font-bold bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 shadow-sm transition-all duration-300">
                   02
                 </span>
               </motion.div>
               <div className="space-y-1.5 md:space-y-2">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-500 dark:text-emerald-400 font-bold block">
+                <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 block">
                   Step 02 • Local Integrations
                 </span>
                 <h3 className="text-lg md:text-xl font-bold text-zinc-950 dark:text-white tracking-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors duration-200">
@@ -1258,14 +1255,14 @@ export default function PlatformLandingPage() {
               whileHover={{ y: -6 }}
               className="relative pl-20 md:pl-0 space-y-3 md:space-y-5 text-left group cursor-default"
             >
-              <motion.div whileHover={{ scale: 1.15, rotate: 4 }} className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-emerald-500/25 group-hover:border-emerald-500/50 group-hover:shadow-[0_0_24px_rgba(16,185,129,0.25)] text-zinc-900 dark:text-white flex items-center justify-center shadow-sm transition-all duration-300 flex-shrink-0">
-                <Rocket className="w-6 h-6 md:w-7 md:h-7 text-emerald-500 dark:text-emerald-400" />
-                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500 text-zinc-950 font-bold shadow-md shadow-emerald-500/25 group-hover:scale-110 group-hover:shadow-[0_0_12px_rgba(16,185,129,0.7)] transition-all duration-300">
+              <motion.div whileHover={{ scale: 1.15, rotate: 4 }} className="absolute left-0 top-0 md:relative z-10 w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-[#0c0e14] border border-zinc-200 dark:border-white/[0.1] group-hover:border-emerald-500/50 text-zinc-900 dark:text-white flex items-center justify-center shadow-sm transition-all duration-300 flex-shrink-0">
+                <Rocket className="w-6 h-6 md:w-7 md:h-7 text-emerald-600 dark:text-emerald-400" />
+                <span className="absolute -top-2 -right-2 md:-top-2.5 md:-right-2.5 px-2 py-0.5 rounded-full text-xs font-bold bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 shadow-sm transition-all duration-300">
                   03
                 </span>
               </motion.div>
               <div className="space-y-1.5 md:space-y-2">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-500 dark:text-emerald-400 font-bold block">
+                <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 block">
                   Step 03 • High-Speed Selling
                 </span>
                 <h3 className="text-lg md:text-xl font-bold text-zinc-950 dark:text-white tracking-tight group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors duration-200">
@@ -1301,13 +1298,10 @@ export default function PlatformLandingPage() {
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
             className="text-center max-w-2xl mx-auto space-y-3"
           >
-            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-zinc-100/90 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-white/[0.08] text-xs shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
-              <span className="text-xs uppercase tracking-wider text-zinc-700 dark:text-zinc-300 font-semibold">
-                30 Curated Category Presets
-              </span>
+            <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800/90 text-xs font-medium text-zinc-700 dark:text-zinc-300 border border-zinc-200/90 dark:border-white/10">
+              <span>30 Curated Category Presets</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight leading-tight bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400/80 bg-clip-text text-transparent">
+            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-zinc-950 dark:text-white leading-tight">
               30 Templates Across 6 Verticals
             </h2>
             <p className="text-xs sm:text-sm lg:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-xl mx-auto">
@@ -1335,12 +1329,12 @@ export default function PlatformLandingPage() {
                     }}
                     className={`px-4 py-2 rounded-xl sm:rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-200 flex items-center space-x-2 ${
                       isSelected
-                        ? "bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white shadow-sm border border-zinc-200/90 dark:border-white/10 ring-1 ring-emerald-500/25"
-                        : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-200/60 dark:hover:bg-white/[0.04] hover:-translate-y-0.5 border border-transparent"
+                        ? "bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white shadow-sm border border-zinc-200/90 dark:border-white/10 ring-1 ring-zinc-400/20"
+                        : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-200/60 dark:hover:bg-white/[0.04] border border-transparent"
                     }`}
                   >
                     {isSelected && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)] flex-shrink-0 animate-pulse" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
                     )}
                     <span>{store.category}</span>
                     <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-zinc-200 dark:bg-white/10 text-zinc-700 dark:text-zinc-300">5</span>
@@ -1425,7 +1419,7 @@ export default function PlatformLandingPage() {
                       }`}
                       title="Live interactive store"
                     >
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                       <span>Live</span>
                     </button>
                     <button
@@ -1512,13 +1506,6 @@ export default function PlatformLandingPage() {
                           onLoad={() => setIsIframeLoading(false)}
                           className="w-full h-full min-h-[500px] sm:min-h-[580px] lg:min-h-[640px] border-0 bg-white"
                         />
-                        {/* Floating Interaction Hint Pill */}
-                        <div className="absolute bottom-3 right-4 z-10 pointer-events-none">
-                          <div className="backdrop-blur-md bg-zinc-950/80 border border-white/10 text-zinc-300 text-[10px] font-mono px-3 py-1.5 rounded-full shadow-lg flex items-center space-x-1.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                            <span>Interactive Preview • Scroll & Test Checkout</span>
-                          </div>
-                        </div>
                       </div>
                     ) : previewDevice === "tablet" ? (
                       /* Centered Tablet Viewport */
@@ -1568,12 +1555,12 @@ export default function PlatformLandingPage() {
                     />
                     {/* Crisp Top Badge — NO DARK GRADIENT OVERLAY */}
                     <div className="absolute top-4 left-4 backdrop-blur-md bg-zinc-950/85 text-white text-[11px] font-semibold px-3.5 py-1.5 rounded-full border border-white/10 shadow-lg flex items-center space-x-2">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+                      <span className="w-2 h-2 rounded-full bg-emerald-400" />
                       <span>{activeTemplate.name}</span>
                       <span className="text-zinc-400">• {activeTemplate.tag}</span>
                     </div>
 
-                    <div className="absolute bottom-4 right-4 backdrop-blur-md bg-zinc-950/85 text-zinc-300 text-[10px] font-mono px-3 py-1.5 rounded-full border border-white/10 shadow-lg flex items-center space-x-1.5">
+                    <div className="absolute bottom-4 right-4 backdrop-blur-md bg-zinc-950/85 text-zinc-300 text-xs font-medium px-3 py-1.5 rounded-full border border-white/10 shadow-lg flex items-center space-x-1.5">
                       <span>Click &apos;Live&apos; above for interactive store</span>
                     </div>
                   </div>
@@ -1582,40 +1569,32 @@ export default function PlatformLandingPage() {
             </div>
 
             {/* Right Column: Architecture Cockpit & Capabilities */}
-            <div className="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between space-y-6 bg-zinc-50/50 dark:bg-zinc-950/60">
-              <div className="space-y-5">
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 flex items-center space-x-1.5">
-                      <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
-                      <span>Theme {activeStore.templates.findIndex((t) => t.id === activeTemplate.id) + 1} of 5</span>
-                    </span>
-                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                      {activeStore.category}
+            {/* Right Column: Clean Architectural Showcase Cockpit */}
+            <div className="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between bg-zinc-50/70 dark:bg-zinc-950/70 border-t lg:border-t-0 border-zinc-200/80 dark:border-white/[0.08]">
+              <div className="space-y-6">
+                {/* Header Category & Counter */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+                    <span className="font-semibold uppercase tracking-wider">{activeStore.category}</span>
+                    <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-zinc-200/70 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+                      {activeStore.templates.findIndex((t) => t.id === activeTemplate.id) + 1} of {activeStore.templates.length}
                     </span>
                   </div>
                   <h3 className="text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white tracking-tight">
                     {activeTemplate.name}
                   </h3>
-                  <div className="mt-1.5">
-                    <span className="inline-block text-xs font-semibold px-2.5 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-200/80 dark:border-white/10">
-                      {activeTemplate.tag}
-                    </span>
-                  </div>
-                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mt-2.5">
+                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed pt-1">
                     {activeTemplate.description}
                   </p>
                 </div>
 
-                {/* Interactive 5-Theme Switcher Grid */}
-                <div className="space-y-2 pt-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold uppercase tracking-wider text-zinc-600 dark:text-zinc-400 block">
-                      Available Themes in This Industry:
-                    </span>
-                    <span className="text-[11px] font-medium text-zinc-400">Click to switch</span>
+                {/* Theme Selector — Minimal Segmented Pills */}
+                <div className="space-y-2.5">
+                  <div className="flex items-center justify-between text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                    <span>Specialized Themes</span>
+                    <span className="text-[11px] font-normal text-zinc-400">5 industry presets</span>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div className="flex flex-wrap gap-1.5">
                     {activeStore.templates.map((tmpl) => {
                       const isSelected = activeTemplate.id === tmpl.id;
                       return (
@@ -1626,111 +1605,55 @@ export default function PlatformLandingPage() {
                             setSelectedTemplateId(tmpl.id);
                             setIsIframeLoading(true);
                           }}
-                          className={`text-left px-3 py-2.5 rounded-xl border text-xs font-medium transition-all duration-200 flex items-center justify-between group ${
+                          className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
                             isSelected
-                              ? "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500 dark:border-emerald-500/80 text-zinc-950 dark:text-white shadow-sm ring-1 ring-emerald-500/30 scale-[1.01]"
-                              : "bg-white dark:bg-zinc-900 border-zinc-200/90 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:border-emerald-500/40 dark:hover:border-emerald-500/40 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100/80 dark:hover:bg-zinc-800/80 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-md"
+                              ? "bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 shadow-sm"
+                              : "bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white border border-zinc-200/80 dark:border-white/[0.08]"
                           }`}
                         >
-                          <div className="flex items-center space-x-2 min-w-0 pr-1">
-                            <span
-                              className={`w-2 h-2 rounded-full flex-shrink-0 transition-all duration-200 ${
-                                isSelected
-                                  ? "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.9)] scale-110"
-                                  : "bg-zinc-300 dark:bg-zinc-600 group-hover:bg-emerald-400 group-hover:scale-110"
-                              }`}
-                            />
-                            <div className="truncate">
-                              <span className="block truncate font-semibold text-[11px] group-hover:text-zinc-950 dark:group-hover:text-white transition-colors">{tmpl.name}</span>
-                              <span className="block text-[10px] text-zinc-400 dark:text-zinc-500 font-medium truncate">
-                                {tmpl.tag}
-                              </span>
-                            </div>
-                          </div>
-                          {isSelected ? (
-                            <span className="flex-shrink-0 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[9px] font-bold shadow-xs">
-                              ✓
-                            </span>
-                          ) : (
-                            <span className="text-[10px] text-zinc-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-200">
-                              →
-                            </span>
-                          )}
+                          {tmpl.name}
                         </button>
                       );
                     })}
                   </div>
                 </div>
 
-                {/* Capabilities Feature Rows */}
-                <div className="space-y-2 pt-3 border-t border-zinc-200/80 dark:border-white/[0.08]">
-                  <span className="text-xs font-bold uppercase tracking-wider text-zinc-600 dark:text-zinc-400 block mb-1">
-                    Engineered Conversion Features
+                {/* Key Specifications */}
+                <div className="space-y-2.5 pt-4 border-t border-zinc-200/70 dark:border-white/[0.08]">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block">
+                    Domain Specifications
                   </span>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                     {activeTemplate.highlights.map((feat, idx) => (
-                      <div key={idx} className="flex items-center space-x-2 text-xs text-zinc-700 dark:text-zinc-300 hover:translate-x-1 transition-transform duration-200 cursor-default">
-                        <div className="w-4 h-4 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 border border-emerald-500/20">
-                          <Check className="w-2.5 h-2.5" />
-                        </div>
-                        <span className="font-medium text-zinc-800 dark:text-zinc-200 text-[11.5px] truncate" title={feat}>
-                          {feat}
-                        </span>
+                      <div key={idx} className="flex items-center space-x-2 text-zinc-700 dark:text-zinc-300">
+                        <span className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-zinc-200 flex-shrink-0" />
+                        <span className="font-medium truncate text-[11.5px]">{feat}</span>
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
 
-              {/* Bottom Specs & Action Footer */}
-              <div className="space-y-4 pt-4 border-t border-zinc-200/80 dark:border-white/[0.08]">
-                <div className="grid grid-cols-3 gap-2 p-3 rounded-2xl bg-zinc-100 dark:bg-zinc-900/70 border border-zinc-200/80 dark:border-white/[0.08] text-center">
-                  <div className="hover:bg-zinc-200/50 dark:hover:bg-white/[0.04] transition-colors rounded-xl py-1.5 cursor-default group/stat">
-                    <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block">
-                      Plans
-                    </span>
-                    <span className="text-xs sm:text-sm font-bold text-emerald-600 dark:text-emerald-400 group-hover/stat:scale-105 inline-block transition-transform">
-                      Start Free ৳0
-                    </span>
-                  </div>
-                  <div className="border-x border-zinc-200/80 dark:border-white/[0.08] hover:bg-zinc-200/50 dark:hover:bg-white/[0.04] transition-colors rounded-xl py-1.5 cursor-default group/stat">
-                    <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block">
-                      Setup Time
-                    </span>
-                    <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white group-hover/stat:text-emerald-500 transition-colors">
-                      3 Minutes
-                    </span>
-                  </div>
-                  <div className="hover:bg-zinc-200/50 dark:hover:bg-white/[0.04] transition-colors rounded-xl py-1.5 cursor-default group/stat">
-                    <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block">
-                      Checkout
-                    </span>
-                    <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white group-hover/stat:text-emerald-500 transition-colors">
-                      20s Express
-                    </span>
-                  </div>
-                </div>
-
+              {/* Bottom Actions */}
+              <div className="pt-6 mt-6 border-t border-zinc-200/70 dark:border-white/[0.08] space-y-3">
                 <div className="flex flex-col sm:flex-row gap-2.5">
                   <Link
                     href={`/store/${activeStore.slug}?template=${activeTemplate.id}`}
                     target="_blank"
-                    className="flex-1 py-3 px-4 btn-glass-primary btn-shimmer text-xs font-bold rounded-xl transition text-center flex items-center justify-center space-x-2 shadow-lg shadow-emerald-500/20 btn-press group"
+                    className="flex-1 py-3 px-5 bg-zinc-950 hover:bg-zinc-800 text-white dark:bg-white dark:hover:bg-zinc-100 dark:text-zinc-950 font-bold text-xs rounded-xl transition text-center flex items-center justify-center space-x-2 shadow-xs group"
                   >
-                    <span>Launch {activeTemplate.name} Live</span>
-                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200" />
+                    <span>Open Live Storefront</span>
+                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </Link>
                   <Link
                     href={`/register?category=${activeStore.categoryParam}&template=${activeTemplate.id}`}
-                    className="py-3 px-5 bg-white hover:bg-zinc-50 border border-zinc-200/90 text-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 dark:text-zinc-200 dark:hover:text-white hover:border-emerald-500/40 hover:-translate-y-0.5 font-semibold text-xs rounded-xl transition-all text-center shadow-[0_1px_2px_rgba(0,0,0,0.02)] btn-press flex items-center justify-center"
+                    className="py-3 px-5 bg-white hover:bg-zinc-50 border border-zinc-200/90 text-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:border-white/10 dark:text-zinc-200 font-semibold text-xs rounded-xl transition text-center flex items-center justify-center"
                   >
-                    <span>Clone Template</span>
+                    <span>Use Template (Free)</span>
                   </Link>
                 </div>
-
-                <div className="flex items-center justify-center space-x-1.5 text-[10.5px] text-zinc-500 dark:text-zinc-400">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-500" />
-                  <span>100% Real-time database sync • Switch themes anytime with zero data loss</span>
+                <div className="flex items-center justify-center space-x-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+                  <span>৳0 Setup • Instant Local Courier & Payments</span>
                 </div>
               </div>
             </div>
@@ -1749,10 +1672,10 @@ export default function PlatformLandingPage() {
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
             className="text-center max-w-xl mx-auto space-y-2.5 sm:space-y-3"
           >
-            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-500 dark:text-emerald-400">
-              Transparent Subscription Tiers
+            <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+              Pricing Plans
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight leading-tight bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400/80 bg-clip-text text-transparent">
+            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-zinc-950 dark:text-white leading-tight">
               Simple, Predictable Pricing
             </h2>
             <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
@@ -1837,7 +1760,7 @@ export default function PlatformLandingPage() {
               whileHover={{ y: -8 }}
               className="ring-1 ring-emerald-500/60 dark:ring-emerald-500/50 rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative shadow-2xl shadow-emerald-500/10"
             >
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-emerald-500 text-zinc-950 text-[10px] font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-md shadow-emerald-500/20 animate-pulse">
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-emerald-500 text-zinc-950 text-xs font-semibold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-sm">
                 Most Popular
               </div>
               <div className="space-y-4">
@@ -1920,8 +1843,8 @@ export default function PlatformLandingPage() {
             className="pt-12 sm:pt-16 border-t border-zinc-200/80 dark:border-white/[0.08] space-y-6"
           >
             <div className="text-center space-y-2 max-w-xl mx-auto">
-              <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-500 dark:text-emerald-400">
-                Side-by-Side Comparison
+              <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                Plan Comparison
               </span>
               <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white">
                 Detailed Feature Matrix
@@ -1944,7 +1867,7 @@ export default function PlatformLandingPage() {
                 <tbody className="divide-y divide-zinc-200/80 dark:divide-white/[0.06]">
                   {/* Category 1: Pricing & Platform Fees */}
                   <tr className="bg-zinc-100/60 dark:bg-white/[0.03]">
-                    <td colSpan={4} className="py-2.5 px-4 sm:px-6 font-bold text-[11px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-mono">
+                    <td colSpan={4} className="py-2.5 px-4 sm:px-6 font-semibold text-xs tracking-wider text-zinc-900 dark:text-zinc-100 uppercase">
                       1. Pricing & Platform Fees
                     </td>
                   </tr>
@@ -1969,7 +1892,7 @@ export default function PlatformLandingPage() {
 
                   {/* Category 2: Platform Dropshipping */}
                   <tr className="bg-zinc-100/60 dark:bg-white/[0.03]">
-                    <td colSpan={4} className="py-2.5 px-4 sm:px-6 font-bold text-[11px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-mono">
+                    <td colSpan={4} className="py-2.5 px-4 sm:px-6 font-semibold text-xs tracking-wider text-zinc-900 dark:text-zinc-100 uppercase">
                       2. Platform Dropshipping (Available in All Plans)
                     </td>
                   </tr>
@@ -1994,7 +1917,7 @@ export default function PlatformLandingPage() {
 
                   {/* Category 3: Storefront & Themes */}
                   <tr className="bg-zinc-100/60 dark:bg-white/[0.03]">
-                    <td colSpan={4} className="py-2.5 px-4 sm:px-6 font-bold text-[11px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-mono">
+                    <td colSpan={4} className="py-2.5 px-4 sm:px-6 font-semibold text-xs tracking-wider text-zinc-900 dark:text-zinc-100 uppercase">
                       3. Storefronts, Themes & Domains
                     </td>
                   </tr>
@@ -2025,7 +1948,7 @@ export default function PlatformLandingPage() {
 
                   {/* Category 4: Checkout, Orders & Printing */}
                   <tr className="bg-zinc-100/60 dark:bg-white/[0.03]">
-                    <td colSpan={4} className="py-2.5 px-4 sm:px-6 font-bold text-[11px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-mono">
+                    <td colSpan={4} className="py-2.5 px-4 sm:px-6 font-semibold text-xs tracking-wider text-zinc-900 dark:text-zinc-100 uppercase">
                       4. Checkout, Orders & Printing
                     </td>
                   </tr>
@@ -2056,7 +1979,7 @@ export default function PlatformLandingPage() {
 
                   {/* Category 5: Team, RBAC & Security */}
                   <tr className="bg-zinc-100/60 dark:bg-white/[0.03]">
-                    <td colSpan={4} className="py-2.5 px-4 sm:px-6 font-bold text-[11px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-mono">
+                    <td colSpan={4} className="py-2.5 px-4 sm:px-6 font-semibold text-xs tracking-wider text-zinc-900 dark:text-zinc-100 uppercase">
                       5. Team Collaboration & RBAC Security
                     </td>
                   </tr>
@@ -2081,7 +2004,7 @@ export default function PlatformLandingPage() {
 
                   {/* Category 6: Marketing, Coupons & Retention */}
                   <tr className="bg-zinc-100/60 dark:bg-white/[0.03]">
-                    <td colSpan={4} className="py-2.5 px-4 sm:px-6 font-bold text-[11px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-mono">
+                    <td colSpan={4} className="py-2.5 px-4 sm:px-6 font-semibold text-xs tracking-wider text-zinc-900 dark:text-zinc-100 uppercase">
                       6. Marketing, Discounts & Data
                     </td>
                   </tr>
@@ -2112,7 +2035,7 @@ export default function PlatformLandingPage() {
 
                   {/* Category 7: Support & Service SLA */}
                   <tr className="bg-zinc-100/60 dark:bg-white/[0.03]">
-                    <td colSpan={4} className="py-2.5 px-4 sm:px-6 font-bold text-[11px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-mono">
+                    <td colSpan={4} className="py-2.5 px-4 sm:px-6 font-semibold text-xs tracking-wider text-zinc-900 dark:text-zinc-100 uppercase">
                       7. Support & Service SLA
                     </td>
                   </tr>
@@ -2145,10 +2068,10 @@ export default function PlatformLandingPage() {
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
             className="text-center max-w-xl mx-auto space-y-2.5 sm:space-y-3"
           >
-            <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-500 dark:text-emerald-400">
+            <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
               Questions & Answers
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black tracking-tight leading-tight bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-600 dark:from-white dark:via-zinc-100 dark:to-zinc-400/80 bg-clip-text text-transparent">
+            <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-zinc-950 dark:text-white leading-tight">
               Frequently Asked Questions
             </h2>
             <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">

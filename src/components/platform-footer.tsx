@@ -33,7 +33,7 @@ export function PlatformFooter() {
             </p>
 
             <div className="flex items-center space-x-2 text-xs text-zinc-500 pt-1">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.7)]" />
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
               <span className="font-medium text-zinc-700 dark:text-zinc-300">All systems operational</span>
               <span className="text-zinc-300 dark:text-zinc-700">•</span>
               <span>Direct Courier APIs Live</span>
@@ -42,7 +42,7 @@ export function PlatformFooter() {
 
           {/* Column 3: Platform Architecture */}
           <div className="space-y-3">
-            <p className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-950 dark:text-white">Platform</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-950 dark:text-white">Platform</p>
             <ul className="space-y-2.5 text-xs text-zinc-600 dark:text-zinc-400">
               <li>
                 <a href="#features" className="hover:text-zinc-950 dark:hover:text-white transition">
@@ -74,7 +74,7 @@ export function PlatformFooter() {
 
           {/* Column 4: Live Storefronts */}
           <div className="space-y-3">
-            <p className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-950 dark:text-white">
+            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-950 dark:text-white">
               Live Stores (30 Themes)
             </p>
             <ul className="space-y-2.5 text-xs text-zinc-600 dark:text-zinc-400">
@@ -90,14 +90,14 @@ export function PlatformFooter() {
                 </li>
               ))}
               <li className="pt-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
-                ✨ 30 Total Category Presets
+                30 Curated Category Presets
               </li>
             </ul>
           </div>
 
           {/* Column 5: Merchant & Cockpit */}
           <div className="space-y-3">
-            <p className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-950 dark:text-white">Merchant</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-950 dark:text-white">Merchant</p>
             <ul className="space-y-2.5 text-xs text-zinc-600 dark:text-zinc-400">
               <li>
                 <Link
