@@ -232,7 +232,7 @@ export function PantryStorefront({
   return (
     <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${themeConfig.pageBg}`}>
       {/* ─── 1. Farmstead Utility Bar ───────────────────────────────────────── */}
-      <div className={`py-2.5 px-4 text-xs font-mono tracking-wide border-b ${themeConfig.barBg}`}>
+      <div className={`py-2.5 px-4 text-xs font-sans tracking-wide border-b ${themeConfig.barBg}`}>
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="hidden sm:flex items-center space-x-2 text-[11px] text-emerald-300/80">
             <Leaf className="w-3.5 h-3.5 text-emerald-400" />
@@ -242,7 +242,7 @@ export function PantryStorefront({
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             <span>Doorstep Freshness & Aroma Inspection • Pay on Delivery</span>
           </div>
-          <div className="hidden md:flex items-center space-x-3 text-[11px] text-emerald-300/80 font-mono">
+          <div className="hidden md:flex items-center space-x-3 text-[11px] text-emerald-300/80 font-sans">
             <span>Home Compostable Packaging</span>
           </div>
         </div>
@@ -260,7 +260,7 @@ export function PantryStorefront({
               <span className={`font-extrabold tracking-tight text-base block leading-none font-sans ${themeConfig.brandColor}`}>
                 {storeDisplayName}
               </span>
-              <span className="text-[10px] text-emerald-800 font-semibold block mt-1 tracking-wider uppercase font-mono">
+              <span className="text-[10px] text-emerald-800 font-semibold block mt-1 tracking-wider uppercase font-sans">
                 {themeConfig.tagline}
               </span>
             </div>
@@ -410,10 +410,10 @@ export function PantryStorefront({
                 <div className="absolute bottom-4 left-4 right-4 bg-emerald-950/90 backdrop-blur-md p-3.5 rounded-xl border border-emerald-800 shadow-lg text-white">
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider block">Micro-Lot Sourcing</span>
+                      <span className="text-[10px] font-sans font-bold text-emerald-400 uppercase tracking-wider block">Micro-Lot Sourcing</span>
                       <p className="text-xs font-bold">Ethiopian Yirgacheffe Heirloom (1kg)</p>
                     </div>
-                    <span className="text-xs font-mono font-bold text-emerald-300">৳1,850</span>
+                    <span className="text-xs font-sans font-bold text-emerald-300">৳1,850</span>
                   </div>
                   <p className="text-[10px] text-emerald-200/80 mt-1">Bergamot citrus • Candied peach • Fresh drum roasted</p>
                 </div>
@@ -428,7 +428,7 @@ export function PantryStorefront({
         <div className="max-w-6xl mx-auto space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
             <div>
-              <span className="text-[10px] font-mono tracking-widest text-emerald-800 font-bold uppercase">
+              <span className="text-[10px] font-sans tracking-widest text-emerald-800 font-bold uppercase">
                 Farmstead Terroir
               </span>
               <h2 className="text-xl sm:text-2xl font-black text-stone-950 tracking-tight">
@@ -514,93 +514,92 @@ export function PantryStorefront({
         </div>
       </section>
 
-      {/* ─── 6. Artisanal Coffee Roast Profile & Fresh Harvest Bar ───────────── */}
+      {/* ─── 6. The Farmstead Breakfast & Pantry Ensemble (1-Click Upsell) ──── */}
       <section id="ensemble" className="py-16 px-4 sm:px-6 border-b border-stone-200/80 bg-gradient-to-r from-emerald-50/50 via-[#f8f9f5] to-stone-100">
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-3xl border border-stone-300/80 p-6 sm:p-10 shadow-lg">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-6 space-y-4">
+              <div className="lg:col-span-5 space-y-4">
                 <div className="inline-flex items-center space-x-1.5 px-3 py-1 bg-emerald-100 text-emerald-950 rounded-full text-[10px] font-bold tracking-wider uppercase border border-emerald-300 font-mono">
-                  <Coffee className="w-3 h-3 text-emerald-800" />
-                  <span>Roastery & Harvest Bar</span>
+                  <Leaf className="w-3 h-3 text-emerald-800" />
+                  <span>Harvest Pantry Package</span>
                 </div>
                 <h3 className="text-2xl sm:text-3xl font-black tracking-tight text-stone-950">
-                  Micro-Lot Roast & Grind Selection
+                  The Complete Farmstead Pantry Trio
                 </h3>
-                <p className="text-xs text-stone-600 leading-relaxed font-sans">
-                  Small-batch roasted within 48 hours of dispatch. Select your preferred grind profile or whole bean option for peak aromatic extraction.
+                <p className="text-xs text-stone-600 leading-relaxed">
+                  The morning kitchen ritual: Micro-lot Ethiopian Yirgacheffe coffee paired with unfiltered alpine wildflower honey and early-harvest Koroneiki extra virgin olive oil.
                 </p>
 
-                {/* Interactive Grind Profiles */}
-                <div className="space-y-3 pt-2">
-                  <span className="text-[10px] font-mono font-bold text-emerald-900 uppercase tracking-wider block">
-                    Select Preparation Grind:
-                  </span>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                    {[
-                      { name: "Whole Bean", note: "Peak Freshness", sub: "Degassing Valve" },
-                      { name: "French Press", note: "Coarse Grind", sub: "Plunger Brew" },
-                      { name: "Pour Over", note: "Medium-Fine", sub: "V60 / Chemex" },
-                      { name: "Espresso", note: "Ultra Fine", sub: "9-Bar Machine" },
-                    ].map((g, i) => (
-                      <div
-                        key={i}
-                        className={`p-2.5 rounded-xl border text-center transition ${
-                          i === 0
-                            ? "bg-emerald-50 border-emerald-500 text-emerald-950 font-bold"
-                            : "bg-stone-50 border-stone-200 text-stone-700 hover:border-stone-300"
-                        }`}
-                      >
-                        <span className="text-xs font-bold block">{g.name}</span>
-                        <span className="text-[9.5px] font-mono text-emerald-800 block mt-0.5">{g.note}</span>
-                        <span className="text-[9px] text-stone-400 block">{g.sub}</span>
-                      </div>
-                    ))}
+                <div className="space-y-2 pt-2 text-xs">
+                  <div className="flex items-center space-x-2.5 text-stone-800 font-medium">
+                    <span className="w-5 h-5 rounded-full bg-emerald-900 text-emerald-300 text-[10px] font-bold flex items-center justify-center">1</span>
+                    <span>Single-Origin Yirgacheffe Coffee 1kg (৳1,850)</span>
+                  </div>
+                  <div className="flex items-center space-x-2.5 text-stone-800 font-medium">
+                    <span className="w-5 h-5 rounded-full bg-emerald-900 text-emerald-300 text-[10px] font-bold flex items-center justify-center">2</span>
+                    <span>Raw Wild Alpine High-Meadow Honey 500g (৳1,450)</span>
+                  </div>
+                  <div className="flex items-center space-x-2.5 text-stone-800 font-medium">
+                    <span className="w-5 h-5 rounded-full bg-emerald-900 text-emerald-300 text-[10px] font-bold flex items-center justify-center">3</span>
+                    <span>Early-Harvest Koroneiki EVOO 500ml (৳2,250)</span>
                   </div>
                 </div>
 
-                <div className="pt-2 flex items-center space-x-3 text-xs text-stone-700">
-                  <ShieldCheck className="w-4 h-4 text-emerald-700 flex-shrink-0" />
-                  <span>Nitrogen Flush Packaging • Sealed Aroma Valve Inspection (COD)</span>
+                <div className="pt-4 flex items-baseline space-x-3">
+                  <span className="text-2xl font-black text-emerald-950">৳4,850</span>
+                  <span className="text-sm text-stone-400 line-through">৳5,550</span>
+                  <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-300">
+                    Save ৳700 (13% Off)
+                  </span>
+                </div>
+
+                <div className="pt-2">
+                  <button
+                    onClick={handleAddPantryEnsemble}
+                    className="w-full sm:w-auto py-3 px-8 bg-emerald-900 hover:bg-emerald-800 text-emerald-100 font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center space-x-2 btn-press"
+                  >
+                    <ShoppingBag className="w-4 h-4 text-emerald-300" />
+                    <span>Add Complete Pantry Trio to Bag</span>
+                  </button>
+                  <p className="text-[11px] text-stone-500 mt-2">
+                    Shipped in insulated protective cartons with aroma valve inspection guaranteed.
+                  </p>
                 </div>
               </div>
 
-              <div className="lg:col-span-6 space-y-3">
-                <div className="bg-[#fcfbf9] rounded-2xl p-5 border border-stone-200 space-y-3">
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-800 block">
-                    Terroir & Roast Freshness Index
-                  </span>
-
-                  <div className="space-y-2 text-xs">
-                    <div className="flex justify-between items-center py-1.5 border-b border-stone-100">
-                      <span className="text-stone-500">Roast Date:</span>
-                      <span className="text-stone-900 font-mono font-bold">Within 48h of Courier Handover</span>
+              <div className="lg:col-span-7 grid grid-cols-3 gap-3">
+                {[
+                  {
+                    step: "COFFEE 01",
+                    title: "Yirgacheffe Coffee",
+                    image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=500&auto=format&fit=crop&q=80",
+                    detail: "1kg Whole Bean"
+                  },
+                  {
+                    step: "HONEY 02",
+                    title: "Raw Alpine Honey",
+                    image: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=500&auto=format&fit=crop&q=80",
+                    detail: "500g Raw Comb"
+                  },
+                  {
+                    step: "OIL 03",
+                    title: "Koroneiki EVOO",
+                    image: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=500&auto=format&fit=crop&q=80",
+                    detail: "500ml Dark UV Glass"
+                  }
+                ].map((item, idx) => (
+                  <div key={idx} className="bg-[#f8f9f5] rounded-2xl p-2.5 border border-stone-200 flex flex-col justify-between">
+                    <div className="aspect-[4/3] rounded-xl overflow-hidden bg-white mb-2 border border-stone-200">
+                      <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
                     </div>
-                    <div className="flex justify-between items-center py-1.5 border-b border-stone-100">
-                      <span className="text-stone-500">Terroir Altitude:</span>
-                      <span className="text-stone-900 font-mono font-bold">1,850m – 2,100m ASL</span>
-                    </div>
-                    <div className="flex justify-between items-center py-1.5 border-b border-stone-100">
-                      <span className="text-stone-500">Extraction Notes:</span>
-                      <span className="text-emerald-800 font-bold">Jasmine, Bergamot & Wild Honey</span>
-                    </div>
-                    <div className="flex justify-between items-center py-1.5 border-b border-stone-100">
-                      <span className="text-stone-500">Certifications:</span>
-                      <span className="text-stone-900 font-bold">100% Organic Fair-Trade Certified</span>
+                    <div>
+                      <span className="text-[9px] font-mono font-bold text-emerald-800 block">{item.step}</span>
+                      <p className="text-xs font-bold text-stone-900 leading-tight mt-0.5">{item.title}</p>
+                      <span className="text-[10px] text-stone-500 block mt-1">{item.detail}</span>
                     </div>
                   </div>
-
-                  <div className="pt-3 flex items-center justify-between font-mono">
-                    <span className="text-xs text-stone-600">Curated Trio:</span>
-                    <button
-                      onClick={handleAddPantryEnsemble}
-                      className="py-2 px-4 bg-emerald-900 hover:bg-emerald-800 text-emerald-100 text-xs font-bold rounded-xl transition flex items-center space-x-1.5"
-                    >
-                      <ShoppingBag className="w-3.5 h-3.5" />
-                      <span>Add Pantry Trio (৳4,850)</span>
-                    </button>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
@@ -747,7 +746,7 @@ export function PantryStorefront({
                 </div>
 
                 {/* Price & Add to Bag */}
-                <div className="pt-2 sm:pt-3 mt-2 border-t border-stone-200 flex items-center justify-between font-mono gap-1">
+                <div className="pt-2 sm:pt-3 mt-2 border-t border-stone-200 flex items-center justify-between font-sans gap-1">
                   <div>
                     <span className="text-xs sm:text-base font-black text-stone-950">
                       ৳{p.price.toLocaleString("en-BD")}

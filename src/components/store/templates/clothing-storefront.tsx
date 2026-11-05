@@ -352,7 +352,7 @@ export function ClothingStorefront({
                     <img src={cat.img} alt={cat.label} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                     <div className="absolute bottom-4 left-4">
-                      <span className="text-white text-xs font-mono font-medium bg-black/40 px-2 py-1 rounded">{cat.sub}</span>
+                      <span className="text-white text-xs font-sans font-medium bg-black/40 px-2 py-1 rounded">{cat.sub}</span>
                     </div>
                   </div>
                   <h3 className="text-xl font-bold text-[#1a1209] mb-3">{cat.label}</h3>
@@ -377,7 +377,7 @@ export function ClothingStorefront({
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
               <div className="flex items-end justify-between mb-8">
                 <div>
-                  <p className="text-xs font-mono uppercase tracking-[0.2em] text-[#3d2d1e] mb-1">Curated Collection</p>
+                  <p className="text-xs font-sans font-semibold uppercase tracking-[0.2em] text-[#3d2d1e] mb-1">Curated Collection</p>
                   <h2 className="text-3xl font-extrabold text-[#1a1209]">New Arrivals</h2>
                 </div>
                 <button onClick={() => setView("shop")}
@@ -408,7 +408,7 @@ export function ClothingStorefront({
           {/* ── Express Courier & Logistics Trust Strip ────────────────── */}
           <section className="border-y border-stone-200 py-6 bg-stone-50/60">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
-              <p className="text-center text-[10px] font-mono uppercase tracking-[0.25em] text-stone-400 mb-4">64 Districts Express Delivery Network</p>
+              <p className="text-center text-[10px] font-sans font-semibold uppercase tracking-[0.25em] text-stone-400 mb-4">64 Districts Express Delivery Network</p>
               <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs font-bold text-stone-600">
                 <span className="flex items-center gap-1.5"><Truck className="w-3.5 h-3.5 text-emerald-600" /> Steadfast Courier 24h</span>
                 <span className="text-stone-300">•</span>
@@ -654,7 +654,7 @@ function ProductCard({
         </button>
       </div>
       <div className="p-3">
-        <p className="text-[10px] font-mono uppercase tracking-wider text-stone-400 mb-0.5">{item.cat}</p>
+        <p className="text-[10px] font-sans font-semibold uppercase tracking-wider text-stone-400 mb-0.5">{item.cat}</p>
         <h3 className="text-sm font-bold text-[#1a1209] leading-snug line-clamp-2 mb-1 cursor-pointer hover:text-[#3d2d1e]" onClick={onView}>{item.title}</h3>
         <div className="flex items-center gap-1 mb-2">
           {[...Array(5)].map((_, i) => <Star key={i} className={`w-3 h-3 ${i < Math.floor(item.rating) ? "fill-amber-400 text-amber-400" : "text-stone-200"}`} />)}

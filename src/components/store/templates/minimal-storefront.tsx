@@ -200,7 +200,7 @@ export function MinimalStorefront({
       className="min-h-screen bg-white text-zinc-900 font-sans selection:bg-zinc-900 selection:text-white flex flex-col"
     >
       {/* ─── 1. Atelier Top Announcement Bar ─────────────────────────────── */}
-      <div className="bg-zinc-950 text-zinc-300 py-2 px-4 text-center text-[10.5px] sm:text-[11px] font-mono tracking-wider border-b border-zinc-900 flex items-center justify-center gap-2 sm:gap-3">
+      <div className="bg-zinc-950 text-zinc-300 py-2 px-4 text-center text-[10.5px] sm:text-[11px] font-sans tracking-wide border-b border-zinc-900 flex items-center justify-center gap-2 sm:gap-3">
         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
         <span>COMPLIMENTARY DELIVERY ACROSS DHAKA OVER ৳1,500 • CASH ON DELIVERY &amp; BKASH ACTIVE</span>
       </div>
@@ -228,7 +228,7 @@ export function MinimalStorefront({
               <span className="text-lg font-black tracking-tighter text-zinc-950 uppercase font-serif">
                 {storeDisplayName}
               </span>
-              <span className="hidden sm:inline-block text-[9px] font-mono tracking-[0.25em] text-zinc-400 uppercase">
+              <span className="hidden sm:inline-block text-[9px] font-sans font-semibold tracking-[0.25em] text-zinc-400 uppercase">
                 Atelier
               </span>
             </a>
@@ -401,15 +401,15 @@ export function MinimalStorefront({
             <div className="pt-6 border-t border-zinc-200/80 grid grid-cols-3 gap-4 text-left">
               <div>
                 <p className="text-lg font-black text-zinc-950">280 GSM</p>
-                <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-mono">Organic Combed</p>
+                <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Organic Combed</p>
               </div>
               <div>
                 <p className="text-lg font-black text-zinc-950">14oz</p>
-                <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-mono">Kurabo Selvedge</p>
+                <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Kurabo Selvedge</p>
               </div>
               <div>
                 <p className="text-lg font-black text-zinc-950">48 Hours</p>
-                <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-mono">Express Dispatch</p>
+                <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Express Dispatch</p>
               </div>
             </div>
           </div>
@@ -423,7 +423,7 @@ export function MinimalStorefront({
               />
               <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md p-4 rounded-xl border border-zinc-200 shadow-lg flex items-center justify-between">
                 <div>
-                  <span className="text-[9px] font-mono tracking-widest uppercase text-zinc-400 block">Look 01 Edit</span>
+                  <span className="text-[9px] font-sans font-semibold tracking-widest uppercase text-zinc-400 block">Look 01 Edit</span>
                   <p className="text-xs font-bold text-zinc-900">Bonded Italian Wool Overcoat</p>
                   <p className="text-xs font-black text-zinc-950 mt-0.5">৳6,500 <span className="text-[10px] line-through text-zinc-400">৳8,500</span></p>
                 </div>
@@ -443,7 +443,7 @@ export function MinimalStorefront({
       <section id="catalog-grid" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 flex-1">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <div>
-            <span className="text-[10px] font-mono tracking-[0.2em] text-zinc-400 uppercase block mb-1">
+            <span className="text-[10px] font-sans font-semibold tracking-[0.2em] text-zinc-400 uppercase block mb-1">
               Curated Catalog ({filteredItems.length} Items)
             </span>
             <h2 className="text-2xl sm:text-3xl font-serif font-bold text-zinc-950">

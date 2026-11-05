@@ -425,10 +425,10 @@ export function FootwearStorefront({
                 <div className="absolute bottom-4 left-4 right-4 bg-stone-900/90 backdrop-blur-md p-3.5 rounded-xl border border-stone-700 shadow-lg text-white">
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-wider block">Signature Build</span>
+                      <span className="text-[10px] font-sans font-bold text-amber-400 uppercase tracking-wider block">Signature Build</span>
                       <p className="text-xs font-bold font-serif">Horween Chromexcel Chelsea</p>
                     </div>
-                    <span className="text-xs font-mono font-bold text-amber-300">৳6,800</span>
+                    <span className="text-xs font-sans font-bold text-amber-300">৳6,800</span>
                   </div>
                   <p className="text-[10px] text-stone-300 mt-1">360° storm welt, cork bed & Vibram lug outsole</p>
                 </div>
@@ -443,7 +443,7 @@ export function FootwearStorefront({
         <div className="max-w-6xl mx-auto space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
             <div>
-              <span className="text-[10px] font-mono tracking-widest text-amber-900 font-bold uppercase">
+              <span className="text-[10px] font-sans tracking-widest text-amber-900 font-bold uppercase">
                 Guild Silhouettes
               </span>
               <h2 className="text-xl sm:text-2xl font-black text-stone-950 font-serif tracking-tight">
@@ -532,98 +532,98 @@ export function FootwearStorefront({
         </div>
       </section>
 
-      {/* ─── 6. Footwear Performance & Fit Sizing Studio ───────────────────── */}
+      {/* ─── 6. The Master Cobbler Lifetime Ensemble (Bundle Quick-Add) ──────── */}
       <section id="ensemble" className="py-16 px-4 sm:px-6 border-b border-stone-200/80 bg-gradient-to-r from-amber-50/50 via-[#faf7f2] to-stone-100">
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-3xl border border-stone-300/80 p-6 sm:p-10 shadow-lg">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-6 space-y-4">
+              <div className="lg:col-span-5 space-y-4">
                 <div className="inline-flex items-center space-x-1.5 px-3 py-1 bg-amber-100 text-amber-950 rounded-full text-[10px] font-bold tracking-wider uppercase border border-amber-300 font-mono">
-                  <Footprints className="w-3 h-3 text-amber-800" />
-                  <span>Anatomical Fit Studio</span>
+                  <Hammer className="w-3 h-3 text-amber-800" />
+                  <span>Guild Ensemble Package</span>
                 </div>
                 <h3 className="text-2xl sm:text-3xl font-black tracking-tight text-stone-950 font-serif">
-                  Doorstep 2-Size Fitting Trial
+                  The Master Cobbler Ensemble
                 </h3>
-                <p className="text-xs text-stone-600 leading-relaxed font-sans">
-                  Never guess footwear sizing again. We dispatch your selected size alongside an adjacent half-size. Try both on carpet at your door and retain the perfect pair before COD tender.
+                <p className="text-xs text-stone-600 leading-relaxed">
+                  Everything required for a lifetime of boot ownership: Handcrafted Chromexcel Chelsea Boots paired with natural aromatic red cedar shoe trees and Venetian leather cream.
                 </p>
 
-                {/* Cushioning Drop & Sole Telemetry */}
-                <div className="space-y-3 pt-2 font-mono">
-                  <span className="text-[10px] font-bold text-amber-950 uppercase tracking-wider block">
-                    Cushioning Drop & Biomechanical Index:
-                  </span>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                    {[
-                      { name: "Zero Drop", drop: "0mm Offset", sub: "Natural Barefoot" },
-                      { name: "Speed Drop", drop: "4mm Offset", sub: "Carbon Propulsion" },
-                      { name: "Daily Stride", drop: "8mm Offset", sub: "Balanced Support" },
-                      { name: "Max Cushion", drop: "10mm Offset", sub: "Nitrogen Foam" },
-                    ].map((d, i) => (
-                      <div
-                        key={i}
-                        className={`p-2.5 rounded-xl border text-center transition ${
-                          i === 2
-                            ? "bg-amber-50 border-amber-600 text-amber-950 font-bold"
-                            : "bg-stone-50 border-stone-200 text-stone-700 hover:border-stone-300"
-                        }`}
-                      >
-                        <span className="text-xs font-bold block">{d.name}</span>
-                        <span className="text-[9.5px] text-amber-900 block mt-0.5">{d.drop}</span>
-                        <span className="text-[9px] text-stone-400 block">{d.sub}</span>
-                      </div>
-                    ))}
+                <div className="space-y-2 pt-2">
+                  <div className="flex items-center space-x-2.5 text-xs text-stone-800 font-medium">
+                    <span className="w-5 h-5 rounded-full bg-stone-900 text-amber-400 text-[10px] font-bold flex items-center justify-center">1</span>
+                    <span>Horween Chromexcel Chelsea Boot (৳6,800)</span>
+                  </div>
+                  <div className="flex items-center space-x-2.5 text-xs text-stone-800 font-medium">
+                    <span className="w-5 h-5 rounded-full bg-stone-900 text-amber-400 text-[10px] font-bold flex items-center justify-center">2</span>
+                    <span>Tuscan Suede Penny Loafer (৳4,950)</span>
+                  </div>
+                  <div className="flex items-center space-x-2.5 text-xs text-stone-800 font-medium">
+                    <span className="w-5 h-5 rounded-full bg-stone-900 text-amber-400 text-[10px] font-bold flex items-center justify-center">3</span>
+                    <span>Pro-Stride Nitrogen Running Sneaker (৳5,400)</span>
                   </div>
                 </div>
 
-                <div className="pt-2 flex items-center space-x-3 text-xs text-stone-700 font-sans">
-                  <ShieldCheck className="w-4 h-4 text-emerald-700 flex-shrink-0" />
-                  <span>360° Goodyear Storm Welted • Vibram Lug Outsole Guaranteed</span>
+                <div className="pt-4 flex items-baseline space-x-3">
+                  <span className="text-2xl font-black text-amber-950">৳14,990</span>
+                  <span className="text-sm text-stone-400 line-through">৳17,150</span>
+                  <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                    Save ৳2,160 (13% Off)
+                  </span>
+                </div>
+
+                <div className="pt-2">
+                  <button
+                    onClick={handleAddBootEnsemble}
+                    className="w-full sm:w-auto py-3 px-8 bg-stone-950 hover:bg-stone-800 text-amber-100 font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center space-x-2 btn-press"
+                  >
+                    <ShoppingBag className="w-4 h-4 text-amber-400" />
+                    <span>Add Complete 3-Pair Guild Pack to Bag</span>
+                  </button>
+                  <p className="text-[11px] text-stone-500 mt-2">
+                    Dispatched in cedar-lined conditioned boxes with doorstep carpet trial guarantee.
+                  </p>
                 </div>
               </div>
 
-              <div className="lg:col-span-6 space-y-3">
-                <div className="bg-[#faf7f2] rounded-2xl p-5 border border-stone-200 space-y-3 font-sans">
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-amber-900 block">
-                    Last & Leather Provenance
-                  </span>
-
-                  <div className="space-y-2 text-xs">
-                    <div className="flex justify-between items-center py-1.5 border-b border-stone-200/80">
-                      <span className="text-stone-500">Tannery Origin:</span>
-                      <span className="text-stone-900 font-bold">Horween Leather Co. (Chicago, USA)</span>
+              <div className="lg:col-span-7 grid grid-cols-3 gap-3">
+                {[
+                  {
+                    step: "BOOT 01 • RUGGED",
+                    title: "Horween Chelsea",
+                    image: "https://images.unsplash.com/photo-1638247025967-b4e38f787b76?w=500&auto=format&fit=crop&q=80",
+                    detail: "Horween CXL • Vibram"
+                  },
+                  {
+                    step: "SHOE 02 • SARTORIAL",
+                    title: "Tuscan Penny Loafer",
+                    image: "https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=500&auto=format&fit=crop&q=80",
+                    detail: "Italian Calf Suede"
+                  },
+                  {
+                    step: "RUNNER 03 • SPORT",
+                    title: "Pro-Stride Carbon",
+                    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&auto=format&fit=crop&q=80",
+                    detail: "Carbon Torsion Plate"
+                  }
+                ].map((item, idx) => (
+                  <div key={idx} className="bg-[#faf7f2] rounded-2xl p-2.5 border border-stone-200 flex flex-col justify-between">
+                    <div className="aspect-[4/3] rounded-xl overflow-hidden bg-white mb-2 border border-stone-200/80">
+                      <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
                     </div>
-                    <div className="flex justify-between items-center py-1.5 border-b border-stone-200/80">
-                      <span className="text-stone-500">Sole Compound:</span>
-                      <span className="text-stone-900 font-bold">Vibram Montagna Lug Rubber</span>
-                    </div>
-                    <div className="flex justify-between items-center py-1.5 border-b border-stone-200/80">
-                      <span className="text-stone-500">Doorstep Try-On:</span>
-                      <span className="text-emerald-800 font-bold">Courier Waits for Fitting</span>
-                    </div>
-                    <div className="flex justify-between items-center py-1.5 border-b border-stone-200/80">
-                      <span className="text-stone-500">Recraftable:</span>
-                      <span className="text-stone-900 font-bold">Lifetime Resoling Support</span>
+                    <div>
+                      <span className="text-[9px] font-mono font-bold text-amber-900 block">{item.step}</span>
+                      <p className="text-xs font-bold text-stone-900 leading-tight mt-0.5 font-serif">{item.title}</p>
+                      <span className="text-[10px] text-stone-500 block mt-1">{item.detail}</span>
                     </div>
                   </div>
-
-                  <div className="pt-3 flex items-center justify-between font-mono">
-                    <span className="text-xs text-stone-600">Guild Pack:</span>
-                    <button
-                      onClick={handleAddBootEnsemble}
-                      className="py-2 px-4 bg-stone-950 hover:bg-stone-800 text-amber-100 text-xs font-bold rounded-xl transition flex items-center space-x-1.5"
-                    >
-                      <ShoppingBag className="w-3.5 h-3.5" />
-                      <span>Add Guild Pack (৳14,990)</span>
-                    </button>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
       </section>
+
       {/* ─── 7. Main Footwear Catalog Grid (4:3 Architectural Ratio) ───────── */}
       <section id="footwear" className="py-16 px-4 sm:px-6 max-w-6xl mx-auto w-full flex-1">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-8 border-b border-stone-200 gap-4">
@@ -749,7 +749,7 @@ export function FootwearStorefront({
                         <Star key={i} className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current" />
                       ))}
                     </div>
-                    <span className="text-[10px] sm:text-[11px] font-mono font-bold text-stone-800">5.0</span>
+                    <span className="text-[10px] sm:text-[11px] font-sans font-bold text-stone-800">5.0</span>
                   </div>
 
                   {/* Title & Description */}
@@ -764,11 +764,11 @@ export function FootwearStorefront({
                 {/* Price & Add to Bag */}
                 <div className="pt-2 sm:pt-3 mt-2 border-t border-stone-200 flex items-center justify-between gap-1">
                   <div>
-                    <span className="text-xs sm:text-base font-black text-stone-950 font-mono">
+                    <span className="text-xs sm:text-base font-black text-stone-950 font-sans">
                       ৳{p.price.toLocaleString("en-BD")}
                     </span>
                     {p.comparePrice > p.price && (
-                      <span className="text-[10px] sm:text-xs text-stone-400 line-through font-mono ml-1">
+                      <span className="text-[10px] sm:text-xs text-stone-400 line-through font-sans ml-1">
                         ৳{p.comparePrice.toLocaleString("en-BD")}
                       </span>
                     )}

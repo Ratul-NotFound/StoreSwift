@@ -42,31 +42,31 @@ export interface AthleisureStorefrontProps {
 
 const ACTIVITIES = [
   { id: "all", label: "All Training", tag: "Peak Performance" },
-  { id: "run", label: "Run & Sprint", tag: "Aero Ventilation" },
-  { id: "lift", label: "Gym & Strength", tag: "Seamless Compression" },
+  { id: "run", label: "Run & Sprint", tag: "Aerodynamic Ventilation" },
+  { id: "lift", label: "Gym & Strength", tag: "Ergonomic Compression" },
   { id: "recovery", label: "Recovery & Lounge", tag: "Thermal Fleece" },
 ];
 
 const KINETIC_SPECS = [
   {
     icon: Activity,
-    title: "320% 4-Way Stretch",
-    desc: "Unrestricted range of motion tailored with ergonomic micro-mesh gussets.",
+    title: "4-Way Technical Stretch",
+    desc: "Unrestricted range of motion tailored with ergonomic breathable micro-mesh gussets.",
   },
   {
     icon: Droplets,
-    title: "DryWeave™ Evaporation",
-    desc: "Hydrophobic capillary fibers disperse perspiration 4x faster than cotton.",
+    title: "DryWeave™ Moisture Dispersal",
+    desc: "Hydrophobic capillary fibers evaporate perspiration 4x faster than standard cotton.",
   },
   {
     icon: Wind,
-    title: "Zero-Chafe Seams",
-    desc: "Bonded ultrasonic flatlock seams engineered for intense 100km endurance runs.",
+    title: "Bonded Anti-Chafe Seams",
+    desc: "Ultrasonic flatlock seams engineered for long-distance marathon endurance.",
   },
   {
     icon: ShieldCheck,
-    title: "Anti-Odor Silver-Ion",
-    desc: "Permanent microscopic silver thread infusion neutralizes microbial odor.",
+    title: "Anti-Odor Silver-Ion Fibers",
+    desc: "Permanent microscopic antimicrobial infusion eliminates training odor.",
   },
 ];
 
@@ -120,12 +120,12 @@ export function AthleisureStorefront({
   };
 
   return (
-    <div suppressHydrationWarning className="min-h-screen bg-[#090d16] text-slate-100 font-sans selection:bg-[#ccff00] selection:text-black">
+    <div suppressHydrationWarning className="min-h-screen bg-[#0a0f1d] text-slate-100 font-sans selection:bg-lime-400 selection:text-zinc-950">
       {/* ─── Top Telemetry Announcement Bar ─── */}
-      <div className="bg-[#ccff00] text-black py-1.5 px-4 text-[11px] font-black tracking-widest uppercase flex items-center justify-between">
+      <div className="bg-lime-400 text-zinc-950 py-1.5 px-4 text-[11px] font-bold tracking-wider uppercase flex items-center justify-between">
         <div className="flex items-center gap-2 mx-auto">
-          <Zap className="w-3.5 h-3.5 fill-black" />
-          <span>PRO ATHLEISURE SERIES 2026 // FASTEST 24H EXPRESS COD DELIVERY ACROSS BANGLADESH</span>
+          <Zap className="w-3.5 h-3.5 fill-zinc-950" />
+          <span>SERIES 04 PRO TRAINING // 24H EXPRESS COD DISPATCH ACROSS ALL 64 DISTRICTS</span>
         </div>
         {onOpenTrackOrder && (
           <button
@@ -139,7 +139,7 @@ export function AthleisureStorefront({
       </div>
 
       {/* ─── Main Header ─── */}
-      <header className="sticky top-0 z-40 bg-[#090d16]/90 backdrop-blur-md border-b border-white/10">
+      <header className="sticky top-0 z-40 bg-[#0a0f1d]/90 backdrop-blur-md border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           <div className="flex items-center gap-6">
             <button
@@ -150,16 +150,16 @@ export function AthleisureStorefront({
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
 
-            <a href={`/store/${tenantSlug}`} className="flex items-center gap-2 group">
-              <div className="w-8 h-8 rounded-lg bg-[#ccff00] text-black flex items-center justify-center font-black text-sm tracking-tighter">
+            <a href={`/store/${tenantSlug}`} className="flex items-center gap-2.5 group">
+              <div className="w-8 h-8 rounded-lg bg-lime-400 text-zinc-950 flex items-center justify-center font-black text-sm tracking-tighter shadow-md shadow-lime-400/20">
                 ⚡
               </div>
               <div className="flex flex-col">
-                <span className="font-black text-base sm:text-lg tracking-tight uppercase text-white leading-none">
+                <span className="font-extrabold text-base sm:text-lg tracking-tight uppercase text-white leading-none">
                   {storeDisplayName}
                 </span>
-                <span className="text-[9px] text-[#ccff00] font-mono tracking-widest uppercase">
-                  AERO KINETICS // LAB
+                <span className="text-[9px] text-lime-400 font-semibold tracking-wider uppercase mt-0.5">
+                  Performance Division
                 </span>
               </div>
             </a>
@@ -173,9 +173,9 @@ export function AthleisureStorefront({
                 <button
                   key={act.id}
                   onClick={() => setSelectedActivity(act.id)}
-                  className={`px-4 py-1.5 rounded-full text-xs font-bold transition flex items-center gap-1.5 ${
+                  className={`px-4 py-1.5 rounded-full text-xs font-semibold transition flex items-center gap-1.5 ${
                     isActive
-                      ? "bg-[#ccff00] text-black shadow-lg shadow-[#ccff00]/20"
+                      ? "bg-lime-400 text-zinc-950 shadow-md shadow-lime-400/20 font-bold"
                       : "text-slate-300 hover:text-white hover:bg-white/5"
                   }`}
                 >
@@ -198,7 +198,7 @@ export function AthleisureStorefront({
             {onOpenCheckout && (
               <button
                 onClick={onOpenCheckout}
-                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#ccff00] hover:bg-[#b8e600] text-black text-xs font-black rounded-lg transition"
+                className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-lime-400 hover:bg-lime-300 text-zinc-950 text-xs font-bold rounded-lg transition shadow-xs"
               >
                 <Truck className="w-3.5 h-3.5" />
                 <span>Express Checkout</span>
@@ -210,10 +210,10 @@ export function AthleisureStorefront({
               className="relative p-2 rounded-xl bg-white/10 hover:bg-white/15 text-white transition flex items-center gap-1.5"
               aria-label="View Cart"
             >
-              <ShoppingBag className="w-4.5 h-4.5 text-[#ccff00]" />
-              <span className="text-xs font-black hidden sm:inline">৳{finalTotal.toFixed(0)}</span>
+              <ShoppingBag className="w-4.5 h-4.5 text-lime-400" />
+              <span className="text-xs font-bold hidden sm:inline">৳{finalTotal.toLocaleString("en-BD")}</span>
               {cartCount > 0 && (
-                <span className="w-4 h-4 rounded-full bg-[#ccff00] text-black text-[10px] font-black flex items-center justify-center">
+                <span className="w-4 h-4 rounded-full bg-lime-400 text-zinc-950 text-[10px] font-bold flex items-center justify-center">
                   {cartCount}
                 </span>
               )}
@@ -223,8 +223,8 @@ export function AthleisureStorefront({
 
         {/* Mobile Nav Drawer */}
         {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-white/10 bg-[#090d16] px-4 py-3 space-y-2">
-            <p className="text-[10px] uppercase font-mono tracking-widest text-slate-400">
+          <div className="lg:hidden border-t border-white/10 bg-[#0a0f1d] px-4 py-3 space-y-2 animate-fade-in">
+            <p className="text-[10px] uppercase font-bold tracking-wider text-slate-400">
               Training Disciplines
             </p>
             <div className="grid grid-cols-2 gap-2">
@@ -235,9 +235,9 @@ export function AthleisureStorefront({
                     setSelectedActivity(act.id);
                     setMobileMenuOpen(false);
                   }}
-                  className={`p-2.5 rounded-xl text-xs font-bold text-left transition ${
+                  className={`p-2.5 rounded-xl text-xs font-semibold text-left transition ${
                     selectedActivity === act.id
-                      ? "bg-[#ccff00] text-black font-black"
+                      ? "bg-lime-400 text-zinc-950 font-bold"
                       : "bg-white/5 text-slate-200"
                   }`}
                 >
@@ -251,19 +251,19 @@ export function AthleisureStorefront({
 
       {/* ─── Hero Billboard Section ─── */}
       <section className="relative overflow-hidden py-16 sm:py-24 border-b border-white/10">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#ccff00]/15 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-lime-400/10 via-transparent to-transparent pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-2xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#ccff00]/10 border border-[#ccff00]/30 text-[#ccff00] text-xs font-mono font-bold tracking-wider uppercase">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-lime-400/10 border border-lime-400/25 text-lime-400 text-xs font-semibold tracking-wide uppercase">
               <Flame className="w-3.5 h-3.5" />
-              <span>AERO PRO SERIES 2026 // ZERO CHAFE</span>
+              <span>Series 04 // Ergonomic Athletic Fit</span>
             </div>
             <h1 className="text-4xl sm:text-6xl font-black uppercase tracking-tight text-white leading-tight">
-              Engineered For <span className="text-[#ccff00]">Peak Kinetics.</span>
+              Engineered For <span className="text-lime-400">Peak Movement.</span>
             </h1>
             <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
               Ultra-lightweight 4-way stretch compression apparel engineered with silver-ion
-              antimicrobial fibers and capillary perspiration dispersal.
+              antimicrobial fibers and capillary perspiration dispersal for intense training.
             </p>
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <button
@@ -271,7 +271,7 @@ export function AthleisureStorefront({
                   const el = document.getElementById("athletic-catalog");
                   el?.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="px-6 py-3 rounded-xl bg-[#ccff00] hover:bg-[#b8e600] text-black font-black text-xs uppercase tracking-wider transition flex items-center gap-2"
+                className="px-6 py-3 rounded-xl bg-lime-400 hover:bg-lime-300 text-zinc-950 font-bold text-xs uppercase tracking-wider transition flex items-center gap-2 shadow-md shadow-lime-400/15"
               >
                 <span>Explore Catalog</span>
                 <ArrowRight className="w-4 h-4" />
@@ -279,7 +279,7 @@ export function AthleisureStorefront({
               {onOpenCheckout && (
                 <button
                   onClick={onOpenCheckout}
-                  className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs uppercase tracking-wider transition border border-white/10"
+                  className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white font-semibold text-xs uppercase tracking-wider transition border border-white/10"
                 >
                   Direct Express COD
                 </button>
@@ -292,16 +292,16 @@ export function AthleisureStorefront({
       {/* ─── 4 Kinetic Performance Specs Bar ─── */}
       <section className="border-b border-white/10 bg-white/[0.02]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {KINETIC_SPECS.map((spec, i) => {
               const Icon = spec.icon;
               return (
                 <div key={i} className="flex items-start gap-3 p-4 rounded-2xl bg-white/[0.03] border border-white/5">
-                  <div className="p-2.5 rounded-xl bg-[#ccff00]/10 text-[#ccff00] shrink-0">
+                  <div className="p-2.5 rounded-xl bg-lime-400/10 text-lime-400 shrink-0">
                     <Icon className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-black uppercase tracking-wide text-white">{spec.title}</h4>
+                    <h4 className="text-xs font-bold uppercase tracking-wide text-white">{spec.title}</h4>
                     <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">{spec.desc}</p>
                   </div>
                 </div>
@@ -315,11 +315,11 @@ export function AthleisureStorefront({
       <main id="athletic-catalog" className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <div>
-            <span className="text-[10px] font-mono tracking-widest uppercase text-[#ccff00]">
-              LIVE PRO INVENTORY ({filteredProducts.length} ARTICLES)
+            <span className="text-xs font-semibold tracking-wider uppercase text-lime-400">
+              Active Gear Catalog ({filteredProducts.length} Articles)
             </span>
             <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white mt-1">
-              Active Gear Catalog
+              Performance Apparel
             </h2>
           </div>
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
@@ -327,9 +327,9 @@ export function AthleisureStorefront({
               <button
                 key={act.id}
                 onClick={() => setSelectedActivity(act.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition shrink-0 ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition shrink-0 ${
                   selectedActivity === act.id
-                    ? "bg-[#ccff00] text-black"
+                    ? "bg-lime-400 text-zinc-950 font-bold"
                     : "bg-white/5 text-slate-300 hover:bg-white/10"
                 }`}
               >
@@ -348,7 +348,7 @@ export function AthleisureStorefront({
             return (
               <div
                 key={p.id}
-                className="group rounded-2xl bg-white/[0.03] border border-white/10 hover:border-[#ccff00]/50 transition-all duration-300 flex flex-col justify-between overflow-hidden"
+                className="group rounded-2xl bg-white/[0.03] border border-white/10 hover:border-lime-400/50 transition-all duration-300 flex flex-col justify-between overflow-hidden"
               >
                 {/* Image Wrap */}
                 <div className="relative aspect-4/5 overflow-hidden bg-slate-900 cursor-pointer" onClick={() => onOpenProduct(p)}>
@@ -358,8 +358,8 @@ export function AthleisureStorefront({
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute top-2 sm:top-3 left-2 sm:left-3 flex flex-col gap-1.5">
-                    <span className="px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-black/80 backdrop-blur-md text-[#ccff00] text-[8.5px] sm:text-[10px] font-black uppercase tracking-wider border border-[#ccff00]/40">
-                      {p.badge || (idx === 0 ? "⚡ Aero Pick" : "320% Stretch")}
+                    <span className="px-2 py-0.5 sm:py-1 rounded-md bg-zinc-950/85 backdrop-blur-md text-lime-400 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider border border-lime-400/30">
+                      {p.badge || (idx === 0 ? "⚡ Pro Series" : "4-Way Stretch")}
                     </span>
                   </div>
                   <button
@@ -368,24 +368,24 @@ export function AthleisureStorefront({
                       onToggleWishlist(p.id);
                     }}
                     className={`absolute top-2 sm:top-3 right-2 sm:right-3 p-1.5 sm:p-2 rounded-full backdrop-blur-md transition ${
-                      isWish ? "bg-[#ccff00] text-black" : "bg-black/60 text-white hover:bg-black/90"
+                      isWish ? "bg-lime-400 text-zinc-950" : "bg-zinc-950/60 text-white hover:bg-zinc-950/90"
                     }`}
                     aria-label="Wishlist toggle"
                   >
-                    <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isWish ? "fill-black" : ""}`} />
+                    <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isWish ? "fill-zinc-950" : ""}`} />
                   </button>
                 </div>
 
                 {/* Details */}
                 <div className="p-2.5 sm:p-5 flex-1 flex flex-col justify-between space-y-2.5 sm:space-y-4">
                   <div>
-                    <div className="flex items-center justify-between text-[9px] sm:text-[11px] font-mono text-slate-400 mb-1">
-                      <span>AERO LAB // GEN-4</span>
-                      <span className="text-[#ccff00] font-bold">★ 4.9</span>
+                    <div className="flex items-center justify-between text-[10px] sm:text-xs font-semibold text-slate-400 mb-1">
+                      <span>Series 04 Active</span>
+                      <span className="text-lime-400 font-bold">★ 4.9</span>
                     </div>
                     <h3
                       onClick={() => onOpenProduct(p)}
-                      className="text-xs sm:text-base font-black text-white hover:text-[#ccff00] transition cursor-pointer line-clamp-1"
+                      className="text-xs sm:text-base font-bold text-white hover:text-lime-400 transition cursor-pointer line-clamp-1"
                     >
                       {p.title}
                     </h3>
@@ -396,9 +396,9 @@ export function AthleisureStorefront({
 
                   {/* Quick Size Selection Chips */}
                   <div className="space-y-1 sm:space-y-2 pt-1.5 sm:pt-2 border-t border-white/10">
-                    <div className="flex items-center justify-between text-[8.5px] sm:text-[10px] font-mono text-slate-400">
-                      <span>SIZE:</span>
-                      <span className="text-[#ccff00] font-bold">{currentSize}</span>
+                    <div className="flex items-center justify-between text-[10px] font-semibold text-slate-400">
+                      <span>SELECT SIZE:</span>
+                      <span className="text-lime-400 font-bold">{currentSize}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       {["S", "M", "L", "XL"].map((sz) => (
@@ -407,7 +407,7 @@ export function AthleisureStorefront({
                           onClick={() => handleSelectSize(p.id, sz)}
                           className={`flex-1 py-0.5 sm:py-1 text-[10px] sm:text-xs font-bold rounded-md sm:rounded-lg border transition ${
                             currentSize === sz
-                              ? "bg-[#ccff00] text-black border-[#ccff00]"
+                              ? "bg-lime-400 text-zinc-950 border-lime-400"
                               : "bg-white/5 text-slate-300 border-white/10 hover:bg-white/10"
                           }`}
                         >
@@ -420,12 +420,12 @@ export function AthleisureStorefront({
                   {/* Price & Add to Cart */}
                   <div className="flex items-center justify-between gap-1.5 pt-1.5 sm:pt-2">
                     <div>
-                      <div className="text-[8.5px] sm:text-[10px] font-mono uppercase text-slate-400">PRICE COD</div>
+                      <div className="text-[10px] font-semibold uppercase text-slate-400">Price (COD)</div>
                       <div className="text-xs sm:text-lg font-black text-white">
-                        ৳{p.price.toFixed(0)}
+                        ৳{p.price.toLocaleString("en-BD")}
                         {p.comparePrice && p.comparePrice > p.price && (
                           <span className="text-[10px] sm:text-xs text-slate-500 line-through font-normal ml-1">
-                            ৳{p.comparePrice.toFixed(0)}
+                            ৳{p.comparePrice.toLocaleString("en-BD")}
                           </span>
                         )}
                       </div>
@@ -433,7 +433,7 @@ export function AthleisureStorefront({
 
                     <button
                       onClick={() => handleQuickAdd(p)}
-                      className="px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-[#ccff00] hover:bg-[#b8e600] text-black font-black text-[10px] sm:text-xs uppercase tracking-wider transition flex items-center justify-center gap-1 sm:gap-1.5 shadow-md shadow-[#ccff00]/10 shrink-0 active:scale-95"
+                      className="px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-lime-400 hover:bg-lime-300 text-zinc-950 font-bold text-[10px] sm:text-xs uppercase tracking-wider transition flex items-center justify-center gap-1 sm:gap-1.5 shadow-md shadow-lime-400/15 shrink-0 active:scale-95"
                     >
                       <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                       <span className="hidden sm:inline">Add to Bag</span>
@@ -451,26 +451,26 @@ export function AthleisureStorefront({
       <footer className="border-t border-white/10 bg-[#05080e] py-12 text-slate-400 text-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-lg bg-[#ccff00] text-black flex items-center justify-center font-black text-xs">
+            <div className="w-8 h-8 rounded-lg bg-lime-400 text-zinc-950 flex items-center justify-center font-black text-xs">
               ⚡
             </div>
             <div>
               <p className="font-bold text-white text-sm">{storeDisplayName} Athletics</p>
-              <p className="text-[10px] font-mono text-slate-500">© 2026 StoreSwift Athletic Engine</p>
+              <p className="text-[11px] text-slate-500">© 2026 StoreSwift Athletic Engine • Bangladesh</p>
             </div>
           </div>
 
           <div className="flex items-center gap-6 text-[11px] font-medium">
             <span className="flex items-center gap-1.5 text-slate-300">
-              <Truck className="w-3.5 h-3.5 text-[#ccff00]" />
+              <Truck className="w-3.5 h-3.5 text-lime-400" />
               Steadfast & Pathao 24h
             </span>
             <span className="flex items-center gap-1.5 text-slate-300">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#ccff00]" />
+              <ShieldCheck className="w-3.5 h-3.5 text-lime-400" />
               100% Genuine Lab Tested
             </span>
             <span className="flex items-center gap-1.5 text-slate-300">
-              <RotateCcw className="w-3.5 h-3.5 text-[#ccff00]" />
+              <RotateCcw className="w-3.5 h-3.5 text-lime-400" />
               7-Day Size Exchange
             </span>
           </div>
@@ -479,4 +479,3 @@ export function AthleisureStorefront({
     </div>
   );
 }
-

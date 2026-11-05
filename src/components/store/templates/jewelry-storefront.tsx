@@ -240,9 +240,9 @@ export function JewelryStorefront({
           </div>
           <div className="mx-auto sm:mx-0 flex items-center space-x-2 text-xs font-semibold text-amber-200">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-            <span>Armored Courier Handover (COD) • Loupe & Hallmark Inspection</span>
+            <span>Armored Courier Handover (COD) • Hallmark & Purity Inspection</span>
           </div>
-          <div className="hidden md:flex items-center space-x-3 text-[11px] text-zinc-400 font-mono">
+          <div className="hidden md:flex items-center space-x-3 text-[11px] text-zinc-400 font-sans">
             <span>Lifetime Fine Care Guarantee</span>
           </div>
         </div>
@@ -260,7 +260,7 @@ export function JewelryStorefront({
               <span className={`font-bold tracking-tight text-base block leading-none font-serif ${themeConfig.brandColor}`}>
                 {storeDisplayName}
               </span>
-              <span className="text-[10px] text-amber-400/90 font-semibold block mt-1 tracking-wider uppercase font-mono">
+              <span className="text-[10px] text-amber-400/90 font-semibold block mt-1 tracking-wider uppercase font-sans">
                 {themeConfig.tagline}
               </span>
             </div>
@@ -272,7 +272,7 @@ export function JewelryStorefront({
             <a href="#collections" className="hover:text-amber-400 transition">Collections</a>
             <a href="#standards" className="hover:text-amber-400 transition">Assay Standards</a>
             <a href="#ensemble" className="hover:text-amber-400 transition">Heirloom Ensemble</a>
-            <a href="#loupe" className="hover:text-amber-400 transition">Loupe Handover</a>
+            <a href="#loupe" className="hover:text-amber-400 transition">Hallmark Purity</a>
           </nav>
 
           {/* Search Trigger */}
@@ -410,10 +410,10 @@ export function JewelryStorefront({
                 <div className="absolute bottom-4 left-4 right-4 bg-black/85 backdrop-blur-md p-3.5 rounded-xl border border-neutral-700 shadow-lg text-white">
                   <div className="flex items-center justify-between font-serif">
                     <div>
-                      <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider block font-mono">Haute Horology</span>
+                      <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider block font-sans">Haute Horology</span>
                       <p className="text-xs font-bold">Heritage 39mm Sapphire Automatic</p>
                     </div>
-                    <span className="text-xs font-bold text-amber-300 font-mono">৳26,500</span>
+                    <span className="text-xs font-bold text-amber-300 font-sans">৳26,500</span>
                   </div>
                   <p className="text-[10px] text-zinc-400 mt-1 font-sans">28,800 vph caliber • Exhibition caseback • Italian leather</p>
                 </div>
@@ -514,98 +514,92 @@ export function JewelryStorefront({
         </div>
       </section>
 
-      {/* ─── 6. Bespoke Ring Sizing & Fine Gifting Studio ──────────────────── */}
+      {/* ─── 6. The Curated Heirloom Ensemble (1-Click Upsell) ───────────────── */}
       <section id="ensemble" className="py-16 px-4 sm:px-6 border-b border-neutral-800/80 bg-gradient-to-r from-amber-950/20 via-[#101116] to-black">
         <div className="max-w-6xl mx-auto">
           <div className="bg-[#121317] rounded-3xl border border-amber-900/40 p-6 sm:p-10 shadow-2xl">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-6 space-y-4 font-serif">
+              <div className="lg:col-span-5 space-y-4 font-serif">
                 <div className="inline-flex items-center space-x-1.5 px-3 py-1 bg-amber-950/80 text-amber-400 rounded-full text-[10px] font-bold tracking-wider uppercase border border-amber-800 font-mono">
                   <Crown className="w-3 h-3 text-amber-400" />
-                  <span>Bespoke Salon Service</span>
+                  <span>Curated Salon Package</span>
                 </div>
                 <h3 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-                  Ring Sizing & Fine Gifting Studio
+                  The Curated Heirloom Ensemble
                 </h3>
                 <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-                  Every creation is accompanied by complimentary velvet-lined unboxing presentation, a custom hand-calligraphed wax seal card, and a jeweler's loupe for doorstep verification.
+                  The complete sartorial suite: Swiss Automatic Sapphire Chronograph, 18k Heavy Gold Vermeil Signet Ring, and 14g Laser-Cut Beta-Titanium Aviators.
                 </p>
 
-                {/* Interactive Ring Sizer Meter */}
-                <div className="space-y-3 pt-2 font-mono">
-                  <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider block">
-                    Interactive Salon Ring Sizer:
-                  </span>
-                  <div className="grid grid-cols-4 sm:grid-cols-7 gap-1.5 text-center">
-                    {[
-                      { us: "US 5", mm: "15.7mm" },
-                      { us: "US 6", mm: "16.5mm" },
-                      { us: "US 7", mm: "17.3mm" },
-                      { us: "US 8", mm: "18.2mm" },
-                      { us: "US 9", mm: "19.0mm" },
-                      { us: "US 10", mm: "19.8mm" },
-                      { us: "US 11", mm: "20.6mm" },
-                    ].map((sz, i) => (
-                      <div
-                        key={i}
-                        className={`p-2 rounded-xl border ${
-                          i === 2
-                            ? "bg-amber-950/80 border-amber-500 text-amber-300"
-                            : "bg-black/40 border-neutral-800 text-zinc-400 hover:border-neutral-700"
-                        }`}
-                      >
-                        <span className="text-xs font-bold block">{sz.us}</span>
-                        <span className="text-[9px] text-zinc-400 block">{sz.mm}</span>
-                      </div>
-                    ))}
+                <div className="space-y-2 pt-2 text-xs font-sans">
+                  <div className="flex items-center space-x-2.5 text-zinc-200 font-medium">
+                    <span className="w-5 h-5 rounded-full bg-amber-500 text-black text-[10px] font-bold flex items-center justify-center">1</span>
+                    <span>Heritage 39mm Automatic Sapphire Chronograph (৳26,500)</span>
                   </div>
-                  <p className="text-[10px] text-zinc-400 font-sans mt-1">
-                    Complimentary 30-day ring resizing on all solid gold and platinum creations.
-                  </p>
+                  <div className="flex items-center space-x-2.5 text-zinc-200 font-medium">
+                    <span className="w-5 h-5 rounded-full bg-amber-500 text-black text-[10px] font-bold flex items-center justify-center">2</span>
+                    <span>18k Heavy Gold-Vermeil Signet Ring (৳9,500)</span>
+                  </div>
+                  <div className="flex items-center space-x-2.5 text-zinc-200 font-medium">
+                    <span className="w-5 h-5 rounded-full bg-amber-500 text-black text-[10px] font-bold flex items-center justify-center">3</span>
+                    <span>Beta-Titanium Polarized Aviators (৳12,500)</span>
+                  </div>
                 </div>
 
-                <div className="pt-2 flex items-center space-x-3 text-xs text-zinc-300 font-sans">
-                  <ShieldCheck className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                  <span>Doorstep 40x Loupe Inspection • Cash on Delivery Handover</span>
+                <div className="pt-4 flex items-baseline space-x-3">
+                  <span className="text-2xl font-black text-amber-400">৳41,900</span>
+                  <span className="text-sm text-zinc-500 line-through">৳48,500</span>
+                  <span className="text-xs font-bold text-amber-300 bg-amber-950 px-2 py-0.5 rounded-full border border-amber-700">
+                    Save ৳6,600 (14% Off)
+                  </span>
+                </div>
+
+                <div className="pt-2">
+                  <button
+                    onClick={handleAddHeirloomEnsemble}
+                    className="w-full sm:w-auto py-3 px-8 bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center space-x-2 btn-press"
+                  >
+                    <ShoppingBag className="w-4 h-4 text-black" />
+                    <span>Add Complete Heirloom Suite to Bag</span>
+                  </button>
+                  <p className="text-[11px] text-zinc-500 mt-2 font-sans">
+                    Dispatched in velvet-lined lockboxes with jeweler's loupe and Assay certificates.
+                  </p>
                 </div>
               </div>
 
-              <div className="lg:col-span-6 space-y-3">
-                <div className="bg-black/60 rounded-2xl p-5 border border-amber-900/30 space-y-3 font-sans">
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-amber-400 block">
-                    Hallmark Assay Purity Standard
-                  </span>
-
-                  <div className="space-y-2 text-xs">
-                    <div className="flex justify-between items-center py-1.5 border-b border-neutral-900">
-                      <span className="text-zinc-400">18K Solid Gold / 750:</span>
-                      <span className="text-white font-mono font-bold">Government Assay Stamped</span>
+              <div className="lg:col-span-7 grid grid-cols-3 gap-3 font-serif">
+                {[
+                  {
+                    step: "TIMEPIECE 01",
+                    title: "Sapphire Chrono",
+                    image: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=500&auto=format&fit=crop&q=80",
+                    detail: "Swiss 28.8k Caliber"
+                  },
+                  {
+                    step: "SIGNET 02",
+                    title: "18k Vermeil Ring",
+                    image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=500&auto=format&fit=crop&q=80",
+                    detail: "3-Micron Gold • 925 Core"
+                  },
+                  {
+                    step: "OPTICS 03",
+                    title: "Titanium Aviator",
+                    image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500&auto=format&fit=crop&q=80",
+                    detail: "14g Beta-Titanium"
+                  }
+                ].map((item, idx) => (
+                  <div key={idx} className="bg-black/60 rounded-2xl p-2.5 border border-neutral-800 flex flex-col justify-between">
+                    <div className="aspect-square rounded-xl overflow-hidden bg-neutral-900 mb-2 border border-neutral-800">
+                      <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
                     </div>
-                    <div className="flex justify-between items-center py-1.5 border-b border-neutral-900">
-                      <span className="text-zinc-400">Diamond Grading:</span>
-                      <span className="text-white font-mono font-bold">VVS1 / D-Color / GIA Certified</span>
-                    </div>
-                    <div className="flex justify-between items-center py-1.5 border-b border-neutral-900">
-                      <span className="text-zinc-400">Gift Presentation:</span>
-                      <span className="text-amber-300 font-bold">Velvet Box + Wax-Sealed Note</span>
-                    </div>
-                    <div className="flex justify-between items-center py-1.5 border-b border-neutral-900">
-                      <span className="text-zinc-400">Secure Logistics:</span>
-                      <span className="text-emerald-400 font-bold">Armored Courier Nationwide</span>
+                    <div>
+                      <span className="text-[9px] font-mono font-bold text-amber-400 block">{item.step}</span>
+                      <p className="text-xs font-bold text-white leading-tight mt-0.5">{item.title}</p>
+                      <span className="text-[10px] text-zinc-400 block mt-1 font-sans">{item.detail}</span>
                     </div>
                   </div>
-
-                  <div className="pt-3 flex items-center justify-between font-mono">
-                    <span className="text-xs text-zinc-400">Curated Trio:</span>
-                    <button
-                      onClick={handleAddHeirloomEnsemble}
-                      className="py-2 px-4 bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold rounded-xl transition flex items-center space-x-1.5"
-                    >
-                      <ShoppingBag className="w-3.5 h-3.5" />
-                      <span>Add Suite to Bag (৳41,900)</span>
-                    </button>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
@@ -733,7 +727,7 @@ export function JewelryStorefront({
                   )}
 
                   {/* Rating & Reviews */}
-                  <div className="flex items-center space-x-1 mb-1 font-mono">
+                  <div className="flex items-center space-x-1 mb-1 font-sans">
                     <div className="flex text-amber-400">
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current" />
@@ -752,7 +746,7 @@ export function JewelryStorefront({
                 </div>
 
                 {/* Price & Add to Bag */}
-                <div className="pt-2 sm:pt-3 mt-2 border-t border-neutral-800 flex items-center justify-between font-mono gap-1">
+                <div className="pt-2 sm:pt-3 mt-2 border-t border-neutral-800 flex items-center justify-between font-sans gap-1">
                   <div>
                     <span className="text-xs sm:text-base font-black text-white">
                       ৳{p.price.toLocaleString("en-BD")}
