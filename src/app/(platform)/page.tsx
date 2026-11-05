@@ -136,7 +136,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         headline: "Clinical botanical formulations with bio-active ingredient percentages",
         description: "Purpose-built for clean beauty and derma skincare brands with a step-by-step glass skin routine builder, skin-type concern filters, and tamper seal guarantees.",
         image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1200&auto=format&fit=crop&q=85",
-        highlights: ["Active ingredient % badges", "3-Step glass skin ritual builder", "Tamper seal inspection protocol", "Skin concern diagnostic filter"]
+        highlights: ["Active bio-ingredient % disclosures", "AM / PM routine sequencer", "Tamper seal inspection protocol", "Skin concern diagnostic filter"]
       },
       {
         id: "luxe-glam",
@@ -195,7 +195,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         headline: "Heritage leathercraft, Goodyear welted construction, and Vibram lug depth",
         description: "Crafted for footwear and leather goods makers with anatomical cutaway visuals, tannery provenance, and Vibram lug depth specifications.",
         image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=1200&auto=format&fit=crop&q=85",
-        highlights: ["Anatomical sole cutaway visuals", "Horween tannery provenance", "Vibram lug depth specifications", "Doorstep fitting check guarantee"]
+        highlights: ["5-Layer Goodyear welt workbench", "Horween tannery provenance", "Brannock last & width advisor", "Doorstep carpet fitting check"]
       },
       {
         id: "velocity",
@@ -254,7 +254,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         headline: "Frequency curves, titanium driver specs, and CNC hardware telemetry",
         description: "Optimized for audiophiles and premium hardware with acoustic frequency visualizers, IPX7 waterproof ratings, and low-latency gaming mode.",
         image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1200&auto=format&fit=crop&q=85",
-        highlights: ["Frequency curve visualizer", "Low-latency gaming mode", "IPX7 waterproof ratings", "Anti-tamper seal protocol"]
+        highlights: ["Harman acoustic frequency visualizer", "Tactile switch actuation bench", "IPX7 waterproof ratings", "Anti-static seal protocol"]
       },
       {
         id: "lumina",
@@ -313,7 +313,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         headline: "Hallmarked 18K/24K gold, certified diamonds and unboxing seals",
         description: "Designed for fine jewelry and luxury horology with 40x loupe inspection guarantee, GIA clarity certifications, and velvet unboxing presentation.",
         image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=1200&auto=format&fit=crop&q=85",
-        highlights: ["Gold purity hallmarks (750)", "GIA clarity certifications", "Velvet unboxing guarantee", "Insured doorstep handover"]
+        highlights: ["Interactive gemstone cut studio", "18K Gold & Platinum alloy salon", "Central Assay 750 laser hallmarks", "40x triplet loupe inspection"]
       },
       {
         id: "aurora",
@@ -372,7 +372,7 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         headline: "Farmstead provisions, raw alpine honey, and small-batch micro-lots",
         description: "Specialty coffee, raw honey, and gourmet provisions with harvest altitude metrics, roast freshness tracking (within 48 hours), and airtight seal protocol.",
         image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&auto=format&fit=crop&q=85",
-        highlights: ["48h harvest & roast freshness", "100% raw unheated alpine honey", "Cold-pressed extra virgin olive oil", "Tamper-evident airtight seal protocol"]
+        highlights: ["Barista brew ratio calculator", "Terroir tasting notes wheel", "48h harvest & roast freshness", "Aroma valve seal protocol"]
       },
       {
         id: "bazaar",

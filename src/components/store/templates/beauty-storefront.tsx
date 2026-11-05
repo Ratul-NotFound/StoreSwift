@@ -27,7 +27,9 @@ import {
   Flower2,
   ChevronRight,
   ChevronDown,
-  Info
+  Info,
+  Sun,
+  Moon
 } from "lucide-react";
 import { IStoreTemplate } from "@/templates/types";
 import { CartItem } from "@/lib/cart";
@@ -134,8 +136,11 @@ export function BeautyStorefront({
 }: BeautyStorefrontProps) {
   const [selectedConcern, setSelectedConcern] = useState<string>("all");
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
-  const [quickVolumeMap, setQuickVolumeMap] = useState<Record<string, string>>({});  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [quickVolumeMap, setQuickVolumeMap] = useState<Record<string, string>>({});
+  const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
+  const [routineMode, setRoutineMode] = useState<"am" | "pm">("am");
+  const [activeRoutineStep, setActiveRoutineStep] = useState<number>(0);
 
   const isGlam = variant === "luxe-glam";
   const isKBeauty = variant === "k-beauty";
@@ -485,95 +490,179 @@ export function BeautyStorefront({
         </div>
       </section>
 
-      {/* ─── 5. The 3-Step Glass Skin Routine Builder (Interactive Bundle) ───── */}
+      {/* ─── 5. Interactive AM / PM Skincare Routine Sequencer ─────────────────── */}
       <section id="bundle" className="py-16 px-4 sm:px-6 border-b border-rose-100/70 bg-gradient-to-r from-rose-50/50 via-white to-pink-50/40">
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-white rounded-3xl border border-rose-200/80 p-6 sm:p-10 shadow-lg">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-5 space-y-4">
-                <div className="inline-flex items-center space-x-1.5 px-3 py-1 bg-rose-50 text-rose-700 rounded-full text-[10px] font-bold tracking-wider uppercase border border-rose-200/60">
-                  <Sparkles className="w-3 h-3 text-rose-600" />
-                  <span>Curated Radiance Ritual</span>
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-black tracking-tight text-zinc-900">
-                  The Complete Glass Skin Routine
-                </h3>
-                <p className="text-xs text-zinc-600 leading-relaxed">
-                  Clinically sequenced for maximum penetration: Multi-depth Hyaluronic hydration followed by restorative ceramide lipid barrier occlusion and velvet lip protection.
-                </p>
-
-                <div className="space-y-2 pt-2">
-                  <div className="flex items-center space-x-2.5 text-xs text-zinc-800 font-medium">
-                    <span className="w-5 h-5 rounded-full bg-rose-100 text-rose-700 text-[10px] font-bold flex items-center justify-center">1</span>
-                    <span>Pure Glow Triple Hyaluronic Dew Serum (৳2,850)</span>
-                  </div>
-                  <div className="flex items-center space-x-2.5 text-xs text-zinc-800 font-medium">
-                    <span className="w-5 h-5 rounded-full bg-rose-100 text-rose-700 text-[10px] font-bold flex items-center justify-center">2</span>
-                    <span>Whipped Botanical Lipid Barrier Balm (৳2,450)</span>
-                  </div>
-                  <div className="flex items-center space-x-2.5 text-xs text-zinc-800 font-medium">
-                    <span className="w-5 h-5 rounded-full bg-rose-100 text-rose-700 text-[10px] font-bold flex items-center justify-center">3</span>
-                    <span>Velvet Satin Moisture Camellia Lipstick (৳1,950)</span>
-                  </div>
-                </div>
-
-                <div className="pt-4 flex items-baseline space-x-3">
-                  <span className="text-2xl font-black text-rose-700">৳5,990</span>
-                  <span className="text-sm text-zinc-400 line-through ml-1">৳7,250</span>
-                  <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
-                    Save ৳1,260 (17% Off)
-                  </span>
-                </div>
-
-                <div className="pt-2">
-                  <button
-                    onClick={handleAdd3StepBundle}
-                    className="w-full sm:w-auto py-3 px-8 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center space-x-2 btn-press"
-                  >
-                    <ShoppingBag className="w-4 h-4" />
-                    <span>Add Complete 3-Step Ritual to Bag</span>
-                  </button>
-                  <p className="text-[11px] text-zinc-500 mt-2">
-                    Delivered in temperature-stabilized cold packing with tamper seals intact.
-                  </p>
-                </div>
+        <div className="max-w-6xl mx-auto space-y-8">
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-rose-100">
+            <div>
+              <div className="inline-flex items-center space-x-2 px-2.5 py-1 rounded-md bg-rose-50 border border-rose-200/80 text-rose-700 text-xs font-semibold mb-2">
+                <Flower2 className="w-3.5 h-3.5 text-rose-600" />
+                <span>Clinical Routine Sequencer</span>
               </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 tracking-tight">
+                AM / PM Bio-Active Ritual Architecture
+              </h2>
+              <p className="text-sm text-zinc-600 mt-1 max-w-xl">
+                Active clinical skincare requires disciplined layering from thinnest molecular weight to deepest lipid occlusion. Select your morning or evening sequence.
+              </p>
+            </div>
 
-              <div className="lg:col-span-7 grid grid-cols-3 gap-3">
-                {[
-                  {
-                    step: "STEP 01 • HYDRATE",
-                    title: "Triple Hyaluronic Dew",
-                    image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=500&auto=format&fit=crop&q=80",
-                    volume: "30ml Dropper"
-                  },
-                  {
-                    step: "STEP 02 • SEAL BARRIER",
-                    title: "Lipid Barrier Balm",
-                    image: "https://images.unsplash.com/photo-1608248597359-38c2020e26b1?w=500&auto=format&fit=crop&q=80",
-                    volume: "50ml Amber Jar"
-                  },
-                  {
-                    step: "STEP 03 • PROTECT",
-                    title: "Velvet Satin Lipstick",
-                    image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500&auto=format&fit=crop&q=80",
-                    volume: "Camellia Tint"
-                  }
-                ].map((item, idx) => (
-                  <div key={idx} className="bg-rose-50/50 rounded-2xl p-2.5 border border-rose-100 flex flex-col justify-between">
-                    <div className="aspect-square rounded-xl overflow-hidden bg-white mb-2 border border-rose-100/60">
-                      <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
-                    </div>
-                    <div>
-                      <span className="text-[9px] font-mono font-bold text-rose-600 block">{item.step}</span>
-                      <p className="text-xs font-bold text-zinc-900 leading-tight mt-0.5">{item.title}</p>
-                      <span className="text-[10px] text-zinc-500 block mt-1">{item.volume}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+            {/* AM vs PM Toggle */}
+            <div className="inline-flex items-center p-1 rounded-xl bg-rose-100/60 border border-rose-200/70 self-start md:self-auto">
+              <button
+                type="button"
+                onClick={() => {
+                  setRoutineMode("am");
+                  setActiveRoutineStep(0);
+                }}
+                className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition flex items-center space-x-1.5 ${
+                  routineMode === "am"
+                    ? "bg-white text-amber-700 shadow-xs"
+                    : "text-zinc-600 hover:text-zinc-900"
+                }`}
+              >
+                <Sun className="w-3.5 h-3.5 text-amber-500" />
+                <span>Morning Dew (AM)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setRoutineMode("pm");
+                  setActiveRoutineStep(0);
+                }}
+                className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition flex items-center space-x-1.5 ${
+                  routineMode === "pm"
+                    ? "bg-white text-indigo-700 shadow-xs"
+                    : "text-zinc-600 hover:text-zinc-900"
+                }`}
+              >
+                <Moon className="w-3.5 h-3.5 text-indigo-500" />
+                <span>Evening Repair (PM)</span>
+              </button>
             </div>
           </div>
+
+          {/* Routine Steps & Interactive Stage */}
+          {(() => {
+            const routines = {
+              am: {
+                title: "Morning Dew Barrier & Anti-Pollution Shield",
+                time: "3 Minutes • 4 Steps",
+                target: "Hydration, Environmental Defense & UV Barrier",
+                bundlePrice: 6200,
+                comparePrice: 7450,
+                steps: [
+                  { step: "01", name: "Gentle Amino Oat Cleanser", active: "pH 5.5 • Hydrolyzed Oat", role: "Rinses nightly sebum without stripping the skin's acidic lipid barrier.", image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500&auto=format&fit=crop&q=80" },
+                  { step: "02", name: "10% Vitamin C + Ferulic Dew", active: "10% Ascorbyl • 0.5% Ferulic", role: "Potent free radical scavenger that brightens skin and amplifies sun protection.", image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=500&auto=format&fit=crop&q=80" },
+                  { step: "03", name: "Botanical Squalane Emulsion", active: "Pure Plant Squalane", role: "Micro-droplet moisture matrix that imparts a luminous glass finish without heaviness.", image: "https://images.unsplash.com/photo-1608248597359-38c2020e26b1?w=500&auto=format&fit=crop&q=80" },
+                  { step: "04", name: "Invisible Mineral Zinc Shield", active: "Non-Nano Zinc SPF 50+", role: "Broad-spectrum physical UVA/UVB block with zero white cast or eye sting.", image: "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=500&auto=format&fit=crop&q=80" }
+                ]
+              },
+              pm: {
+                title: "Evening Stratum Corneum Cellular Recovery",
+                time: "5 Minutes • 4 Steps",
+                target: "Deep Cellular Repair, Pore Decongestion & Ceramide Occlusion",
+                bundlePrice: 6850,
+                comparePrice: 8200,
+                steps: [
+                  { step: "01", name: "Melting Camellia Cleansing Balm", active: "100% Virgin Camellia", role: "Dissolves stubborn waterproof sunscreen, city particulates, and oxidized oils.", image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500&auto=format&fit=crop&q=80" },
+                  { step: "02", name: "2% BHA Salicylic Exfoliating Essence", active: "2% Salicylic • Green Tea", role: "Penetrates oil-lined pore walls to clear congestion, whiteheads, and dead keratin.", image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=500&auto=format&fit=crop&q=80" },
+                  { step: "03", name: "Bio-Identical Ceramide NP Matrix", active: "3.5% Ceramides (1:3:1 ratio)", role: "Reconstructs damaged intercellular skin bricks to stop trans-epidermal water loss.", image: "https://images.unsplash.com/photo-1608248597359-38c2020e26b1?w=500&auto=format&fit=crop&q=80" },
+                  { step: "04", name: "Overnight Bakuchiol Sleeping Cream", active: "1% Botanical Bakuchiol", role: "Gentle plant-derived retinol alternative stimulating nocturnal collagen turnover.", image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500&auto=format&fit=crop&q=80" }
+                ]
+              }
+            };
+            const current = routines[routineMode];
+
+            return (
+              <div className="bg-white rounded-3xl border border-rose-200/80 p-6 sm:p-8 shadow-md space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-rose-100/80 pb-4">
+                  <div>
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-rose-600 font-bold">
+                      Sequence Protocol
+                    </span>
+                    <h3 className="text-lg font-bold text-zinc-900">{current.title}</h3>
+                    <p className="text-xs text-zinc-500 mt-0.5">{current.target}</p>
+                  </div>
+                  <div className="flex items-center space-x-3 text-xs">
+                    <span className="px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 font-medium border border-rose-200/60 font-mono">
+                      {current.time}
+                    </span>
+                  </div>
+                </div>
+
+                {/* 4 Interactive Step Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                  {current.steps.map((st, i) => {
+                    const isSelected = activeRoutineStep === i;
+                    return (
+                      <div
+                        key={st.step}
+                        onClick={() => setActiveRoutineStep(i)}
+                        className={`rounded-2xl p-4 border transition-all cursor-pointer flex flex-col justify-between space-y-3 ${
+                          isSelected
+                            ? "bg-rose-50/70 border-rose-400 ring-2 ring-rose-400/20 shadow-xs"
+                            : "bg-[#faf9f7] border-rose-100 hover:border-rose-300"
+                        }`}
+                      >
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="w-6 h-6 rounded-full bg-rose-200 text-rose-800 text-[10px] font-bold flex items-center justify-center font-mono">
+                              {st.step}
+                            </span>
+                            <span className="text-[10px] font-mono text-rose-600 font-semibold truncate max-w-[120px]">
+                              {st.active}
+                            </span>
+                          </div>
+
+                          <div className="aspect-[4/3] rounded-xl overflow-hidden bg-white border border-rose-100/60 my-1">
+                            <img src={st.image} alt={st.name} className="w-full h-full object-cover" />
+                          </div>
+
+                          <h4 className="text-xs font-bold text-zinc-900 leading-snug">{st.name}</h4>
+                          <p className="text-[11px] text-zinc-600 leading-relaxed">{st.role}</p>
+                        </div>
+
+                        <div className="pt-2 border-t border-rose-100/80 flex items-center justify-between text-[10px]">
+                          <span className="text-rose-700 font-semibold">Step {i + 1} of 4</span>
+                          <span className="text-zinc-400 font-mono">Bio-Available</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* 1-Click Regimen Add Bar */}
+                <div className="bg-[#faf8f6] rounded-2xl p-4 sm:p-5 border border-rose-200/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div>
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-rose-700 font-bold">
+                      Complete Regimen Special
+                    </span>
+                    <div className="flex items-baseline space-x-2 mt-0.5">
+                      <span className="text-xl font-black text-rose-700">৳{current.bundlePrice.toLocaleString()}</span>
+                      <span className="text-xs text-zinc-400 line-through">৳{current.comparePrice.toLocaleString()}</span>
+                      <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+                        Save ৳{(current.comparePrice - current.bundlePrice).toLocaleString()}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-zinc-500 mt-1">
+                      Includes all 4 full-size products with freshness guarantees and cold-sealed delivery box.
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleAdd3StepBundle}
+                    className="py-3 px-6 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center space-x-2 whitespace-nowrap btn-press"
+                  >
+                    <ShoppingBag className="w-4 h-4" />
+                    <span>Add Complete {routineMode.toUpperCase()} Regimen to Bag</span>
+                  </button>
+                </div>
+              </div>
+            );
+          })()}
         </div>
       </section>
 

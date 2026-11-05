@@ -142,8 +142,11 @@ export function FootwearStorefront({
   const [selectedSilhouette, setSelectedSilhouette] = useState<string>("all");
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   const [quickSizeMap, setQuickSizeMap] = useState<Record<string, string>>({});
-  const [quickWidthMap, setQuickWidthMap] = useState<Record<string, string>>({});  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [quickWidthMap, setQuickWidthMap] = useState<Record<string, string>>({});
+  const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
+  const [selectedLayerIndex, setSelectedLayerIndex] = useState<number>(0);
+  const [selectedFitWidth, setSelectedFitWidth] = useState<"D" | "EE">("D");
 
   const isVelocity = variant === "velocity";
   const isStreetHype = variant === "street-hype";
@@ -481,53 +484,149 @@ export function FootwearStorefront({
         </div>
       </section>
 
-      {/* ─── 5. The Goodyear Welt Anatomy & Technical Breakdown ─────────────── */}
-      <section id="anatomy" className="py-16 px-4 sm:px-6 border-b border-stone-200/80 bg-white">
-        <div className="max-w-6xl mx-auto space-y-10">
-          <div className="max-w-2xl space-y-2">
-            <span className="text-[10px] font-mono tracking-widest text-amber-900 font-bold uppercase">
-              Technical Cobbler Integrity
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-stone-950 font-serif tracking-tight">
-              Anatomy of a True Bench-Crafted Boot
-            </h2>
-            <p className="text-xs text-stone-600 leading-relaxed">
-              Why our footwear lasts decades while fast-fashion cemented boots separate in months. Every component is resoleable, breathable, and mechanically stitched.
-            </p>
+      {/* ─── 5. Interactive Goodyear Welt Anatomy Workbench ─────────────── */}
+      <section id="anatomy" className="py-16 px-4 sm:px-6 border-b border-stone-200/80 bg-[#fdfbf7]">
+        <div className="max-w-6xl mx-auto space-y-12">
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-stone-200">
+            <div>
+              <div className="inline-flex items-center space-x-2 px-2.5 py-1 rounded-md bg-amber-100/80 border border-amber-300 text-amber-900 text-xs font-semibold mb-2">
+                <Hammer className="w-3.5 h-3.5 text-amber-800" />
+                <span>Master Cobbler Anatomy & Last Advisor</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-stone-900 tracking-tight">
+                Anatomy of a True Bench-Crafted Goodyear Welt
+              </h2>
+              <p className="text-sm text-stone-600 mt-1 max-w-xl">
+                Explore the 5 anatomical layers of heirloom boot construction. Select a component below to inspect tannery provenance, leather gauge, and resoleability.
+              </p>
+            </div>
+
+            {/* Brannock Width Selector */}
+            <div className="flex items-center space-x-2 bg-stone-100 p-1.5 rounded-xl border border-stone-200 self-start md:self-auto">
+              <span className="text-[11px] font-semibold text-stone-600 px-2 font-mono">Brannock Last:</span>
+              <button
+                type="button"
+                onClick={() => setSelectedFitWidth("D")}
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition font-mono ${
+                  selectedFitWidth === "D"
+                    ? "bg-amber-900 text-white shadow-xs"
+                    : "text-stone-600 hover:text-stone-900"
+                }`}
+              >
+                Standard (D)
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedFitWidth("EE")}
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition font-mono ${
+                  selectedFitWidth === "EE"
+                    ? "bg-amber-900 text-white shadow-xs"
+                    : "text-stone-600 hover:text-stone-900"
+                }`}
+              >
+                Wide (EE)
+              </button>
+            </div>
           </div>
 
-          <div className="space-y-3">
-            {ANATOMY_SPECS.map((spec, i) => (
-              <div
-                key={i}
-                className="bg-[#faf7f2] rounded-2xl p-5 border border-stone-200/80 grid grid-cols-1 md:grid-cols-12 gap-4 items-center"
-              >
-                <div className="md:col-span-3">
-                  <span className="text-xs font-bold font-serif text-stone-950 block">{spec.layer}</span>
-                  <span className="text-[10px] font-mono text-amber-800 font-bold">Resoleable Standard</span>
-                </div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Left: 5 Interactive Anatomy Layer Pills */}
+            <div className="lg:col-span-5 space-y-2.5">
+              {ANATOMY_SPECS.map((spec, idx) => {
+                const isSelected = selectedLayerIndex === idx;
+                return (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setSelectedLayerIndex(idx)}
+                    className={`w-full p-4 rounded-2xl text-left border transition flex items-center justify-between ${
+                      isSelected
+                        ? "bg-white border-amber-800 ring-2 ring-amber-800/20 shadow-sm"
+                        : "bg-[#f5f2eb] border-stone-200/80 hover:bg-white hover:border-stone-300"
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <span className={`w-7 h-7 rounded-full text-xs font-mono font-bold flex items-center justify-center transition ${
+                        isSelected
+                          ? "bg-amber-900 text-white"
+                          : "bg-stone-200 text-stone-700"
+                      }`}>
+                        {idx + 1}
+                      </span>
+                      <div>
+                        <span className="text-xs font-bold text-stone-900 block">{spec.layer}</span>
+                        <span className="text-[10px] text-stone-500 line-clamp-1 truncate max-w-[220px]">
+                          {spec.guild}
+                        </span>
+                      </div>
+                    </div>
+                    <ChevronRight className={`w-4 h-4 transition-transform ${isSelected ? "text-amber-800 translate-x-1" : "text-stone-400"}`} />
+                  </button>
+                );
+              })}
+            </div>
 
-                <div className="md:col-span-4 bg-white p-3 rounded-xl border border-stone-200 shadow-2xs">
-                  <span className="text-[9px] font-mono uppercase tracking-wider text-emerald-800 font-bold block mb-0.5">
-                    Our Guild Specification:
-                  </span>
-                  <p className="text-xs font-bold text-stone-900">{spec.guild}</p>
-                </div>
+            {/* Right: Focused Anatomy Spec Inspector */}
+            {(() => {
+              const activeLayer = ANATOMY_SPECS[selectedLayerIndex];
+              return (
+                <div className="lg:col-span-7 bg-white rounded-2xl border border-stone-200 p-6 sm:p-7 space-y-6 shadow-sm">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-100 pb-4">
+                    <div>
+                      <span className="text-[10px] font-mono text-amber-800 font-bold uppercase tracking-wider">
+                        Component Inspector
+                      </span>
+                      <h3 className="text-lg font-bold text-stone-900 mt-0.5">{activeLayer.layer}</h3>
+                    </div>
+                    <span className="self-start sm:self-auto px-3 py-1 bg-emerald-50 text-emerald-800 rounded-full border border-emerald-200 text-xs font-semibold">
+                      100% Lifetime Resoleable
+                    </span>
+                  </div>
 
-                <div className="md:col-span-3 bg-stone-100/70 p-3 rounded-xl border border-stone-200/60">
-                  <span className="text-[9px] font-mono uppercase tracking-wider text-rose-800 font-bold block mb-0.5">
-                    Fast-Fashion Standard:
-                  </span>
-                  <p className="text-xs text-stone-500 line-through">{spec.fastFashion}</p>
-                </div>
+                  {/* Comparison Cards: Guild vs Commercial */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="p-4 rounded-xl bg-amber-50/60 border border-amber-200/80 space-y-2">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-amber-900 font-bold block">
+                        Our Guild Craftsmanship
+                      </span>
+                      <p className="text-xs font-bold text-stone-900 leading-snug">
+                        {activeLayer.guild}
+                      </p>
+                      <p className="text-[11px] text-stone-600 leading-relaxed">
+                        {activeLayer.benefit}
+                      </p>
+                    </div>
 
-                <div className="md:col-span-2 text-right">
-                  <span className="text-[10px] text-stone-600 leading-snug block">
-                    {spec.benefit}
-                  </span>
+                    <div className="p-4 rounded-xl bg-stone-50 border border-stone-200 space-y-2">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-rose-800 font-bold block">
+                        Commercial Fast-Fashion
+                      </span>
+                      <p className="text-xs font-medium text-stone-500 line-through leading-snug">
+                        {activeLayer.fastFashion}
+                      </p>
+                      <p className="text-[11px] text-stone-500 leading-relaxed">
+                        Cannot be rebuilt by a cobbler. Destined for landfill within 6-12 months.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Footbed Moulding Timeline */}
+                  <div className="bg-[#f8f6f0] rounded-xl p-4 border border-stone-200 space-y-2">
+                    <div className="flex justify-between items-center text-xs">
+                      <span className="font-bold text-stone-900">Custom Footprint Break-In Curve</span>
+                      <span className="font-mono text-amber-800 font-bold">10 Wears to Custom Mould</span>
+                    </div>
+                    <div className="w-full h-2 rounded-full bg-stone-200 overflow-hidden">
+                      <div className="w-4/5 h-full bg-gradient-to-r from-amber-700 to-amber-900 rounded-full" />
+                    </div>
+                    <p className="text-[11px] text-stone-600 leading-relaxed pt-1">
+                      The natural granulated cork filler absorbs heat and weight, permanently depressing to match your exact longitudinal and transverse arch.
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })()}
           </div>
         </div>
       </section>

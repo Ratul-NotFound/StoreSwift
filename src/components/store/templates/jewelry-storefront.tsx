@@ -132,8 +132,12 @@ export function JewelryStorefront({
 }: JewelryStorefrontProps) {
   const [selectedCollection, setSelectedCollection] = useState<string>("all");
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
-  const [quickOptionMap, setQuickOptionMap] = useState<Record<string, string>>({});  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [quickOptionMap, setQuickOptionMap] = useState<Record<string, string>>({});
+  const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
+  const [selectedCut, setSelectedCut] = useState<"round" | "cushion" | "emerald" | "oval">("round");
+  const [selectedAlloy, setSelectedAlloy] = useState<"yellow18k" | "rose18k" | "plat950">("yellow18k");
+  const [selectedCarat, setSelectedCarat] = useState<number>(1.5);
 
   const isAurora = variant === "aurora";
   const isSolitaire = variant === "solitaire";
@@ -466,50 +470,193 @@ export function JewelryStorefront({
         </div>
       </section>
 
-      {/* ─── 5. Assay Office & Horology Standards Breakdown ─────────────────── */}
-      <section id="standards" className="py-16 px-4 sm:px-6 border-b border-neutral-800/80 bg-[#0b0c0e]">
-        <div className="max-w-6xl mx-auto space-y-10">
-          <div className="max-w-2xl space-y-2 font-serif">
-            <span className="text-[10px] font-mono tracking-widest text-amber-400 font-bold uppercase">
-              Hallmark Certification
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-              Precious Metal Purity & Provenance
-            </h2>
-            <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-              We never use simulated stones or brass base metals. Everything is cast from 925 solid sterling silver, solid 18k gold, or optical grade beta-titanium.
-            </p>
+      {/* ─── 5. Interactive Gemstone Cut & 18K Precious Alloy Atelier ─────────────────── */}
+      <section id="standards" className="py-16 px-4 sm:px-6 border-b border-neutral-800/80 bg-[#08090c]">
+        <div className="max-w-6xl mx-auto space-y-12">
+          {/* Section Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-neutral-800">
+            <div>
+              <div className="inline-flex items-center space-x-2 px-2.5 py-1 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold mb-2">
+                <Gem className="w-3.5 h-3.5 text-amber-400" />
+                <span>Haute Joaillerie Atelier & Cut Studio</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+                Gemstone Cut Geometry & Precious Alloy Salon
+              </h2>
+              <p className="text-sm text-zinc-400 mt-1 max-w-xl">
+                Explore the optical light refraction of our four master diamond cuts and match them with hallmarked 18K Yellow Gold, Rose Gold, or Platinum 950.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 self-start md:self-auto text-xs font-mono text-amber-400 bg-neutral-900 px-3 py-1.5 rounded-lg border border-amber-500/20">
+              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+              <span>Assay Office 750 / 950 Laser Hallmarked</span>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 font-serif">
-            {MAISON_STANDARDS.map((std, i) => (
-              <div
-                key={i}
-                className="bg-[#121317] rounded-2xl p-5 border border-neutral-800 flex flex-col justify-between space-y-3"
-              >
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[9px] font-mono font-bold text-amber-400 uppercase bg-amber-950/60 px-2 py-0.5 rounded border border-amber-800/40">
-                      Certified Standard
-                    </span>
-                    <Award className="w-4 h-4 text-amber-400" />
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Cut Selector & Diamond Facet Stage */}
+            <div className="lg:col-span-7 bg-[#101116] rounded-2xl border border-neutral-800 p-6 sm:p-7 space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center space-x-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                    <Sparkles className="w-4 h-4" />
                   </div>
-                  <h3 className="text-sm font-bold text-white leading-tight">
-                    {std.pillar}
-                  </h3>
-                  <p className="text-[11px] font-mono text-amber-300">
-                    {std.spec}
-                  </p>
-                  <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-                    {std.detail}
-                  </p>
+                  <div>
+                    <h3 className="text-sm font-semibold text-white">Gemstone Silhouette & Facet Architecture</h3>
+                    <p className="text-xs text-zinc-400">Triple Excellent Grade • Hearts & Arrows Symmetry</p>
+                  </div>
                 </div>
 
-                <div className="pt-2 border-t border-neutral-800 text-[10px] font-mono text-amber-400/90 font-bold">
-                  Assay Hallmarked
+                {/* Carat Selector */}
+                <div className="flex items-center space-x-1 bg-neutral-900 p-1 rounded-xl border border-neutral-800">
+                  <span className="text-[11px] font-semibold text-zinc-400 px-2 font-mono">Weight:</span>
+                  {[1.0, 1.5, 2.0, 3.0].map((ct) => (
+                    <button
+                      key={ct}
+                      type="button"
+                      onClick={() => setSelectedCarat(ct)}
+                      className={`px-2.5 py-1 rounded-lg text-xs font-bold transition font-mono ${
+                        selectedCarat === ct
+                          ? "bg-amber-400 text-black shadow-xs"
+                          : "text-zinc-400 hover:text-white"
+                      }`}
+                    >
+                      {ct.toFixed(1)}ct
+                    </button>
+                  ))}
                 </div>
               </div>
-            ))}
+
+              {/* Cut Shape Selector Buttons */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                {[
+                  { id: "round" as const, label: "Round Brilliant", facets: "58 Facets", icon: "💎" },
+                  { id: "cushion" as const, label: "Cushion Pillow", facets: "64 Facets", icon: "🔷" },
+                  { id: "emerald" as const, label: "Emerald Step", facets: "57 Facets", icon: "🟩" },
+                  { id: "oval" as const, label: "Oval Scintillant", facets: "56 Facets", icon: "💧" }
+                ].map((cut) => (
+                  <button
+                    key={cut.id}
+                    type="button"
+                    onClick={() => setSelectedCut(cut.id)}
+                    className={`p-3 rounded-xl text-left border transition ${
+                      selectedCut === cut.id
+                        ? "bg-neutral-900 border-amber-400/80 ring-1 ring-amber-400/40"
+                        : "bg-neutral-950 border-neutral-800 hover:border-neutral-700"
+                    }`}
+                  >
+                    <span className="text-base block mb-1">{cut.icon}</span>
+                    <span className="text-xs font-bold text-white block">{cut.label}</span>
+                    <span className="text-[10px] text-amber-400/90 font-mono block mt-0.5">{cut.facets}</span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Cut Geometry & 4Cs Data Card */}
+              {(() => {
+                const cutData = {
+                  round: { name: "Round Brilliant", ratio: "1.00 : 1.00", table: "57%", depth: "61.5%", light: "Maximum Scintillation & Rainbow Fire", desc: "The quintessential diamond cut developed by Marcel Tolkowsky, mathematically calibrated for total internal reflection." },
+                  cushion: { name: "Cushion Modified Brilliant", ratio: "1.05 : 1.00", table: "61%", depth: "66.0%", light: "Broad Flash Fire & Antique Romantic Luster", desc: "Soft rounded corners with larger pavilion facets that create fiery, pillow-like brilliance under candlelight." },
+                  emerald: { name: "Emerald Step Cut", ratio: "1.42 : 1.00", table: "64%", depth: "67.0%", light: "Hall-of-Mirrors Architectural Clarity", desc: "Rectangular step-cut pavilion showcasing stone purity and crystalline transparency with dramatic flashes." },
+                  oval: { name: "Oval Brilliant", ratio: "1.35 : 1.00", table: "59%", depth: "62.0%", light: "Elongated Silhouette with Exceptional Spread", desc: "Combines the fire of a round cut with an elongated profile that flatters and lengthens the hand." }
+                }[selectedCut];
+
+                return (
+                  <div className="bg-neutral-950 rounded-xl p-5 border border-neutral-800 space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-neutral-800/80 pb-3">
+                      <div>
+                        <span className="text-[10px] font-mono text-amber-400 uppercase tracking-widest block font-bold">
+                          Selected Cut Geometry
+                        </span>
+                        <h4 className="text-base font-bold text-white">{cutData.name} ({selectedCarat.toFixed(1)} Carat)</h4>
+                      </div>
+                      <div className="flex items-center space-x-2 text-xs font-mono">
+                        <span className="px-2 py-0.5 bg-amber-950/80 text-amber-300 rounded border border-amber-800/60">Color: D (Colorless)</span>
+                        <span className="px-2 py-0.5 bg-amber-950/80 text-amber-300 rounded border border-amber-800/60">Clarity: VVS1</span>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-3 text-center">
+                      <div className="p-2.5 rounded-lg bg-[#121317] border border-neutral-800">
+                        <span className="text-[10px] text-zinc-500 uppercase tracking-wider block">Table Diameter</span>
+                        <span className="text-xs font-mono font-bold text-white mt-0.5 block">{cutData.table}</span>
+                      </div>
+                      <div className="p-2.5 rounded-lg bg-[#121317] border border-neutral-800">
+                        <span className="text-[10px] text-zinc-500 uppercase tracking-wider block">Depth %</span>
+                        <span className="text-xs font-mono font-bold text-white mt-0.5 block">{cutData.depth}</span>
+                      </div>
+                      <div className="p-2.5 rounded-lg bg-[#121317] border border-neutral-800">
+                        <span className="text-[10px] text-zinc-500 uppercase tracking-wider block">Length/Width</span>
+                        <span className="text-xs font-mono font-bold text-white mt-0.5 block">{cutData.ratio}</span>
+                      </div>
+                    </div>
+
+                    <p className="text-xs text-zinc-400 leading-relaxed font-sans">
+                      {cutData.desc} Optical light refraction: <strong className="text-amber-300">{cutData.light}</strong>.
+                    </p>
+                  </div>
+                );
+              })()}
+            </div>
+
+            {/* Precious Alloy & Hallmark Stage */}
+            <div className="lg:col-span-5 bg-[#101116] rounded-2xl border border-neutral-800 p-6 sm:p-7 space-y-6">
+              <div className="flex items-center space-x-2.5">
+                <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                  <Crown className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-white">18K Precious Alloy Atelier</h3>
+                  <p className="text-xs text-zinc-400">Government Assay Office Certified Composition</p>
+                </div>
+              </div>
+
+              {/* Alloy Switcher */}
+              <div className="space-y-2">
+                {[
+                  { id: "yellow18k" as const, name: "18K Royal Yellow Gold", hallmark: "AU 750", composition: "75.0% Pure Gold • 15% Silver • 10% Copper", color: "from-amber-200 to-amber-500", border: "border-amber-500/40" },
+                  { id: "rose18k" as const, name: "18K Crown Rose Gold", hallmark: "AU 750", composition: "75.0% Pure Gold • 22.25% Copper • 2.75% Silver", color: "from-rose-200 to-rose-400", border: "border-rose-500/40" },
+                  { id: "plat950" as const, name: "Platinum 950 Heirloom", hallmark: "PT 950", composition: "95.0% Pure Platinum • 5% Ruthenium", color: "from-slate-200 to-zinc-400", border: "border-slate-400/40" }
+                ].map((alloy) => (
+                  <button
+                    key={alloy.id}
+                    type="button"
+                    onClick={() => setSelectedAlloy(alloy.id)}
+                    className={`w-full p-3.5 rounded-xl text-left border transition flex items-center justify-between ${
+                      selectedAlloy === alloy.id
+                        ? "bg-neutral-900 border-amber-400 ring-1 ring-amber-400/40"
+                        : "bg-neutral-950 border-neutral-800 hover:border-neutral-700"
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <div className={`w-5 h-5 rounded-full bg-gradient-to-tr ${alloy.color} shadow-xs border border-white/20`} />
+                      <div>
+                        <span className="text-xs font-bold text-white block">{alloy.name}</span>
+                        <span className="text-[10px] text-zinc-400 block mt-0.5">{alloy.composition}</span>
+                      </div>
+                    </div>
+                    <span className="text-xs font-mono font-bold text-amber-400 bg-black/60 px-2 py-1 rounded border border-neutral-800">
+                      {alloy.hallmark}
+                    </span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Assay Guarantee Seal */}
+              <div className="bg-neutral-950 rounded-xl p-4 border border-amber-500/20 space-y-2.5">
+                <div className="flex items-center space-x-2 text-amber-400">
+                  <Award className="w-4 h-4" />
+                  <span className="text-xs font-bold uppercase tracking-wider">Government Assay Laser Hallmark</span>
+                </div>
+                <p className="text-xs text-zinc-400 leading-relaxed">
+                  Every casting is certified at Bangladesh Central Assay with microscopic 750 or 950 hallmark laser engraving inside the shank. Delivered with an official physical purity certificate.
+                </p>
+                <div className="pt-2 border-t border-neutral-800/80 flex justify-between text-[11px] font-mono text-zinc-400">
+                  <span>Inspection: 40x Triplet Loupe</span>
+                  <span className="text-amber-400 font-semibold">Insured Handover</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

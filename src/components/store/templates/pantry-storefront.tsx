@@ -29,7 +29,9 @@ import {
   Sun,
   ChevronRight,
   ChevronDown,
-  Info
+  Info,
+  Clock,
+  Compass
 } from "lucide-react";
 import { IStoreTemplate } from "@/templates/types";
 import { CartItem } from "@/lib/cart";
@@ -132,8 +134,22 @@ export function PantryStorefront({
 }: PantryStorefrontProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
-  const [quickOptionMap, setQuickOptionMap] = useState<Record<string, string>>({});  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [quickOptionMap, setQuickOptionMap] = useState<Record<string, string>>({});
+  const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
+  const [brewMethod, setBrewMethod] = useState<"chemex" | "espresso" | "frenchpress" | "aeropress">("chemex");
+  const [brewCups, setBrewCups] = useState<number>(2);
+  const [selectedTastingNote, setSelectedTastingNote] = useState<string>("jasmine");
+
+  const BREW_SPECS = {
+    chemex: { name: "Chemex / V60", ratio: 16, grind: "Medium-Coarse", temp: "93°C / 200°F", time: "3:30 min", dosePerCup: 15, notes: "Clean, high floral clarity & tea-like body" },
+    espresso: { name: "9-Bar Espresso", ratio: 2, grind: "Fine Powder", temp: "92°C / 198°F", time: "28 sec", dosePerCup: 18, notes: "Dense crema with concentrated cacao & cherry notes" },
+    frenchpress: { name: "Immersion Press", ratio: 15, grind: "Coarse Salt", temp: "95°C / 203°F", time: "4:00 min", dosePerCup: 16, notes: "Full-bodied velvet mouthfeel with natural coffee oils" },
+    aeropress: { name: "Inverted AeroPress", ratio: 11, grind: "Medium-Fine", temp: "85°C / 185°F", time: "1:45 min", dosePerCup: 17, notes: "Smooth, zero bitterness with crisp fruit acidity" }
+  };
+  const activeBrew = BREW_SPECS[brewMethod];
+  const totalCoffeeGrams = activeBrew.dosePerCup * brewCups;
+  const totalWaterMl = totalCoffeeGrams * activeBrew.ratio;
 
   const isBazaar = variant === "bazaar";
   const isPatisserie = variant === "patisserie";
@@ -466,50 +482,188 @@ export function PantryStorefront({
         </div>
       </section>
 
-      {/* ─── 5. Terroir & Freshness Standards Breakdown ─────────────────────── */}
-      <section id="standards" className="py-16 px-4 sm:px-6 border-b border-stone-200/80 bg-white">
-        <div className="max-w-6xl mx-auto space-y-10">
-          <div className="max-w-2xl space-y-2">
-            <span className="text-[10px] font-mono tracking-widest text-emerald-800 font-bold uppercase">
-              Provenance Standards
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-stone-950 tracking-tight">
-              Regenerative Farmgate Integrity
-            </h2>
-            <p className="text-xs text-stone-600 leading-relaxed">
-              We never blend harvests or source from opaque commercial aggregators. Everything is 100% single-estate, unpasteurized, and chemical-free.
-            </p>
+      {/* ─── 5. Interactive Barista Brew Ratio Calculator & Roaster's Tasting Profile ─────────────────── */}
+      <section id="standards" className="py-16 px-4 sm:px-6 border-b border-stone-200/80 bg-[#fbf9f5]">
+        <div className="max-w-6xl mx-auto space-y-12">
+          {/* Section Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-stone-200">
+            <div>
+              <div className="inline-flex items-center space-x-2 px-2.5 py-1 rounded-md bg-emerald-100/80 border border-emerald-300 text-emerald-900 text-xs font-semibold mb-2">
+                <Coffee className="w-3.5 h-3.5 text-emerald-800" />
+                <span>Specialty Coffee Lab & Extraction Calculator</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-stone-900 tracking-tight">
+                Barista Extraction Ratio & Terroir Profile
+              </h2>
+              <p className="text-sm text-stone-600 mt-1 max-w-xl">
+                Every micro-lot responds differently to temperature, grind size, and water-to-coffee ratio. Dial in your morning pour-over or espresso with precision.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 self-start md:self-auto text-xs font-medium text-emerald-800 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-200">
+              <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+              <span>Roasted Within 48 Hours of Dispatch</span>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {PANTRY_STANDARDS.map((std, i) => (
-              <div
-                key={i}
-                className="bg-[#f8f9f5] rounded-2xl p-5 border border-stone-200/80 flex flex-col justify-between space-y-3"
-              >
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[9px] font-mono font-bold text-emerald-800 uppercase bg-emerald-100/80 px-2 py-0.5 rounded">
-                      Certified Purity
-                    </span>
-                    <Sun className="w-4 h-4 text-emerald-700" />
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Interactive Brew Ratio Calculator */}
+            <div className="lg:col-span-7 bg-white rounded-2xl border border-stone-200 p-6 sm:p-7 space-y-6 shadow-sm">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center space-x-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-amber-100 border border-amber-200 flex items-center justify-center text-amber-800">
+                    <Coffee className="w-4 h-4" />
                   </div>
-                  <h3 className="text-sm font-bold text-stone-950 leading-tight">
-                    {std.pillar}
-                  </h3>
-                  <p className="text-[11px] font-mono text-emerald-800 font-semibold">
-                    {std.spec}
-                  </p>
-                  <p className="text-xs text-stone-600 leading-relaxed">
-                    {std.detail}
-                  </p>
+                  <div>
+                    <h3 className="text-sm font-bold text-stone-900">Brew Method Calculator</h3>
+                    <p className="text-xs text-stone-500">Golden Cup Standard: 1:{activeBrew.ratio} Extraction Ratio</p>
+                  </div>
                 </div>
 
-                <div className="pt-2 border-t border-stone-200 text-[10px] font-mono text-emerald-800 font-bold">
-                  Single-Origin Verified
+                {/* Cup Counter */}
+                <div className="flex items-center space-x-1.5 bg-stone-100 p-1 rounded-xl border border-stone-200">
+                  <span className="text-[11px] font-semibold text-stone-600 px-2">Yield:</span>
+                  {[1, 2, 3, 4].map((num) => (
+                    <button
+                      key={num}
+                      type="button"
+                      onClick={() => setBrewCups(num)}
+                      className={`w-7 h-7 rounded-lg text-xs font-bold transition ${
+                        brewCups === num
+                          ? "bg-emerald-900 text-white shadow-xs"
+                          : "text-stone-600 hover:text-stone-900 hover:bg-stone-200/60"
+                      }`}
+                    >
+                      {num}c
+                    </button>
+                  ))}
                 </div>
               </div>
-            ))}
+
+              {/* Brew Method Selector */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                {[
+                  { id: "chemex" as const, label: "Chemex / V60", sub: "Filter Pour" },
+                  { id: "espresso" as const, label: "Espresso", sub: "9-Bar Crema" },
+                  { id: "frenchpress" as const, label: "French Press", sub: "Immersion" },
+                  { id: "aeropress" as const, label: "AeroPress", sub: "Inverted Cup" }
+                ].map((m) => (
+                  <button
+                    key={m.id}
+                    type="button"
+                    onClick={() => setBrewMethod(m.id)}
+                    className={`p-3 rounded-xl text-left border transition ${
+                      brewMethod === m.id
+                        ? "bg-emerald-50/80 border-emerald-600 ring-1 ring-emerald-600"
+                        : "bg-stone-50 border-stone-200 hover:border-stone-300"
+                    }`}
+                  >
+                    <span className="text-xs font-bold text-stone-900 block">{m.label}</span>
+                    <span className="text-[10px] text-emerald-800 font-medium block mt-0.5">{m.sub}</span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Live Metric Cards */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="p-3.5 rounded-xl bg-stone-50 border border-stone-200 text-center">
+                  <span className="text-[10px] text-stone-500 uppercase font-semibold tracking-wider block">Coffee Dose</span>
+                  <span className="text-lg font-black text-stone-900 block mt-0.5">{totalCoffeeGrams}g</span>
+                  <span className="text-[10px] text-stone-400 block mt-0.5">Whole Bean</span>
+                </div>
+                <div className="p-3.5 rounded-xl bg-stone-50 border border-stone-200 text-center">
+                  <span className="text-[10px] text-stone-500 uppercase font-semibold tracking-wider block">Water Yield</span>
+                  <span className="text-lg font-black text-emerald-800 block mt-0.5">{totalWaterMl}ml</span>
+                  <span className="text-[10px] text-stone-400 block mt-0.5">Filtered 93°C</span>
+                </div>
+                <div className="p-3.5 rounded-xl bg-stone-50 border border-stone-200 text-center">
+                  <span className="text-[10px] text-stone-500 uppercase font-semibold tracking-wider block">Grind Setting</span>
+                  <span className="text-xs font-bold text-stone-900 block mt-1.5 truncate">{activeBrew.grind}</span>
+                  <span className="text-[10px] text-stone-400 block mt-0.5">Burr Mill</span>
+                </div>
+                <div className="p-3.5 rounded-xl bg-stone-50 border border-stone-200 text-center">
+                  <span className="text-[10px] text-stone-500 uppercase font-semibold tracking-wider block">Target Time</span>
+                  <span className="text-lg font-black text-stone-900 block mt-0.5">{activeBrew.time}</span>
+                  <span className="text-[10px] text-stone-400 block mt-0.5">{activeBrew.temp}</span>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-xl bg-amber-50/60 border border-amber-200/80 flex items-start space-x-2.5">
+                <Sparkles className="w-4 h-4 text-amber-700 flex-shrink-0 mt-0.5" />
+                <p className="text-xs text-amber-900 leading-relaxed">
+                  <strong>Roaster's Note:</strong> {activeBrew.notes}. Degas pouch for 2 days after delivery for peak aroma bloom.
+                </p>
+              </div>
+            </div>
+
+            {/* Roaster's Tasting Notes Palette */}
+            <div className="lg:col-span-5 bg-white rounded-2xl border border-stone-200 p-6 sm:p-7 space-y-6 shadow-sm">
+              <div className="flex items-center space-x-2.5">
+                <div className="w-8 h-8 rounded-lg bg-emerald-100 border border-emerald-200 flex items-center justify-center text-emerald-800">
+                  <Leaf className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-stone-900">Terroir Tasting Notes Wheel</h3>
+                  <p className="text-xs text-stone-500">SCA Certified Cupping Scores &gt; 87.5</p>
+                </div>
+              </div>
+
+              {/* Flavor Pills */}
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { id: "jasmine", label: "🌺 Jasmine Flower", terroir: "Yirgacheffe, 2,150m MASL", note: "Delicate floral aroma with sweet Meyer lemon finish." },
+                  { id: "honey", label: "🍯 Wild Alpine Honey", terroir: "High Alpine Wild Meadow", note: "Unheated comb with naturally active bee enzymes & floral sweetness." },
+                  { id: "cacao", label: "🍫 72% Criollo Cacao", terroir: "Madagascar Heirloom", note: "Deep dark chocolate with hints of raspberry and toasted hazelnut." },
+                  { id: "bergamot", label: "🍊 Bergamot Citrus", terroir: "Sidama Anaerobic Natural", note: "Crisp black tea aroma, juicy tangerine acidity, and silky body." },
+                  { id: "olive", label: "🌿 Green Grass & Fig", terroir: "Crete Estate Early-Harvest", note: "Robust peppery finish with high oleocanthal antioxidant content." }
+                ].map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => setSelectedTastingNote(item.id)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-semibold transition ${
+                      selectedTastingNote === item.id
+                        ? "bg-emerald-900 text-white shadow-xs"
+                        : "bg-stone-100 text-stone-700 hover:bg-stone-200"
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Active Flavor Note Spotlight Card */}
+              {(() => {
+                const notesData: Record<string, { title: string; origin: string; elevation: string; process: string; flavor: string }> = {
+                  jasmine: { title: "Washed Ethiopian Yirgacheffe", origin: "Gedeo Zone, Southern Ethiopia", elevation: "2,150 - 2,250 MASL", process: "Fully Washed & African Raised Beds", flavor: "White florals, Earl Grey bergamot, peach nectar, and crystalline sweet clarity." },
+                  honey: { title: "Raw Alpine Blossom Honey", origin: "Sub-Alpine Meadows, Pristine Valley", elevation: "1,800 MASL", process: "Cold-Extracted & Unfiltered", flavor: "Wild clover, warm beeswax, citrus blossom, and raw honeycomb undertones." },
+                  cacao: { title: "Single-Estate Criollo Bean", origin: "Sambirano Valley, Madagascar", elevation: "450 MASL", process: "7-Day Banana Leaf Fermentation", flavor: "Dark cherry, roasted cacao nibs, dried plum, and Madagascar bourbon vanilla." },
+                  bergamot: { title: "Anaerobic Natural Sidama", origin: "Bensa, Sidama Region", elevation: "2,050 MASL", process: "72-Hour Sealed Anaerobic Drum", flavor: "Candied orange zest, dark berries, sparkling acidity, and brown sugar sweetness." },
+                  olive: { title: "Koroneiki Early-Harvest EVOO", origin: "Chania, Island of Crete", elevation: "650 MASL", process: "Cold-Pressed < 24°C within 4 Hours", flavor: "Freshly cut grass, artichoke leaf, green tomato, and vibrant peppery throat finish." }
+                };
+                const active = notesData[selectedTastingNote] || notesData.jasmine;
+                return (
+                  <div className="bg-[#f8f9f5] rounded-xl p-4 border border-stone-200/90 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-800 font-bold bg-emerald-100 px-2 py-0.5 rounded">
+                        Single-Origin Lot
+                      </span>
+                      <span className="text-[11px] font-semibold text-stone-500">{active.elevation}</span>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-stone-900">{active.title}</h4>
+                      <p className="text-xs text-stone-500">{active.origin}</p>
+                    </div>
+                    <div className="text-xs text-stone-700 bg-white p-3 rounded-lg border border-stone-200/60 leading-relaxed">
+                      <strong>Cup Profile:</strong> {active.flavor}
+                    </div>
+                    <div className="flex justify-between items-center text-[11px] text-stone-500 pt-1">
+                      <span>Method: {active.process}</span>
+                      <span className="text-emerald-700 font-semibold">100% Traceable</span>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
           </div>
         </div>
       </section>

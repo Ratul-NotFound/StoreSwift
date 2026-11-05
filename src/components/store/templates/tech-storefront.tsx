@@ -136,8 +136,12 @@ export function TechStorefront({
 }: TechStorefrontProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
-  const [quickVariantMap, setQuickVariantMap] = useState<Record<string, string>>({});  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [quickVariantMap, setQuickVariantMap] = useState<Record<string, string>>({});
+  const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
+  const [eqMode, setEqMode] = useState<"flat" | "bass" | "spatial">("flat");
+  const [activeSwitch, setActiveSwitch] = useState<"linear" | "tactile" | "magnetic">("linear");
+  const [switchPressCount, setSwitchPressCount] = useState(0);
 
   const isLumina = variant === "lumina";
   const isCyberRGB = variant === "cyber-rgb";
@@ -471,53 +475,261 @@ export function TechStorefront({
         </div>
       </section>
 
-      {/* ─── 5. Exploded Acoustic Architecture & Benchmarks ─────────────────── */}
-      <section id="benchmarks" className="py-16 px-4 sm:px-6 border-b border-zinc-800/80 bg-[#0c0d12]">
-        <div className="max-w-6xl mx-auto space-y-10">
-          <div className="max-w-2xl space-y-2 font-mono">
-            <span className="text-[10px] tracking-widest text-sky-400 font-bold uppercase">
-              Laboratory Acoustic Benchmarks
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-              Hardware Architecture & Tolerance Specs
-            </h2>
-            <p className="text-xs text-zinc-400 leading-relaxed">
-              We publish raw acoustic frequency response, harmonic distortion graphs, and thermal efficiency ratings for every device.
-            </p>
+      {/* ─── 5. Interactive Acoustic Soundstage & Tactile Switch Bench ─────────────────── */}
+      <section id="benchmarks" className="py-16 px-4 sm:px-6 border-b border-zinc-800/80 bg-[#090b10]">
+        <div className="max-w-6xl mx-auto space-y-12">
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-zinc-800">
+            <div>
+              <div className="inline-flex items-center space-x-2 px-2.5 py-1 rounded-md bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-semibold mb-2">
+                <Activity className="w-3.5 h-3.5 text-sky-400" />
+                <span>Audio Lab & Mechanical Switch Bench</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+                Acoustic Response & Switch Telemetry
+              </h2>
+              <p className="text-sm text-zinc-400 mt-1 max-w-xl">
+                Tune your audio curve profile and test mechanical switch actuation force before ordering. Zero guesswork, raw acoustic engineering.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 self-start md:self-auto text-xs font-mono text-zinc-400 bg-zinc-900 px-3 py-1.5 rounded-lg border border-zinc-800">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Harman 2024 Reference Target Verified</span>
+            </div>
           </div>
 
-          <div className="space-y-3 font-mono">
-            {HARDWARE_BENCHMARKS.map((item, i) => (
-              <div
-                key={i}
-                className="bg-[#13151f] rounded-2xl p-5 border border-zinc-800 grid grid-cols-1 md:grid-cols-12 gap-4 items-center"
-              >
-                <div className="md:col-span-3">
-                  <span className="text-xs font-bold text-white block">{item.component}</span>
-                  <span className="text-[10px] text-sky-400 font-bold">Mil-Spec Certified</span>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Interactive Audio Frequency Visualizer */}
+            <div className="lg:col-span-7 bg-[#0f121a] rounded-2xl border border-zinc-800/90 p-6 sm:p-7 space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center space-x-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
+                    <Headphones className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-semibold text-white">Beryllium Driver Soundstage</h3>
+                    <p className="text-xs text-zinc-400">Harmonic distortion &lt; 0.04% @ 1kHz 100dB SPL</p>
+                  </div>
                 </div>
 
-                <div className="md:col-span-4 bg-black/60 p-3 rounded-xl border border-zinc-800">
-                  <span className="text-[9px] uppercase tracking-wider text-sky-400 font-bold block mb-0.5">
-                    Hardware Specification:
-                  </span>
-                  <p className="text-xs font-bold text-zinc-100">{item.spec}</p>
-                </div>
-
-                <div className="md:col-span-2 bg-sky-950/40 p-3 rounded-xl border border-sky-800/40 text-center">
-                  <span className="text-[9px] uppercase tracking-wider text-sky-400 font-bold block mb-0.5">
-                    Tested Metric:
-                  </span>
-                  <p className="text-xs font-bold text-sky-300">{item.metric}</p>
-                </div>
-
-                <div className="md:col-span-3 text-right">
-                  <span className="text-[10px] text-zinc-400 leading-snug block">
-                    {item.advantage}
-                  </span>
+                {/* EQ Mode Buttons */}
+                <div className="inline-flex items-center p-1 rounded-xl bg-zinc-900 border border-zinc-800">
+                  <button
+                    type="button"
+                    onClick={() => setEqMode("flat")}
+                    className={`px-3 py-1 rounded-lg text-xs font-medium transition ${
+                      eqMode === "flat"
+                        ? "bg-sky-500 text-black font-semibold shadow-xs"
+                        : "text-zinc-400 hover:text-white"
+                    }`}
+                  >
+                    Studio Flat
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEqMode("bass")}
+                    className={`px-3 py-1 rounded-lg text-xs font-medium transition ${
+                      eqMode === "bass"
+                        ? "bg-sky-500 text-black font-semibold shadow-xs"
+                        : "text-zinc-400 hover:text-white"
+                    }`}
+                  >
+                    Sub-Bass +6dB
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEqMode("spatial")}
+                    className={`px-3 py-1 rounded-lg text-xs font-medium transition ${
+                      eqMode === "spatial"
+                        ? "bg-sky-500 text-black font-semibold shadow-xs"
+                        : "text-zinc-400 hover:text-white"
+                    }`}
+                  >
+                    Spatial Atmos
+                  </button>
                 </div>
               </div>
-            ))}
+
+              {/* Dynamic SVG Frequency Curve Display */}
+              <div className="relative h-48 bg-zinc-950 rounded-xl border border-zinc-800/80 p-4 flex flex-col justify-between overflow-hidden">
+                {/* Grid Lines */}
+                <div className="absolute inset-0 grid grid-cols-6 grid-rows-4 pointer-events-none opacity-20">
+                  <div className="border-r border-b border-zinc-700" />
+                  <div className="border-r border-b border-zinc-700" />
+                  <div className="border-r border-b border-zinc-700" />
+                  <div className="border-r border-b border-zinc-700" />
+                  <div className="border-r border-b border-zinc-700" />
+                  <div className="border-b border-zinc-700" />
+                  <div className="border-r border-b border-zinc-700" />
+                  <div className="border-r border-b border-zinc-700" />
+                  <div className="border-r border-b border-zinc-700" />
+                  <div className="border-r border-b border-zinc-700" />
+                  <div className="border-r border-b border-zinc-700" />
+                  <div className="border-b border-zinc-700" />
+                  <div className="border-r border-b border-zinc-700" />
+                  <div className="border-r border-b border-zinc-700" />
+                  <div className="border-r border-b border-zinc-700" />
+                  <div className="border-r border-b border-zinc-700" />
+                  <div className="border-r border-b border-zinc-700" />
+                  <div className="border-b border-zinc-700" />
+                </div>
+
+                <div className="flex justify-between text-[10px] font-mono text-zinc-500 relative z-10">
+                  <span>+12 dB</span>
+                  <span>Target: Harman AE/OE</span>
+                  <span>0 dB (Reference)</span>
+                </div>
+
+                {/* Frequency SVG Path */}
+                <div className="relative w-full h-24 my-auto">
+                  <svg className="w-full h-full overflow-visible" viewBox="0 0 500 100" preserveAspectRatio="none">
+                    <defs>
+                      <linearGradient id="eqGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.8" />
+                        <stop offset="50%" stopColor="#818cf8" stopOpacity="0.9" />
+                        <stop offset="100%" stopColor="#38bdf8" stopOpacity="0.8" />
+                      </linearGradient>
+                      <linearGradient id="eqFill" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.25" />
+                        <stop offset="100%" stopColor="#38bdf8" stopOpacity="0" />
+                      </linearGradient>
+                    </defs>
+
+                    {/* Area under curve */}
+                    <path
+                      d={
+                        eqMode === "flat"
+                          ? "M 0 50 Q 80 48, 160 50 T 320 50 Q 400 52, 500 48 L 500 100 L 0 100 Z"
+                          : eqMode === "bass"
+                          ? "M 0 20 Q 80 25, 160 48 T 320 52 Q 400 50, 500 49 L 500 100 L 0 100 Z"
+                          : "M 0 55 Q 80 50, 160 48 T 320 40 Q 400 18, 500 24 L 500 100 L 0 100 Z"
+                      }
+                      fill="url(#eqFill)"
+                      className="transition-all duration-500 ease-out"
+                    />
+
+                    {/* Reference Harman Target dashed line */}
+                    <path
+                      d="M 0 50 Q 120 49, 250 50 T 500 49"
+                      fill="none"
+                      stroke="#52525b"
+                      strokeWidth="1.5"
+                      strokeDasharray="4 4"
+                    />
+
+                    {/* Dynamic EQ Line */}
+                    <path
+                      d={
+                        eqMode === "flat"
+                          ? "M 0 50 Q 80 48, 160 50 T 320 50 Q 400 52, 500 48"
+                          : eqMode === "bass"
+                          ? "M 0 20 Q 80 25, 160 48 T 320 52 Q 400 50, 500 49"
+                          : "M 0 55 Q 80 50, 160 48 T 320 40 Q 400 18, 500 24"
+                      }
+                      fill="none"
+                      stroke="url(#eqGlow)"
+                      strokeWidth="2.5"
+                      className="transition-all duration-500 ease-out"
+                    />
+                  </svg>
+                </div>
+
+                <div className="flex justify-between text-[10px] font-mono text-zinc-500 relative z-10 border-t border-zinc-800/80 pt-1.5">
+                  <span>20 Hz (Sub)</span>
+                  <span>250 Hz (Low-Mid)</span>
+                  <span>1 kHz (Presence)</span>
+                  <span>4 kHz (Clarity)</span>
+                  <span>20 kHz (Air)</span>
+                </div>
+              </div>
+
+              {/* Benchmark Telemetry Badges */}
+              <div className="grid grid-cols-3 gap-3 text-center">
+                <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800/70">
+                  <span className="text-[10px] text-zinc-400 uppercase tracking-wider block font-medium">Beryllium Drivers</span>
+                  <span className="text-sm font-bold text-sky-400 font-mono mt-0.5 block">50mm Neodymium</span>
+                </div>
+                <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800/70">
+                  <span className="text-[10px] text-zinc-400 uppercase tracking-wider block font-medium">Signal-to-Noise</span>
+                  <span className="text-sm font-bold text-sky-400 font-mono mt-0.5 block">&gt; 118 dB SNR</span>
+                </div>
+                <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800/70">
+                  <span className="text-[10px] text-zinc-400 uppercase tracking-wider block font-medium">Impedance</span>
+                  <span className="text-sm font-bold text-sky-400 font-mono mt-0.5 block">32Ω Mobile-Ready</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Interactive Mechanical Switch Bench */}
+            <div className="lg:col-span-5 bg-[#0f121a] rounded-2xl border border-zinc-800/90 p-6 sm:p-7 space-y-6">
+              <div className="flex items-center space-x-2.5">
+                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                  <Cpu className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-white">Tactile Switch & Polling Bench</h3>
+                  <p className="text-xs text-zinc-400">Hot-swappable 5-pin factory pre-lubed stems</p>
+                </div>
+              </div>
+
+              {/* Switch Type Tabs */}
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { id: "linear" as const, label: "Linear 45g", stem: "POM Red", note: "Ultra-Smooth" },
+                  { id: "tactile" as const, label: "Tactile 55g", stem: "Poly Brown", note: "Snappy Bump" },
+                  { id: "magnetic" as const, label: "Hall-Effect", stem: "8000Hz", note: "Rapid Trigger" }
+                ].map((sw) => (
+                  <button
+                    key={sw.id}
+                    type="button"
+                    onClick={() => setActiveSwitch(sw.id)}
+                    className={`p-2.5 rounded-xl text-left border transition ${
+                      activeSwitch === sw.id
+                        ? "bg-zinc-900 border-sky-500/60 ring-1 ring-sky-500/30"
+                        : "bg-zinc-950 border-zinc-800 hover:border-zinc-700"
+                    }`}
+                  >
+                    <span className="text-xs font-bold text-white block">{sw.label}</span>
+                    <span className="text-[10px] text-sky-400 font-mono block mt-0.5">{sw.stem}</span>
+                    <span className="text-[9px] text-zinc-500 block">{sw.note}</span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Interactive Key Press Stage */}
+              <div className="bg-zinc-950 rounded-xl p-5 border border-zinc-800/80 text-center space-y-4">
+                <div className="flex justify-between items-center text-xs font-mono text-zinc-400">
+                  <span>Pre-Travel: {activeSwitch === "linear" ? "2.0mm" : activeSwitch === "tactile" ? "1.8mm" : "0.1mm - 3.8mm"}</span>
+                  <span className="text-emerald-400 font-semibold">{switchPressCount} Actuations</span>
+                </div>
+
+                <div className="py-3 flex justify-center">
+                  <button
+                    type="button"
+                    onClick={() => setSwitchPressCount((c) => c + 1)}
+                    className="relative px-8 py-5 rounded-2xl bg-gradient-to-b from-zinc-800 to-zinc-900 border-2 border-zinc-600 hover:border-sky-400 active:translate-y-1.5 shadow-[0_8px_0_0_#27272a] active:shadow-[0_2px_0_0_#27272a] transition-all group flex flex-col items-center select-none"
+                  >
+                    <span className="w-6 h-6 rounded-md bg-sky-500/20 text-sky-400 flex items-center justify-center text-xs font-mono font-bold group-hover:scale-110 transition-transform">
+                      ⌨️
+                    </span>
+                    <span className="text-xs font-bold text-white mt-1.5 uppercase tracking-wider">
+                      Press to Actuate
+                    </span>
+                    <span className="text-[10px] text-sky-400 font-mono mt-0.5">
+                      {activeSwitch === "linear"
+                        ? "45g Smooth Bottom-Out"
+                        : activeSwitch === "tactile"
+                        ? "55g Tactile Peak"
+                        : "8000Hz Ultra Polling"}
+                    </span>
+                  </button>
+                </div>
+
+                <p className="text-[11px] text-zinc-400 leading-relaxed">
+                  Every keyboard PCB includes hot-swap sockets, silicone dampening pads, and custom screw-in stabilizers factory lubed with Krytox 205g0.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -783,7 +995,7 @@ export function TechStorefront({
 
       {/* ─── 8. Doorstep Anti-Static Seal & Power-On Protocol ───────────────── */}
       <section id="protocol" className="py-16 px-4 sm:px-6 border-b border-zinc-800/80 bg-[#10121a]">
-        <div className="max-w-6xl mx-auto space-y-8 font-mono">
+        <div className="max-w-6xl mx-auto space-y-8">
           <div className="max-w-2xl space-y-2">
             <div className="inline-flex items-center space-x-1.5 px-3 py-1 bg-sky-950/80 text-sky-400 rounded-full text-[10px] font-bold tracking-wider uppercase border border-sky-800">
               <ShieldCheck className="w-3.5 h-3.5 text-sky-400" />
@@ -792,7 +1004,7 @@ export function TechStorefront({
             <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
               The 3-Step Hardware Handover Verification
             </h2>
-            <p className="text-xs text-zinc-400 leading-relaxed font-sans">
+            <p className="text-xs text-zinc-400 leading-relaxed">
               High-spec hardware deserves complete peace of mind. You have the right to inspect outer anti-static tamper packaging and verify serial codes before payment.
             </p>
           </div>
@@ -819,9 +1031,9 @@ export function TechStorefront({
               }
             ].map((card) => (
               <div key={card.step} className="bg-[#13151f] rounded-2xl p-6 border border-zinc-800 shadow-xs space-y-3">
-                <span className="text-2xl font-black text-sky-400 block">{card.step}</span>
+                <span className="text-2xl font-black text-sky-400 block font-mono">{card.step}</span>
                 <h3 className="text-sm font-bold text-white">{card.title}</h3>
-                <p className="text-xs text-zinc-400 leading-relaxed font-sans">{card.desc}</p>
+                <p className="text-xs text-zinc-400 leading-relaxed">{card.desc}</p>
                 <div className="pt-2 border-t border-zinc-800 text-[10px] font-bold text-sky-400">
                   {card.highlight}
                 </div>
@@ -834,7 +1046,7 @@ export function TechStorefront({
       {/* ─── 9. Studio Engineers & Audiophile Reviews ────────────────────────── */}
       <section className="py-16 px-4 sm:px-6 border-b border-zinc-800/80 bg-[#0c0d12]">
         <div className="max-w-6xl mx-auto space-y-8">
-          <div className="text-center max-w-xl mx-auto space-y-2 font-mono">
+          <div className="text-center max-w-xl mx-auto space-y-2">
             <span className="text-[10px] tracking-widest text-sky-400 font-bold uppercase">
               Field Test & Studio Reports
             </span>
@@ -846,7 +1058,7 @@ export function TechStorefront({
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 font-mono">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
                 author: "Alex V.",
@@ -878,12 +1090,12 @@ export function TechStorefront({
                         <Star key={idx} className="w-3.5 h-3.5 fill-current" />
                       ))}
                     </div>
-                    <span className="text-[10px] font-bold text-sky-400 bg-sky-950/80 px-2 py-0.5 rounded border border-sky-800">
+                    <span className="text-[10px] font-bold text-sky-400 bg-sky-950/80 px-2 py-0.5 rounded border border-sky-800 font-mono">
                       Verified Operator
                     </span>
                   </div>
 
-                  <p className="text-xs text-zinc-300 leading-relaxed font-sans italic">
+                  <p className="text-xs text-zinc-300 leading-relaxed italic">
                     "{rev.comment}"
                   </p>
                 </div>
@@ -900,7 +1112,7 @@ export function TechStorefront({
       </section>
 
       {/* ─── 10. Operator Circle VIP Newsletter ─────────────────────────────── */}
-      <section className="py-16 px-4 sm:px-6 bg-[#10121a] border-b border-zinc-800/80 font-mono">
+      <section className="py-16 px-4 sm:px-6 bg-[#10121a] border-b border-zinc-800/80">
         <div className="max-w-xl mx-auto text-center space-y-4">
           <div className="w-12 h-12 rounded-2xl bg-sky-950/80 border border-sky-800 text-sky-400 flex items-center justify-center mx-auto">
             <Mail className="w-5 h-5" />
@@ -908,7 +1120,7 @@ export function TechStorefront({
           <h3 className="text-2xl font-black tracking-tight text-white">
             Join The {storeDisplayName} Operator Circle
           </h3>
-          <p className="text-xs text-zinc-400 leading-relaxed font-sans">
+          <p className="text-xs text-zinc-400 leading-relaxed">
             Receive ৳500 off your first hardware order, early firmware beta access, and advance notification of limited anodized batch drops.
           </p>
 
