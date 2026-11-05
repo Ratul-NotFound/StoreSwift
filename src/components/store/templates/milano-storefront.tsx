@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useMemo } from "react";
 import {
   ShoppingBag,
   Search,
@@ -8,7 +8,6 @@ import {
   ArrowRight,
   Menu,
   X,
-  User,
   ChevronRight,
   Star,
   Check,
@@ -20,7 +19,9 @@ import {
   Youtube,
   MapPin,
   Mail,
-  Phone
+  Phone,
+  Sparkles,
+  ArrowUpRight
 } from "lucide-react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -40,71 +41,45 @@ interface MilanoStorefrontProps {
   onOpenTrackOrder?: () => void;
 }
 
-// ─── Data ────────────────────────────────────────────────────────────────────
-const VERTICAL_CATEGORIES = [
+// ─── Milanese Runway Departments ──────────────────────────────────────────────
+const MILANO_DEPARTMENTS = [
   {
-    id: "hoodies",
-    label: "Hoodies",
-    img: "https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=500&auto=format&fit=crop&q=85",
-    count: "124 styles",
+    id: "tailoring",
+    label: "Sartorial Tailoring",
+    sub: "Biella milled virgin wool",
+    img: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600&auto=format&fit=crop&q=85",
+    count: "48 pieces"
   },
   {
-    id: "sweatshirts",
-    label: "Sweatshirts",
-    img: "https://images.unsplash.com/photo-1609587312208-cea54be969e7?w=500&auto=format&fit=crop&q=85",
-    count: "86 styles",
+    id: "knitwear",
+    label: "Fine Gauge Knitwear",
+    sub: "Grade-A Mongolian Cashmere",
+    img: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=600&auto=format&fit=crop&q=85",
+    count: "32 pieces"
   },
   {
-    id: "t-shirts",
-    label: "T-Shirts",
-    img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&auto=format&fit=crop&q=85",
-    count: "210 styles",
+    id: "leather",
+    label: "Cuoio Leather Goods",
+    sub: "Florentine vegetable tanned",
+    img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&auto=format&fit=crop&q=85",
+    count: "24 pieces"
   },
   {
-    id: "shirts",
-    label: "Shirts",
-    img: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=500&auto=format&fit=crop&q=85",
-    count: "98 styles",
+    id: "outerwear",
+    label: "Archival Trench & Overcoats",
+    sub: "Storm-resistant bonded gabardine",
+    img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=600&auto=format&fit=crop&q=85",
+    count: "19 pieces"
   },
   {
-    id: "jackets",
-    label: "Jackets",
-    img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&auto=format&fit=crop&q=85",
-    count: "65 styles",
-  },
+    id: "footwear",
+    label: "Artisanal Footwear",
+    sub: "Goodyear welted Tuscan calfskin",
+    img: "https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=600&auto=format&fit=crop&q=85",
+    count: "28 pieces"
+  }
 ];
 
-const PRODUCT_DROPS = [
-  {
-    id: "m1", label: "NEW DROP", title: "Osaka Oversized Hoodie", subtitle: "400 GSM French Terry",
-    price: 129, compare: 175, tag: "Sold Out Soon",
-    img: "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=700&auto=format&fit=crop&q=85",
-  },
-  {
-    id: "m2", label: "COLLAB", title: "Washed Crew Sweatshirt", subtitle: "Enzyme Washed Cotton Blend",
-    price: 89, compare: 120, tag: "Limited",
-    img: "https://images.unsplash.com/photo-1611911813383-67769b37a149?w=700&auto=format&fit=crop&q=85",
-  },
-  {
-    id: "m3", label: "ARCHIVE", title: "Triple-Panel Bomber", subtitle: "Ripstop Nylon x Fleece",
-    price: 215, compare: 290, tag: "Archives",
-    img: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=700&auto=format&fit=crop&q=85",
-  },
-  {
-    id: "m4", label: "ESSENTIALS", title: "Box-Cut Tee", subtitle: "280 GSM Ringspun Cotton",
-    price: 55, compare: 75, tag: "Restocked",
-    img: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=700&auto=format&fit=crop&q=85",
-  },
-];
-
-const LOOKBOOK_SHOTS = [
-  "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&auto=format&fit=crop&q=85",
-  "https://images.unsplash.com/photo-1550614000-4895a10e1bfd?w=600&auto=format&fit=crop&q=85",
-  "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600&auto=format&fit=crop&q=85",
-  "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=600&auto=format&fit=crop&q=85",
-];
-
-// ─── Component ────────────────────────────────────────────────────────────────
 export function MilanoStorefront({
   storeDisplayName,
   tenantSlug,
@@ -122,96 +97,198 @@ export function MilanoStorefront({
 }: MilanoStorefrontProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [view, setView] = useState<"home" | "shop" | "lookbook">("home");
-  const [activeCat, setActiveCat] = useState<string | null>(null);
-  const [wishlistLocal, setWishlistLocal] = useState<Set<string>>(new Set());
+  const [activeCat, setActiveCat] = useState<string>("All");
+  const [wishlistLocal, setWishlistLocal] = useState<Set<string>>(new Set(wishlist));
   const [addedId, setAddedId] = useState<string | null>(null);
-  const [heroIndex, setHeroIndex] = useState(0);
 
   const cartCount = cartItems.reduce((s, i) => s + i.quantity, 0);
 
-  const catalogItems = React.useMemo(() => {
+  const catalogItems = useMemo(() => {
     if (products && products.length > 0) {
       return products.map((p, idx) => ({
         id: p.id,
-        label: p.badge || (idx === 0 ? "NEW DROP" : idx === 1 ? "COLLAB" : "ESSENTIALS"),
+        label: p.badge || (idx === 0 ? "RUNWAY EXCLUSIVE" : idx === 1 ? "BIELLA WOOL" : "LIMITED ATELIER"),
         title: p.title,
-        subtitle: p.description ? (p.description.length > 35 ? p.description.slice(0, 35) + "..." : p.description) : "400 GSM French Terry",
+        subtitle: p.description ? (p.description.length > 40 ? p.description.slice(0, 40) + "..." : p.description) : "Milled Virgin Wool & Silk",
         price: p.price,
-        compare: p.comparePrice || Math.round(p.price * 1.3),
-        tag: idx === 0 ? "Limited" : "In Stock",
+        compare: p.comparePrice || Math.round(p.price * 1.35),
+        tag: idx === 0 ? "Limited Runway" : "In Stock",
         img: p.imageUrl || "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=700&auto=format&fit=crop&q=85",
         rawProduct: p
       }));
     }
-    return PRODUCT_DROPS.map((item) => ({ ...item, rawProduct: null }));
+    return [
+      {
+        id: "m1",
+        label: "RUNWAY EXCLUSIVE",
+        title: "Double-Breasted Cashmere Overcoat",
+        subtitle: "100% Mongolian Cashmere • Milanese Cut",
+        price: 18500,
+        compare: 24000,
+        tag: "Runway Piece",
+        img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=700&auto=format&fit=crop&q=85",
+        rawProduct: null
+      },
+      {
+        id: "m2",
+        label: "BIELLA WOOL",
+        title: "Structured Relaxed Blazer",
+        subtitle: "Italian Biella Tropical Wool S'130",
+        price: 14200,
+        compare: 17500,
+        tag: "In Stock",
+        img: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=700&auto=format&fit=crop&q=85",
+        rawProduct: null
+      },
+      {
+        id: "m3",
+        label: "LIMITED ATELIER",
+        title: "Fine Gauge Merino Turtleneck",
+        subtitle: "Extra-Fine 19.5 Micron Merino Knit",
+        price: 5800,
+        compare: 7200,
+        tag: "Atelier Drop",
+        img: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=700&auto=format&fit=crop&q=85",
+        rawProduct: null
+      },
+      {
+        id: "m4",
+        label: "FLORENTINE LEATHER",
+        title: "Pebbled Calfskin Holdall",
+        subtitle: "Hand-Burnished Vegetable Tanned Leather",
+        price: 16800,
+        compare: 21000,
+        tag: "Hand-Crafted",
+        img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=700&auto=format&fit=crop&q=85",
+        rawProduct: null
+      }
+    ];
   }, [products]);
 
-  // Cycle hero text
-  const heroLines = ["RIGHT GEAR", "BEST LOOK", "YOUR STYLE", "NEXT LEVEL"];
-  useEffect(() => {
-    const t = setInterval(() => setHeroIndex(i => (i + 1) % heroLines.length), 3500);
-    return () => clearInterval(t);
-  }, []);
-
   const handleWishlist = (id: string) => {
-    setWishlistLocal(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; });
+    setWishlistLocal((prev) => {
+      const n = new Set(prev);
+      n.has(id) ? n.delete(id) : n.add(id);
+      return n;
+    });
     onToggleWishlist(id);
   };
 
   const handleAdd = (item: any) => {
-    const prod = item.rawProduct || { id: item.id, title: item.title, slug: item.id, description: item.subtitle, price: item.price, comparePrice: item.compare, imageUrl: item.img, badge: item.tag, variants: [] };
-    const defaultVariant = (prod.variants && prod.variants[0]) || { sku: `${item.id}-default`, title: "Standard", price: item.price };
+    const prod = item.rawProduct || {
+      id: item.id,
+      title: item.title,
+      slug: item.id,
+      description: item.subtitle,
+      price: item.price,
+      comparePrice: item.compare,
+      imageUrl: item.img,
+      badge: item.tag,
+      variants: []
+    };
+    const defaultVariant = (prod.variants && prod.variants[0]) || {
+      sku: `${item.id}-default`,
+      title: "Standard",
+      price: item.price
+    };
     onAddToCart(prod, defaultVariant);
     setAddedId(item.id);
     setTimeout(() => setAddedId(null), 1400);
   };
 
   return (
-    <div suppressHydrationWarning className="min-h-screen bg-[#0e0e0e] text-white font-sans antialiased">
+    <div suppressHydrationWarning className="min-h-screen bg-[#0c0c0e] text-zinc-100 font-sans antialiased selection:bg-[#c9a96e] selection:text-black">
 
-      {/* ── Header ────────────────────────────────────────────────── */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#0e0e0e]/90 backdrop-blur-md border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-5 h-14 flex items-center justify-between">
-
-          {/* Logo */}
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => setView("home")}>
-            <div className="w-6 h-6 bg-white rounded-sm flex items-center justify-center">
-              <span className="text-[#0e0e0e] text-[10px] font-black tracking-tight">M</span>
+      {/* ── Editorial Top Header ────────────────────────────────────────────── */}
+      <header className="sticky top-0 z-50 bg-[#0c0c0e]/95 backdrop-blur-md border-b border-white/[0.08]">
+        <div className="max-w-7xl mx-auto px-5 h-16 flex items-center justify-between">
+          
+          {/* Brand Logo */}
+          <div
+            className="flex items-center space-x-3 cursor-pointer group"
+            onClick={() => setView("home")}
+          >
+            <div className="w-7 h-7 rounded-sm bg-[#c9a96e] flex items-center justify-center text-black font-black text-xs font-serif shadow-xs group-hover:scale-105 transition-transform">
+              M
             </div>
-            <span className="text-white font-black text-sm tracking-[0.2em] uppercase">MILANO</span>
+            <div>
+              <span className="text-white font-serif tracking-[0.25em] text-sm uppercase font-bold block leading-none">
+                {storeDisplayName || "MILANO"}
+              </span>
+              <span className="text-[9px] font-mono text-zinc-400 tracking-widest uppercase block mt-1">
+                Collezione Milano
+              </span>
+            </div>
           </div>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8 text-[11px] font-semibold tracking-[0.18em] uppercase text-white/60">
-            <button onClick={() => setView("home")} className={`hover:text-white transition ${view === "home" ? "text-white" : ""}`}>Home</button>
-            <button onClick={() => setView("shop")} className={`hover:text-white transition ${view === "shop" ? "text-white" : ""}`}>Shop</button>
-            <button onClick={() => setView("lookbook")} className={`hover:text-white transition ${view === "lookbook" ? "text-white" : ""}`}>Lookbook</button>
-            <button className="hover:text-white transition">About</button>
+          {/* Runway Navigation Links */}
+          <nav className="hidden md:flex items-center space-x-8 text-[11px] font-mono font-medium tracking-[0.2em] uppercase text-zinc-400">
+            <button
+              onClick={() => setView("home")}
+              className={`hover:text-white transition ${view === "home" ? "text-white font-bold" : ""}`}
+            >
+              Collection
+            </button>
+            <button
+              onClick={() => setView("shop")}
+              className={`hover:text-white transition ${view === "shop" ? "text-white font-bold" : ""}`}
+            >
+              Catalog
+            </button>
+            <button
+              onClick={() => setView("lookbook")}
+              className={`hover:text-white transition ${view === "lookbook" ? "text-white font-bold" : ""}`}
+            >
+              Runway Edit
+            </button>
           </nav>
 
-          {/* Actions */}
-          <div className="flex items-center gap-4">
+          {/* Action Bar */}
+          <div className="flex items-center space-x-3">
             {onOpenTrackOrder && (
-              <button onClick={onOpenTrackOrder} className="hidden lg:flex items-center text-[10px] uppercase font-bold tracking-widest text-white/60 hover:text-white transition">
-                Track Order
+              <button
+                onClick={onOpenTrackOrder}
+                className="hidden lg:flex items-center text-[10.5px] uppercase font-mono tracking-widest text-zinc-400 hover:text-white transition"
+              >
+                Track Consignment
               </button>
             )}
+
             {onOpenCheckout && (
-              <button onClick={onOpenCheckout} className="hidden sm:flex items-center gap-1.5 bg-[#c9a96e] hover:bg-[#b8955a] text-black text-[10px] uppercase font-bold tracking-widest px-3.5 py-1.5 rounded-sm transition">
-                <Truck className="w-3 h-3" />
-                <span>Checkout</span>
+              <button
+                onClick={onOpenCheckout}
+                className="hidden sm:flex items-center space-x-1.5 bg-[#c9a96e] hover:bg-[#d8b97d] text-black text-[10px] uppercase font-mono font-bold tracking-widest px-3.5 py-2 rounded-sm transition shadow-sm"
+              >
+                <Truck className="w-3.5 h-3.5" />
+                <span>Express COD</span>
               </button>
             )}
-            <button onClick={onOpenSearch} className="text-white/60 hover:text-white transition" aria-label="Search catalog">
+
+            <button
+              onClick={onOpenSearch}
+              className="p-2 rounded-lg text-zinc-400 hover:text-white transition"
+              aria-label="Search"
+            >
               <Search className="w-4 h-4" />
             </button>
-            <button onClick={onOpenCart} className="relative text-white/60 hover:text-white transition">
+
+            <button
+              onClick={onOpenCart}
+              className="relative p-2 rounded-lg text-zinc-300 hover:text-white transition flex items-center space-x-1"
+              aria-label="Cart"
+            >
               <ShoppingBag className="w-4 h-4" />
               {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 w-4 h-4 bg-white text-[#0e0e0e] text-[9px] font-black rounded-full flex items-center justify-center">{cartCount}</span>
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#c9a96e] text-black text-[9px] font-black flex items-center justify-center">
+                  {cartCount}
+                </span>
               )}
             </button>
-            <button className="md:hidden text-white/60 hover:text-white" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+
+            <button
+              className="md:hidden p-2 text-zinc-400 hover:text-white"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
@@ -219,322 +296,397 @@ export function MilanoStorefront({
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-[#111] border-t border-white/10 px-5 py-4 space-y-3">
-            {["Home", "Shop", "Lookbook", "About"].map(l => (
-              <button key={l} className="block w-full text-left text-sm font-bold uppercase tracking-widest text-white/70 hover:text-white transition py-1"
-                onClick={() => { if (l === "Shop") setView("shop"); else if (l === "Lookbook") setView("lookbook"); else setView("home"); setMobileMenuOpen(false); }}>
-                {l}
-              </button>
-            ))}
+          <div className="md:hidden bg-[#121216] border-t border-white/10 px-5 py-4 space-y-2 text-xs font-mono uppercase tracking-widest">
+            <button
+              onClick={() => { setView("home"); setMobileMenuOpen(false); }}
+              className="block w-full text-left py-2 text-zinc-300 hover:text-white"
+            >
+              Collection
+            </button>
+            <button
+              onClick={() => { setView("shop"); setMobileMenuOpen(false); }}
+              className="block w-full text-left py-2 text-zinc-300 hover:text-white"
+            >
+              Catalog
+            </button>
+            <button
+              onClick={() => { setView("lookbook"); setMobileMenuOpen(false); }}
+              className="block w-full text-left py-2 text-zinc-300 hover:text-white"
+            >
+              Runway Edit
+            </button>
           </div>
         )}
       </header>
 
-      {/* ══════════════════════════════════════════════════════════════
-          HOME VIEW
-      ══════════════════════════════════════════════════════════════ */}
+      {/* ══════════════════════════════════════════════════════════════════
+          HOME RUNWAY VIEW
+      ══════════════════════════════════════════════════════════════════ */}
       {view === "home" && (
         <>
-          {/* ── Hero: Full-bleed split editorial ──────────────────── */}
-          <section className="relative h-screen min-h-[600px] max-h-[860px] overflow-hidden pt-14">
-            {/* BG Image */}
+          {/* ── Full-Bleed Milanese Editorial Hero ──────────────────────────── */}
+          <section className="relative min-h-[580px] sm:min-h-[680px] overflow-hidden flex items-end">
             <div className="absolute inset-0">
-              <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=1600&auto=format&fit=crop&q=90"
-                alt="Hero" className="w-full h-full object-cover object-center" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#0e0e0e] via-[#0e0e0e]/60 to-transparent" />
+              <img
+                src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=1600&auto=format&fit=crop&q=90"
+                alt="Milan Runway"
+                className="w-full h-full object-cover object-center brightness-[0.7]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c0e] via-[#0c0c0e]/50 to-transparent" />
             </div>
 
-            {/* Content */}
-            <div className="relative z-10 h-full flex items-end pb-16 md:pb-24 max-w-7xl mx-auto px-5">
-              <div className="max-w-xl">
-                <p className="text-[11px] font-mono uppercase tracking-[0.35em] text-white/50 mb-4 sm:mb-6">SS 2025 Collection</p>
-                <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase leading-[0.92] mb-6 sm:mb-8">
-                  GET<br />
-                  YOURSELF<br />
-                  <span className="text-transparent" style={{ WebkitTextStroke: "2px rgba(255,255,255,0.7)" }}>
-                    INTO THE
-                  </span><br />
-                  <span className="text-[#c9a96e]">{heroLines[heroIndex]}</span>
+            <div className="relative z-10 max-w-7xl mx-auto px-5 pb-16 sm:pb-24 w-full">
+              <div className="max-w-xl space-y-4">
+                <span className="text-[11px] font-mono uppercase tracking-[0.35em] text-[#c9a96e] block">
+                  Collezione Autunno / Inverno
+                </span>
+                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-light font-serif tracking-tight text-white leading-tight">
+                  Sartorial Streetwear & Heavyweight Tailoring
                 </h1>
-                <button onClick={() => setView("shop")}
-                  className="inline-flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.25em] text-white/80 hover:text-white transition group">
-                  View Summer Collection
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
-                </button>
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans max-w-lg">
+                  Direct from Milanese and Biella mills. Certified virgin wool, Mongolian cashmere knitwear, and hand-lasted calfskin footwear with doorstep inspection.
+                </p>
+
+                <div className="pt-2 flex flex-wrap gap-3 font-mono text-xs">
+                  <button
+                    onClick={() => setView("shop")}
+                    className="py-3 px-6 bg-[#c9a96e] hover:bg-[#d8b97d] text-black font-bold uppercase tracking-wider rounded-sm transition flex items-center space-x-2"
+                  >
+                    <span>EXPLORE RUNWAY CATALOG</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    onClick={() => setView("lookbook")}
+                    className="py-3 px-5 bg-black/60 hover:bg-black border border-white/20 text-white font-semibold uppercase tracking-wider rounded-sm transition"
+                  >
+                    <span>VIEW RUNWAY LOOKBOOK</span>
+                  </button>
+                </div>
               </div>
             </div>
-
-            {/* Decorative accent square */}
-            <div className="absolute right-32 top-1/2 -translate-y-1/2 w-16 h-16 bg-[#c9a96e]/30 hidden lg:block" />
           </section>
 
-          {/* ── Vertical Category Strip ───────────────────────────── */}
-          <section className="bg-[#0e0e0e] py-2">
-            <div className="flex overflow-x-auto scrollbar-hide">
-              {VERTICAL_CATEGORIES.map((cat, idx) => (
-                <button key={cat.id} onClick={() => { setActiveCat(cat.id); setView("shop"); }}
-                  className="relative flex-shrink-0 w-44 sm:w-52 h-80 sm:h-96 overflow-hidden group border-l border-white/10 first:border-l-0">
-                  <img src={cat.img} alt={cat.label}
-                    className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20 group-hover:from-black/60 transition" />
-                  {/* Vertical label */}
-                  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
-                    <span className="text-white font-black text-base uppercase tracking-widest" style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}>
-                      {cat.label}
+          {/* ── Horizontal Department Runway Carousel (Clean Horizontal, NO Vertical Text) ── */}
+          <section className="py-12 border-b border-white/[0.08] bg-[#0f0f13]">
+            <div className="max-w-7xl mx-auto px-5 mb-6 flex items-end justify-between">
+              <div>
+                <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#c9a96e] block mb-1">
+                  Atelier Departments
+                </span>
+                <h2 className="text-xl sm:text-2xl font-serif text-white uppercase tracking-tight">
+                  Milanese Ready-To-Wear
+                </h2>
+              </div>
+              <span className="text-xs font-mono text-zinc-400">5 Curated Disciplines</span>
+            </div>
+
+            <div className="max-w-7xl mx-auto px-5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+              {MILANO_DEPARTMENTS.map((dept) => (
+                <button
+                  key={dept.id}
+                  onClick={() => { setActiveCat(dept.label); setView("shop"); }}
+                  className="group relative rounded-xl overflow-hidden aspect-[3/4] border border-white/10 text-left bg-zinc-900 transition hover:border-[#c9a96e]/50"
+                >
+                  <img
+                    src={dept.img}
+                    alt={dept.label}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-75 group-hover:opacity-90"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+                  
+                  <div className="absolute bottom-3 left-3 right-3 space-y-0.5">
+                    <span className="text-[9px] font-mono text-[#c9a96e] uppercase tracking-wider block">
+                      {dept.count}
                     </span>
-                    <ArrowRight className="w-4 h-4 text-white/60 group-hover:text-[#c9a96e] transition rotate-90" />
-                  </div>
-                  <div className="absolute top-4 left-4 text-[9px] font-mono uppercase tracking-widest text-white/40">
-                    {cat.count}
+                    <h3 className="text-xs font-serif font-bold text-white leading-tight">
+                      {dept.label}
+                    </h3>
+                    <p className="text-[10px] text-zinc-400 font-sans truncate">
+                      {dept.sub}
+                    </p>
                   </div>
                 </button>
               ))}
             </div>
           </section>
 
-          {/* ── New Drops ─────────────────────────────────────────── */}
-          <section className="py-20 max-w-7xl mx-auto px-5">
-            <div className="flex items-end justify-between mb-10">
+          {/* ── Runway Drops Grid ─────────────────────────────────────────────── */}
+          <section className="py-16 max-w-7xl mx-auto px-5">
+            <div className="flex items-end justify-between mb-8">
               <div>
-                <p className="text-[10px] font-mono uppercase tracking-[0.35em] text-white/30 mb-2">Latest Releases</p>
-                <h2 className="text-4xl font-black uppercase tracking-tight">New Drops</h2>
+                <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-zinc-500 block mb-1">
+                  Limited Atelier Drops
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-serif text-white uppercase tracking-tight">
+                  Runway Edition
+                </h2>
               </div>
-              <button onClick={() => setView("shop")} className="text-[11px] font-bold uppercase tracking-widest text-[#c9a96e] hover:text-white transition flex items-center gap-2">
-                All Products <ArrowRight className="w-4 h-4" />
+              <button
+                onClick={() => setView("shop")}
+                className="text-xs font-mono text-[#c9a96e] hover:text-white transition flex items-center space-x-1"
+              >
+                <span>COMPLETE CATALOG</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4">
-              {catalogItems.map(item => (
-                <div key={item.id} className="group bg-[#121212] rounded-2xl border border-white/10 overflow-hidden relative flex flex-col justify-between">
-                  <div className="aspect-[3/4] overflow-hidden relative bg-[#1a1a1a] cursor-pointer" onClick={() => {
-                    const p = { id: item.id, title: item.title, slug: item.id, description: item.subtitle, price: item.price, comparePrice: item.compare, imageUrl: item.img, badge: item.tag, variants: [] };
+
+            {/* Mobile 1st 2-Column Responsive Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-5">
+              {catalogItems.map((item) => (
+                <MilanoProductCard
+                  key={item.id}
+                  item={item}
+                  wishlisted={wishlistLocal.has(item.id)}
+                  added={addedId === item.id}
+                  onWishlist={() => handleWishlist(item.id)}
+                  onAdd={() => handleAdd(item)}
+                  onView={() => {
+                    const p = item.rawProduct || {
+                      id: item.id,
+                      title: item.title,
+                      slug: item.id,
+                      description: item.subtitle,
+                      price: item.price,
+                      comparePrice: item.compare,
+                      imageUrl: item.img,
+                      badge: item.tag,
+                      variants: []
+                    };
                     onOpenProduct(p);
-                  }}>
-                    <img src={item.img} alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition duration-700 grayscale-[20%] group-hover:grayscale-0" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition duration-300" />
-                    <div className="absolute top-2.5 sm:top-4 left-2.5 sm:left-4 text-[8.5px] sm:text-[9px] font-mono uppercase tracking-[0.2em] bg-white text-black px-1.5 sm:px-2 py-0.5 font-bold rounded">
-                      {item.label}
-                    </div>
-                    <button onClick={e => { e.stopPropagation(); handleWishlist(item.id); }}
-                      className={`absolute top-2.5 sm:top-4 right-2.5 sm:right-4 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center border transition ${wishlistLocal.has(item.id) ? "bg-rose-500 border-rose-500 text-white" : "bg-black/40 border-white/20 text-white/70 hover:border-white hover:text-white"}`}>
-                      <Heart className={`w-3.5 h-3.5 ${wishlistLocal.has(item.id) ? "fill-white" : ""}`} />
-                    </button>
-                    {/* Desktop Quick add overlay */}
-                    <div className="hidden sm:block absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition translate-y-2 group-hover:translate-y-0 duration-300">
-                      <button onClick={e => { e.stopPropagation(); handleAdd(item); }}
-                        className={`w-full py-2 text-xs font-bold uppercase tracking-widest transition flex items-center justify-center gap-2 rounded-lg ${addedId === item.id ? "bg-emerald-500 text-white" : "bg-white text-black hover:bg-[#c9a96e]"}`}>
-                        {addedId === item.id ? <><Check className="w-3.5 h-3.5" /> Added</> : <><ShoppingBag className="w-3.5 h-3.5" /> Quick Add</>}
-                      </button>
-                    </div>
-                  </div>
-                  <div className="p-2.5 sm:p-4 border-t border-white/5 flex flex-col justify-between flex-1">
-                    <div>
-                      <p className="text-[8px] sm:text-[9px] font-mono uppercase tracking-[0.2em] text-[#c9a96e] mb-1 line-clamp-1">{item.subtitle}</p>
-                      <h3 className="text-xs sm:text-sm font-bold text-white mb-2 leading-tight line-clamp-1 sm:line-clamp-2">{item.title}</h3>
-                    </div>
-                    <div className="flex items-center justify-between gap-1.5 pt-1">
-                      <div>
-                        <span className="font-black text-white text-xs sm:text-sm">৳{item.price.toLocaleString("en-BD")}</span>
-                        {item.compare > item.price && (
-                          <span className="text-[10px] sm:text-xs text-white/30 line-through ml-1 sm:ml-2">৳{item.compare.toLocaleString("en-BD")}</span>
-                        )}
-                      </div>
-                      <button
-                        onClick={e => { e.stopPropagation(); handleAdd(item); }}
-                        className="sm:hidden px-2 py-1 rounded bg-white text-black text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 active:scale-95 transition"
-                        aria-label="Add to bag"
-                      >
-                        {addedId === item.id ? <Check className="w-3 h-3 text-emerald-600" /> : <ShoppingBag className="w-3 h-3" />}
-                        <span>{addedId === item.id ? "Done" : "Add"}</span>
-                      </button>
-                      <span className="hidden sm:inline-block text-[9px] font-mono uppercase tracking-widest px-2 py-0.5 border border-white/20 text-white/50 rounded">{item.tag}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* ── Full-width editorial strip ────────────────────────── */}
-          <section className="relative overflow-hidden h-56 sm:h-72">
-            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1600&auto=format&fit=crop&q=85"
-              alt="Editorial" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-[#0e0e0e]/70 flex items-center justify-center">
-              <div className="text-center">
-                <p className="text-[10px] font-mono uppercase tracking-[0.35em] text-white/50 mb-3">Autumn / Winter 2025</p>
-                <h2 className="text-4xl sm:text-6xl font-black uppercase text-white tracking-tight mb-6">The New Silhouette</h2>
-                <button onClick={() => setView("lookbook")}
-                  className="inline-flex items-center gap-2 border border-white text-white text-[11px] font-bold uppercase tracking-widest px-6 py-3 hover:bg-white hover:text-black transition">
-                  View Lookbook <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          </section>
-
-          {/* ── Trust Row ─────────────────────────────────────────── */}
-          <section className="border-t border-white/5 py-10">
-            <div className="max-w-7xl mx-auto px-5 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
-              {[
-                { icon: <Truck className="w-5 h-5" />, title: "Steadfast Courier 24h", sub: "Dhaka & 64 Districts express dispatch" },
-                { icon: <RotateCcw className="w-5 h-5" />, title: "Doorstep Inspection", sub: "Inspect fabric & fit before payment" },
-                { icon: <ShieldCheck className="w-5 h-5" />, title: "Cash on Delivery & bKash", sub: "100% secure verified payment gateways" },
-              ].map(t => (
-                <div key={t.title} className="flex items-center gap-4 p-3 rounded-xl bg-white/[0.02] border border-white/5">
-                  <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-[#c9a96e] flex-shrink-0">{t.icon}</div>
-                  <div>
-                    <p className="text-sm font-bold text-white">{t.title}</p>
-                    <p className="text-xs text-white/40 mt-0.5">{t.sub}</p>
-                  </div>
-                </div>
+                  }}
+                />
               ))}
             </div>
           </section>
         </>
       )}
 
-      {/* ══════════════════════════════════════════════════════════════
+      {/* ══════════════════════════════════════════════════════════════════
           SHOP VIEW
-      ══════════════════════════════════════════════════════════════ */}
+      ══════════════════════════════════════════════════════════════════ */}
       {view === "shop" && (
-        <div className="pt-14 min-h-screen">
-          <div className="max-w-7xl mx-auto px-5 py-10">
-            {/* Header */}
-            <div className="flex items-center gap-3 text-[10px] font-mono uppercase tracking-widest text-white/30 mb-8">
-              <button onClick={() => setView("home")} className="hover:text-white transition">Home</button>
-              <span>/</span>
-              <span className="text-white/60">Shop All</span>
-            </div>
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
-              <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight">All Products</h1>
-              <div className="flex flex-wrap gap-2">
-                {VERTICAL_CATEGORIES.map(c => (
-                  <button key={c.id} onClick={() => setActiveCat(activeCat === c.id ? null : c.id)}
-                    className={`px-3 sm:px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border rounded-lg transition ${activeCat === c.id ? "bg-white text-black border-white" : "border-white/20 text-white/50 hover:border-white hover:text-white"}`}>
-                    {c.label}
-                  </button>
-                ))}
-              </div>
-            </div>
+        <div className="max-w-7xl mx-auto px-5 py-10">
+          <div className="flex items-center space-x-2 text-xs font-mono text-zinc-500 mb-6">
+            <button onClick={() => setView("home")} className="hover:text-zinc-300">Home</button>
+            <ChevronRight className="w-3.5 h-3.5" />
+            <span className="text-zinc-200">Milano Catalogue</span>
+          </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4">
-              {catalogItems.map(item => (
-                <div key={item.id} className="group bg-[#121212] rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between">
-                  <div className="aspect-[3/4] overflow-hidden relative bg-[#1a1a1a] cursor-pointer" onClick={() => {
-                    const p = { id: item.id, title: item.title, slug: item.id, description: item.subtitle, price: item.price, comparePrice: item.compare, imageUrl: item.img, badge: item.tag, variants: [] };
-                    onOpenProduct(p);
-                  }}>
-                    <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-600" />
-                    <div className="absolute top-2.5 left-2.5 text-[8.5px] font-mono uppercase tracking-widest bg-white text-black px-1.5 py-0.5 font-bold rounded">{item.label}</div>
-                    <div className="hidden sm:block absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 opacity-0 group-hover:opacity-100 transition">
-                      <button onClick={e => { e.stopPropagation(); handleAdd(item); }}
-                        className={`w-full py-2 text-xs font-bold uppercase tracking-widest transition rounded-lg ${addedId === item.id ? "bg-emerald-500 text-white" : "bg-white text-black hover:bg-[#c9a96e]"}`}>
-                        {addedId === item.id ? "Added ✓" : "Quick Add"}
-                      </button>
-                    </div>
-                  </div>
-                  <div className="p-2.5 sm:p-3.5 border-t border-white/5 flex flex-col justify-between flex-1">
-                    <h3 className="text-xs sm:text-sm font-bold text-white mb-1.5 line-clamp-1">{item.title}</h3>
-                    <div className="flex items-center justify-between gap-1.5">
-                      <span className="font-black text-white text-xs sm:text-sm">৳{item.price.toLocaleString("en-BD")}</span>
-                      {item.compare > item.price && <span className="text-[10px] sm:text-xs text-white/30 line-through">৳{item.compare.toLocaleString("en-BD")}</span>}
-                      <button
-                        onClick={e => { e.stopPropagation(); handleAdd(item); }}
-                        className="sm:hidden px-2 py-1 rounded bg-white text-black text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 active:scale-95 transition"
-                        aria-label="Add to bag"
-                      >
-                        {addedId === item.id ? <Check className="w-3 h-3 text-emerald-600" /> : <ShoppingBag className="w-3 h-3" />}
-                        <span>{addedId === item.id ? "Done" : "Add"}</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+          <div className="mb-8">
+            <h1 className="text-3xl sm:text-4xl font-serif font-light uppercase tracking-tight text-white">
+              Sartorial Archive
+            </h1>
+            <p className="text-xs text-zinc-400 mt-1 font-sans">
+              Precision Italian cuts with nationwide COD trial and Steadfast express logistics.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-5">
+            {catalogItems.map((item) => (
+              <MilanoProductCard
+                key={item.id}
+                item={item}
+                wishlisted={wishlistLocal.has(item.id)}
+                added={addedId === item.id}
+                onWishlist={() => handleWishlist(item.id)}
+                onAdd={() => handleAdd(item)}
+                onView={() => {
+                  const p = item.rawProduct || {
+                    id: item.id,
+                    title: item.title,
+                    slug: item.id,
+                    description: item.subtitle,
+                    price: item.price,
+                    comparePrice: item.compare,
+                    imageUrl: item.img,
+                    badge: item.tag,
+                    variants: []
+                  };
+                  onOpenProduct(p);
+                }}
+              />
+            ))}
           </div>
         </div>
       )}
 
-      {/* ══════════════════════════════════════════════════════════════
+      {/* ══════════════════════════════════════════════════════════════════
           LOOKBOOK VIEW
-      ══════════════════════════════════════════════════════════════ */}
+      ══════════════════════════════════════════════════════════════════ */}
       {view === "lookbook" && (
-        <div className="pt-14 min-h-screen">
-          <div className="max-w-7xl mx-auto px-5 py-10">
-            <div className="flex items-center gap-3 text-[10px] font-mono uppercase tracking-widest text-white/30 mb-8">
-              <button onClick={() => setView("home")} className="hover:text-white transition">Home</button>
-              <span>/</span>
-              <span className="text-white/60">Lookbook</span>
-            </div>
-            <h1 className="text-5xl font-black uppercase tracking-tight mb-2">SS 2025</h1>
-            <p className="text-white/40 text-sm font-mono uppercase tracking-widest mb-10">The New Silhouette Collection</p>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
-              {LOOKBOOK_SHOTS.map((img, i) => (
-                <div key={i} className={`relative overflow-hidden ${i === 0 ? "row-span-2 col-span-1" : ""}`}>
-                  <div className={`${i === 0 ? "aspect-[2/3]" : "aspect-square"} overflow-hidden group`}>
-                    <img src={img} alt="" className="w-full h-full object-cover group-hover:scale-105 grayscale hover:grayscale-0 transition duration-500" />
-                  </div>
+        <div className="max-w-7xl mx-auto px-5 py-10">
+          <div className="flex items-center space-x-2 text-xs font-mono text-zinc-500 mb-6">
+            <button onClick={() => setView("home")} className="hover:text-zinc-300">Home</button>
+            <ChevronRight className="w-3.5 h-3.5" />
+            <span className="text-zinc-200">Runway Lookbook</span>
+          </div>
+
+          <div className="mb-10 text-center max-w-xl mx-auto space-y-2">
+            <span className="text-[10px] font-mono uppercase tracking-[0.35em] text-[#c9a96e]">
+              Editorial Visuals
+            </span>
+            <h1 className="text-3xl sm:text-4xl font-serif text-white uppercase">
+              Autumn / Winter Runway
+            </h1>
+            <p className="text-xs text-zinc-400">
+              Shot on location in Milan and Como. Captured in pure natural daylight to exhibit textile drape and weave density.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&auto=format&fit=crop&q=85",
+              "https://images.unsplash.com/photo-1550614000-4895a10e1bfd?w=800&auto=format&fit=crop&q=85",
+              "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&auto=format&fit=crop&q=85"
+            ].map((img, i) => (
+              <div key={i} className="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 relative group">
+                <img src={img} alt={`Look ${i + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80" />
+                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs font-mono">
+                  <span className="text-[#c9a96e]">LOOK 0{i + 1}</span>
+                  <span className="text-zinc-300">RUNWAY ARCHIVE</span>
                 </div>
-              ))}
-            </div>
-            <div className="mt-10 text-center">
-              <button onClick={() => setView("shop")}
-                className="inline-flex items-center gap-3 border border-white text-white text-[11px] font-bold uppercase tracking-widest px-8 py-3 hover:bg-white hover:text-black transition">
-                Shop The Look <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       )}
 
-      {/* ── Footer ────────────────────────────────────────────────── */}
-      <footer className="border-t border-white/5 mt-20 pt-14 pb-8">
-        <div className="max-w-7xl mx-auto px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-10">
+      {/* ── Footer ──────────────────────────────────────────────────────────── */}
+      <footer className="border-t border-white/[0.08] bg-[#08080a] py-12 text-xs font-mono text-zinc-500">
+        <div className="max-w-7xl mx-auto px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div>
-            <div className="flex items-center gap-2 mb-5">
-              <div className="w-6 h-6 bg-white rounded-sm flex items-center justify-center">
-                <span className="text-[#0e0e0e] text-[10px] font-black">M</span>
-              </div>
-              <span className="font-black text-sm tracking-[0.2em] uppercase">MILANO</span>
-            </div>
-            <p className="text-white/30 text-sm leading-relaxed">Editorial streetwear. Designed for those who move with intention.</p>
-            <div className="flex gap-3 mt-5">
-              {[Instagram, Twitter, Youtube].map((Icon, i) => (
-                <button key={i} className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 text-white/50 hover:text-white flex items-center justify-center transition">
-                  <Icon className="w-3.5 h-3.5" />
-                </button>
-              ))}
-            </div>
+            <span className="font-serif text-sm font-bold text-white uppercase block mb-2">
+              {storeDisplayName || "MILANO"}
+            </span>
+            <p className="text-zinc-400 leading-relaxed font-sans text-xs">
+              Milanese sartorial streetwear house with verified courier COD across Bangladesh.
+            </p>
           </div>
-          {[
-            { h: "Catalog", links: ["Hoodies", "Sweatshirts", "T-Shirts", "Jackets", "Accessories"] },
-            { h: "Support", links: ["Track Order", "Returns", "Size Guide", "FAQs", "Contact"] },
-          ].map(col => (
-            <div key={col.h}>
-              <h4 className="text-[10px] font-mono uppercase tracking-[0.3em] text-white/30 mb-4">{col.h}</h4>
-              <ul className="space-y-2.5">
-                {col.links.map(l => <li key={l}><button className="text-sm text-white/50 hover:text-white transition">{l}</button></li>)}
-              </ul>
-            </div>
-          ))}
           <div>
-            <h4 className="text-[10px] font-mono uppercase tracking-[0.3em] text-white/30 mb-4">Newsletter</h4>
-            <p className="text-sm text-white/40 mb-4">Drops. Collabs. Early access. No spam.</p>
-            <form className="flex" onSubmit={e => e.preventDefault()}>
-              <input type="email" placeholder="your@email.com"
-                className="flex-1 bg-white/5 border border-white/10 px-3 py-2 text-sm text-white placeholder-white/20 outline-none focus:border-white/30 transition rounded-l" />
-              <button type="submit" className="bg-white text-black text-xs font-bold px-4 rounded-r hover:bg-[#c9a96e] transition">→</button>
-            </form>
+            <h4 className="text-zinc-300 font-bold uppercase mb-2">Logistics</h4>
+            <p className="text-zinc-400 font-sans text-xs">
+              Steadfast 24–48h Nationwide. Doorstep try-on and fit guarantee.
+            </p>
+          </div>
+          <div>
+            <h4 className="text-zinc-300 font-bold uppercase mb-2">Payment Verification</h4>
+            <p className="text-zinc-400 font-sans text-xs">
+              Cash on delivery, bKash, and Nagad digital tokenization.
+            </p>
+          </div>
+          <div>
+            <h4 className="text-zinc-300 font-bold uppercase mb-2">Atelier Hub</h4>
+            <p className="text-zinc-400 font-sans text-xs">
+              Dhaka Flagship • Banani Avenue. Open 11:00 AM – 9:00 PM.
+            </p>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto px-5 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-white/20">
-          <span>© {new Date().getFullYear()} MILANO by {storeDisplayName}. All rights reserved.</span>
-          <div className="flex gap-5">
-            {["Privacy", "Terms", "Cookies"].map(l => <button key={l} className="hover:text-white transition">{l}</button>)}
-          </div>
+
+        <div className="max-w-7xl mx-auto px-5 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between text-[11px] gap-2">
+          <span>© {new Date().getFullYear()} {storeDisplayName}. All rights reserved.</span>
+          <span className="text-zinc-400">Milanese Editorial Standard</span>
         </div>
       </footer>
     </div>
   );
 }
 
+// ─── Reusable Milano Product Card ──────────────────────────────────────────────
+function MilanoProductCard({
+  item,
+  wishlisted,
+  added,
+  onWishlist,
+  onAdd,
+  onView
+}: {
+  item: any;
+  wishlisted: boolean;
+  added: boolean;
+  onWishlist: () => void;
+  onAdd: () => void;
+  onView: () => void;
+}) {
+  return (
+    <div className="group rounded-2xl bg-[#121216] border border-white/10 hover:border-[#c9a96e]/40 transition overflow-hidden flex flex-col justify-between">
+      {/* 3:4 Portrait Ratio */}
+      <div className="relative aspect-[3/4] overflow-hidden bg-black cursor-pointer" onClick={onView}>
+        <img
+          src={item.img}
+          alt={item.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100"
+        />
+
+        {item.label && (
+          <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-sm bg-black/80 backdrop-blur-md border border-white/10 text-[9px] font-mono uppercase tracking-wider text-[#c9a96e]">
+            {item.label}
+          </div>
+        )}
+
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onWishlist();
+          }}
+          className={`absolute bottom-2.5 right-2.5 w-7 h-7 rounded-full flex items-center justify-center border transition ${
+            wishlisted
+              ? "bg-rose-500 border-rose-500 text-white"
+              : "bg-black/60 border-white/20 text-zinc-300 hover:text-white"
+          }`}
+          aria-label="Wishlist"
+        >
+          <Heart className={`w-3.5 h-3.5 ${wishlisted ? "fill-white" : ""}`} />
+        </button>
+      </div>
+
+      <div className="p-3 sm:p-3.5 flex-1 flex flex-col justify-between space-y-2">
+        <div>
+          <h3
+            onClick={onView}
+            className="text-xs sm:text-sm font-serif text-white line-clamp-1 cursor-pointer hover:text-[#c9a96e] transition"
+          >
+            {item.title}
+          </h3>
+          <p className="text-[10px] text-zinc-400 font-sans truncate mt-0.5">
+            {item.subtitle}
+          </p>
+        </div>
+
+        <div className="flex items-center justify-between pt-1 border-t border-white/5">
+          <div>
+            <span className="text-xs sm:text-sm font-bold font-mono text-white">
+              ৳{item.price.toLocaleString("en-BD")}
+            </span>
+            {item.compare > item.price && (
+              <span className="text-[10px] text-zinc-500 line-through font-mono ml-1.5">
+                ৳{item.compare.toLocaleString("en-BD")}
+              </span>
+            )}
+          </div>
+
+          <button
+            onClick={onAdd}
+            className={`px-2.5 py-1 sm:px-3 sm:py-1.5 rounded text-[10px] sm:text-xs font-mono uppercase tracking-wider transition flex items-center space-x-1 ${
+              added
+                ? "bg-emerald-500 text-black font-bold"
+                : "bg-[#c9a96e] hover:bg-[#d8b97d] text-black font-bold"
+            }`}
+          >
+            {added ? (
+              <>
+                <Check className="w-3 h-3" />
+                <span>Added</span>
+              </>
+            ) : (
+              <>
+                <ShoppingBag className="w-3 h-3" />
+                <span>Add</span>
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}

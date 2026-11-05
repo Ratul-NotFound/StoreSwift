@@ -522,92 +522,111 @@ export function TechStorefront({
         </div>
       </section>
 
-      {/* ─── 6. The Precision Desk Telemetry Ensemble (1-Click Upsell) ───────── */}
+      {/* ─── 6. Interactive Device Spec HUD & Hardware Switcher ─────────────── */}
       <section id="ensemble" className="py-16 px-4 sm:px-6 border-b border-zinc-800/80 bg-gradient-to-r from-sky-950/20 via-[#10131d] to-black">
         <div className="max-w-6xl mx-auto">
           <div className="bg-[#13151f] rounded-3xl border border-zinc-800 p-6 sm:p-10 shadow-2xl">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-5 space-y-4 font-mono">
+              <div className="lg:col-span-6 space-y-4 font-mono">
                 <div className="inline-flex items-center space-x-1.5 px-3 py-1 bg-sky-950/80 text-sky-400 rounded-full text-[10px] font-bold tracking-wider uppercase border border-sky-800">
-                  <Zap className="w-3 h-3 text-sky-400" />
-                  <span>Curated Workstation Bundle</span>
+                  <Activity className="w-3 h-3 text-sky-400" />
+                  <span>Hardware Telemetry HUD</span>
                 </div>
                 <h3 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-                  The Precision Desk Telemetry Ensemble
+                  Interactive Precision Calibration
                 </h3>
                 <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-                  The ultimate acoustic and tactile hardware bundle: Beryllium ANC Headphones, Gasket-Mounted CNC Mechanical Keyboard, and 100W GaN Fast Charger.
+                  Configure acoustic frequency response, mechanical switch actuation curves, and GaN III fast-charging thermals. Test live telemetry before adding to your workstation.
                 </p>
 
-                <div className="space-y-2 pt-2 text-xs">
-                  <div className="flex items-center space-x-2.5 text-zinc-200 font-medium">
-                    <span className="w-5 h-5 rounded-full bg-sky-500 text-black font-mono text-[10px] font-bold flex items-center justify-center">1</span>
-                    <span>Acoustic Pro Hybrid ANC Wireless Headphones (৳18,500)</span>
+                {/* Interactive Audio / Switch Modes */}
+                <div className="space-y-3 pt-2">
+                  <div>
+                    <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block mb-1.5">
+                      Active Noise Cancelling Profile:
+                    </span>
+                    <div className="grid grid-cols-3 gap-2">
+                      {[
+                        { name: "Deep ANC", val: "-38dB Depth", color: "text-sky-400 border-sky-500/50 bg-sky-950/40" },
+                        { name: "Natural Ambient", val: "Transparent", color: "text-emerald-400 border-emerald-500/30 bg-emerald-950/20" },
+                        { name: "Gaming Low-Latency", val: "35ms aptX", color: "text-amber-400 border-amber-500/30 bg-amber-950/20" },
+                      ].map((mode, i) => (
+                        <div key={i} className={`p-2 rounded-xl border text-center ${mode.color}`}>
+                          <span className="text-xs font-bold block">{mode.name}</span>
+                          <span className="text-[9.5px] font-mono opacity-80">{mode.val}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <div className="flex items-center space-x-2.5 text-zinc-200 font-medium">
-                    <span className="w-5 h-5 rounded-full bg-sky-500 text-black font-mono text-[10px] font-bold flex items-center justify-center">2</span>
-                    <span>Tactile CNC Gasket Mechanical Keyboard (৳14,900)</span>
-                  </div>
-                  <div className="flex items-center space-x-2.5 text-zinc-200 font-medium">
-                    <span className="w-5 h-5 rounded-full bg-sky-500 text-black font-mono text-[10px] font-bold flex items-center justify-center">3</span>
-                    <span>Braided 100W GaN Charging Hub & Cable (৳5,400)</span>
+
+                  <div>
+                    <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block mb-1.5">
+                      Mechanical Switch Matrix:
+                    </span>
+                    <div className="grid grid-cols-3 gap-2">
+                      {[
+                        { type: "Linear Red", force: "45g • Silenced", desc: "Factory Lubed" },
+                        { type: "Tactile Brown", force: "55g • Bump", desc: "Gasket Mount" },
+                        { type: "Clicky Blue", force: "60g • Crisp", desc: "Brass Plate" },
+                      ].map((sw, i) => (
+                        <div key={i} className="p-2 rounded-xl border border-zinc-800 bg-black/40 text-center">
+                          <span className="text-xs font-bold text-white block">{sw.type}</span>
+                          <span className="text-[9.5px] text-sky-400 font-mono block">{sw.force}</span>
+                          <span className="text-[9px] text-zinc-500 block">{sw.desc}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
-                <div className="pt-4 flex items-baseline space-x-3">
-                  <span className="text-2xl font-black text-sky-400 font-mono">৳33,900</span>
-                  <span className="text-sm text-zinc-500 line-through font-mono">৳38,800</span>
-                  <span className="text-xs font-bold text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-800">
-                    Save ৳4,900 (13% Off)
-                  </span>
-                </div>
-
-                <div className="pt-2">
-                  <button
-                    onClick={handleAddTechEnsemble}
-                    className="w-full sm:w-auto py-3 px-8 bg-sky-500 hover:bg-sky-400 text-black font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center space-x-2 btn-press"
-                  >
-                    <ShoppingBag className="w-4 h-4 text-black" />
-                    <span>Add Complete Telemetry Ensemble to Bag</span>
-                  </button>
-                  <p className="text-[11px] text-zinc-500 mt-2 font-sans">
-                    Anti-static sealed cartons with 2-year advance replacement swap guarantee.
-                  </p>
+                <div className="pt-3 flex items-center space-x-3">
+                  <div className="flex items-center space-x-2 text-xs text-zinc-300">
+                    <ShieldCheck className="w-4 h-4 text-sky-400" />
+                    <span>Official 1-Year Advance Replacement Warranty</span>
+                  </div>
                 </div>
               </div>
 
-              <div className="lg:col-span-7 grid grid-cols-3 gap-3 font-mono">
-                {[
-                  {
-                    step: "AUDIO 01",
-                    title: "Acoustic Pro ANC",
-                    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=80",
-                    detail: "40mm Beryllium • 45h"
-                  },
-                  {
-                    step: "INPUT 02",
-                    title: "CNC Keyboard",
-                    image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=80",
-                    detail: "6063 Aluminum • Hotswap"
-                  },
-                  {
-                    step: "POWER 03",
-                    title: "100W GaN Hub",
-                    image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&auto=format&fit=crop&q=80",
-                    detail: "GaN III • Braided"
-                  }
-                ].map((item, idx) => (
-                  <div key={idx} className="bg-black/60 rounded-2xl p-2.5 border border-zinc-800 flex flex-col justify-between">
-                    <div className="aspect-[16/10] rounded-xl overflow-hidden bg-zinc-900 mb-2 border border-zinc-800">
-                      <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+              <div className="lg:col-span-6 space-y-4">
+                <div className="relative rounded-2xl overflow-hidden border border-zinc-800 bg-black/60 p-4 font-mono">
+                  <div className="flex items-center justify-between border-b border-zinc-800 pb-2 mb-3 text-[11px]">
+                    <span className="text-sky-400 font-bold">LIVE TELEMETRY READOUT</span>
+                    <span className="text-emerald-400 flex items-center space-x-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <span>STANDARDS 200 OK</span>
+                    </span>
+                  </div>
+
+                  <div className="space-y-2.5 text-xs">
+                    <div className="flex justify-between items-center py-1 border-b border-zinc-900">
+                      <span className="text-zinc-400">Total Harmonic Distortion (THD):</span>
+                      <span className="text-white font-bold">&lt;0.05% @ 1kHz</span>
                     </div>
-                    <div>
-                      <span className="text-[9px] font-bold text-sky-400 block">{item.step}</span>
-                      <p className="text-xs font-bold text-white leading-tight mt-0.5">{item.title}</p>
-                      <span className="text-[10px] text-zinc-400 block mt-1">{item.detail}</span>
+                    <div className="flex justify-between items-center py-1 border-b border-zinc-900">
+                      <span className="text-zinc-400">Chassis Material:</span>
+                      <span className="text-white font-bold">CNC 6063 Milled Billet Aluminum</span>
+                    </div>
+                    <div className="flex justify-between items-center py-1 border-b border-zinc-900">
+                      <span className="text-zinc-400">GaN III Thermal Efficiency:</span>
+                      <span className="text-white font-bold">95.2% Peak Efficiency</span>
+                    </div>
+                    <div className="flex justify-between items-center py-1 border-b border-zinc-900">
+                      <span className="text-zinc-400">Doorstep Verification:</span>
+                      <span className="text-emerald-400 font-bold">Anti-Static Seal & Power Test</span>
                     </div>
                   </div>
-                ))}
+
+                  <div className="mt-4 pt-3 border-t border-zinc-800 flex items-center justify-between">
+                    <span className="text-xs text-zinc-400">Workstation Tier:</span>
+                    <button
+                      onClick={handleAddTechEnsemble}
+                      className="py-2 px-4 bg-sky-500 hover:bg-sky-400 text-black text-xs font-bold rounded-lg transition flex items-center space-x-1.5"
+                    >
+                      <ShoppingBag className="w-3.5 h-3.5" />
+                      <span>Quick Add Trio (৳33,900)</span>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

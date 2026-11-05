@@ -514,92 +514,98 @@ export function JewelryStorefront({
         </div>
       </section>
 
-      {/* ─── 6. The Curated Heirloom Ensemble (1-Click Upsell) ───────────────── */}
+      {/* ─── 6. Bespoke Ring Sizing & Fine Gifting Studio ──────────────────── */}
       <section id="ensemble" className="py-16 px-4 sm:px-6 border-b border-neutral-800/80 bg-gradient-to-r from-amber-950/20 via-[#101116] to-black">
         <div className="max-w-6xl mx-auto">
           <div className="bg-[#121317] rounded-3xl border border-amber-900/40 p-6 sm:p-10 shadow-2xl">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-5 space-y-4 font-serif">
+              <div className="lg:col-span-6 space-y-4 font-serif">
                 <div className="inline-flex items-center space-x-1.5 px-3 py-1 bg-amber-950/80 text-amber-400 rounded-full text-[10px] font-bold tracking-wider uppercase border border-amber-800 font-mono">
                   <Crown className="w-3 h-3 text-amber-400" />
-                  <span>Curated Salon Package</span>
+                  <span>Bespoke Salon Service</span>
                 </div>
                 <h3 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-                  The Curated Heirloom Ensemble
+                  Ring Sizing & Fine Gifting Studio
                 </h3>
                 <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-                  The complete sartorial suite: Swiss Automatic Sapphire Chronograph, 18k Heavy Gold Vermeil Signet Ring, and 14g Laser-Cut Beta-Titanium Aviators.
+                  Every creation is accompanied by complimentary velvet-lined unboxing presentation, a custom hand-calligraphed wax seal card, and a jeweler's loupe for doorstep verification.
                 </p>
 
-                <div className="space-y-2 pt-2 text-xs font-sans">
-                  <div className="flex items-center space-x-2.5 text-zinc-200 font-medium">
-                    <span className="w-5 h-5 rounded-full bg-amber-500 text-black font-mono text-[10px] font-bold flex items-center justify-center">1</span>
-                    <span>Heritage 39mm Automatic Sapphire Chronograph (৳26,500)</span>
-                  </div>
-                  <div className="flex items-center space-x-2.5 text-zinc-200 font-medium">
-                    <span className="w-5 h-5 rounded-full bg-amber-500 text-black font-mono text-[10px] font-bold flex items-center justify-center">2</span>
-                    <span>18k Heavy Gold-Vermeil Signet Ring (৳9,500)</span>
-                  </div>
-                  <div className="flex items-center space-x-2.5 text-zinc-200 font-medium">
-                    <span className="w-5 h-5 rounded-full bg-amber-500 text-black font-mono text-[10px] font-bold flex items-center justify-center">3</span>
-                    <span>Beta-Titanium Polarized Aviators (৳12,500)</span>
-                  </div>
-                </div>
-
-                <div className="pt-4 flex items-baseline space-x-3">
-                  <span className="text-2xl font-black text-amber-400 font-mono">৳41,900</span>
-                  <span className="text-sm text-zinc-500 line-through font-mono">৳48,500</span>
-                  <span className="text-xs font-bold text-amber-300 bg-amber-950 px-2 py-0.5 rounded-full border border-amber-700">
-                    Save ৳6,600 (14% Off)
+                {/* Interactive Ring Sizer Meter */}
+                <div className="space-y-3 pt-2 font-mono">
+                  <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider block">
+                    Interactive Salon Ring Sizer:
                   </span>
+                  <div className="grid grid-cols-4 sm:grid-cols-7 gap-1.5 text-center">
+                    {[
+                      { us: "US 5", mm: "15.7mm" },
+                      { us: "US 6", mm: "16.5mm" },
+                      { us: "US 7", mm: "17.3mm" },
+                      { us: "US 8", mm: "18.2mm" },
+                      { us: "US 9", mm: "19.0mm" },
+                      { us: "US 10", mm: "19.8mm" },
+                      { us: "US 11", mm: "20.6mm" },
+                    ].map((sz, i) => (
+                      <div
+                        key={i}
+                        className={`p-2 rounded-xl border ${
+                          i === 2
+                            ? "bg-amber-950/80 border-amber-500 text-amber-300"
+                            : "bg-black/40 border-neutral-800 text-zinc-400 hover:border-neutral-700"
+                        }`}
+                      >
+                        <span className="text-xs font-bold block">{sz.us}</span>
+                        <span className="text-[9px] text-zinc-400 block">{sz.mm}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-zinc-400 font-sans mt-1">
+                    Complimentary 30-day ring resizing on all solid gold and platinum creations.
+                  </p>
                 </div>
 
-                <div className="pt-2">
-                  <button
-                    onClick={handleAddHeirloomEnsemble}
-                    className="w-full sm:w-auto py-3 px-8 bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center space-x-2 btn-press"
-                  >
-                    <ShoppingBag className="w-4 h-4 text-black" />
-                    <span>Add Complete Heirloom Suite to Bag</span>
-                  </button>
-                  <p className="text-[11px] text-zinc-500 mt-2 font-sans">
-                    Dispatched in velvet-lined lockboxes with jeweler's loupe and Assay certificates.
-                  </p>
+                <div className="pt-2 flex items-center space-x-3 text-xs text-zinc-300 font-sans">
+                  <ShieldCheck className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                  <span>Doorstep 40x Loupe Inspection • Cash on Delivery Handover</span>
                 </div>
               </div>
 
-              <div className="lg:col-span-7 grid grid-cols-3 gap-3 font-serif">
-                {[
-                  {
-                    step: "TIMEPIECE 01",
-                    title: "Sapphire Chrono",
-                    image: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=500&auto=format&fit=crop&q=80",
-                    detail: "Swiss 28.8k Caliber"
-                  },
-                  {
-                    step: "SIGNET 02",
-                    title: "18k Vermeil Ring",
-                    image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=500&auto=format&fit=crop&q=80",
-                    detail: "3-Micron Gold • 925 Core"
-                  },
-                  {
-                    step: "OPTICS 03",
-                    title: "Titanium Aviator",
-                    image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500&auto=format&fit=crop&q=80",
-                    detail: "14g Beta-Titanium"
-                  }
-                ].map((item, idx) => (
-                  <div key={idx} className="bg-black/60 rounded-2xl p-2.5 border border-neutral-800 flex flex-col justify-between">
-                    <div className="aspect-square rounded-xl overflow-hidden bg-neutral-900 mb-2 border border-neutral-800">
-                      <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+              <div className="lg:col-span-6 space-y-3">
+                <div className="bg-black/60 rounded-2xl p-5 border border-amber-900/30 space-y-3 font-sans">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-amber-400 block">
+                    Hallmark Assay Purity Standard
+                  </span>
+
+                  <div className="space-y-2 text-xs">
+                    <div className="flex justify-between items-center py-1.5 border-b border-neutral-900">
+                      <span className="text-zinc-400">18K Solid Gold / 750:</span>
+                      <span className="text-white font-mono font-bold">Government Assay Stamped</span>
                     </div>
-                    <div>
-                      <span className="text-[9px] font-mono font-bold text-amber-400 block">{item.step}</span>
-                      <p className="text-xs font-bold text-white leading-tight mt-0.5">{item.title}</p>
-                      <span className="text-[10px] text-zinc-400 block mt-1 font-sans">{item.detail}</span>
+                    <div className="flex justify-between items-center py-1.5 border-b border-neutral-900">
+                      <span className="text-zinc-400">Diamond Grading:</span>
+                      <span className="text-white font-mono font-bold">VVS1 / D-Color / GIA Certified</span>
+                    </div>
+                    <div className="flex justify-between items-center py-1.5 border-b border-neutral-900">
+                      <span className="text-zinc-400">Gift Presentation:</span>
+                      <span className="text-amber-300 font-bold">Velvet Box + Wax-Sealed Note</span>
+                    </div>
+                    <div className="flex justify-between items-center py-1.5 border-b border-neutral-900">
+                      <span className="text-zinc-400">Secure Logistics:</span>
+                      <span className="text-emerald-400 font-bold">Armored Courier Nationwide</span>
                     </div>
                   </div>
-                ))}
+
+                  <div className="pt-3 flex items-center justify-between font-mono">
+                    <span className="text-xs text-zinc-400">Curated Trio:</span>
+                    <button
+                      onClick={handleAddHeirloomEnsemble}
+                      className="py-2 px-4 bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold rounded-xl transition flex items-center space-x-1.5"
+                    >
+                      <ShoppingBag className="w-3.5 h-3.5" />
+                      <span>Add Suite to Bag (৳41,900)</span>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

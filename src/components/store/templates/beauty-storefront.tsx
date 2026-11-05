@@ -485,92 +485,93 @@ export function BeautyStorefront({
         </div>
       </section>
 
-      {/* ─── 5. The 3-Step Glass Skin Routine Builder (Interactive Bundle) ───── */}
+      {/* ─── 5. Dermatological Skin Concern & Active Matrix Studio ─────────── */}
       <section id="bundle" className="py-16 px-4 sm:px-6 border-b border-rose-100/70 bg-gradient-to-r from-rose-50/50 via-white to-pink-50/40">
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-3xl border border-rose-200/80 p-6 sm:p-10 shadow-lg">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-5 space-y-4">
-                <div className="inline-flex items-center space-x-1.5 px-3 py-1 bg-rose-50 text-rose-700 rounded-full text-[10px] font-bold tracking-wider uppercase border border-rose-200/60">
+              <div className="lg:col-span-6 space-y-4">
+                <div className="inline-flex items-center space-x-1.5 px-3 py-1 bg-rose-50 text-rose-700 rounded-full text-[10px] font-bold tracking-wider uppercase border border-rose-200/60 font-mono">
                   <Sparkles className="w-3 h-3 text-rose-600" />
-                  <span>Curated Protocol Bundle</span>
+                  <span>Clinical Dermatology Studio</span>
                 </div>
                 <h3 className="text-2xl sm:text-3xl font-black tracking-tight text-zinc-900">
-                  The Complete Glass Skin Routine
+                  Targeted Skin Type Formulations
                 </h3>
-                <p className="text-xs text-zinc-600 leading-relaxed">
-                  Clinically sequenced for maximum penetration: Multi-depth Hyaluronic hydration followed by restorative ceramide lipid barrier occlusion and velvet lip protection.
+                <p className="text-xs text-zinc-600 leading-relaxed font-sans">
+                  Clinically formulated with active bio-actives at therapeutic percentages. 100% fragrance-free, non-comedogenic, and patch-test verified for sensitive skin.
                 </p>
 
-                <div className="space-y-2 pt-2">
-                  <div className="flex items-center space-x-2.5 text-xs text-zinc-800 font-medium">
-                    <span className="w-5 h-5 rounded-full bg-rose-100 text-rose-700 font-mono text-[10px] font-bold flex items-center justify-center">1</span>
-                    <span>Pure Glow Triple Hyaluronic Dew Serum (৳2,850)</span>
-                  </div>
-                  <div className="flex items-center space-x-2.5 text-xs text-zinc-800 font-medium">
-                    <span className="w-5 h-5 rounded-full bg-rose-100 text-rose-700 font-mono text-[10px] font-bold flex items-center justify-center">2</span>
-                    <span>Whipped Botanical Lipid Barrier Balm (৳2,450)</span>
-                  </div>
-                  <div className="flex items-center space-x-2.5 text-xs text-zinc-800 font-medium">
-                    <span className="w-5 h-5 rounded-full bg-rose-100 text-rose-700 font-mono text-[10px] font-bold flex items-center justify-center">3</span>
-                    <span>Velvet Satin Moisture Camellia Lipstick (৳1,950)</span>
-                  </div>
-                </div>
-
-                <div className="pt-4 flex items-baseline space-x-3">
-                  <span className="text-2xl font-black text-rose-700 font-mono">৳5,990</span>
-                  <span className="text-sm text-zinc-400 line-through font-mono">৳7,250</span>
-                  <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
-                    Save ৳1,260 (17% Off)
+                {/* Skin Type Concern Tabs */}
+                <div className="space-y-3 pt-2">
+                  <span className="text-[10px] font-mono font-bold text-rose-700 uppercase tracking-wider block">
+                    Find Formulation for Your Skin Type:
                   </span>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    {[
+                      { type: "Dry Barrier", active: "5% Ceramides", sub: "Lipid Matrix" },
+                      { type: "Sensitive", active: "10% Centella", sub: "Calming Dew" },
+                      { type: "Blemish Prone", active: "2% Salicylic", sub: "Clear Pore" },
+                      { type: "Dull Tone", active: "15% Vitamin C", sub: "Radiance Dew" },
+                    ].map((st, i) => (
+                      <div
+                        key={i}
+                        className={`p-2.5 rounded-xl border text-center transition ${
+                          i === 0
+                            ? "bg-rose-50 border-rose-400 text-rose-950 font-bold"
+                            : "bg-zinc-50 border-zinc-200 text-zinc-700 hover:border-zinc-300"
+                        }`}
+                      >
+                        <span className="text-xs font-bold block">{st.type}</span>
+                        <span className="text-[9.5px] font-mono text-rose-700 block mt-0.5">{st.active}</span>
+                        <span className="text-[9px] text-zinc-400 block">{st.sub}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="pt-2">
-                  <button
-                    onClick={handleAdd3StepBundle}
-                    className="w-full sm:w-auto py-3 px-8 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow-xs transition flex items-center justify-center space-x-2 btn-press"
-                  >
-                    <ShoppingBag className="w-4 h-4" />
-                    <span>Add Complete 3-Step Protocol to Bag</span>
-                  </button>
-                  <p className="text-[11px] text-zinc-500 mt-2">
-                    Delivered in temperature-stabilized cold packing with tamper seals intact.
-                  </p>
+                <div className="pt-2 flex items-center space-x-3 text-xs text-zinc-700">
+                  <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                  <span>Dermatologist Tested • Tamper-Foil Sealed • Doorstep Trial</span>
                 </div>
               </div>
 
-              <div className="lg:col-span-7 grid grid-cols-3 gap-3">
-                {[
-                  {
-                    step: "STEP 01 • HYDRATE",
-                    title: "Triple Hyaluronic Dew",
-                    image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=500&auto=format&fit=crop&q=80",
-                    volume: "30ml Dropper"
-                  },
-                  {
-                    step: "STEP 02 • SEAL BARRIER",
-                    title: "Lipid Barrier Balm",
-                    image: "https://images.unsplash.com/photo-1608248597359-38c2020e26b1?w=500&auto=format&fit=crop&q=80",
-                    volume: "50ml Amber Jar"
-                  },
-                  {
-                    step: "STEP 03 • PROTECT",
-                    title: "Velvet Satin Lipstick",
-                    image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500&auto=format&fit=crop&q=80",
-                    volume: "Camellia Tint"
-                  }
-                ].map((item, idx) => (
-                  <div key={idx} className="bg-rose-50/50 rounded-2xl p-2.5 border border-rose-100 flex flex-col justify-between">
-                    <div className="aspect-square rounded-xl overflow-hidden bg-white mb-2 border border-rose-100/60">
-                      <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+              <div className="lg:col-span-6 space-y-3">
+                <div className="bg-[#fcfbf9] rounded-2xl p-5 border border-rose-100 space-y-3 font-sans">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-rose-700 block">
+                    Active Concentration Standards
+                  </span>
+
+                  <div className="space-y-2 text-xs">
+                    <div className="flex justify-between items-center py-1.5 border-b border-rose-100/60">
+                      <span className="text-zinc-500">Niacinamide (Vitamin B3):</span>
+                      <span className="text-zinc-900 font-mono font-bold">10.0% Clinical Grade</span>
                     </div>
-                    <div>
-                      <span className="text-[9px] font-mono font-bold text-rose-600 block">{item.step}</span>
-                      <p className="text-xs font-bold text-zinc-900 leading-tight mt-0.5">{item.title}</p>
-                      <span className="text-[10px] text-zinc-500 block mt-1">{item.volume}</span>
+                    <div className="flex justify-between items-center py-1.5 border-b border-rose-100/60">
+                      <span className="text-zinc-500">Hyaluronic Acid:</span>
+                      <span className="text-zinc-900 font-mono font-bold">Triple Molecular Weight (2.0%)</span>
+                    </div>
+                    <div className="flex justify-between items-center py-1.5 border-b border-rose-100/60">
+                      <span className="text-zinc-500">Packaging Integrity:</span>
+                      <span className="text-rose-700 font-bold">Amber UV Glass + Dropper Pipette</span>
+                    </div>
+                    <div className="flex justify-between items-center py-1.5 border-b border-rose-100/60">
+                      <span className="text-zinc-500">Courier Logistics:</span>
+                      <span className="text-emerald-700 font-bold">Temperature-Stabilized COD</span>
                     </div>
                   </div>
-                ))}
+
+                  <div className="pt-3 flex items-center justify-between font-mono">
+                    <span className="text-xs text-zinc-600">Complete Trio:</span>
+                    <button
+                      onClick={handleAdd3StepBundle}
+                      className="py-2 px-4 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition flex items-center space-x-1.5"
+                    >
+                      <ShoppingBag className="w-3.5 h-3.5" />
+                      <span>Add Trio Routine (৳5,990)</span>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

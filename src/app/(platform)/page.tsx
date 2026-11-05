@@ -91,23 +91,23 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
       },
       {
         id: "milano",
-        name: "Milano Streetwear",
-        tag: "Dark Editorial",
+        name: "Milano Runway",
+        tag: "Milanese Editorial",
         badge: "⚫ Milano",
-        headline: "Full-bleed dark editorial, limited drop timers, and oversized cuts",
-        description: "High-impact dark luxury aesthetic engineered for hype streetwear brands with limited drop countdowns, oversized silhouette guides, and anti-counterfeit tags.",
+        headline: "Biella virgin wool tailoring, fine cashmere knitwear & Milanese cuts",
+        description: "Sophisticated Milanese runway aesthetic engineered for high-fashion fashion houses with horizontal department carousels, virgin wool metrics, and verified courier COD.",
         image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&auto=format&fit=crop&q=85",
-        highlights: ["Full-bleed dark editorial mode", "Limited drop countdown timer", "Oversized silhouette cutaway", "NFC authenticity certificate"]
+        highlights: ["Biella virgin wool tailoring", "Mongolian cashmere knitwear", "Horizontal department runway", "Doorstep fit trial (COD)"]
       },
       {
         id: "nickelfox",
-        name: "NickelFox Bold",
-        tag: "Avant-Garde Street",
-        badge: "🟡 NickelFox",
-        headline: "High-energy acid yellow & black catalog with bold pill navigation",
-        description: "Vibrant, high-contrast retail template designed for youth streetwear and athletic apparel with urgent stock indicators and rapid 1-click cart addition.",
+        name: "NickelFox Atelier",
+        tag: "Luxury Streetwear",
+        badge: "⚡ NickelFox",
+        headline: "Matte obsidian luxury streetwear with 480 GSM French Terry metrics",
+        description: "Ultra-contemporary luxury streetwear boutique featuring heavyweight fleece specs, Japanese raw selvedge archives, and rapid mobile-first 1-tap cart addition.",
         image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1200&auto=format&fit=crop&q=85",
-        highlights: ["High-energy yellow/black style", "Dynamic pill navigation tabs", "Live inventory urgency indicators", "Sub-second 1-click checkout"]
+        highlights: ["480 GSM French Terry metrics", "Kurabo raw selvedge denim", "Matte obsidian luxury aesthetic", "1-Tap mobile bag addition"]
       },
       {
         id: "athleisure",
@@ -134,9 +134,9 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         tag: "Glass Skin Ritual",
         badge: "🌸 Botanical",
         headline: "Clinical botanical formulations with bio-active ingredient percentages",
-        description: "Purpose-built for clean beauty and derma skincare brands with a step-by-step glass skin routine builder, skin-type concern filters, and tamper seal guarantees.",
+        description: "Purpose-built for clean beauty and derma skincare brands with targeted skin concern matching, therapeutic bio-active percentages, and tamper seal guarantees.",
         image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1200&auto=format&fit=crop&q=85",
-        highlights: ["Active ingredient % badges", "3-Step glass skin ritual builder", "Tamper seal inspection protocol", "Skin concern diagnostic filter"]
+        highlights: ["Active bio-active % badges", "Dermatological concern studio", "Tamper foil cold-chain packaging", "Patch-test hypoallergenic verified"]
       },
       {
         id: "luxe-glam",
@@ -193,9 +193,9 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         tag: "Welted Craft",
         badge: "👞 Heritage",
         headline: "Heritage leathercraft, Goodyear welted construction, and Vibram lug depth",
-        description: "Crafted for footwear and leather goods makers with anatomical cutaway visuals, tannery provenance, and Vibram lug depth specifications.",
+        description: "Crafted for footwear and leather goods makers with doorstep 2-size trial fitting, Horween tannery provenance, and Vibram lug depth specifications.",
         image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=1200&auto=format&fit=crop&q=85",
-        highlights: ["Anatomical sole cutaway visuals", "Horween tannery provenance", "Vibram lug depth specifications", "Doorstep fitting check guarantee"]
+        highlights: ["Doorstep 2-size fitting trial", "Horween tannery provenance", "Vibram Montagna lug outsoles", "Lifetime Goodyear resoling support"]
       },
       {
         id: "velocity",
@@ -252,9 +252,9 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         tag: "Frequency Curves",
         badge: "🎧 Cyber Tech",
         headline: "Frequency curves, titanium driver specs, and CNC hardware telemetry",
-        description: "Optimized for audiophiles and premium hardware with acoustic frequency visualizers, IPX7 waterproof ratings, and low-latency gaming mode.",
+        description: "Optimized for audiophiles and premium hardware with active ANC profile switchers, mechanical switch force curves, and 1-year advance swap warranty.",
         image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1200&auto=format&fit=crop&q=85",
-        highlights: ["Frequency curve visualizer", "Low-latency gaming mode", "IPX7 waterproof ratings", "Anti-tamper seal protocol"]
+        highlights: ["Active ANC profile switcher", "Mechanical switch actuation matrix", "CNC 6063 billet aluminum", "1-Year advance replacement warranty"]
       },
       {
         id: "lumina",
@@ -311,9 +311,9 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         tag: "18K/24K Gold",
         badge: "💎 Royal Maison",
         headline: "Hallmarked 18K/24K gold, certified diamonds and unboxing seals",
-        description: "Designed for fine jewelry and luxury horology with 40x loupe inspection guarantee, GIA clarity certifications, and velvet unboxing presentation.",
+        description: "Designed for fine jewelry and luxury horology with bespoke ring sizing studios, Assay hallmarked gold, and velvet unboxing presentation.",
         image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=1200&auto=format&fit=crop&q=85",
-        highlights: ["Gold purity hallmarks (750)", "GIA clarity certifications", "Velvet unboxing guarantee", "Insured doorstep handover"]
+        highlights: ["Bespoke salon ring sizer", "Assay 18K solid gold (750)", "Velvet box & calligraphy card", "Insured doorstep loupe handover"]
       },
       {
         id: "aurora",
@@ -370,9 +370,9 @@ const INDUSTRY_STOREFRONTS: IndustryStorefront[] = [
         tag: "Fresh Farmstead",
         badge: "☕ Artisan Pantry",
         headline: "Farmstead provisions, raw alpine honey, and small-batch micro-lots",
-        description: "Specialty coffee, raw honey, and gourmet provisions with harvest altitude metrics, roast freshness tracking (within 48 hours), and airtight seal protocol.",
+        description: "Specialty coffee, raw honey, and gourmet provisions with 48h batch roast timelines, interactive grind profile selectors, and airtight nitrogen valve packaging.",
         image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&auto=format&fit=crop&q=85",
-        highlights: ["48h harvest & roast freshness", "100% raw unheated alpine honey", "Cold-pressed extra virgin olive oil", "Tamper-evident airtight seal protocol"]
+        highlights: ["48h small-batch roast calendar", "Interactive grind profile selector", "Single-origin micro-lot terroir", "Sealed aroma degassing valve"]
       },
       {
         id: "bazaar",
@@ -422,7 +422,6 @@ export default function PlatformLandingPage() {
   const [selectedStoreSlug, setSelectedStoreSlug] = useState("apex-fashion");
   const [selectedTemplateId, setSelectedTemplateId] = useState("minimal");
   const [previewDevice, setPreviewDevice] = useState<"desktop" | "tablet" | "mobile">("desktop");
-  const [previewMode, setPreviewMode] = useState<"live" | "snapshot">("live");
   const [isIframeLoading, setIsIframeLoading] = useState(true);
   const [iframeKey, setIframeKey] = useState(0);
   const [hasCopiedUrl, setHasCopiedUrl] = useState(false);
@@ -1411,170 +1410,122 @@ export default function PlatformLandingPage() {
                   </div>
                 </div>
 
-                {/* Mode & Device Controls */}
+                {/* Device Viewport Toggle (Desktop / Tablet / Mobile) */}
                 <div className="flex items-center justify-between sm:justify-end space-x-2 flex-shrink-0 pt-0.5 sm:pt-0 border-t sm:border-t-0 border-white/[0.05]">
-                  {/* Mode Switcher: Live Interactive vs Clean Snapshot */}
-                  <div className="flex items-center p-0.5 rounded-lg bg-zinc-950 border border-white/[0.08]">
-                    <button
-                      type="button"
-                      onClick={() => setPreviewMode("live")}
-                      className={`px-2 py-0.5 rounded text-[10px] font-medium transition flex items-center space-x-1 ${
-                        previewMode === "live"
-                          ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                          : "text-zinc-400 hover:text-zinc-200"
-                      }`}
-                      title="Live interactive store"
-                    >
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      <span>Live</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setPreviewMode("snapshot")}
-                      className={`px-2 py-0.5 rounded text-[10px] font-medium transition flex items-center space-x-1 ${
-                        previewMode === "snapshot"
-                          ? "bg-white/20 text-white border border-white/20"
-                          : "text-zinc-400 hover:text-zinc-200"
-                      }`}
-                      title="Clean theme graphic"
-                    >
-                      <Eye className="w-2.5 h-2.5" />
-                      <span>Design</span>
-                    </button>
+                  <div className="flex items-center space-x-1 text-[11px] font-mono text-zinc-400 mr-1 hidden sm:flex">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>Live Interactive</span>
                   </div>
 
-                  {/* Device Viewport Toggle (Desktop / Tablet / Mobile) */}
                   <div className="flex items-center p-0.5 rounded-lg bg-zinc-950 border border-white/[0.08]">
                     <button
                       type="button"
                       onClick={() => setPreviewDevice("desktop")}
-                      className={`p-1 rounded text-xs transition ${
+                      className={`px-2 py-1 rounded text-xs transition flex items-center space-x-1 ${
                         previewDevice === "desktop"
-                          ? "bg-white/20 text-white shadow-xs"
+                          ? "bg-white/20 text-white shadow-xs font-semibold"
                           : "text-zinc-500 hover:text-zinc-300"
                       }`}
                       title="Desktop view"
                     >
                       <Monitor className="w-3.5 h-3.5" />
+                      <span className="hidden md:inline text-[10px]">Desktop</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => setPreviewDevice("tablet")}
-                      className={`p-1 rounded text-xs transition ${
+                      className={`px-2 py-1 rounded text-xs transition flex items-center space-x-1 ${
                         previewDevice === "tablet"
-                          ? "bg-white/20 text-white shadow-xs"
+                          ? "bg-white/20 text-white shadow-xs font-semibold"
                           : "text-zinc-500 hover:text-zinc-300"
                       }`}
                       title="Tablet view"
                     >
                       <Tablet className="w-3.5 h-3.5" />
+                      <span className="hidden md:inline text-[10px]">Tablet</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => setPreviewDevice("mobile")}
-                      className={`p-1 rounded text-xs transition ${
+                      className={`px-2 py-1 rounded text-xs transition flex items-center space-x-1 ${
                         previewDevice === "mobile"
-                          ? "bg-white/20 text-white shadow-xs"
+                          ? "bg-white/20 text-white shadow-xs font-semibold"
                           : "text-zinc-500 hover:text-zinc-300"
                       }`}
                       title="Mobile view"
                     >
                       <Smartphone className="w-3.5 h-3.5" />
+                      <span className="hidden md:inline text-[10px]">Mobile</span>
                     </button>
                   </div>
                 </div>
               </div>
 
               {/* Viewport Preview Stage — Crystal Clear with ZERO Dark Tint */}
-              <div className={`relative flex-1 min-h-[500px] sm:min-h-[580px] lg:min-h-[640px] overflow-hidden flex items-center justify-center transition-all bg-zinc-950 ${
-                previewDevice !== "desktop" || previewMode === "snapshot" ? "p-3 sm:p-5" : ""
+              <div className={`relative flex-1 min-h-[520px] sm:min-h-[580px] lg:min-h-[640px] overflow-hidden flex items-center justify-center transition-all bg-zinc-950 ${
+                previewDevice !== "desktop" ? "p-3 sm:p-5" : ""
               }`}>
-                {previewMode === "live" ? (
-                  /* ─── LIVE INTERACTIVE STORE EMBED ─── */
-                  <>
-                    {/* Subtle Loading Spinner while iframe renders */}
-                    {isIframeLoading && (
-                      <div className="absolute inset-0 bg-zinc-950/80 backdrop-blur-xs flex flex-col items-center justify-center space-y-2.5 z-20 transition-opacity">
-                        <div className="w-8 h-8 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin" />
-                        <span className="text-xs font-mono text-zinc-300 tracking-wider">
-                          Loading {activeTemplate.name}...
-                        </span>
-                      </div>
-                    )}
+                {/* Subtle Loading Spinner while iframe renders */}
+                {isIframeLoading && (
+                  <div className="absolute inset-0 bg-zinc-950/80 backdrop-blur-xs flex flex-col items-center justify-center space-y-2.5 z-20 transition-opacity">
+                    <div className="w-8 h-8 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin" />
+                    <span className="text-xs font-mono text-zinc-300 tracking-wider">
+                      Loading {activeTemplate.name} Interactive Store...
+                    </span>
+                  </div>
+                )}
 
-                    {previewDevice === "desktop" ? (
-                      /* Full-Width Desktop Interactive Viewport */
-                      <div className="w-full h-full min-h-[500px] sm:min-h-[580px] lg:min-h-[640px] relative bg-white dark:bg-zinc-950 flex flex-col">
-                        <iframe
-                          key={`desktop-${activeStore.slug}-${activeTemplate.id}-${iframeKey}`}
-                          src={`/store/${activeStore.slug}?template=${activeTemplate.id}&embed=1`}
-                          title={`${activeStore.name} Live Storefront`}
-                          onLoad={() => setIsIframeLoading(false)}
-                          className="w-full h-full min-h-[500px] sm:min-h-[580px] lg:min-h-[640px] border-0 bg-white"
-                        />
-                        {/* Floating Interaction Hint Pill */}
-                        <div className="absolute bottom-3 right-4 z-10 pointer-events-none">
-                          <div className="backdrop-blur-md bg-zinc-950/80 border border-white/10 text-zinc-300 text-[10px] font-mono px-3 py-1.5 rounded-full shadow-lg flex items-center space-x-1.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                            <span>Interactive Preview • Scroll & Test Checkout</span>
-                          </div>
-                        </div>
-                      </div>
-                    ) : previewDevice === "tablet" ? (
-                      /* Centered Tablet Viewport */
-                      <div className="w-[580px] sm:w-[680px] max-w-full h-[500px] sm:h-[580px] rounded-2xl border-4 border-zinc-700 bg-white shadow-2xl overflow-hidden relative flex flex-col mx-auto ring-1 ring-white/10">
-                        <iframe
-                          key={`tablet-${activeStore.slug}-${activeTemplate.id}-${iframeKey}`}
-                          src={`/store/${activeStore.slug}?template=${activeTemplate.id}&embed=1`}
-                          title={`${activeStore.name} Tablet View`}
-                          onLoad={() => setIsIframeLoading(false)}
-                          className="w-full h-full border-0 bg-white"
-                        />
-                      </div>
-                    ) : (
-                      /* Centered Smartphone Viewport */
-                      <div className="w-[310px] sm:w-[340px] h-[520px] sm:h-[590px] rounded-[38px] border-4 border-zinc-700 bg-zinc-950 shadow-2xl overflow-hidden flex flex-col relative mx-auto ring-1 ring-white/10">
-                        {/* Dynamic Island */}
-                        <div className="h-5 bg-zinc-950 flex items-center justify-center pt-1.5">
-                          <div className="w-20 h-3.5 bg-zinc-800 rounded-full flex items-center justify-end px-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-zinc-900" />
-                          </div>
-                        </div>
-                        {/* Phone Screen Iframe */}
-                        <div className="flex-1 overflow-hidden relative bg-white">
-                          <iframe
-                            key={`mobile-${activeStore.slug}-${activeTemplate.id}-${iframeKey}`}
-                            src={`/store/${activeStore.slug}?template=${activeTemplate.id}&embed=1`}
-                            title={`${activeStore.name} Mobile View`}
-                            onLoad={() => setIsIframeLoading(false)}
-                            className="w-full h-full border-0 bg-white"
-                          />
-                        </div>
-                        {/* Home Indicator */}
-                        <div className="h-4 bg-zinc-950 flex items-center justify-center">
-                          <div className="w-20 h-1 bg-zinc-600 rounded-full" />
-                        </div>
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  /* ─── CLEAN DESIGN SNAPSHOT (ZERO DARK TINTS) ─── */
-                  <div className="w-full h-full relative rounded-2xl overflow-hidden border border-white/10 bg-zinc-900 flex items-center justify-center group/img">
-                    <img
-                      key={activeTemplate.id}
-                      src={activeTemplate.image}
-                      alt={activeTemplate.name}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover/img:scale-105"
+                {previewDevice === "desktop" ? (
+                  /* Full-Width Desktop Interactive Viewport */
+                  <div className="w-full h-full min-h-[520px] sm:min-h-[580px] lg:min-h-[640px] relative bg-zinc-950 flex flex-col">
+                    <iframe
+                      key={`desktop-${activeStore.slug}-${activeTemplate.id}-${iframeKey}`}
+                      src={`/store/${activeStore.slug}?template=${activeTemplate.id}&embed=1`}
+                      title={`${activeStore.name} Live Storefront`}
+                      onLoad={() => setIsIframeLoading(false)}
+                      className="w-full h-full min-h-[520px] sm:min-h-[580px] lg:min-h-[640px] border-0 bg-transparent"
                     />
-                    {/* Crisp Top Badge — NO DARK GRADIENT OVERLAY */}
-                    <div className="absolute top-4 left-4 backdrop-blur-md bg-zinc-950/85 text-white text-[11px] font-semibold px-3.5 py-1.5 rounded-full border border-white/10 shadow-lg flex items-center space-x-2">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-                      <span>{activeTemplate.name}</span>
-                      <span className="text-zinc-400">• {activeTemplate.tag}</span>
+                    {/* Floating Interaction Hint Pill */}
+                    <div className="absolute bottom-3 right-4 z-10 pointer-events-none">
+                      <div className="backdrop-blur-md bg-zinc-950/85 border border-white/10 text-zinc-300 text-[10.5px] font-mono px-3.5 py-1.5 rounded-full shadow-lg flex items-center space-x-2">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                        <span>Live Store • Scroll, Click & Test COD Checkout</span>
+                      </div>
                     </div>
-
-                    <div className="absolute bottom-4 right-4 backdrop-blur-md bg-zinc-950/85 text-zinc-300 text-[10px] font-mono px-3 py-1.5 rounded-full border border-white/10 shadow-lg flex items-center space-x-1.5">
-                      <span>Click &apos;Live&apos; above for interactive store</span>
+                  </div>
+                ) : previewDevice === "tablet" ? (
+                  /* Centered Tablet Viewport */
+                  <div className="w-[580px] sm:w-[680px] max-w-full h-[520px] sm:h-[580px] rounded-2xl border-4 border-zinc-700 bg-zinc-950 shadow-2xl overflow-hidden relative flex flex-col mx-auto ring-1 ring-white/10">
+                    <iframe
+                      key={`tablet-${activeStore.slug}-${activeTemplate.id}-${iframeKey}`}
+                      src={`/store/${activeStore.slug}?template=${activeTemplate.id}&embed=1`}
+                      title={`${activeStore.name} Tablet View`}
+                      onLoad={() => setIsIframeLoading(false)}
+                      className="w-full h-full border-0 bg-transparent"
+                    />
+                  </div>
+                ) : (
+                  /* Centered Smartphone Viewport */
+                  <div className="w-[310px] sm:w-[340px] h-[520px] sm:h-[590px] rounded-[38px] border-4 border-zinc-700 bg-zinc-950 shadow-2xl overflow-hidden flex flex-col relative mx-auto ring-1 ring-white/10">
+                    {/* Dynamic Island */}
+                    <div className="h-5 bg-zinc-950 flex items-center justify-center pt-1.5 flex-shrink-0">
+                      <div className="w-20 h-3.5 bg-zinc-800 rounded-full flex items-center justify-end px-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-zinc-900" />
+                      </div>
+                    </div>
+                    {/* Phone Screen Iframe */}
+                    <div className="flex-1 overflow-hidden relative bg-zinc-950">
+                      <iframe
+                        key={`mobile-${activeStore.slug}-${activeTemplate.id}-${iframeKey}`}
+                        src={`/store/${activeStore.slug}?template=${activeTemplate.id}&embed=1`}
+                        title={`${activeStore.name} Mobile View`}
+                        onLoad={() => setIsIframeLoading(false)}
+                        className="w-full h-full border-0 bg-transparent"
+                      />
+                    </div>
+                    {/* Home Indicator */}
+                    <div className="h-4 bg-zinc-950 flex items-center justify-center flex-shrink-0">
+                      <div className="w-20 h-1 bg-zinc-600 rounded-full" />
                     </div>
                   </div>
                 )}

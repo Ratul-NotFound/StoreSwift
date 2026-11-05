@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   ShoppingBag,
   Search,
@@ -23,7 +23,11 @@ import {
   Twitter,
   Youtube,
   Tag,
-  Flame
+  Flame,
+  ArrowUpRight,
+  SlidersHorizontal,
+  Compass,
+  Sparkles
 } from "lucide-react";
 
 // ─── Types ─────────────────────────────────────────────────────────────────
@@ -43,101 +47,59 @@ interface NickelFoxStorefrontProps {
   onOpenTrackOrder?: () => void;
 }
 
-// ─── Data ──────────────────────────────────────────────────────────────────
-const HERO_BRAND_NAV = ["Catalogue", "Fashion", "Favourite", "Lifestyle"];
-
-const LOCAL_TRUST_FEATURES = [
-  { label: "STEADFAST 24-48H", sub: "Nationwide Courier" },
-  { label: "PATHAO EXPRESS", sub: "Fast Dispatch" },
-  { label: "DOORSTEP TRIAL", sub: "100% Verified" },
-  { label: "BKASH & NAGAD", sub: "Instant Checkout" },
-  { label: "CASH ON DELIVERY", sub: "All 64 Districts" },
+// ─── Curated Category Collections ──────────────────────────────────────────
+const STREET_CATEGORIES = [
+  {
+    id: "outerwear",
+    title: "Heavy Outerwear",
+    subtitle: "Double-faced wool & down parkas",
+    img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=700&auto=format&fit=crop&q=85",
+    tag: "Archival"
+  },
+  {
+    id: "hoodies",
+    title: "Loopback Hoodies",
+    subtitle: "480 GSM French Terry",
+    img: "https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=700&auto=format&fit=crop&q=85",
+    tag: "Heavyweight"
+  },
+  {
+    id: "denim",
+    title: "Selvedge Denim",
+    subtitle: "14oz Kurabo Japanese Weave",
+    img: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=700&auto=format&fit=crop&q=85",
+    tag: "Raw Mill"
+  },
+  {
+    id: "tees",
+    title: "Structured Tees",
+    subtitle: "280 GSM Combed Ringspun",
+    img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=700&auto=format&fit=crop&q=85",
+    tag: "Box Cut"
+  },
+  {
+    id: "pants",
+    title: "Pleated Trousers",
+    subtitle: "Italian tropical bonded wool",
+    img: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=700&auto=format&fit=crop&q=85",
+    tag: "Relaxed Fit"
+  },
+  {
+    id: "accessories",
+    title: "Leather Goods",
+    subtitle: "Full-grain calfskin carryalls",
+    img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=700&auto=format&fit=crop&q=85",
+    tag: "Crafted"
+  }
 ];
 
-const CATEGORY_CARDS = [
-  {
-    id: "hoodies", title: "Hoodies & Sweatshirt", cta: "Explore Now",
-    img: "https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=600&auto=format&fit=crop&q=85",
-    color: "bg-orange-400",
-  },
-  {
-    id: "coats", title: "Coats & Parkas", cta: "Explore Now",
-    img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=600&auto=format&fit=crop&q=85",
-    color: "bg-blue-400",
-  },
-  {
-    id: "tees", title: "Tees & T-Shirt", cta: "Explore Now",
-    img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&auto=format&fit=crop&q=85",
-    color: "bg-purple-400",
-  },
-  {
-    id: "dresses", title: "Dresses & Skirts", cta: "Explore Now",
-    img: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&auto=format&fit=crop&q=85",
-    color: "bg-pink-400",
-  },
-  {
-    id: "accessories", title: "Accessories", cta: "Explore Now",
-    img: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=600&auto=format&fit=crop&q=85",
-    color: "bg-emerald-400",
-  },
-  {
-    id: "sportswear", title: "Sportswear", cta: "Explore Now",
-    img: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&auto=format&fit=crop&q=85",
-    color: "bg-amber-400",
-  },
+const LOCAL_VERIFICATION_PERKS = [
+  { title: "Steadfast 24–48h Nationwide", sub: "Same-day dispatch in Dhaka & Chittagong" },
+  { title: "Doorstep Fit Inspection", sub: "Inspect cut & fabric before cash handover" },
+  { title: "Official COD & bKash / Nagad", sub: "Instant tokenized checkout confirmation" },
+  { title: "Complimentary Exchanges", sub: "Hassle-free 7-day size adjustments" }
 ];
 
-const PRODUCTS = [
-  {
-    id: "nf1", title: "Tie-Dye Crop Top", cat: "Tops", price: 48, compare: 68, rating: 4.6, reviews: 38, badge: "Hot",
-    img: "https://images.unsplash.com/photo-1594938298603-c8148c4b5571?w=600&auto=format&fit=crop&q=80",
-  },
-  {
-    id: "nf2", title: "Oversized Puffer", cat: "Outerwear", price: 185, compare: 245, rating: 4.8, reviews: 52, badge: "Trending",
-    img: "https://images.unsplash.com/photo-1517677129300-07b130802f46?w=600&auto=format&fit=crop&q=80",
-  },
-  {
-    id: "nf3", title: "Pink Fur Jacket", cat: "Outerwear", price: 225, compare: 300, rating: 4.9, reviews: 71, badge: "Premium",
-    img: "https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=600&auto=format&fit=crop&q=80",
-  },
-  {
-    id: "nf4", title: "Bold Striped Set", cat: "Sets", price: 120, compare: 165, rating: 4.7, reviews: 27, badge: "New",
-    img: "https://images.unsplash.com/photo-1550639524-a005a5b4e0af?w=600&auto=format&fit=crop&q=80",
-  },
-  {
-    id: "nf5", title: "Yellow Graphic Tee", cat: "Tops", price: 42, compare: 58, rating: 4.5, reviews: 44, badge: "Sale",
-    img: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&auto=format&fit=crop&q=80",
-  },
-  {
-    id: "nf6", title: "Wide Leg Jeans", cat: "Bottoms", price: 95, compare: 130, rating: 4.7, reviews: 33, badge: "New",
-    img: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=600&auto=format&fit=crop&q=80",
-  },
-  {
-    id: "nf7", title: "Floral Mini Dress", cat: "Dresses", price: 78, compare: 108, rating: 4.8, reviews: 61, badge: "Bestseller",
-    img: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&auto=format&fit=crop&q=80",
-  },
-  {
-    id: "nf8", title: "Leather Crossbody", cat: "Accessories", price: 135, compare: 180, rating: 4.9, reviews: 88, badge: "Hot",
-    img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&auto=format&fit=crop&q=80",
-  },
-];
-
-const FAVOURITE_PRODUCTS = [
-  {
-    id: "fav1", title: "Spring Floral Blouse", price: 62, compare: 85, rating: 4.8, reviews: 94,
-    img: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=600&auto=format&fit=crop&q=80",
-  },
-  {
-    id: "fav2", title: "Casual Denim Jacket", price: 145, compare: 195, rating: 4.7, reviews: 67,
-    img: "https://images.unsplash.com/photo-1551537482-f2075a1d41f2?w=600&auto=format&fit=crop&q=80",
-  },
-  {
-    id: "fav3", title: "Minimal White Set", price: 110, compare: 150, rating: 4.9, reviews: 112,
-    img: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=600&auto=format&fit=crop&q=80",
-  },
-];
-
-// ─── Component ────────────────────────────────────────────────────────────────
 export function NickelFoxStorefront({
   storeDisplayName,
   tenantSlug,
@@ -156,26 +118,44 @@ export function NickelFoxStorefront({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [view, setView] = useState<"home" | "shop" | "favourite">("home");
   const [activeNav, setActiveNav] = useState("Catalogue");
-  const [wishlistLocal, setWishlistLocal] = useState<Set<string>>(new Set());
+  const [wishlistLocal, setWishlistLocal] = useState<Set<string>>(new Set(wishlist));
   const [addedId, setAddedId] = useState<string | null>(null);
   const [activeCat, setActiveCat] = useState("All");
 
   const cartCount = cartItems.reduce((s, i) => s + i.quantity, 0);
 
   const handleWishlist = (id: string) => {
-    setWishlistLocal(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; });
+    setWishlistLocal((prev) => {
+      const n = new Set(prev);
+      n.has(id) ? n.delete(id) : n.add(id);
+      return n;
+    });
     onToggleWishlist(id);
   };
 
   const handleAdd = (item: any) => {
-    const prod = item.rawProduct || { id: item.id, title: item.title, slug: item.id, description: item.title, price: item.price, comparePrice: item.compare, imageUrl: item.img, badge: item.badge, variants: [] };
-    const defaultVariant = (prod.variants && prod.variants[0]) || { sku: `${item.id}-default`, title: "Standard", price: item.price };
+    const prod = item.rawProduct || {
+      id: item.id,
+      title: item.title,
+      slug: item.id,
+      description: item.title,
+      price: item.price,
+      comparePrice: item.compare,
+      imageUrl: item.img,
+      badge: item.badge,
+      variants: []
+    };
+    const defaultVariant = (prod.variants && prod.variants[0]) || {
+      sku: `${item.id}-default`,
+      title: "Standard",
+      price: item.price
+    };
     onAddToCart(prod, defaultVariant);
     setAddedId(item.id);
     setTimeout(() => setAddedId(null), 1400);
   };
 
-  const catalogItems = React.useMemo(() => {
+  const catalogItems = useMemo(() => {
     if (products && products.length > 0) {
       return products.map((p, idx) => ({
         id: p.id,
@@ -183,93 +163,258 @@ export function NickelFoxStorefront({
         cat: (p as any).category || (idx % 2 === 0 ? "Tops" : "Outerwear"),
         price: p.price,
         compare: p.comparePrice || Math.round(p.price * 1.3),
-        rating: p.rating || 4.8,
-        reviews: 32 + (idx * 6),
-        badge: p.badge || (idx === 0 ? "Hot" : idx === 1 ? "Trending" : "New"),
-        img: p.imageUrl || "https://images.unsplash.com/photo-1594938298603-c8148c4b5571?w=600&auto=format&fit=crop&q=80",
+        rating: p.rating || 4.9,
+        reviews: 42 + (idx * 7),
+        badge: p.badge || (idx === 0 ? "Archive Drop" : idx === 1 ? "Heavyweight" : "Limited"),
+        img: p.imageUrl || "https://images.unsplash.com/photo-1594938298603-c8148c4b5571?w=700&auto=format&fit=crop&q=85",
         rawProduct: p
       }));
     }
-    return PRODUCTS.map((item) => ({ ...item, rawProduct: null }));
+    return [
+      {
+        id: "nf1",
+        title: "Box-Cut Heavyweight Tee",
+        cat: "Tops",
+        price: 2850,
+        compare: 3500,
+        rating: 4.9,
+        reviews: 58,
+        badge: "280 GSM",
+        img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=700&auto=format&fit=crop&q=85",
+        rawProduct: null
+      },
+      {
+        id: "nf2",
+        title: "Archival Raglan Fleece Hoodie",
+        cat: "Outerwear",
+        price: 6400,
+        compare: 7800,
+        rating: 5.0,
+        reviews: 94,
+        badge: "480 GSM",
+        img: "https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=700&auto=format&fit=crop&q=85",
+        rawProduct: null
+      },
+      {
+        id: "nf3",
+        title: "Kurabo Selvedge Raw Denim",
+        cat: "Bottoms",
+        price: 7900,
+        compare: 9500,
+        rating: 4.8,
+        reviews: 36,
+        badge: "14oz Indigo",
+        img: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=700&auto=format&fit=crop&q=85",
+        rawProduct: null
+      },
+      {
+        id: "nf4",
+        title: "Bonded Wool Double Overcoat",
+        cat: "Outerwear",
+        price: 14200,
+        compare: 17500,
+        rating: 4.9,
+        reviews: 47,
+        badge: "Limited Run",
+        img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=700&auto=format&fit=crop&q=85",
+        rawProduct: null
+      },
+      {
+        id: "nf5",
+        title: "Relaxed Pleated Chino Trouser",
+        cat: "Bottoms",
+        price: 4800,
+        compare: 5900,
+        rating: 4.7,
+        reviews: 29,
+        badge: "Bonded Twill",
+        img: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=700&auto=format&fit=crop&q=85",
+        rawProduct: null
+      },
+      {
+        id: "nf6",
+        title: "French Terry Zip Track Jacket",
+        cat: "Outerwear",
+        price: 6800,
+        compare: 8200,
+        rating: 4.9,
+        reviews: 63,
+        badge: "YKK Excella",
+        img: "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=700&auto=format&fit=crop&q=85",
+        rawProduct: null
+      },
+      {
+        id: "nf7",
+        title: "Calfskin Leather Crossbody",
+        cat: "Accessories",
+        price: 9200,
+        compare: 11000,
+        rating: 5.0,
+        reviews: 82,
+        badge: "Full-Grain",
+        img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=700&auto=format&fit=crop&q=85",
+        rawProduct: null
+      },
+      {
+        id: "nf8",
+        title: "Ribbed Mercerized Cotton Knit",
+        cat: "Tops",
+        price: 4200,
+        compare: 5200,
+        rating: 4.8,
+        reviews: 41,
+        badge: "Breathable",
+        img: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=700&auto=format&fit=crop&q=85",
+        rawProduct: null
+      }
+    ];
   }, [products]);
 
-  const NAV_CATS = ["All", ...Array.from(new Set(catalogItems.map(p => p.cat)))];
-  const filteredProducts = activeCat === "All" ? catalogItems : catalogItems.filter(p => p.cat === activeCat);
+  const NAV_CATS = ["All", ...Array.from(new Set(catalogItems.map((p) => p.cat)))];
+  const filteredProducts = activeCat === "All" ? catalogItems : catalogItems.filter((p) => p.cat === activeCat);
 
   return (
-    <div suppressHydrationWarning className="min-h-screen bg-[#f7f500] text-black font-sans antialiased">
+    <div suppressHydrationWarning className="min-h-screen bg-[#09090b] text-zinc-100 font-sans antialiased selection:bg-zinc-800 selection:text-white">
 
-      {/* ── Header ─────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-50 bg-white border-b-4 border-black shadow-[0_4px_0_0_#000]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      {/* ── Top Utility Assurance Bar ────────────────────────────────────────── */}
+      <div className="bg-[#121215] border-b border-zinc-800/80 py-2 px-4 text-xs font-mono text-zinc-400">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-zinc-300 font-semibold">Autumn / Winter 2026 Archive Drops Live</span>
+          </div>
+          <div className="hidden sm:flex items-center space-x-6 text-[11px]">
+            <span>Steadfast 24–48h Nationwide</span>
+            <span className="text-zinc-600">•</span>
+            <span>Doorstep Trial (COD)</span>
+            <span className="text-zinc-600">•</span>
+            <span>bKash / Nagad Verified</span>
+          </div>
+          {onOpenTrackOrder && (
+            <button
+              onClick={onOpenTrackOrder}
+              className="text-[11px] text-zinc-300 hover:text-white transition flex items-center space-x-1"
+            >
+              <Truck className="w-3 h-3 text-emerald-400" />
+              <span>Track Order</span>
+            </button>
+          )}
+        </div>
+      </div>
 
+      {/* ── Brand Header (Matte Obsidian Luxury) ─────────────────────────────── */}
+      <header className="sticky top-0 z-50 bg-[#09090b]/90 backdrop-blur-md border-b border-zinc-800/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-18 flex items-center justify-between gap-4">
+          
           {/* Logo */}
-          <div className="flex items-center gap-2 flex-shrink-0 cursor-pointer" onClick={() => setView("home")}>
-            <div className="w-7 h-7 bg-[#f7f500] border-2 border-black rounded flex items-center justify-center">
-              <Zap className="w-4 h-4 text-black" />
+          <div
+            className="flex items-center space-x-3 cursor-pointer group"
+            onClick={() => { setView("home"); setActiveNav("Catalogue"); }}
+          >
+            <div className="w-9 h-9 rounded-xl bg-zinc-100 text-zinc-950 flex items-center justify-center font-black text-sm tracking-widest shadow-sm group-hover:scale-105 transition-transform">
+              NF
             </div>
-            <span className="font-black text-xl tracking-tight text-black">FASHION</span>
+            <div>
+              <span className="font-extrabold text-base tracking-tight text-white block uppercase leading-none font-mono">
+                {storeDisplayName || "NICKELFOX"}
+              </span>
+              <span className="text-[10px] text-zinc-400 font-mono uppercase tracking-wider block mt-1">
+                Atelier Archives
+              </span>
+            </div>
           </div>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-1">
-            {HERO_BRAND_NAV.map(item => (
-              <button key={item}
+          <nav className="hidden md:flex items-center space-x-1 font-mono text-xs font-semibold">
+            {["Catalogue", "Lookbook", "Collections", "About"].map((item) => (
+              <button
+                key={item}
                 onClick={() => {
                   setActiveNav(item);
-                  if (item === "Catalogue" || item === "Fashion") setView("shop");
-                  else if (item === "Favourite") setView("favourite");
+                  if (item === "Catalogue" || item === "Collections") setView("shop");
                   else setView("home");
                 }}
-                className={`px-4 py-1.5 text-sm font-bold rounded transition ${activeNav === item ? "bg-black text-[#f7f500]" : "text-black hover:bg-black/10"}`}>
+                className={`px-4 py-2 rounded-lg transition-all ${
+                  activeNav === item
+                    ? "bg-zinc-800 text-white font-bold"
+                    : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900"
+                }`}
+              >
                 {item}
               </button>
             ))}
           </nav>
 
           {/* Actions */}
-          <div className="flex items-center gap-2">
-            {onOpenTrackOrder && (
-              <button onClick={onOpenTrackOrder} className="hidden lg:flex items-center text-xs font-black uppercase text-black hover:opacity-75 transition px-2 py-1">
-                Track Order
-              </button>
-            )}
-            {onOpenCheckout && (
-              <button onClick={onOpenCheckout} className="hidden sm:flex items-center gap-1.5 bg-black text-[#f7f500] text-xs font-black px-4 py-2 rounded-full hover:bg-neutral-800 transition shadow-[2px_2px_0_0_#000]">
-                <Truck className="w-3.5 h-3.5" />
-                <span>Express Checkout</span>
-              </button>
-            )}
-            <button onClick={onOpenSearch} className="p-2 rounded-full hover:bg-black/10 transition">
-              <Search className="w-4.5 h-4.5" />
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={onOpenSearch}
+              className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-300 hover:text-white transition"
+              aria-label="Search collection"
+            >
+              <Search className="w-4 h-4" />
             </button>
-            <button className="p-2 rounded-full hover:bg-black/10 transition hidden sm:flex" onClick={() => setView("favourite")}>
-              <Heart className="w-4.5 h-4.5" />
-            </button>
-            <button onClick={onOpenCart} className="relative p-2 rounded-full hover:bg-black/10 transition" aria-label="Cart">
-              <ShoppingBag className="w-4.5 h-4.5" />
-              {cartCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-black text-[#f7f500] text-[10px] font-black rounded-full flex items-center justify-center">{cartCount}</span>
+
+            <button
+              onClick={() => setView("favourite")}
+              className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-300 hover:text-white transition relative hidden sm:flex"
+              aria-label="Wishlist"
+            >
+              <Heart className="w-4 h-4" />
+              {wishlistLocal.size > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white rounded-full text-[9px] font-bold flex items-center justify-center">
+                  {wishlistLocal.size}
+                </span>
               )}
             </button>
-            <button className="md:hidden p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+
+            {onOpenCheckout && (
+              <button
+                onClick={onOpenCheckout}
+                className="hidden sm:inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-xs font-mono font-semibold text-zinc-200 transition"
+              >
+                <Zap className="w-3.5 h-3.5 text-amber-400" />
+                <span>Express COD</span>
+              </button>
+            )}
+
+            <button
+              onClick={onOpenCart}
+              className="relative p-2.5 rounded-xl bg-white hover:bg-zinc-200 text-zinc-950 font-bold transition flex items-center space-x-2 shadow-sm"
+              aria-label="Shopping Cart"
+            >
+              <ShoppingBag className="w-4 h-4" />
+              <span className="text-xs hidden sm:inline-block font-mono">Bag</span>
+              {cartCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-zinc-950 text-white rounded-full text-[10px] font-bold flex items-center justify-center border border-zinc-800">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+
+            <button
+              className="md:hidden p-2 rounded-xl text-zinc-400 hover:text-white"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile menu dropdown */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t-2 border-black bg-white px-4 py-3 space-y-1">
-            {HERO_BRAND_NAV.map(item => (
-              <button key={item} onClick={() => {
-                setActiveNav(item);
-                if (item === "Catalogue" || item === "Fashion") setView("shop");
-                else if (item === "Favourite") setView("favourite");
-                else setView("home");
-                setMobileMenuOpen(false);
-              }}
-                className="block w-full text-left py-2 text-sm font-bold text-black hover:text-neutral-600 transition">
+          <div className="md:hidden border-t border-zinc-800 bg-[#121215] px-4 py-3 space-y-1 font-mono text-xs">
+            {["Catalogue", "Lookbook", "Collections", "About"].map((item) => (
+              <button
+                key={item}
+                onClick={() => {
+                  setActiveNav(item);
+                  if (item === "Catalogue" || item === "Collections") setView("shop");
+                  else setView("home");
+                  setMobileMenuOpen(false);
+                }}
+                className="block w-full text-left py-2.5 px-3 rounded-lg text-zinc-300 hover:text-white hover:bg-zinc-800"
+              >
                 {item}
               </button>
             ))}
@@ -277,90 +422,171 @@ export function NickelFoxStorefront({
         )}
       </header>
 
-      {/* ══════════════════════════════════════════════════════════════
-          HOME VIEW
-      ══════════════════════════════════════════════════════════════ */}
+      {/* ══════════════════════════════════════════════════════════════════
+          HOME EDITORIAL VIEW
+      ══════════════════════════════════════════════════════════════════ */}
       {view === "home" && (
         <>
-          {/* ── Hero Section ─────────────────────────────────────── */}
-          <section className="bg-white border-b-4 border-black">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-2 gap-0 min-h-[480px]">
-              {/* Left: Text */}
-              <div className="py-12 pr-8 flex flex-col justify-center">
-                {/* Stars badge */}
-                <div className="inline-flex items-center gap-1.5 mb-5">
-                  {[...Array(5)].map((_, i) => <Star key={i} className="w-3.5 h-3.5 fill-[#f7f500] text-[#f7f500]" />)}
-                  <span className="text-xs font-bold text-black ml-1">Live for influential fashion</span>
+          {/* ── Editorial Split Hero ────────────────────────────────────────── */}
+          <section className="relative border-b border-zinc-800/80 overflow-hidden bg-gradient-to-b from-[#121215] to-[#09090b]">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-12 min-h-[580px] sm:min-h-[640px] items-center">
+              
+              {/* Left Editorial Copy */}
+              <div className="lg:col-span-7 py-12 sm:py-20 lg:pr-12 space-y-6">
+                <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-300">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                  <span>AUTUMN / WINTER 2026 ARCHIVES</span>
                 </div>
 
-                <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[0.95] mb-4 sm:mb-6 text-black">
-                  LET'S<br />
-                  EXPLORE<br />
-                  <span className="bg-[#f7f500] border-b-4 border-black px-1">UNIQUE</span><br />
-                  CLOTHES.
+                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.05] uppercase">
+                  STRUCTURED <br />
+                  <span className="text-zinc-500 font-light">OVERSIZED</span> <br />
+                  SILHOUETTES.
                 </h1>
-                <p className="text-xs sm:text-sm text-neutral-600 mb-6 sm:mb-8 max-w-xs font-medium">
-                  Live for influential and innovative fashion! Find your unique style from thousands of curated pieces.
+
+                <p className="text-xs sm:text-sm text-zinc-400 max-w-lg leading-relaxed font-sans">
+                  Crafted from 480 GSM French Terry, bonded tropical wool, and Japanese Kurabo selvedge raw denim. Engineered for contemporary street tailoring with verified doorstep fitting inspection.
                 </p>
-                <div className="flex gap-2 sm:gap-3 flex-wrap">
-                  <button onClick={() => setView("shop")}
-                    className="inline-flex items-center gap-2 bg-black text-[#f7f500] font-black text-xs sm:text-sm px-6 sm:px-8 py-2.5 sm:py-3 rounded-full hover:bg-neutral-800 transition shadow-[4px_4px_0_0_#f7f500]">
-                    SHOP NOW <ArrowRight className="w-4 h-4" />
+
+                <div className="flex flex-wrap items-center gap-3 pt-2">
+                  <button
+                    onClick={() => setView("shop")}
+                    className="py-3.5 px-7 bg-white hover:bg-zinc-200 text-zinc-950 font-bold text-xs font-mono rounded-xl transition flex items-center space-x-2 shadow-sm"
+                  >
+                    <span>EXPLORE CATALOGUE</span>
+                    <ArrowRight className="w-4 h-4" />
                   </button>
-                  <button onClick={() => setView("favourite")}
-                    className="inline-flex items-center gap-2 border-2 border-black bg-white text-black font-black text-xs sm:text-sm px-4 sm:px-6 py-2.5 sm:py-3 rounded-full hover:bg-[#f7f500] transition">
-                    Favourites <Heart className="w-4 h-4" />
+
+                  <button
+                    onClick={() => setView("shop")}
+                    className="py-3.5 px-6 bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-200 font-semibold text-xs font-mono rounded-xl transition flex items-center space-x-2"
+                  >
+                    <SlidersHorizontal className="w-3.5 h-3.5 text-zinc-400" />
+                    <span>FILTER BY GSM & FIT</span>
                   </button>
+                </div>
+
+                {/* Local Courier Trust Badges */}
+                <div className="pt-8 border-t border-zinc-800/80 grid grid-cols-2 sm:grid-cols-4 gap-4 text-zinc-400 font-mono text-xs">
+                  <div>
+                    <span className="block text-white font-bold">24–48h Dispatch</span>
+                    <span className="text-[10px] text-zinc-500">Steadfast & Pathao</span>
+                  </div>
+                  <div>
+                    <span className="block text-white font-bold">Doorstep Trial</span>
+                    <span className="text-[10px] text-zinc-500">COD Verified</span>
+                  </div>
+                  <div>
+                    <span className="block text-white font-bold">480 GSM Terry</span>
+                    <span className="text-[10px] text-zinc-500">Pre-shrunk cotton</span>
+                  </div>
+                  <div>
+                    <span className="block text-white font-bold">Free Exchanges</span>
+                    <span className="text-[10px] text-zinc-500">7-Day Guarantee</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Right: Hero Image */}
-              <div className="relative border-t-4 md:border-t-0 md:border-l-4 border-black min-h-[300px] sm:min-h-[360px] md:min-h-auto overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=85"
-                  alt="Hero model" className="w-full h-full object-cover object-top" />
-                {/* Floating star cluster */}
-                <div className="absolute top-6 right-6">
-                  {[...Array(3)].map((_, i) => (
-                    <div key={i} className={`absolute text-[#f7f500] font-black text-2xl ${i === 0 ? "top-0 right-0" : i === 1 ? "top-3 right-8" : "top-8 right-2"}`}>★</div>
-                  ))}
+              {/* Right Hero Visual (3:4 Editorial Portrait) */}
+              <div className="lg:col-span-5 relative py-6 lg:py-12">
+                <div className="relative mx-auto max-w-md aspect-[3/4] rounded-3xl overflow-hidden border border-zinc-800 bg-zinc-900 shadow-2xl">
+                  <img
+                    src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1000&auto=format&fit=crop&q=85"
+                    alt="Atelier Model"
+                    className="w-full h-full object-cover object-top"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent opacity-80" />
+                  
+                  {/* Floating Tag */}
+                  <div className="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-zinc-950/85 backdrop-blur-md border border-zinc-800 text-white flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider block">
+                        Look 01 • Capsule Drop
+                      </span>
+                      <p className="text-xs font-bold font-mono">Archival Raglan Cut Hoodie (480 GSM)</p>
+                    </div>
+                    <span className="text-xs font-mono font-bold text-emerald-400">৳6,400</span>
+                  </div>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* ── Authentic Trust Strip (Replaced Fake Multinational Logos) ────────────────── */}
-          <section className="bg-[#f7f500] border-b-4 border-black py-3 sm:py-4">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-10 gap-y-2">
-              {LOCAL_TRUST_FEATURES.map((item, idx) => (
-                <div key={idx} className="flex items-center gap-1.5 cursor-default">
-                  <span className="w-2 h-2 rounded-full bg-black flex-shrink-0" />
-                  <span className="text-xs sm:text-sm font-black text-black tracking-tight">{item.label}</span>
-                  <span className="hidden sm:inline-block text-[10px] font-mono text-black/60 font-semibold">• {item.sub}</span>
-                </div>
+          {/* ── Curated Street Categories ─────────────────────────────────────── */}
+          <section className="py-14 sm:py-18 max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+              <div>
+                <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-zinc-500 block mb-1">
+                  Atelier Departments
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
+                  Curated Silhouettes
+                </h2>
+              </div>
+              <button
+                onClick={() => setView("shop")}
+                className="text-xs font-mono font-bold text-zinc-400 hover:text-white transition flex items-center space-x-1"
+              >
+                <span>VIEW COMPLETE ARCHIVE</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+              {STREET_CATEGORIES.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => { setActiveCat(cat.title.split(" ")[1] || cat.title); setView("shop"); }}
+                  className="group relative rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-900 aspect-[3/4] text-left transition hover:border-zinc-700"
+                >
+                  <img
+                    src={cat.img}
+                    alt={cat.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-80 group-hover:opacity-100"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />
+                  
+                  <div className="absolute top-2.5 left-2.5">
+                    <span className="text-[9px] font-mono px-2 py-0.5 rounded-md bg-zinc-950/80 backdrop-blur-md border border-zinc-800 text-zinc-300">
+                      {cat.tag}
+                    </span>
+                  </div>
+
+                  <div className="absolute bottom-3 left-3 right-3">
+                    <p className="text-xs font-bold text-white leading-tight font-mono">{cat.title}</p>
+                    <p className="text-[10px] text-zinc-400 truncate mt-0.5">{cat.subtitle}</p>
+                  </div>
+                </button>
               ))}
             </div>
           </section>
 
-          {/* ── New Arrivals Section ─────────────────────────────── */}
-          <section className="bg-white border-b-4 border-black py-10 sm:py-12">
+          {/* ── Latest Releases Catalog Grid ─────────────────────────────────── */}
+          <section className="py-12 border-t border-zinc-800/80 bg-[#0c0c0e]">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
-              <div className="flex items-end justify-between mb-6 sm:mb-8">
+              <div className="flex items-end justify-between mb-8">
                 <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <Flame className="w-4 h-4 text-black" />
-                    <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-black/40">Just In</span>
+                  <div className="flex items-center space-x-2 text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-1">
+                    <Flame className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Limited Vault Inventory</span>
                   </div>
-                  <h2 className="text-2xl sm:text-4xl font-black text-black uppercase tracking-tight">NEW ARRIVALS</h2>
+                  <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
+                    Seasonal Drops
+                  </h2>
                 </div>
-                <button onClick={() => setView("shop")}
-                  className="flex items-center gap-2 text-xs sm:text-sm font-black text-black border-b-2 border-black pb-0.5 hover:gap-3 transition-all">
-                  View All <ArrowRight className="w-4 h-4" />
+                <button
+                  onClick={() => setView("shop")}
+                  className="text-xs font-mono font-bold text-zinc-400 hover:text-white transition flex items-center space-x-1"
+                >
+                  <span>SEE ALL ({catalogItems.length})</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
                 </button>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-5">
-                {PRODUCTS.slice(0, 8).map(item => (
-                  <NickelFoxCard
+              {/* 2-Column Mobile First Responsive Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-5">
+                {catalogItems.slice(0, 8).map((item) => (
+                  <NickelFoxProductCard
                     key={item.id}
                     item={item}
                     wishlisted={wishlistLocal.has(item.id)}
@@ -368,7 +594,17 @@ export function NickelFoxStorefront({
                     onWishlist={() => handleWishlist(item.id)}
                     onAdd={() => handleAdd(item)}
                     onView={() => {
-                      const p = { id: item.id, title: item.title, slug: item.id, description: item.title, price: item.price, comparePrice: item.compare, imageUrl: item.img, badge: item.badge, variants: [] };
+                      const p = item.rawProduct || {
+                        id: item.id,
+                        title: item.title,
+                        slug: item.id,
+                        description: item.title,
+                        price: item.price,
+                        comparePrice: item.compare,
+                        imageUrl: item.img,
+                        badge: item.badge,
+                        variants: []
+                      };
                       onOpenProduct(p);
                     }}
                   />
@@ -377,90 +613,74 @@ export function NickelFoxStorefront({
             </div>
           </section>
 
-          {/* ── Category Grid ────────────────────────────────────── */}
-          <section className="bg-[#f7f500] py-12 border-b-4 border-black">
+          {/* ── Local Trust & Nationwide Logistics Bar ────────────────────────── */}
+          <section className="py-12 border-t border-zinc-800/80 bg-[#121215]">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
-              <h2 className="text-4xl font-black uppercase tracking-tight mb-8">Shop by Category</h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                {CATEGORY_CARDS.map(cat => (
-                  <button key={cat.id} onClick={() => setView("shop")}
-                    className="group relative overflow-hidden rounded-2xl border-4 border-black aspect-square hover:shadow-[8px_8px_0_0_#000] transition-shadow">
-                    <img src={cat.img} alt={cat.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-400" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <h3 className="font-black text-white text-sm leading-tight mb-1">{cat.title}</h3>
-                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-white/80">
-                        {cat.cta} <ArrowRight className="w-3 h-3" />
-                      </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {LOCAL_VERIFICATION_PERKS.map((perk, idx) => (
+                  <div
+                    key={idx}
+                    className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800/80 flex items-start space-x-3.5"
+                  >
+                    <div className="w-8 h-8 rounded-xl bg-zinc-800 flex items-center justify-center flex-shrink-0 text-emerald-400">
+                      <Check className="w-4 h-4" />
                     </div>
-                  </button>
+                    <div>
+                      <h4 className="text-xs font-bold text-white font-mono">{perk.title}</h4>
+                      <p className="text-[11px] text-zinc-400 mt-0.5 leading-snug">{perk.sub}</p>
+                    </div>
+                  </div>
                 ))}
               </div>
-            </div>
-          </section>
-
-          {/* ── Voucher Strip ────────────────────────────────────── */}
-          <section className="bg-black text-[#f7f500] py-10">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
-              <div>
-                <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#f7f500]/50 mb-1">Join Today</p>
-                <h3 className="text-2xl font-black">Get a 10% Voucher!</h3>
-                <p className="text-[#f7f500]/60 text-sm mt-1">Sign up and instantly unlock your welcome discount.</p>
-              </div>
-              <button className="px-8 py-3 bg-[#f7f500] text-black font-black text-sm rounded-full hover:bg-yellow-300 transition flex items-center gap-2 shadow-[0_0_0_3px_rgba(247,245,0,0.3)]">
-                <Tag className="w-4 h-4" /> Claim Voucher
-              </button>
-            </div>
-          </section>
-
-          {/* ── Trust Row ────────────────────────────────────────── */}
-          <section className="bg-white border-b-4 border-black py-8">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
-              {[
-                { icon: <Truck className="w-5 h-5" />, t: "Free Shipping", s: "On orders above ৳1,500" },
-                { icon: <ShieldCheck className="w-5 h-5" />, t: "Secure Payment", s: "100% protected checkout" },
-                { icon: <RotateCcw className="w-5 h-5" />, t: "Easy Returns", s: "30-day hassle-free returns" },
-              ].map(x => (
-                <div key={x.t} className="flex items-center gap-4 p-4 bg-[#f7f500] rounded-xl border-2 border-black">
-                  <div className="w-10 h-10 bg-black text-[#f7f500] rounded-full flex items-center justify-center flex-shrink-0">{x.icon}</div>
-                  <div>
-                    <p className="font-black text-sm text-black">{x.t}</p>
-                    <p className="text-xs text-black/60 mt-0.5">{x.s}</p>
-                  </div>
-                </div>
-              ))}
             </div>
           </section>
         </>
       )}
 
-      {/* ══════════════════════════════════════════════════════════════
+      {/* ══════════════════════════════════════════════════════════════════
           SHOP / CATALOGUE VIEW
-      ══════════════════════════════════════════════════════════════ */}
+      ══════════════════════════════════════════════════════════════════ */}
       {view === "shop" && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-xs font-bold text-black/40 mb-6">
-            <button onClick={() => setView("home")} className="hover:text-black transition">Home</button>
-            <ChevronRight className="w-3 h-3" />
-            <span className="text-black">Catalogue</span>
-          </nav>
-
-          <h1 className="text-5xl font-black uppercase tracking-tight mb-8">All Products</h1>
-
-          {/* Category pills */}
-          <div className="flex flex-wrap gap-2 mb-8">
-            {NAV_CATS.map(cat => (
-              <button key={cat} onClick={() => setActiveCat(cat)}
-                className={`px-5 py-2 rounded-full text-sm font-black border-2 transition ${activeCat === cat ? "bg-black text-[#f7f500] border-black" : "bg-white text-black border-black hover:bg-[#f7f500]"}`}>
-                {cat}
-              </button>
-            ))}
+          <div className="flex items-center space-x-2 text-xs font-mono text-zinc-500 mb-6">
+            <button onClick={() => setView("home")} className="hover:text-zinc-300">Home</button>
+            <ChevronRight className="w-3.5 h-3.5" />
+            <span className="text-zinc-200">Vault Catalogue</span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
-            {filteredProducts.map(item => (
-              <NickelFoxCard
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white font-mono">
+                Atelier Vault
+              </h1>
+              <p className="text-xs text-zinc-400 mt-1 font-sans">
+                Curated archive pieces with fabric weight metrics, studio photography, and instant COD dispatch.
+              </p>
+            </div>
+
+            {/* Category Filter Pills */}
+            <div className="flex flex-wrap gap-1.5 font-mono text-xs">
+              {NAV_CATS.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCat(cat)}
+                  className={`px-3.5 py-1.5 rounded-xl border transition ${
+                    activeCat === cat
+                      ? "bg-white text-zinc-950 font-bold border-white"
+                      : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Product Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-5">
+            {filteredProducts.map((item) => (
+              <NickelFoxProductCard
                 key={item.id}
                 item={item}
                 wishlisted={wishlistLocal.has(item.id)}
@@ -468,7 +688,17 @@ export function NickelFoxStorefront({
                 onWishlist={() => handleWishlist(item.id)}
                 onAdd={() => handleAdd(item)}
                 onView={() => {
-                  const p = { id: item.id, title: item.title, slug: item.id, description: item.title, price: item.price, comparePrice: item.compare, imageUrl: item.img, badge: item.badge, variants: [] };
+                  const p = item.rawProduct || {
+                    id: item.id,
+                    title: item.title,
+                    slug: item.id,
+                    description: item.title,
+                    price: item.price,
+                    comparePrice: item.compare,
+                    imageUrl: item.img,
+                    badge: item.badge,
+                    variants: []
+                  };
                   onOpenProduct(p);
                 }}
               />
@@ -477,106 +707,112 @@ export function NickelFoxStorefront({
         </div>
       )}
 
-      {/* ══════════════════════════════════════════════════════════════
-          FAVOURITE VIEW
-      ══════════════════════════════════════════════════════════════ */}
+      {/* ══════════════════════════════════════════════════════════════════
+          FAVOURITES VIEW
+      ══════════════════════════════════════════════════════════════════ */}
       {view === "favourite" && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-          <nav className="flex items-center gap-2 text-xs font-bold text-black/40 mb-6">
-            <button onClick={() => setView("home")} className="hover:text-black transition">Home</button>
-            <ChevronRight className="w-3 h-3" />
-            <span className="text-black">Favourites</span>
-          </nav>
-          <h1 className="text-5xl font-black uppercase tracking-tight mb-8">Favourites</h1>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {FAVOURITE_PRODUCTS.map(item => (
-              <div key={item.id} className="bg-white rounded-2xl border-4 border-black overflow-hidden hover:shadow-[8px_8px_0_0_#f7f500] transition group">
-                <div className="aspect-square overflow-hidden relative">
-                  <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-400" />
-                </div>
-                <div className="p-4">
-                  <h3 className="font-black text-black text-sm mb-2">{item.title}</h3>
-                  <div className="flex items-center gap-1 mb-3">
-                    {[...Array(5)].map((_, i) => <Star key={i} className={`w-3 h-3 ${i < Math.floor(item.rating) ? "fill-[#f7f500] text-[#f7f500]" : "text-stone-200"}`} />)}
-                    <span className="text-[10px] text-black/40 ml-1">({item.reviews})</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="font-black text-black">${item.price}</span>
-                      {item.compare > item.price && <span className="text-xs text-black/30 line-through ml-1">${item.compare}</span>}
-                    </div>
-                    <button className="px-3 py-1.5 bg-black text-[#f7f500] text-xs font-black rounded-full hover:bg-neutral-800 transition">
-                      Add to Cart
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+          <div className="flex items-center space-x-2 text-xs font-mono text-zinc-500 mb-6">
+            <button onClick={() => setView("home")} className="hover:text-zinc-300">Home</button>
+            <ChevronRight className="w-3.5 h-3.5" />
+            <span className="text-zinc-200">Saved Wishlist</span>
           </div>
-          <div className="mt-10 p-6 bg-black rounded-2xl text-center">
-            <p className="text-[#f7f500] font-black text-lg mb-3">Discover More Styles</p>
-            <button onClick={() => setView("shop")}
-              className="inline-flex items-center gap-2 bg-[#f7f500] text-black font-black text-sm px-8 py-3 rounded-full hover:bg-yellow-300 transition">
-              Browse Catalogue <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
+
+          <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white mb-8 font-mono">
+            Saved Pieces ({wishlistLocal.size})
+          </h1>
+
+          {wishlistLocal.size === 0 ? (
+            <div className="text-center py-16 bg-zinc-900/40 rounded-3xl border border-zinc-800/80 space-y-4">
+              <Heart className="w-8 h-8 text-zinc-600 mx-auto" />
+              <p className="text-sm text-zinc-400 font-mono">No pieces saved yet.</p>
+              <button
+                onClick={() => setView("shop")}
+                className="py-2.5 px-6 bg-white text-zinc-950 font-bold text-xs font-mono rounded-xl hover:bg-zinc-200 transition"
+              >
+                Browse Catalogue
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-5">
+              {catalogItems
+                .filter((it) => wishlistLocal.has(it.id))
+                .map((item) => (
+                  <NickelFoxProductCard
+                    key={item.id}
+                    item={item}
+                    wishlisted={true}
+                    added={addedId === item.id}
+                    onWishlist={() => handleWishlist(item.id)}
+                    onAdd={() => handleAdd(item)}
+                    onView={() => {
+                      const p = item.rawProduct || {
+                        id: item.id,
+                        title: item.title,
+                        slug: item.id,
+                        description: item.title,
+                        price: item.price,
+                        comparePrice: item.compare,
+                        imageUrl: item.img,
+                        badge: item.badge,
+                        variants: []
+                      };
+                      onOpenProduct(p);
+                    }}
+                  />
+                ))}
+            </div>
+          )}
         </div>
       )}
 
-      {/* ── Footer ─────────────────────────────────────────────── */}
-      <footer className="bg-black text-white border-t-4 border-[#f7f500] pt-14 pb-8 mt-0">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-10">
-          <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-7 h-7 bg-[#f7f500] border-2 border-[#f7f500] rounded flex items-center justify-center">
-                <Zap className="w-4 h-4 text-black" />
-              </div>
-              <span className="font-black text-xl tracking-tight text-[#f7f500]">FASHION</span>
-            </div>
-            <p className="text-white/40 text-sm leading-relaxed">Bold style for bold people. Fashion that speaks before you do.</p>
-            <div className="flex gap-3 mt-5">
-              {[Instagram, Facebook, Twitter, Youtube].map((Icon, i) => (
-                <button key={i} className="w-8 h-8 rounded-full bg-[#f7f500]/10 hover:bg-[#f7f500]/20 text-[#f7f500] flex items-center justify-center transition">
-                  <Icon className="w-3.5 h-3.5" />
-                </button>
-              ))}
-            </div>
+      {/* ── Contemporary Minimalist Footer ─────────────────────────────────── */}
+      <footer className="border-t border-zinc-800/80 bg-[#09090b] pt-14 pb-10 text-xs font-mono text-zinc-500">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+          <div className="space-y-3">
+            <span className="font-bold text-white uppercase text-sm block">
+              {storeDisplayName || "NICKELFOX"}
+            </span>
+            <p className="text-zinc-400 leading-relaxed font-sans text-xs">
+              Independent streetwear atelier specializing in 480 GSM loopback cotton, Japanese selvedge denim, and contemporary silhouettes.
+            </p>
           </div>
+
           <div>
-            <h4 className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#f7f500]/50 mb-4">Catalogue</h4>
-            <ul className="space-y-2.5">
-              {["Hoodies & Sweatshirt", "Coats & Parkas", "Tees & T-Shirts", "Dresses", "Accessories"].map(l => (
-                <li key={l}><button className="text-sm text-white/50 hover:text-white transition">{l}</button></li>
-              ))}
+            <h4 className="font-bold text-zinc-300 uppercase tracking-wider mb-3">Departments</h4>
+            <ul className="space-y-2 text-zinc-400">
+              <li>Heavyweight Hoodies</li>
+              <li>Kurabo Selvedge Denim</li>
+              <li>Structured Box-Cut Tees</li>
+              <li>Archival Outerwear</li>
             </ul>
           </div>
+
           <div>
-            <h4 className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#f7f500]/50 mb-4">Help</h4>
-            <ul className="space-y-2.5">
-              {["Track Order", "Returns Policy", "Size Guide", "FAQs", "Contact Us"].map(l => (
-                <li key={l}><button className="text-sm text-white/50 hover:text-white transition">{l}</button></li>
-              ))}
+            <h4 className="font-bold text-zinc-300 uppercase tracking-wider mb-3">Courier Logistics</h4>
+            <ul className="space-y-2 text-zinc-400">
+              <li>Steadfast 24–48h Nationwide</li>
+              <li>Doorstep Fit Inspection</li>
+              <li>Cash on Delivery All 64 Districts</li>
+              <li>bKash / Nagad Instant Verify</li>
             </ul>
           </div>
+
           <div>
-            <h4 className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#f7f500]/70 mb-4">Delivery & Verification</h4>
-            <p className="text-xs text-white/50 mb-3">Steadfast 24-48h express nationwide, Pathao Courier, COD + bKash/Nagad instant verification.</p>
-            <div className="space-y-1.5 text-xs text-white/80 font-mono">
-              <div className="flex items-center gap-2">
-                <Check className="w-3.5 h-3.5 text-[#f7f500]" />
-                <span>64 Districts Doorstep Inspection</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Check className="w-3.5 h-3.5 text-[#f7f500]" />
-                <span>Original Textile Quality Guaranteed</span>
-              </div>
-            </div>
+            <h4 className="font-bold text-zinc-300 uppercase tracking-wider mb-3">Store Hours & Hub</h4>
+            <p className="text-zinc-400 leading-relaxed text-xs font-sans">
+              Dhaka Flagship • Banani & Dhanmondi <br />
+              Orders dispatch daily at 4:00 PM BST.
+            </p>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/30">
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-6 border-t border-zinc-900 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px]">
           <span>© {new Date().getFullYear()} {storeDisplayName}. All rights reserved.</span>
-          <div className="flex gap-5">
-            {["Privacy", "Terms", "Cookies"].map(l => <button key={l} className="hover:text-white transition">{l}</button>)}
+          <div className="flex space-x-6 text-zinc-400">
+            <span>Terms of Service</span>
+            <span>Privacy Policy</span>
+            <span>Courier Dispatch</span>
           </div>
         </div>
       </footer>
@@ -584,58 +820,112 @@ export function NickelFoxStorefront({
   );
 }
 
-// ─── NickelFox Product Card ───────────────────────────────────────────────────
-function NickelFoxCard({
-  item, wishlisted, added, onWishlist, onAdd, onView
+// ─── Reusable NickelFox Product Card ──────────────────────────────────────────
+function NickelFoxProductCard({
+  item,
+  wishlisted,
+  added,
+  onWishlist,
+  onAdd,
+  onView
 }: {
-  item: (typeof PRODUCTS)[0];
+  item: any;
   wishlisted: boolean;
   added: boolean;
   onWishlist: () => void;
   onAdd: () => void;
   onView: () => void;
 }) {
-  const disc = Math.round(((item.compare - item.price) / item.compare) * 100);
+  const discountPercent = item.compare > item.price
+    ? Math.round(((item.compare - item.price) / item.compare) * 100)
+    : 0;
+
   return (
-    <div className="group bg-white rounded-2xl overflow-hidden border-2 sm:border-4 border-black hover:shadow-[6px_6px_0_0_#000] transition duration-200 flex flex-col justify-between">
-      <div className="relative aspect-[3/4] overflow-hidden bg-stone-100 cursor-pointer" onClick={onView}>
-        <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-400" />
+    <div className="group rounded-2xl bg-zinc-900/70 border border-zinc-800/80 hover:border-zinc-700 transition overflow-hidden flex flex-col justify-between">
+      {/* 3:4 Portrait Image */}
+      <div className="relative aspect-[3/4] overflow-hidden bg-zinc-950 cursor-pointer" onClick={onView}>
+        <img
+          src={item.img}
+          alt={item.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+        
         {item.badge && (
-          <div className="absolute top-2 left-2 bg-[#f7f500] text-black text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-1.5 sm:px-2 py-0.5 rounded-full border border-black sm:border-2">
+          <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md bg-zinc-950/85 backdrop-blur-md border border-zinc-800 text-[9.5px] font-mono font-bold text-zinc-200">
             {item.badge}
           </div>
         )}
-        {disc > 0 && (
-          <div className="absolute top-2 right-2 bg-black text-[#f7f500] text-[9px] sm:text-[10px] font-black px-1.5 sm:px-2 py-0.5 rounded-full">
-            -{disc}%
+
+        {discountPercent > 0 && (
+          <div className="absolute top-2.5 right-2.5 px-1.5 py-0.5 rounded-md bg-rose-950/80 border border-rose-800/80 text-rose-300 text-[9px] font-mono font-bold">
+            -{discountPercent}%
           </div>
         )}
-        <button onClick={e => { e.stopPropagation(); onWishlist(); }}
-          className={`absolute bottom-2 right-2 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center border-2 border-black transition shadow ${wishlisted ? "bg-rose-500 text-white border-rose-500" : "bg-white text-black hover:bg-[#f7f500]"}`}>
-          <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${wishlisted ? "fill-white" : ""}`} />
+
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onWishlist();
+          }}
+          className={`absolute bottom-2.5 right-2.5 w-7 h-7 rounded-full flex items-center justify-center border transition ${
+            wishlisted
+              ? "bg-rose-500 border-rose-500 text-white"
+              : "bg-zinc-950/70 border-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-900"
+          }`}
+          aria-label="Save to wishlist"
+        >
+          <Heart className={`w-3.5 h-3.5 ${wishlisted ? "fill-white" : ""}`} />
         </button>
       </div>
-      <div className="p-2 sm:p-3 flex-1 flex flex-col justify-between">
+
+      {/* Information & Mobile 1-Tap Add */}
+      <div className="p-3 sm:p-3.5 flex-1 flex flex-col justify-between space-y-2">
         <div>
-          <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-black/40 mb-0.5">{item.cat}</p>
-          <h3 className="text-xs sm:text-sm font-black text-black leading-snug line-clamp-1 sm:line-clamp-2 mb-1 cursor-pointer hover:text-neutral-700" onClick={onView}>{item.title}</h3>
-          <div className="flex items-center gap-1 mb-2">
-            {[...Array(5)].map((_, i) => <Star key={i} className={`w-2.5 h-2.5 sm:w-3 sm:h-3 ${i < Math.floor(item.rating) ? "fill-[#f7f500] text-[#f7f500]" : "text-stone-200"}`} />)}
-            <span className="text-[9px] sm:text-[10px] text-black/40 ml-0.5">({item.reviews})</span>
-          </div>
+          <span className="text-[9.5px] font-mono uppercase tracking-wider text-zinc-500 block">
+            {item.cat}
+          </span>
+          <h3
+            onClick={onView}
+            className="text-xs sm:text-sm font-bold text-white line-clamp-1 cursor-pointer hover:text-zinc-300 transition mt-0.5"
+          >
+            {item.title}
+          </h3>
         </div>
-        <div className="flex items-center justify-between gap-1 pt-1 border-t border-stone-100">
+
+        <div className="flex items-center justify-between pt-1 border-t border-zinc-800/60">
           <div>
-            <span className="font-black text-black text-xs sm:text-sm">৳{item.price.toLocaleString("en-BD")}</span>
-            {item.compare > item.price && <span className="text-[10px] sm:text-xs text-black/40 line-through ml-1">৳{item.compare.toLocaleString("en-BD")}</span>}
+            <span className="text-xs sm:text-sm font-bold font-mono text-zinc-100">
+              ৳{item.price.toLocaleString("en-BD")}
+            </span>
+            {item.compare > item.price && (
+              <span className="text-[10px] text-zinc-500 line-through font-mono ml-1.5">
+                ৳{item.compare.toLocaleString("en-BD")}
+              </span>
+            )}
           </div>
-          <button onClick={onAdd}
-            className={`flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-black border-2 border-black active:scale-95 transition ${added ? "bg-emerald-400 text-black" : "bg-[#f7f500] text-black hover:bg-black hover:text-[#f7f500]"}`}>
-            {added ? <><Check className="w-3 h-3" /> <span className="hidden sm:inline">Added</span></> : <><ShoppingBag className="w-3 h-3" /> <span>Add</span></>}
+
+          <button
+            onClick={onAdd}
+            className={`px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-mono font-bold border transition flex items-center space-x-1 ${
+              added
+                ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/40"
+                : "bg-white hover:bg-zinc-200 text-zinc-950 border-white"
+            }`}
+          >
+            {added ? (
+              <>
+                <Check className="w-3 h-3" />
+                <span>Added</span>
+              </>
+            ) : (
+              <>
+                <ShoppingBag className="w-3 h-3" />
+                <span>Add</span>
+              </>
+            )}
           </button>
         </div>
       </div>
     </div>
   );
 }
-

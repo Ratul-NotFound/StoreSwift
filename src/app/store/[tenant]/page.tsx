@@ -423,15 +423,17 @@ export default function TenantStorefrontPage({
       suppressHydrationWarning
       className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${template.classes.pageBg}`}
     >
-      {/* ─── Top Demo Store Preview Bar ──────────────────────────────────── */}
-      <DemoStoreBar
-        currentSlug={tenantSlug}
-        storeDisplayName={storeDisplayName}
-        categoryName={categoryConfig.name}
-        onOpenCheckout={() => setIsCheckoutOpen(true)}
-        onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
-        defaultDismissed={true}
-      />
+      {/* ─── Top Demo Store Preview Bar (Hidden in embeds) ──────────────── */}
+      {!isEmbed && (
+        <DemoStoreBar
+          currentSlug={tenantSlug}
+          storeDisplayName={storeDisplayName}
+          categoryName={categoryConfig.name}
+          onOpenCheckout={() => setIsCheckoutOpen(true)}
+          onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
+          defaultDismissed={true}
+        />
+      )}
 
       {/* ─── New Premium Templates (Reference-matched) ───────────────────── */}
       {isAthleisureTemplate ? (
@@ -742,11 +744,11 @@ export default function TenantStorefrontPage({
                 ) : (
                   <div>
                     <div className="flex justify-between text-[11px] font-semibold text-zinc-700 mb-1.5">
-                      <span>Add ${(50 - cartSummary.subtotal).toFixed(2)} more for FREE Delivery</span>
-                      <span>{Math.round((cartSummary.subtotal / 50) * 100)}%</span>
+                      <span>Add ৳{Math.max(0, 1500 - cartSummary.subtotal).toLocaleString("en-BD")} more for FREE Delivery</span>
+                      <span>{Math.min(100, Math.round((cartSummary.subtotal / 1500) * 100))}%</span>
                     </div>
                     <div className="w-full bg-zinc-200 h-2 rounded-full overflow-hidden">
-                      <div className="bg-zinc-900 h-full transition-all duration-300 rounded-full" style={{ width: `${Math.min(100, (cartSummary.subtotal / 50) * 100)}%` }} />
+                      <div className="bg-zinc-900 h-full transition-all duration-300 rounded-full" style={{ width: `${Math.min(100, (cartSummary.subtotal / 1500) * 100)}%` }} />
                     </div>
                   </div>
                 )}
@@ -764,7 +766,7 @@ export default function TenantStorefrontPage({
                       <div key={item.id} className="flex items-center justify-between p-3 bg-zinc-50 rounded-xl border border-zinc-200/70">
                         <div className="flex-1 pr-3">
                           <p className="text-xs font-bold text-zinc-900 leading-tight">{item.title}</p>
-                          <p className="text-[11px] text-zinc-500 font-mono mt-0.5">${item.price.toFixed(2)} each</p>
+                          <p className="text-[11px] text-zinc-500 font-mono mt-0.5">৳{item.price.toLocaleString("en-BD")} each</p>
                         </div>
                         <div className="flex items-center space-x-2">
                           <div className="flex items-center bg-white border border-zinc-200 rounded-lg p-0.5">
@@ -780,8 +782,8 @@ export default function TenantStorefrontPage({
                       <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block mb-2">Frequently Added Add-ons:</span>
                       <div className="space-y-2">
                         {[
-                          { title: "Eco Protective Cotton Pouch", price: 6.0, desc: "+$6.00 • Zero plastic dust bag" },
-                          { title: "Express Priority Packing", price: 3.5, desc: "+$3.50 • Front-of-line dispatch" }
+                          { title: "Eco Protective Cotton Pouch", price: 250, desc: "+৳250 • Zero plastic dust bag" },
+                          { title: "Express Priority Packing", price: 150, desc: "+৳150 • Front-of-line dispatch" }
                         ].map((addon) => (
                           <div key={addon.title} className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-zinc-200 text-xs">
                             <div>
@@ -799,9 +801,9 @@ export default function TenantStorefrontPage({
               {cartItems.length > 0 && (
                 <div className="p-5 border-t border-zinc-200 space-y-3 bg-zinc-50">
                   <div className="space-y-1.5 text-xs">
-                    <div className="flex justify-between text-zinc-500"><span>Subtotal</span><span className="font-semibold text-zinc-900">${cartSummary.subtotal.toFixed(2)}</span></div>
-                    <div className="flex justify-between text-zinc-500"><span>Shipping</span><span>{cartSummary.isFreeShippingEligible ? "FREE" : `$${shippingFee.toFixed(2)}`}</span></div>
-                    <div className="flex justify-between text-sm font-black text-zinc-900 pt-2 border-t border-zinc-200"><span>Total</span><span>${finalTotal.toFixed(2)}</span></div>
+                    <div className="flex justify-between text-zinc-500"><span>Subtotal</span><span className="font-semibold text-zinc-900">৳{cartSummary.subtotal.toLocaleString("en-BD")}</span></div>
+                    <div className="flex justify-between text-zinc-500"><span>Shipping</span><span>{cartSummary.isFreeShippingEligible ? "FREE" : `৳${shippingFee.toLocaleString("en-BD")}`}</span></div>
+                    <div className="flex justify-between text-sm font-black text-zinc-900 pt-2 border-t border-zinc-200"><span>Total</span><span>৳{finalTotal.toLocaleString("en-BD")}</span></div>
                   </div>
                   <button
                     onClick={() => { setIsCartOpen(false); setIsCheckoutOpen(true); }}
@@ -874,11 +876,11 @@ export default function TenantStorefrontPage({
                   </h3>
                   <div className="flex items-baseline space-x-3 mt-1.5">
                     <span className="text-base sm:text-lg font-semibold font-mono text-zinc-950">
-                      ${selectedProduct.price.toFixed(2)}
+                      ৳{selectedProduct.price.toLocaleString("en-BD")}
                     </span>
                     {selectedProduct.comparePrice > selectedProduct.price && (
                       <span className="text-xs text-zinc-400 font-mono line-through">
-                        ${selectedProduct.comparePrice.toFixed(2)}
+                        ৳{selectedProduct.comparePrice.toLocaleString("en-BD")}
                       </span>
                     )}
                   </div>
